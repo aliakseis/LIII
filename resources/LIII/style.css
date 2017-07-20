@@ -1,0 +1,113 @@
+/* ********** Global settings ********** */
+QWidget
+{
+	font-family: "Segoe UI";
+	font-size: 12px;
+}
+
+
+MainWindow DownloadCollectionTreeView
+{	
+    color: black;
+    selection-color:black;
+    selection-background-color : qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+		stop: 0 #ecf5ff, stop: 0.5 #ddecff, stop: 1.0 #daebff);
+	padding: 3px 6px 3px 6px;	
+}
+
+
+MainWindow LineEditEx#linkEdit
+{ 
+    font-size:  13px;
+    padding-left:5px;
+    border-top-left-radius: 2px;
+    border-bottom-left-radius: 2px;
+ }
+
+MainWindow LineEditEx#linkEdit[state="normal"]
+{
+    color: black;
+    border: 1px solid #949294;
+    border-right: 0px;
+}
+
+MainWindow LineEditEx#linkEdit[state="error"]
+{
+    color: #f68825;
+    border: 1px solid #f68825;
+    border-right: 0px;
+}
+
+MainWindow ButtonLabel#lblClearText
+{
+    background: white;
+    background-image: url(:/stop_disabled.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    min-width: 25px;
+    max-width: 25px;
+    border-top:1px solid #949294;
+    border-bottom:1px solid #949294;
+    margin-bottom: 8px; 
+    margin-top: 8px;
+}
+
+QHeaderView::section:horizontal
+{
+	background-color: #f4f4f4;
+    color: #595959;
+    padding-left: 5px;
+    border-left:none;
+    border-right:1px solid #CFCFCF;
+    border-top: none;
+    border-bottom: none; /*1px solid #d5d5d5;*/
+    height: 26px;
+}
+
+QHeaderView::section:horizontal::last
+{
+    border-right:none;
+}
+
+MainWindow QTreeView#listUrls
+{
+	padding: 0px 0px 0px 0px;
+	border: 1px solid #CFCFCF;
+}
+MainWindow QTreeView#listUrls::item 
+{
+	height: 25px;
+	color: #484848;
+}
+
+TorrentDetailsForm QTreeView#treeTorrentContent::indicator
+{
+    border: 0px;
+    width: 0px;
+    height: 0px;
+}
+
+TorrentDetailsForm QTreeView#treeTorrentContent::item
+{
+    border: 0px;
+}
+
+
+
+QListWidget::item {
+	height: 25px;
+}
+
+QTreeView::item {
+    height: 25px;
+}
+
+QTreeView::item:selected {
+	background-color: rgb(210,244,255);
+	color:black;
+}
+
+QListWidget::item:selected {
+	background-color: rgb(210,244,255);
+	color:black;
+}
