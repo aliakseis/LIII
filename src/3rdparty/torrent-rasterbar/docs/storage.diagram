@@ -1,0 +1,31 @@
++--------------------------+
+|     "disk_io_thread"     |
+|  "(manages piece cache)" |
++--------------------------+
+              ^
+              |
+              v
++--------------------------+
+|     "piece_manager"      |
+| "disk job fence logic"   |
++--------------------------+
+              ^
+              |
+              v "customization point"
+/----------------------------\      +-------------------+
+|         "storage"          |<---->| "file_pool"       |
+|                            |      | "open file cache" |
+| "(maps pieces to file and" |      +-------------------+
+| "offset. reads and writes" |
+| "to disk)"                 |      +---------------------+
+|                            |<-----+ "file_storage"      |
+\----------------------------/      | "standard piece to" |
+              ^                     | "file mapping"      |
+              |                     +---------------------+
+              v
++--------------------------+
+|          "file"          |
+| "(file class reads and"  |
+| "writes files)"          |
++--------------------------+
+
