@@ -1,0 +1,50 @@
+<RCC>
+	<qresource prefix="/">
+		<file alias="qt/etc/qt.conf">qt.conf</file>
+		<file>style.css</file>
+		<file alias="add_torrent_disabled.png">images/add_torrent_disabled.png</file>
+		<file alias="add_torrent_hover.png">images/add_torrent_hover.png</file>
+		<file alias="add_torrent_normal.png">images/add_torrent_normal.png</file>
+		<file alias="add_torrent_press.png">images/add_torrent_press.png</file>
+		<file alias="stop-normal.png">images/stop-normal.png</file>
+		<file alias="stop-disabled.png">images/stop-disabled.png</file>
+    <file alias="start-normal.png">images/start-normal.png</file>
+		<file alias="start-disabled.png">images/start-disabled.png</file>
+		<file alias="checkbox_checked.png">images/checkbox_checked.png</file>
+		<file alias="checkbox_disabled_uncheck.png">images/checkbox_disabled_uncheck.png</file>
+		<file alias="checkbox_disabled_check.png">images/checkbox_disabled_check.png</file>
+		<file alias="checkbox_unchecked.png">images/checkbox_unchecked.png</file>
+    <file alias="cleanup_hover.png">images/cleanup_hover.png</file>
+		<file alias="cleanup.png">images/cleanup.png</file>
+		<file alias="cleanup_disabled.png">images/cleanup_disabled.png</file>
+		<file alias="folder.png">images/folder.png</file>
+		<file alias="folder_disabled.png">images/folder_disabled.png</file>
+		<file alias="icon.ico">images/icon.ico</file>
+		<file alias="lineedit.png">images/lineedit.png</file>
+		<file alias="pause.png">images/pause.png</file>
+		<file alias="pause_disabled.png">images/pause_disabled.png</file>
+    <file alias="settings.png">images/settings.png</file>
+		<file alias="settings_hover.png">images/settings_hover.png</file>
+		<file alias="settings_press.png">images/settings_press.png</file>
+		<file alias="settings_disabled.png">images/settings_disabled.png</file>
+		<file alias="stop.png">images/stop.png</file>
+		<file alias="stop_disabled.png">images/stop_disabled.png</file>
+    <file alias="stop-hover.png">images/stop-hover.png</file>
+    <file alias="stop-press.png">images/stop-press.png</file>
+		<file alias="white-bkg.png">images/white-bkg.png</file>
+	</qresource>
+	<qresource prefix="icons">
+		<file alias="Drop-down-cancel-icon-normal.png">images/icons/Drop-down-cancel-icon-normal.png</file>
+		<file alias="Drop-down-clean-icon-normal.png">images/icons/Drop-down-clean-icon-normal.png</file>
+		<file alias="Drop-down-down-icon-normal.png">images/icons/Drop-down-down-icon-normal.png</file>
+		<file alias="Drop-down-folder-icon-normal.png">images/icons/Drop-down-folder-icon-normal.png</file>
+		<file alias="Drop-down-pause-icon-normal.png">images/icons/Drop-down-pause-icon-normal.png</file>
+		<file alias="Drop-down-start-icon-normal.png">images/icons/Drop-down-start-icon-normal.png</file>
+		<file alias="Drop-down-stop-icon-normal.png">images/icons/Drop-down-stop-icon-normal.png</file>
+		<file alias="Drop-down-torrent-icon-normal.png">images/icons/Drop-down-torrent-icon-normal.png</file>
+		<file alias="Drop-down-up-icon-normal.png">images/icons/Drop-down-up-icon-normal.png</file>
+		<file alias="tray-pause-icon.png">images/icons/tray-pause-icon.png</file>
+		<file alias="tray-start-icon.png">images/icons/tray-start-icon.png</file>
+		<file alias="tray-stop-icon.png">images/icons/tray-stop-icon.png</file>
+	</qresource>
+</RCC>

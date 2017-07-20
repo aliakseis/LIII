@@ -1,0 +1,14 @@
+[Desktop Entry]
+Name=@SHORTPRODUCTNAME@
+Type=Application
+Exec=@SHORTPRODUCTNAME@ %U
+Icon=LIII
+Terminal=false
+GenericName=@PRODUCTNAME@
+GenericName[ru]=Бесплатный качальщик
+GenericName[en]=@PRODUCTNAME@
+GenericName[ru_RU]=Бесплатный качальщик
+Comment=Download video files from sites
+Comment[ru]=Качайте файлы с порталов
+Comment[en]=Download files from sites
+Categories=Network;FileTransfer;AudioVideo;Qt;

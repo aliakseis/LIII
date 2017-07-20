@@ -1,0 +1,11 @@
+#!/bin/bash
+
+if [ $(pidof -x isvndashboard| wc -w) -gt 2 ]; then 
+    echo "More than 1 instance"
+    exit
+fi
+
+SOURCE_PATH="`dirname \"$0\"`"
+
+cd "$SOURCE_PATH/testing"
+xvfb-run -a -n 11 ctest -D Continuous
