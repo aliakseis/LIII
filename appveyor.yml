@@ -1,0 +1,144 @@
+version: 1.0.{build}
+branches:
+  only:
+  - master
+  - RC_1_1
+clone_depth: 1
+environment:
+  matrix:
+  - variant: test_debug
+    compiler: msvc-14.0
+    os: Visual Studio 2015
+    sim: 1
+    linkflags: '"/LIBPATH:C:\\openssl-1.0.1p-vs2015\\lib"'
+    include: '"c:\\openssl-1.0.1p-vs2015\\include"'
+  - variant: test_debug
+    compiler: msvc-12.0
+    os: Visual Studio 2013
+    x64: 1
+    linkflags: '"/LIBPATH:C:\\openssl-1.0.1p-vs2013\\lib64"'
+    include: '"c:\\openssl-1.0.1p-vs2013\\include"'
+  - variant: test_debug
+    python_package: 1
+    compiler: msvc-10.0
+    os: Visual Studio 2015
+    linkflags: '"/LIBPATH:C:\\openssl-1.0.1p-vs2010\\lib"'
+    include: '"c:\\openssl-1.0.1p-vs2010\\include"'
+  - variant: test_barebones
+    compiler: msvc-12.0
+    os: Visual Studio 2013
+    linkflags: '"/LIBPATH:C:\\openssl-1.0.1p-vs2013\\lib"'
+    include: '"c:\\openssl-1.0.1p-vs2013\\include"'
+  - variant: test_release
+    compiler: msvc-12.0
+    os: Visual Studio 2013
+    linkflags: '"/LIBPATH:C:\\openssl-1.0.1p-vs2013\\lib"'
+    include: '"c:\\openssl-1.0.1p-vs2013\\include"'
+
+# mingw and boost.random don't like each other. Comment this back in once there
+# is support
+
+#  - variant: test_debug
+#    compiler: gcc
+#    linkflags: '"-LC:\\OpenSSL-Win32\\lib"'
+
+install:
+- if defined sim ( git submodule update --init --recursive )
+- set ROOT_DIRECTORY=%CD%
+- cd %ROOT_DIRECTORY%
+- if %compiler% == msvc-12.0 (
+    if not exist openssl-1.0.1p-vs2013.7z (
+      echo downloading openssl-2013
+      & appveyor DownloadFile "http://www.npcglib.org/~stathis/downloads/openssl-1.0.1p-vs2013.7z"
+    )
+  )
+- if %compiler% == msvc-12.0 (
+    echo extracting openssl-2013
+    & 7z x -oc:\ -aoa openssl-1.0.1p-vs2013.7z > nul
+    & copy c:\openssl-1.0.1p-vs2013\lib64\ssleay32MT.lib c:\openssl-1.0.1p-vs2013\lib64\ssleay32.lib
+    & copy c:\openssl-1.0.1p-vs2013\lib64\libeay32MT.lib c:\openssl-1.0.1p-vs2013\lib64\libeay32.lib
+    & copy c:\openssl-1.0.1p-vs2013\lib\ssleay32MT.lib c:\openssl-1.0.1p-vs2013\lib\ssleay32.lib
+    & copy c:\openssl-1.0.1p-vs2013\lib\libeay32MT.lib c:\openssl-1.0.1p-vs2013\lib\libeay32.lib
+  )
+- if %compiler% == msvc-10.0 (
+    if not exist openssl-1.0.1p-vs2010.7z (
+      echo downloading openssl-2010
+      & appveyor DownloadFile "http://www.npcglib.org/~stathis/downloads/openssl-1.0.1p-vs2010.7z"
+    )
+  )
+- if %compiler% == msvc-10.0 (
+    echo extracting openssl-2010
+    & 7z x -oc:\ -aoa openssl-1.0.1p-vs2010.7z > nul
+    & copy c:\openssl-1.0.1p-vs2010\lib64\ssleay32MT.lib c:\openssl-1.0.1p-vs2010\lib64\ssleay32.lib
+    & copy c:\openssl-1.0.1p-vs2010\lib64\libeay32MT.lib c:\openssl-1.0.1p-vs2010\lib64\libeay32.lib
+    & copy c:\openssl-1.0.1p-vs2010\lib\ssleay32MT.lib c:\openssl-1.0.1p-vs2010\lib\ssleay32.lib
+    & copy c:\openssl-1.0.1p-vs2010\lib\libeay32MT.lib c:\openssl-1.0.1p-vs2010\lib\libeay32.lib
+  )
+- if %compiler% == msvc-14.0 (
+    if not exist openssl-1.0.1p-vs2015.7z (
+      echo downloading openssl-2015
+      & appveyor DownloadFile "http://www.npcglib.org/~stathis/downloads/openssl-1.0.1p-vs2015.7z"
+    )
+  )
+- if %compiler% == msvc-14.0 (
+    echo extracting openssl-2015
+    & 7z x -oc:\ -aoa openssl-1.0.1p-vs2015.7z > nul
+    & copy c:\openssl-1.0.1p-vs2015\lib64\ssleay32MT.lib c:\openssl-1.0.1p-vs2015\lib64\ssleay32.lib
+    & copy c:\openssl-1.0.1p-vs2015\lib64\libeay32MT.lib c:\openssl-1.0.1p-vs2015\lib64\libeay32.lib
+    & copy c:\openssl-1.0.1p-vs2015\lib\ssleay32MT.lib c:\openssl-1.0.1p-vs2015\lib\ssleay32.lib
+    & copy c:\openssl-1.0.1p-vs2015\lib\libeay32MT.lib c:\openssl-1.0.1p-vs2015\lib\libeay32.lib
+  )
+- cd %ROOT_DIRECTORY%
+- set BOOST_ROOT=c:\Libraries\boost_1_63_0
+- set BOOST_BUILD_PATH=%BOOST_ROOT%\tools\build
+- echo %BOOST_ROOT%
+- echo %BOOST_BUILD_PATH%
+- set PATH=%PATH%;%BOOST_BUILD_PATH%\src\engine\bin.ntx86
+- 'echo using msvc : 10.0 ; >%HOMEDRIVE%%HOMEPATH%/user-config.jam'
+- 'echo using msvc : 14.0 ; >>%HOMEDRIVE%%HOMEPATH%/user-config.jam'
+- 'echo using msvc : 12.0 ; >>%HOMEDRIVE%%HOMEPATH%/user-config.jam'
+- 'echo using msvc : 9.0 ; >>%HOMEDRIVE%%HOMEPATH%/user-config.jam'
+- type %HOMEDRIVE%%HOMEPATH%\user-config.jam
+- cd %ROOT_DIRECTORY%
+- set PATH=%PATH%;c:\Mingw\bin
+- g++ --version
+- python --version
+- echo %ROOT_DIRECTORY%
+- cd %BOOST_BUILD_PATH%\src\engine
+- build.bat >nul
+- cd %ROOT_DIRECTORY%
+
+cache:
+- openssl-1.0.1p-vs2010.7z
+- openssl-1.0.1p-vs2013.7z
+- openssl-1.0.1p-vs2015.7z
+
+build_script:
+- if not defined x64 (
+  cd %ROOT_DIRECTORY%\examples
+  & if %compiler% == msvc-14.0 (
+    b2.exe --hash -j2 openssl-version=pre1.1 address-model=32 %compiler% variant=%variant% debug-iterators=on picker-debugging=on invariant-checks=full linkflags=%linkflags% include=%include% link=shared bt-get bt-get2
+  ) else (
+    b2.exe --hash -j2 openssl-version=pre1.1 address-model=32 %compiler% variant=%variant% debug-iterators=on picker-debugging=on invariant-checks=full linkflags=%linkflags% include=%include% link=shared
+  )
+  & cd %ROOT_DIRECTORY%\bindings\python
+  & b2.exe --hash -j2 openssl-version=pre1.1 %compiler% stage_module install-dependencies=on variant=%variant% libtorrent-link=shared linkflags=%linkflags% include=%include%
+  & python test.py
+  & if defined python_package ( python setup.py --bjam bdist_msi )
+  )
+
+test_script:
+- cd %ROOT_DIRECTORY%\test
+- if defined x64 (
+  appveyor-retry b2.exe --hash -j2 openssl-version=pre1.1 address-model=64 win-tests %compiler% variant=%variant% link=shared linkflags=%linkflags% include=%include%
+  ) else (
+  appveyor-retry b2.exe --hash -j2 openssl-version=pre1.1 address-model=32 win-tests %compiler% variant=%variant% link=shared linkflags=%linkflags% include=%include%
+  )
+- if defined sim (
+  cd %ROOT_DIRECTORY%\simulation
+  & b2.exe --hash -j2 openssl-version=pre1.1 link=shared crypto=built-in %compiler%
+  )
+
+artifacts:
+  - path: bindings\python\dist\*.msi
+    name: python-binding-win32
