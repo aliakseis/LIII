@@ -139,12 +139,18 @@ namespace libtorrent
 
 	void condition_variable::notify_all()
 	{
+        if (m_num_waiters > 0)
+        {
 		ReleaseSemaphore(m_sem, m_num_waiters, 0);
+	}
 	}
 
 	void condition_variable::notify()
 	{
+        if (m_num_waiters > 0)
+        {
 		ReleaseSemaphore(m_sem, (std::min)(m_num_waiters, 1), 0);
+	}
 	}
 #elif defined TORRENT_BEOS
 	condition_variable::condition_variable()
@@ -180,12 +186,18 @@ namespace libtorrent
 
 	void condition_variable::notify_all()
 	{
+        if (m_num_waiters > 0)
+        {
 		release_sem_etc(m_sem, m_num_waiters, 0);
+	}
 	}
 
 	void condition_variable::notify()
 	{
+        if (m_num_waiters > 0)
+        {
 		release_sem_etc(m_sem, (std::min)(m_num_waiters, 1), 0);
+	}
 	}
 #else
 #error not implemented

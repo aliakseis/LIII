@@ -156,7 +156,7 @@ set(ed25519_sources
 
 set(includes include ed25519/src)
 
-option(shared "build libtorrent as a shared library" ON)
+option(shared "build libtorrent as a shared library" OFF)
 option(static_runtime "build libtorrent with static runtime" OFF)
 option(tcmalloc "link against google performance tools tcmalloc" OFF)
 option(pool-allocators "Uses a pool allocator for disk and piece buffers" ON)
@@ -258,7 +258,7 @@ endif()
 
 # Boost
 if(NOT DEFINED Boost_INCLUDE_DIR OR NOT DEFINED Boost_LIBRARIES)
-	FIND_PACKAGE(Boost REQUIRED COMPONENTS system chrono random)
+	FIND_PACKAGE(Boost REQUIRED COMPONENTS system chrono random atomic date_time)
 endif()
 include_directories(${Boost_INCLUDE_DIRS})
 target_link_libraries(torrent-rasterbar ${Boost_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
@@ -267,12 +267,12 @@ target_link_libraries(torrent-rasterbar ${Boost_LIBRARIES} ${CMAKE_THREAD_LIBS_I
 #add_definitions(-DBOOST_ASIO_HASH_MAP_BUCKETS=1021  -D__USE_W32_SOCKETS -DWIN32_LEAN_AND_MEAN )
 
 if (WIN32)
-	target_link_libraries(torrent-rasterbar wsock32 ws2_32 Iphlpapi)
+	target_link_libraries(torrent-rasterbar wsock32 ws2_32 Iphlpapi DbgHelp)
 	add_definitions(-D_WIN32_WINNT=0x0600)
 	# prevent winsock1 to be included
 	add_definitions(-DWIN32_LEAN_AND_MEAN)
 	if (MSVC)
-		add_definitions(-DBOOST_ALL_NO_LIB)
+#		add_definitions(-DBOOST_ALL_NO_LIB)
 		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MP") # multicore compilation
 	endif()
 endif()
@@ -362,8 +362,8 @@ install(DIRECTORY include/libtorrent
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/libtorrent-rasterbar.pc DESTINATION ${LIBDIR}/pkgconfig)
 
 # === set up examples directory as an independent project ===
-file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/examples)
-configure_file(examples/run_cmake.sh.in examples/run_cmake.sh)
+#file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/examples)
+#configure_file(examples/run_cmake.sh.in examples/run_cmake.sh)
 # to build the examples, run examples/run_cmake.sh after building libtorrent
 
 # === build tests ===
