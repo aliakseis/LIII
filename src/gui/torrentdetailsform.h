@@ -23,8 +23,6 @@ class TorrentDetailsForm : public QDialog
 public:
     explicit TorrentDetailsForm(QWidget* parent = 0);
     TorrentDetailsForm(libtorrent::torrent_handle handle, QWidget* parent = 0);
-    TorrentDetailsForm(libtorrent::add_torrent_params* params, QWidget* parent = 0);
-    TorrentDetailsForm(libtorrent::torrent_info* info, QWidget* parent = 0);
     ~TorrentDetailsForm();
 
     QStringList filesPriorities() const;

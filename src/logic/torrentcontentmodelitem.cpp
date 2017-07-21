@@ -348,6 +348,7 @@ int TorrentContentModelItem::columnCount() const
 QVariant TorrentContentModelItem::data(int column) const
 {
     if (m_type != ROOT)
+    {
         if (column == COL_PROGRESS)
         {
             return getProgress();
@@ -356,6 +357,7 @@ QVariant TorrentContentModelItem::data(int column) const
         {
             return itemDCStatusToString(getStatus());
         }
+    }
 
     return m_itemData.value(column);
 }

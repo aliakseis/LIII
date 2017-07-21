@@ -195,7 +195,7 @@ bool Preferences::checkData()
     if (!path.exists(pathDir) && !path.mkpath(pathDir))
     {
         ui->tabWidget->setCurrentIndex(0);
-        QMessageBox::critical(this, Tr::Tr(PROJECT_FULLNAME_TRANSLATION), tr("The folder \"%1\" cannot be created. Please change.").arg(pathDir));
+        QMessageBox::critical(this, ::Tr::Tr(PROJECT_FULLNAME_TRANSLATION), tr("The folder \"%1\" cannot be created. Please change.").arg(pathDir));
         ui->leFolder->setFocus();
         return false;
     }
@@ -226,8 +226,8 @@ bool Preferences::checkData()
     {
         ui->tabWidget->setCurrentIndex(0);
         QMessageBox::critical(
-            this, Tr::Tr(PROJECT_FULLNAME_TRANSLATION),
-            tr("The folder \"%1\" cannot be used, as there is no write access for %2. Please choose another one.").arg(pathDir, Tr::Tr(PROJECT_FULLNAME_TRANSLATION)));
+            this, ::Tr::Tr(PROJECT_FULLNAME_TRANSLATION),
+            tr("The folder \"%1\" cannot be used, as there is no write access for %2. Please choose another one.").arg(pathDir, ::Tr::Tr(PROJECT_FULLNAME_TRANSLATION)));
         ui->leFolder->setFocus();
         return false;
     }
@@ -260,8 +260,8 @@ void Preferences::on_btnResetWarnings_clicked()
 {
     QMessageBox msgBox(
         QMessageBox::NoIcon,
-        Tr::Tr(PROJECT_FULLNAME_TRANSLATION),
-        Tr::Tr(RESET_WARNINGS_TEXT),
+        ::Tr::Tr(PROJECT_FULLNAME_TRANSLATION),
+        ::Tr::Tr(RESET_WARNINGS_TEXT),
         QMessageBox::Yes | QMessageBox::No,
         this);
 
@@ -279,7 +279,7 @@ void Preferences::on_btnResetWarnings_clicked()
 
 void Preferences::on_pbBrowse_clicked()
 {
-    QString dir = QFileDialog::getExistingDirectory(this, Tr::Tr(DOWNLOAD_TO_LABEL), ui->leFolder->text());
+    QString dir = QFileDialog::getExistingDirectory(this, ::Tr::Tr(DOWNLOAD_TO_LABEL), ui->leFolder->text());
     if (!dir.isEmpty())
     {
         ui->leFolder->setText(dir);

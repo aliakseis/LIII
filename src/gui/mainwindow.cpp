@@ -72,8 +72,8 @@ MainWindow::MainWindow()
 
     ui->buttonOptions->setText(" ");
 
-    Tr::SetTr(this, &QWidget::setWindowTitle, PROJECT_FULLNAME_TRANSLATION);
-    Tr::SetTr(ui->actionAbout_LIII, &QAction::setText, ABOUT_TITLE, PROJECT_NAME);
+    ::Tr::SetTr(this, &QWidget::setWindowTitle, PROJECT_FULLNAME_TRANSLATION);
+    ::Tr::SetTr(ui->actionAbout_LIII, &QAction::setText, ABOUT_TITLE, PROJECT_NAME);
 
     QHBoxLayout* horizontalLayout = new QHBoxLayout(ui->menuBar);
     horizontalLayout->setSpacing(6);
@@ -205,12 +205,12 @@ void MainWindow::checkDefaultTorrentApplication()
     {
         QMessageBox msgBox(
             QMessageBox::NoIcon,
-            Tr::Tr(PROJECT_FULLNAME_TRANSLATION),
-            Tr::Tr(ASSOCIATE_TORRENT_TEXT).arg(PROJECT_NAME),
+            ::Tr::Tr(PROJECT_FULLNAME_TRANSLATION),
+            ::Tr::Tr(ASSOCIATE_TORRENT_TEXT).arg(PROJECT_NAME),
             QMessageBox::Yes | QMessageBox::No,
             this);
         msgBox.setDefaultButton(QMessageBox::Yes);
-        msgBox.setCheckBox(new QCheckBox(Tr::Tr(DONT_SHOW_THIS_AGAIN)));
+        msgBox.setCheckBox(new QCheckBox(::Tr::Tr(DONT_SHOW_THIS_AGAIN)));
 
         const bool result = msgBox.exec() == QMessageBox::Yes;
 
@@ -275,12 +275,12 @@ void MainWindow::closeApp()
         {
             QMessageBox msgBox(
                 QMessageBox::NoIcon,
-                Tr::Tr(PROJECT_FULLNAME_TRANSLATION),
-                Tr::Tr(EXIT_TEXT).arg(PROJECT_NAME),
+                ::Tr::Tr(PROJECT_FULLNAME_TRANSLATION),
+                ::Tr::Tr(EXIT_TEXT).arg(PROJECT_NAME),
                 QMessageBox::Yes | QMessageBox::No,
                 this);
             msgBox.setDefaultButton(QMessageBox::No);
-            msgBox.setCheckBox(new QCheckBox(Tr::Tr(DONT_SHOW_THIS_AGAIN)));
+            msgBox.setCheckBox(new QCheckBox(::Tr::Tr(DONT_SHOW_THIS_AGAIN)));
 
             if (msgBox.exec() != QMessageBox::Yes)
             {
@@ -409,8 +409,8 @@ void MainWindow::on_buttonPaste_clicked()
     {
         QMessageBox msgBox(
             QMessageBox::NoIcon,
-            Tr::Tr(PROJECT_FULLNAME_TRANSLATION),
-            Tr::Tr(NO_LINKS_IN_CLIPBOARD),
+            ::Tr::Tr(PROJECT_FULLNAME_TRANSLATION),
+            ::Tr::Tr(NO_LINKS_IN_CLIPBOARD),
             QMessageBox::Ok,
             this);
         msgBox.exec();
@@ -427,11 +427,11 @@ void MainWindow::on_clearButton_clicked()
     {
         QMessageBox msgBox(
             QMessageBox::NoIcon,
-            Tr::Tr(PROJECT_FULLNAME_TRANSLATION),
-            Tr::Tr(CLEANUP_TEXT),
+            ::Tr::Tr(PROJECT_FULLNAME_TRANSLATION),
+            ::Tr::Tr(CLEANUP_TEXT),
             0,
             this);
-        msgBox.setCheckBox(new QCheckBox(Tr::Tr(DONT_SHOW_THIS_AGAIN)));
+        msgBox.setCheckBox(new QCheckBox(::Tr::Tr(DONT_SHOW_THIS_AGAIN)));
         QPushButton* removeButton = msgBox.addButton(tr("Remove"), QMessageBox::ActionRole);
         QPushButton* cancelButton = msgBox.addButton(QMessageBox::Cancel);
 
@@ -486,7 +486,7 @@ bool MainWindow::setError(const QString& strHeader, const QString& strErrorText)
     {
         QMessageBox msgBox(
             QMessageBox::Critical,
-            Tr::Tr(PROJECT_FULLNAME_TRANSLATION),
+            ::Tr::Tr(PROJECT_FULLNAME_TRANSLATION),
             strHeader,
             QMessageBox::Ok,
             this);
@@ -499,7 +499,7 @@ bool MainWindow::setError(const QString& strHeader, const QString& strErrorText)
 void MainWindow::languageChange()
 {
     // will be called after call of RetranslateApp
-    Tr::RetranslateAll(this);
+    ::Tr::RetranslateAll(this);
     ui->retranslateUi(this);
 }
 
@@ -600,7 +600,7 @@ void MainWindow::showHideNotify()
         && QSettings().value(ShowSysTrayNotificationOnHide, ShowSysTrayNotificationOnHide_Default).toBool())
     {
         QSettings().setValue(ShowSysTrayNotificationOnHide, false);
-        showTrayMessage(tr("%1 continues running. Click this button to open it").arg(Tr::Tr(PROJECT_FULLNAME_TRANSLATION)));
+        showTrayMessage(tr("%1 continues running. Click this button to open it").arg(::Tr::Tr(PROJECT_FULLNAME_TRANSLATION)));
     }
 }
 

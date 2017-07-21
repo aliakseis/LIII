@@ -118,6 +118,9 @@ void Logger::messageOutput(QtMsgType type, const QMessageLogContext& context, co
 
     switch (type)
     {
+    case QtInfoMsg:
+        message = "[Info] ";
+        break;
     case QtDebugMsg:
         message = "[Debug] ";
         break;

@@ -79,7 +79,8 @@ bool isAutorunEnabled()
     CFRelease(loginItems);
 
     return isAutoRun;
-
+#else
+    return false;
 #endif
 }
 
@@ -128,6 +129,8 @@ bool setAutorun(bool runWithOS)
     CFRelease(loginItems);
 
     return true;
+#else
+    return false;
 #endif
 }
 

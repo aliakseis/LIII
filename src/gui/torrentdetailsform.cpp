@@ -18,64 +18,19 @@
 #include <QKeyEvent>
 #include "branding.hxx"
 
-TorrentDetailsForm::TorrentDetailsForm(QWidget* parent) :
-    QDialog(parent),
-    ui(new Ui::TorrentDetailsForm),
-    m_contentModel(nullptr),
-    m_torrentInfo(nullptr),
-    m_torrentAddParams(nullptr),
-    m_PeersInfomodel(nullptr),
-    m_PeersInfoproxy(nullptr),
-    m_updateTimeId(-1)
-{
-    ui->setupUi(this);
-}
-
 TorrentDetailsForm::TorrentDetailsForm(libtorrent::torrent_handle handle, QWidget* parent) :
     QDialog(parent),
     ui(new Ui::TorrentDetailsForm),
     m_contentModel(nullptr),
-    m_torrentHandle(handle),
     m_torrentInfo(nullptr),
     m_torrentAddParams(nullptr),
+    m_torrentHandle(handle),
     m_PeersInfomodel(nullptr),
     m_PeersInfoproxy(nullptr),
     m_updateTimeId(-1)
 {
     ui->setupUi(this);
     // Initialize using torrent handle
-    setWindowFlags(Qt::Dialog | Qt::WindowTitleHint);
-    initialize();
-}
-
-TorrentDetailsForm::TorrentDetailsForm(libtorrent::torrent_info* info, QWidget* parent) :
-    QDialog(parent),
-    ui(new Ui::TorrentDetailsForm),
-    m_contentModel(nullptr),
-    m_torrentInfo(info),
-    m_torrentAddParams(nullptr),
-    m_PeersInfomodel(nullptr),
-    m_PeersInfoproxy(nullptr),
-    m_updateTimeId(-1)
-{
-    ui->setupUi(this);
-    // Initialize using torrent torrent info
-    setWindowFlags(Qt::Dialog | Qt::WindowTitleHint);
-    initialize();
-}
-
-TorrentDetailsForm::TorrentDetailsForm(libtorrent::add_torrent_params* info, QWidget* parent) :
-    QDialog(parent),
-    ui(new Ui::TorrentDetailsForm),
-    m_contentModel(nullptr),
-    m_torrentAddParams(info),
-    m_torrentInfo(nullptr),
-    m_PeersInfomodel(nullptr),
-    m_PeersInfoproxy(nullptr),
-    m_updateTimeId(-1)
-{
-    ui->setupUi(this);
-    // Initialize using torrent add params
     setWindowFlags(Qt::Dialog | Qt::WindowTitleHint);
     initialize();
 }

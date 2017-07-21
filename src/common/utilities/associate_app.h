@@ -6,7 +6,7 @@ namespace utilities
 {
 
 bool isDefaultTorrentApp();
-void setDefaultTorrentApp(WId parent = NULL);
+void setDefaultTorrentApp(WId parent = {});
 void unsetDefaultTorrentApp();
 
 }

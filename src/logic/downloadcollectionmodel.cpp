@@ -191,7 +191,7 @@ QVariant DownloadCollectionModel::data(const QModelIndex& index, int role /* = Q
                 QString errorDescr = l_item->errorDescription();
                 if (!DownloadType::isTorrentDownload(l_item->getDownloadType()))
                 {
-                    QString tooltipText = Tr::Tr(
+                    QString tooltipText = ::Tr::Tr(
                         utilities::ErrorCode::instance().getDescription(l_item->getErrorCode()));
                     if (!errorDescr.isEmpty())
                     {
@@ -276,7 +276,7 @@ QVariant DownloadCollectionModel::data(const QModelIndex& index, int role /* = Q
     {
         if (item->getSize() == 0)
         {
-            displayRoleResult = Tr::Tr(TREEVIEW_UNKNOWN_SIZE);
+            displayRoleResult = ::Tr::Tr(TREEVIEW_UNKNOWN_SIZE);
         }
         else
         {
@@ -349,7 +349,7 @@ bool DownloadCollectionModel::setData(const QModelIndex& index, const QVariant& 
     {
         float size;
         QString str_val = value.toString();
-        if (str_val == Tr::Tr(TREEVIEW_UNKNOWN_SIZE))
+        if (str_val == ::Tr::Tr(TREEVIEW_UNKNOWN_SIZE))
         {
             size = 0;
         }
@@ -388,23 +388,23 @@ QVariant DownloadCollectionModel::headerData(int section, Qt::Orientation orient
         case eDC_ID:
             return QString("ID");
         case eDC_url:
-            return Tr::Tr(TREEVIEW_TITLE_HEADER);
+            return ::Tr::Tr(TREEVIEW_TITLE_HEADER);
 #ifdef DEVELOPER_FEATURES
         case eDC_priority:
             return "#";
 #endif
         case eDC_Status:
-            return Tr::Tr(TREEVIEW_STATUS_HEADER);
+            return ::Tr::Tr(TREEVIEW_STATUS_HEADER);
         case eDC_Speed:
-            return Tr::Tr(TREEVIEW_SPEED_HEADER);
+            return ::Tr::Tr(TREEVIEW_SPEED_HEADER);
         case eDC_Speed_Uploading:
-            return Tr::Tr(TREEVIEW_SPEED_UPLOAD_HEADER);
+            return ::Tr::Tr(TREEVIEW_SPEED_UPLOAD_HEADER);
         case eDC_percentDownl:
-            return Tr::Tr(TREEVIEW_PROGR_HEADER);
+            return ::Tr::Tr(TREEVIEW_PROGR_HEADER);
         case eDC_Size:
-            return Tr::Tr(TREEVIEW_SIZE_HEADER);
+            return ::Tr::Tr(TREEVIEW_SIZE_HEADER);
         case eDC_Source:
-            return Tr::Tr(TREEVIEW_SOURCE_HEADER);
+            return ::Tr::Tr(TREEVIEW_SOURCE_HEADER);
         case eDC_downlFileName:
             return QString("Download fileName");
         case eDC_extrFileName:
@@ -1257,8 +1257,8 @@ inline QVariant DownloadCollectionModel::statusName(TreeItem* item) const
     {
         const int waitingTime = item->getWaitingTime();
         return (waitingTime > 0)
-               ? Tr::Tr(TREEVIEW_WAITING_STATUS_SEC).arg(waitingTime)
-               : Tr::Tr(TREEVIEW_WAITING_STATUS);
+               ? ::Tr::Tr(TREEVIEW_WAITING_STATUS_SEC).arg(waitingTime)
+               : ::Tr::Tr(TREEVIEW_WAITING_STATUS);
     }
 
     return itemDCStatusToString(status);
