@@ -12,16 +12,6 @@
 #include "libtorrent/torrent_handle.hpp"
 #include "libtorrent/torrent_status.hpp"
 
-AddTorrentForm::AddTorrentForm(QWidget* parent) :
-    QDialog(parent),
-    ui(new Ui::AddTorrentForm),
-    m_contentModel(nullptr),
-    m_torrentInfo(nullptr),
-    m_torrentAddParams(nullptr)
-{
-    ui->setupUi(this);
-    setWindowFlags(Qt::Dialog | Qt::WindowTitleHint);
-}
 
 AddTorrentForm::AddTorrentForm(libtorrent::torrent_handle handle, QWidget* parent) :
     QDialog(parent),
@@ -35,19 +25,6 @@ AddTorrentForm::AddTorrentForm(libtorrent::torrent_handle handle, QWidget* paren
     ui->setupUi(this);
     setWindowFlags(Qt::Dialog | Qt::WindowTitleHint);
     // Initialize using torrent handle
-    initialize();
-}
-
-AddTorrentForm::AddTorrentForm(libtorrent::torrent_info* info, QWidget* parent) :
-    QDialog(parent),
-    ui(new Ui::AddTorrentForm),
-    m_contentModel(nullptr),
-    m_torrentInfo(info),
-    m_torrentAddParams(nullptr)
-{
-    ui->setupUi(this);
-    // Initialize using torrent torrent info
-    setWindowFlags(Qt::Dialog | Qt::WindowTitleHint);
     initialize();
 }
 

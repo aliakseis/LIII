@@ -28,7 +28,6 @@ public:
     // returns true if succeeded
     bool addApplicationPolicy(const QString& imageName, const QString& applicationName);
 private:
-    void initialize();
     CComPtr<INetFwProfile> fwProfile;
 };
 

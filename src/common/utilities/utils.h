@@ -95,10 +95,14 @@ QString asString(const T& value)
 }
 
 
-
 inline QString asString(const char* value)
 {
     return QString(value);
+}
+
+inline QString asString(const wchar_t* value)
+{
+    return QString::fromWCharArray(value);
 }
 
 inline QString asString(const QString& value)

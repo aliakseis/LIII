@@ -18,10 +18,8 @@ class AddTorrentForm : public QDialog
 {
     Q_OBJECT
 public:
-    explicit AddTorrentForm(QWidget* parent = 0);
     AddTorrentForm(libtorrent::torrent_handle handle, QWidget* parent = 0);
     AddTorrentForm(libtorrent::add_torrent_params* params, QWidget* parent = 0);
-    AddTorrentForm(libtorrent::torrent_info* info, QWidget* parent = 0);
     ~AddTorrentForm();
 
     QStringList filesPriorities() const;

@@ -10,12 +10,34 @@
 #include <comip.h>
 #include <comdef.h>
 
+#include "utils.h"
+
 namespace utilities
 {
 
+using _com_util::CheckError;
+
 WindowsFirewall::WindowsFirewall()
 {
-    initialize();
+    _COM_SMARTPTR_TYPEDEF(INetFwMgr, __uuidof(INetFwMgr));
+
+    try
+    {
+        INetFwMgrPtr fwMgr(__uuidof(NetFwMgr), NULL, CLSCTX_INPROC_SERVER);
+        CComPtr<INetFwPolicy> fwPolicy;
+
+        Q_ASSERT_X(!fwProfile, Q_FUNC_INFO, "profile initialized twice ???");
+
+        CheckError(fwMgr->get_LocalPolicy(&fwPolicy));
+        // Retrieve the firewall profile currently in effect.
+        CheckError(fwPolicy->get_CurrentProfile(&fwProfile));
+
+        Q_ASSERT(fwProfile);
+    }
+    catch (_com_error const& wtf)
+    {
+        qWarning() << Q_FUNC_INFO << "failed: " << asString(wtf.ErrorMessage());
+    }
 }
 
 WindowsFirewall::~WindowsFirewall()
@@ -30,75 +52,43 @@ bool WindowsFirewall::isEnabled()
     {
         // Get the current state of the firewall.
         VARIANT_BOOL fwEnabled;
-        _com_util::CheckError(fwProfile->get_FirewallEnabled(&fwEnabled));
+        CheckError(fwProfile->get_FirewallEnabled(&fwEnabled));
 
         // Check to see if the firewall is on.
         return (fwEnabled != VARIANT_FALSE);
     }
     catch (_com_error const& wtf)
     {
-        qWarning() << Q_FUNC_INFO << "failed: " << QString::fromUtf16((const ushort*)wtf.ErrorMessage());
+        qWarning() << Q_FUNC_INFO << "failed: " << asString(wtf.ErrorMessage());
         return false;
-    }
-}
-
-void WindowsFirewall::initialize()
-{
-    _COM_SMARTPTR_TYPEDEF(INetFwMgr, __uuidof(INetFwMgr));
-    _COM_SMARTPTR_TYPEDEF(INetFwPolicy, __uuidof(INetFwPolicy));
-
-    try
-    {
-        INetFwMgrPtr fwMgr(__uuidof(NetFwMgr), NULL, CLSCTX_INPROC_SERVER);
-        INetFwPolicyPtr fwPolicy;
-
-        Q_ASSERT_X(!fwProfile, Q_FUNC_INFO, "profile initialized twice ???");
-
-        _com_util::CheckError(fwMgr->get_LocalPolicy(&fwPolicy));
-        // Retrieve the firewall profile currently in effect.
-        _com_util::CheckError(fwPolicy->get_CurrentProfile(&fwProfile));
-
-        Q_ASSERT(fwProfile);
-    }
-    catch (_com_error const& wtf)
-    {
-        qWarning() << Q_FUNC_INFO << "failed: " << QString::fromUtf16((const ushort*)wtf.ErrorMessage());
     }
 }
 
 WindowsFirewall::FirewallStatus WindowsFirewall::getFirewallStatus(const QString& imageName)
 {
-    FirewallStatus result = UNKNOWN;
-
-    _COM_SMARTPTR_TYPEDEF(INetFwAuthorizedApplication,  __uuidof(INetFwAuthorizedApplication));
-    _COM_SMARTPTR_TYPEDEF(INetFwAuthorizedApplications, __uuidof(INetFwAuthorizedApplications));
-
     try
     {
         _bstr_t procImgFilename((const wchar_t*)QDir::toNativeSeparators(imageName).utf16());
-        INetFwAuthorizedApplicationsPtr fwApps;
-        INetFwAuthorizedApplicationPtr fwApp;
+        CComPtr<INetFwAuthorizedApplications> fwApps;
+        CComPtr<INetFwAuthorizedApplication> fwApp;
 
-        _com_util::CheckError(fwProfile->get_AuthorizedApplications(&fwApps));
+        CheckError(fwProfile->get_AuthorizedApplications(&fwApps));
 
         if (SUCCEEDED(fwApps->Item(procImgFilename, &fwApp)))
         {
             VARIANT_BOOL fwEnabled;
-            _com_util::CheckError(fwApp->get_Enabled(&fwEnabled));
+            CheckError(fwApp->get_Enabled(&fwEnabled));
 
-            result = (fwEnabled == VARIANT_FALSE ? BLOCKED : ALLOWED);
+            return (fwEnabled == VARIANT_FALSE) ? BLOCKED : ALLOWED;
         }
-        else
-        {
-            result = DOESNT_EXIST;
-        }
+
+        return DOESNT_EXIST;
     }
     catch (_com_error const& wtf)
     {
-        qWarning() << Q_FUNC_INFO << "failed: " << QString::fromUtf16((const ushort*)wtf.ErrorMessage());
+        qWarning() << Q_FUNC_INFO << "failed: " << asString(wtf.ErrorMessage());
+        return UNKNOWN;
     }
-
-    return result;
 }
 
 bool WindowsFirewall::addApplicationPolicy(const QString& imageName, const QString& applicationName)
@@ -116,7 +106,6 @@ bool WindowsFirewall::addApplicationPolicy(const QString& imageName, const QStri
     }
 
     _COM_SMARTPTR_TYPEDEF(INetFwAuthorizedApplication,  __uuidof(INetFwAuthorizedApplication));
-    _COM_SMARTPTR_TYPEDEF(INetFwAuthorizedApplications, __uuidof(INetFwAuthorizedApplications));
 
     try
     {
@@ -124,18 +113,18 @@ bool WindowsFirewall::addApplicationPolicy(const QString& imageName, const QStri
         _bstr_t appNameStr((const wchar_t*)applicationName.utf16());
 
         // query authorized firewall applications
-        INetFwAuthorizedApplicationsPtr fwApps;
-        _com_util::CheckError(fwProfile->get_AuthorizedApplications(&fwApps));
+        CComPtr<INetFwAuthorizedApplications> fwApps;
+        CheckError(fwProfile->get_AuthorizedApplications(&fwApps));
 
         // add us to this list
         INetFwAuthorizedApplicationPtr fwApp(__uuidof(NetFwAuthorizedApplication), NULL, CLSCTX_INPROC_SERVER);
-        _com_util::CheckError(fwApp->put_ProcessImageFileName(procImgFilename));
-        _com_util::CheckError(fwApp->put_Name(appNameStr));
-        _com_util::CheckError(fwApps->Add(fwApp));
+        CheckError(fwApp->put_ProcessImageFileName(procImgFilename));
+        CheckError(fwApp->put_Name(appNameStr));
+        CheckError(fwApps->Add(fwApp));
     }
     catch (_com_error const& wtf)
     {
-        qWarning() << Q_FUNC_INFO << "failed: " << QString::fromUtf16((const ushort*)wtf.ErrorMessage());
+        qWarning() << Q_FUNC_INFO << "failed: " << asString(wtf.ErrorMessage());
         return false;
     }
 
@@ -143,6 +132,5 @@ bool WindowsFirewall::addApplicationPolicy(const QString& imageName, const QStri
 }
 
 }
-
 
 #endif

@@ -25,8 +25,7 @@ QString TranslationRule::GetText() const
 
 Translation translate(const char* context, const char* sourceText, const char* disambiguation, int n)
 {
-    Translation tr = { context, sourceText, disambiguation, n };
-    return tr;
+    return { context, sourceText, disambiguation, n };
 }
 
 QString Tr(const Translation& translateArgs)
