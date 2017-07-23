@@ -12,7 +12,6 @@ public:
     explicit CommandLineParser(MainWindow* w);
 
 private:
-    QStringList getLinksFromFile(const QString& filename);
     void treatParams(QStringList params) ;
 
 private:

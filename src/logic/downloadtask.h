@@ -41,10 +41,8 @@ public:
 
     QString fileName() const { return filename_; }
     QString url() const {return url_;}
-    int time_to_wait() const {return time_to_wait_;}
     int priority_level() const {return priority_level_;}
     int task_id() const {return task_id_;}
-    bool free_download() const {return free_download_;}
     bool ready_to_download() const {return ready_to_download_;}
 #ifdef ALLOW_TRAFFIC_CONTROL
     int speedLimit() const {return downloader_ ? downloader_->speedLimit() : 0;}
@@ -54,8 +52,9 @@ public:
 private:
     void notifyIfFinished();
     void setStatusInModel(ItemDC::eSTATUSDC a_status, int arg = 0);
-    void delStrategy();
     void setActualURLinModel();
+    void on_download(const QString& url);
+    void on_setExtractedFilename(const QString& filename);
 
     virtual void onProgress(qint64 bytes_downloaded) override;
     virtual void onSpeed(qint64 bytes_per_second) override;
@@ -73,9 +72,9 @@ private:
     QTime update_model_time_;
     QString url_, filename_, first_extracted_filename_, direct_link_;
     qint64 total_file_size_;
-    int task_id_, time_to_wait_, priority_level_;
-    bool player_started_, ready_to_download_,
-         free_download_, download_direct_link_;
+    int task_id_, priority_level_;
+    bool ready_to_download_;
+    bool download_direct_link_;
 
 Q_SIGNALS:
     void signalDownloadFinished(int ID);
@@ -84,11 +83,5 @@ Q_SIGNALS:
     void needLogin(utilities::ICredentialsRetriever* retriever);
 
 private Q_SLOTS:
-    void on_download(const QString& url, bool isPremium);
-    void on_download(QNetworkReply* reply);
-    void on_setExtractedFilename(const QString& filename);
-    void on_RemainingTime(int remainingSeconds);
-    void on_setFileName(const QString& filename);
-    void on_error(utilities::ErrorCode::ERROR_CODES code, const QString& err);
     void updatePriority();
 };

@@ -60,14 +60,10 @@ private:
 
     bool isPossibleStartDownload();
     bool createNewTask(ItemDC& a_item);
-    bool isDownloadingForFree(const QString& hoster, bool checkPrepareTasks);
 
     void killTask(DownloadTask* task);
     void stopDLManager();
 
     bool isActiveTask(const TreeItem& ti) const;
     void pushQueuedDownloads();
-
-    // for lambda desugarers
-    friend struct NextDlTaskRetriever;
 };

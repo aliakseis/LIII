@@ -183,7 +183,7 @@ void MainWindow::showMainWindowAndPerformChecks()
     moveToScreenCenter();
 
     m_dlManager->startLoad();
-    VERIFY(connect(qApp, SIGNAL(aboutToQuit()), this, SLOT(prepairToExit())));
+    VERIFY(connect(qApp, SIGNAL(aboutToQuit()), this, SLOT(prepareToExit())));
 
     refreshButtons();
 
@@ -295,7 +295,7 @@ void MainWindow::closeApp()
     }
 }
 
-void MainWindow::prepairToExit()
+void MainWindow::prepareToExit()
 {
     qDebug() << __FUNCTION__;
     m_dlManager->prepareToExit();

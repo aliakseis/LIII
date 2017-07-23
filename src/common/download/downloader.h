@@ -220,7 +220,6 @@ public:
     }
     void Stop()
     {
-        //if (downloader->state() != DownloaderTy::kDownloading) return;
         speed_calculation_.previous_progress = 0;
         KillReply();
         KillFile();

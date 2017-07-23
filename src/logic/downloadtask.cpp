@@ -19,9 +19,9 @@ DownloadTask::DownloadTask(DownloadCollectionModel* download_collection_model, i
         network_manager_(new QNetworkAccessManager(this)),
         url_(url),
         total_file_size_(0),
-        task_id_(task_id), time_to_wait_(0), priority_level_(0),
-        player_started_(false), ready_to_download_(false),
-        free_download_(true), download_direct_link_(true)
+        task_id_(task_id), priority_level_(0),
+        ready_to_download_(false),
+        download_direct_link_(true)
 {
     VERIFY(connect(download_collection_model_, SIGNAL(signalModelUpdated()), SLOT(updatePriority())));
     downloader_->setObserver(this);
@@ -45,27 +45,14 @@ DownloadTask::~DownloadTask()
 
 void DownloadTask::applyStrategy()
 {
-    on_download(url_, true);
+    on_download(url_);
 }
 
-void DownloadTask::on_download(const QString& url, bool isPremium)
+void DownloadTask::on_download(const QString& url)
 {
     qDebug() << QString("%1(%2)  id=%3").arg(__FUNCTION__).arg(url).arg(task_id_);
-    free_download_ = !isPremium;
     download_direct_link_ = true;
     direct_link_ = url;
-    ready_to_download_ = true;
-
-    emit readyToDownload(task_id_);
-
-    setActualURLinModel();
-}
-
-void DownloadTask::on_download(QNetworkReply* reply)
-{
-    qDebug() << QString("%1(QNetworkReply*) id=%2").arg(__FUNCTION__).arg(task_id_);
-    download_direct_link_ = false;
-    reply_ = reply;
     ready_to_download_ = true;
 
     emit readyToDownload(task_id_);
@@ -101,7 +88,7 @@ void DownloadTask::download()
         if (filename_.isEmpty())
         {
             filename_ = QFileInfo(QUrl(it.initialURL()).path()).fileName();
-            bool hasCandidate = -1 != filename_.lastIndexOf('.');
+            bool hasCandidate = -1 != filename_.indexOf('.');
             if (!hasCandidate || !IsContentFile(filename_))
             {
                 if (!hasCandidate)
@@ -118,7 +105,7 @@ void DownloadTask::download()
                             filename_ = fn;
                             break;
                         }
-                        else if (!hasCandidate && -1 != fn.lastIndexOf('.'))
+                        else if (!hasCandidate && -1 != fn.indexOf('.'))
                         {
                             filename_ = fn;
                             hasCandidate = true;
@@ -137,17 +124,6 @@ void DownloadTask::download()
         }
     }
     emit signalTryNewtask();
-}
-
-void DownloadTask::on_RemainingTime(int remainingSeconds)
-{
-    time_to_wait_ = std::max(0, remainingSeconds);
-    ItemDC it;
-    it.setID(task_id_);
-    it.setWaitingTime(remainingSeconds);
-    it.setStatus(ItemDC::eWAITING);
-    download_collection_model_->on_statusChange(it);
-    download_collection_model_->on_waitingTimeChange(it);
 }
 
 void DownloadTask::onError(utilities::ErrorCode::ERROR_CODES code, const QString& err)
@@ -172,7 +148,6 @@ void DownloadTask::cancelTask()
     {
         downloader_->Cancel();
     }
-    delStrategy();
     notifyIfFinished();
 }
 
@@ -183,7 +158,6 @@ void DownloadTask::interruptTask()
     {
         downloader_->Pause();
     }
-    delStrategy();
 }
 
 void DownloadTask::notifyIfFinished()
@@ -236,10 +210,6 @@ void DownloadTask::onFinished()
     it.setSpeed(0.f);
     download_collection_model_->on_ItemDCchange(it);
 
-    free_download_ = false;
-
-    delStrategy();
-
     notifyIfFinished();
 }
 
@@ -280,11 +250,6 @@ void DownloadTask::setStatusInModel(ItemDC::eSTATUSDC a_status, int arg /* = 0*/
     }
 }
 
-void DownloadTask::delStrategy()
-{
-    qDebug() << QString("%1() id=%2").arg(__FUNCTION__).arg(task_id_);
-}
-
 void DownloadTask::onFileToBeReleased(const QString& filename)
 {
     qDebug() << QString("%1(%2)  for task id = %3; url=%4").arg(__FUNCTION__).arg(filename).arg(task_id_).arg(url_);
@@ -322,17 +287,6 @@ void DownloadTask::onNeedLogin(utilities::ICredentialsRetriever* retriever)
     emit needLogin(retriever);
 }
 
-void DownloadTask::on_setFileName(const QString& filename)
-{
-    filename_ = filename;
-}
-
 void DownloadTask::onReplyInvalidated()
 {
 }
-
-void DownloadTask::on_error(utilities::ErrorCode::ERROR_CODES code, const QString& err)
-{
-    onError(code, err);
-}
-

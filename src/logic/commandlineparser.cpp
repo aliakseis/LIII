@@ -21,22 +21,6 @@ CommandLineParser::CommandLineParser(MainWindow* w)
     }
 }
 
-QStringList CommandLineParser::getLinksFromFile(const QString& filename)
-{
-    QStringList links;
-    QFile f(filename);
-    if (!f.open(QIODevice::ReadOnly | QIODevice::Text))
-    {
-        qWarning() << "Error reading file " << filename;
-        return links;
-    }
-    QString contents = QString(f.readAll());
-    f.close();
-
-    links = utilities::ParseUrls(contents);
-    return links;
-}
-
 void CommandLineParser::treatParams(QStringList params)
 {
     Application* myApp = dynamic_cast<Application*>(qApp);

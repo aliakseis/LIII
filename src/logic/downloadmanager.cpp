@@ -48,23 +48,6 @@ DownloadManager::~DownloadManager()
 }
 
 
-struct NextDlTaskRetriever // desugaring lambda
-{
-    explicit NextDlTaskRetriever(DownloadManager* dlMan): _dlMan(dlMan) {}
-    bool operator()(const TreeItem* it)const
-    {
-        bool canRun = it->getStatus() == ItemDC::eQUEUED ||
-                      (it->getStatus() == ItemDC::eERROR &&
-                       it->getWaitingTime() > 0 && QDateTime::currentDateTimeUtc() > it->statusLastChanged().addSecs(it->getWaitingTime()));
-
-        return canRun && (DownloadType::isTorrentDownload(it->getDownloadType())
-                          || !_dlMan->isDownloadingForFree(global_functions::GetNormalizedDomain(it->initialURL()), true));
-    }
-private:
-    DownloadManager* _dlMan;
-};
-
-
 void DownloadManager::startLoad()
 {
     pushQueuedDownloads();
@@ -82,23 +65,15 @@ void DownloadManager::startLoad()
             startTaskDownload((*taskIt)->task_id());
             return;
         }
-        int maxDl = GetMaximumNumberLoadsActual();
-
-        const int countWaitTask = std::accumulate(
-            m_prepareTasks.constBegin(), 
-            m_prepareTasks.constEnd(),                            
-            0, 
-            [](int count, const DownloadTask* task) {
-               return count + (task->time_to_wait() < 180 ? 1 : 0);
-            });
-
-        if (0 != countWaitTask && m_activeTasks.count() >= maxDl - countWaitTask)
-        {
-            return;
-        }
     }
 
-    while (auto it = m_DLCModel->findItem(NextDlTaskRetriever(this)))
+    while (auto it = m_DLCModel->findItem(
+        [](const TreeItem* te)
+        {
+            return te->getStatus() == ItemDC::eQUEUED ||
+                (te->getStatus() == ItemDC::eERROR && te->getWaitingTime() > 0 
+                    && QDateTime::currentDateTimeUtc() > te->statusLastChanged().addSecs(te->getWaitingTime()));
+        }))
     {
         ItemDC l_item(*it);
         if (!l_item.isValid() || createNewTask(l_item))
@@ -110,7 +85,7 @@ void DownloadManager::onDownloadFinished(int a_id)
 {
     if (!m_bStopDLManager)
     {
-        TasksMap::iterator it =    m_activeTasks.find(a_id);
+        TasksMap::iterator it = m_activeTasks.find(a_id);
         if (m_activeTasks.end() != it)
         {
             DownloadTask* task = it.value();
@@ -182,29 +157,21 @@ bool DownloadManager::createNewTask(ItemDC& a_item)
 
 void DownloadManager::startTaskDownload(int id)
 {
-    TasksMap::iterator it =    m_prepareTasks.find(id);
+    TasksMap::iterator it = m_prepareTasks.find(id);
     if (m_prepareTasks.end() != it)
     {
         QString hoster = global_functions::GetNormalizedDomain((*it)->url());
-        bool isRunningFreeDowloading = isDownloadingForFree(hoster, false);
-        if (!isRunningFreeDowloading)
-        {
-            DownloadTask* task = it.value();
+        DownloadTask* task = it.value();
 
-            m_activeTasks[id] = task;
-            m_prepareTasks.erase(it);
+        m_activeTasks[id] = task;
+        m_prepareTasks.erase(it);
 
-            qDebug() << "DLManager::startTaskDownload() id = "<< id;
-            task->download();
-        }
-        else
-        {
-            qDebug() << "DLManager::startTaskDownload() Can't start because free user have only one load; id = " << id;
-        }
+        qDebug() << "DLManager::startTaskDownload() id = "<< id;
+        task->download();
     }
     else
     {
-        qDebug("WARNING!!! can't find task in m_prepareTasks.count=%d DLManager::startTaskDownload() id = %d", m_prepareTasks.count(), id);
+        qDebug("Can't find task in m_prepareTasks.count=%d DLManager::startTaskDownload() id = %d", m_prepareTasks.count(), id);
     }
 
 #ifdef ALLOW_TRAFFIC_CONTROL
@@ -297,12 +264,6 @@ void DownloadManager::stopDLManager()
     m_bStopDLManager = true;
 }
 
-
-bool DownloadManager::isDownloadingForFree(const QString& hoster, bool checkPrepareTasks)
-{
-    // TODO check for hosters?
-    return false;
-}
 
 void DownloadManager::killTask(DownloadTask* task)
 {

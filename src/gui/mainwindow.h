@@ -82,7 +82,7 @@ public Q_SLOTS:
     void onlblClearTextCliced();
 
 private Q_SLOTS:
-    void prepairToExit();
+    void prepareToExit();
     void on_startButton_clicked();
     void on_pauseButton_clicked();
     //    void on_stopButton_clicked();
