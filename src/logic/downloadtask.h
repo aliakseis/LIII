@@ -52,7 +52,6 @@ public:
 private:
     void notifyIfFinished();
     void setStatusInModel(ItemDC::eSTATUSDC a_status, int arg = 0);
-    void setActualURLinModel();
     void on_download(const QString& url);
     void on_setExtractedFilename(const QString& filename);
 
@@ -67,14 +66,12 @@ private:
 
     DownloadCollectionModel* download_collection_model_;
     QScopedPointer<DownloaderType> downloader_;
-    QNetworkReply* reply_;
     QScopedPointer<QNetworkAccessManager> network_manager_;
     QTime update_model_time_;
     QString url_, filename_, first_extracted_filename_, direct_link_;
     qint64 total_file_size_;
     int task_id_, priority_level_;
     bool ready_to_download_;
-    bool download_direct_link_;
 
 Q_SIGNALS:
     void signalDownloadFinished(int ID);

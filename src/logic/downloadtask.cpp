@@ -8,20 +8,17 @@
 
 
 using namespace download;
-using global_functions::IsContentFile;
 
 
 DownloadTask::DownloadTask(DownloadCollectionModel* download_collection_model, int task_id, const QString& url, QObject* parent)
     :    QObject(parent),
         download_collection_model_(download_collection_model),
         downloader_(new DownloaderType(this)),
-        reply_(nullptr),
         network_manager_(new QNetworkAccessManager(this)),
         url_(url),
         total_file_size_(0),
         task_id_(task_id), priority_level_(0),
-        ready_to_download_(false),
-        download_direct_link_(true)
+        ready_to_download_(false)
 {
     VERIFY(connect(download_collection_model_, SIGNAL(signalModelUpdated()), SLOT(updatePriority())));
     downloader_->setObserver(this);
@@ -51,17 +48,10 @@ void DownloadTask::applyStrategy()
 void DownloadTask::on_download(const QString& url)
 {
     qDebug() << QString("%1(%2)  id=%3").arg(__FUNCTION__).arg(url).arg(task_id_);
-    download_direct_link_ = true;
     direct_link_ = url;
     ready_to_download_ = true;
 
     emit readyToDownload(task_id_);
-
-    setActualURLinModel();
-}
-
-void DownloadTask::setActualURLinModel()
-{
 }
 
 void DownloadTask::download()
@@ -74,54 +64,19 @@ void DownloadTask::download()
     QFileInfo file(it.downloadedFileName());
     if (file.exists() && file.size() > 0)
     {
-        if (download_direct_link_)
-        {
-            downloader_->Resume(direct_link_, network_manager_.data(), file.fileName());
-        }
-        else
-        {
-            downloader_->Resume(reply_, network_manager_.data(), file.fileName());
-        }
+        downloader_->Resume(direct_link_, network_manager_.data(), file.fileName());
     }
     else
     {
         if (filename_.isEmpty())
         {
-            filename_ = QFileInfo(QUrl(it.initialURL()).path()).fileName();
-            bool hasCandidate = -1 != filename_.indexOf('.');
-            if (!hasCandidate || !IsContentFile(filename_))
+            filename_ = QUrl(it.initialURL()).fileName();
+            if (-1 == filename_.indexOf('.'))
             {
-                if (!hasCandidate)
-                {
-                    filename_.clear();
-                }
-                // Put it here since it seems to be an app specific behavior
-                if (reply_ != 0)
-                {
-                    for (const auto& fn : { utilities::GetFileName(reply_), QFileInfo(reply_->url().path()).fileName() })
-                    {
-                        if (IsContentFile(fn))
-                        {
-                            filename_ = fn;
-                            break;
-                        }
-                        else if (!hasCandidate && -1 != fn.indexOf('.'))
-                        {
-                            filename_ = fn;
-                            hasCandidate = true;
-                        }
-                    }
-                }
+                filename_.clear();
             }
         }
-        if (download_direct_link_)
-        {
-            downloader_->Start(direct_link_, network_manager_.data(), filename_);
-        }
-        else
-        {
-            downloader_->Start(reply_, network_manager_.data(), filename_);
-        }
+        downloader_->Start(direct_link_, network_manager_.data(), filename_);
     }
     emit signalTryNewtask();
 }

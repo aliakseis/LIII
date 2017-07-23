@@ -19,7 +19,6 @@ namespace global_functions
 {
 
 QString GetNormalizedDomain(const QUrl& url);
-bool IsContentFile(const QString& filename);
 bool IsExecutable(const QString& filename);
 void openFile(const QString& filename, QWidget* parent = 0);
 
