@@ -557,7 +557,6 @@ bool TorrentManager::restartTorrent(int id)
     if (it != m_idToHandle.end())
     {
         libtorrent::torrent_handle handle = it.value();
-        libtorrent::torrent_handle newHandle;
         std::vector<int> priorities = handle.file_priorities();
 
         QString hash = toQString(handle.info_hash());
@@ -574,7 +573,7 @@ bool TorrentManager::restartTorrent(int id)
             torrentParams.storage_mode = libtorrent::storage_mode_allocate;
 
             m_session->remove_torrent(handle);
-            newHandle = m_session->add_torrent(torrentParams, err);
+            libtorrent::torrent_handle newHandle = m_session->add_torrent(torrentParams, err);
             Q_ASSERT(newHandle.is_valid());
             m_idToHandle[id] = newHandle;
             newHandle.prioritize_files(priorities);
@@ -586,13 +585,10 @@ bool TorrentManager::restartTorrent(int id)
 
 libtorrent::torrent_handle TorrentManager::torrentByModelId(int id)
 {
-    return m_idToHandle[id];
+    auto it = m_idToHandle.find(id);
+    return (it != m_idToHandle.end()) ? it.value() : libtorrent::torrent_handle();
 }
 
-const libtorrent::torrent_handle TorrentManager::torrentByModelId(int id) const
-{
-    return m_idToHandle[id];
-}
 
 QString TorrentManager::torrentRootItemPath(int itemId)
 {

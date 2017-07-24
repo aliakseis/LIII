@@ -158,9 +158,6 @@ void TorrentsListener::handler(libtorrent::stats_alert const& a)
         emit sizeCurrDownlChange(item);
 
         emit signalTryNewtask(); // TODO fine tune
-
-        item.setDownloadType(DownloadType::TorrentFile);
-        emit playChange(item);
     }
     else if (status.state == libtorrent::torrent_status::seeding)
     {
@@ -296,7 +293,6 @@ void TorrentsListener::handler(libtorrent::state_changed_alert const& a)
         item.setDownloadType(DownloadType::TorrentFile);
         emit sizeCurrDownlChange(item);
         emit speedChange(item);
-        emit playChange(item);
     }
     break;
     default:

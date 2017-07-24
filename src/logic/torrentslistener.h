@@ -102,7 +102,6 @@ signals:
     void speedChange(const ItemDC& a_item);
     void uploadSpeedChange(const ItemDC& a_item);
     void itemMetadataReceived(const ItemDC& item);
-    void playChange(const ItemDC& item);
     void torrentMoved(const ItemDC& item);
 
     void signalTryNewtask();

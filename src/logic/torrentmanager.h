@@ -38,7 +38,6 @@ public:
     int port() const;
 
     libtorrent::torrent_handle torrentByModelId(int id);
-    const libtorrent::torrent_handle torrentByModelId(int id) const;
     libtorrent::torrent_handle addTorrent(
         const QString& torrOrMagnet, 
         int id, 
