@@ -7,6 +7,7 @@
 
 #include "utilities/credsretriever.h"
 #include "utilities/authentication_helper.h"
+#include "utilities/utils.h"
 
 
 namespace download
