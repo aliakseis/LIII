@@ -172,9 +172,8 @@ void TorrentsListener::handler(libtorrent::stats_alert const& a)
 void TorrentsListener::handler(libtorrent::torrent_removed_alert const& a)
 {
     TRACE_ALERT
-    m_handleMapWriteDataLock.lockForWrite();
+    QWriteLocker locker(&m_handleMapWriteDataLock);
     m_handleToId.remove(a.handle);
-    m_handleMapWriteDataLock.unlock();
 }
 
 void TorrentsListener::handler(libtorrent::torrent_paused_alert const& a)
@@ -319,18 +318,16 @@ void TorrentsListener::onTorrentAdded(libtorrent::torrent_handle handle, void* u
 
 ItemID TorrentsListener::getItemID(const libtorrent::torrent_handle& h) const
 {
-    m_handleMapWriteDataLock.lockForRead();
+    QReadLocker locker(&m_handleMapWriteDataLock);
     auto it = m_handleToId.find(h);
     ItemID result = (it != m_handleToId.end()) ? it.value() : nullItemID;
-    m_handleMapWriteDataLock.unlock();
     return result;
 }
 
 void TorrentsListener::setAt(ItemID id, const libtorrent::torrent_handle& handle)
 {
-    m_handleMapWriteDataLock.lockForWrite();
+    QWriteLocker locker(&m_handleMapWriteDataLock);
     m_handleToId[handle] = id;
-    m_handleMapWriteDataLock.unlock();
 }
 
 

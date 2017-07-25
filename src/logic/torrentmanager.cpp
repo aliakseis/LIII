@@ -6,6 +6,7 @@
 #include <vector>
 #include <utility>
 #include <algorithm>
+#include <stdio.h>
 #include <libtorrent/version.hpp>
 #include <libtorrent/magnet_uri.hpp>
 #include <libtorrent/bencode.hpp>
@@ -36,33 +37,12 @@
 
 namespace {
 
-std::string combine_path(std::string const& lhs, std::string const& rhs)
-{
-    if (lhs.empty() || lhs == ".") return rhs;
-    if (rhs.empty() || rhs == ".") return lhs;
-
-#if defined(Q_OS_WIN)
-    const char TORRENT_SEPARATOR[] = "\\";
-    bool need_sep = lhs[lhs.size() - 1] != '\\' && lhs[lhs.size() - 1] != '/';
-#else
-    const char  TORRENT_SEPARATOR[] = "/";
-    bool need_sep = lhs[lhs.size() - 1] != '/';
-#endif
-    std::string ret;
-    int target_size = lhs.size() + rhs.size() + 2;
-    ret.resize(target_size);
-    target_size = snprintf(&ret[0], target_size, "%s%s%s", lhs.c_str()
-        , (need_sep ? TORRENT_SEPARATOR : ""), rhs.c_str());
-    ret.resize(target_size);
-    return ret;
-}
-
 libtorrent::fingerprint getFingerprint()
 {
-    const QStringList versionsp = QString(PROJECT_VERSION).split(".");
-    const int verInts[] = { versionsp[0].toInt(), versionsp[1].toInt(), versionsp[2].toInt(), versionsp[3].toInt() };
+    int version[4] {};
+    sscanf(PROJECT_VERSION, "%d.%d.%d.%d", version, version + 1, version + 2, version + 3);
     const char torrentClientId[3] = { (char)std::toupper(PROJECT_NAME[0]), (char)std::toupper(PROJECT_NAME[1]), 0 }; // "LI" for LIII
-    return { torrentClientId, verInts[0], verInts[1], verInts[2], verInts[3] };
+    return { torrentClientId, version[0], version[1], version[2], version[3] };
 }
 
 bool loadFastResumeData(const QString& hash, std::vector<char>& buf)
@@ -129,15 +109,10 @@ QString torrentRootItemPath(const libtorrent::torrent_handle& handle)
                 firstFile = firstFile.substr(0, lastSlash);
             }
 
-            if (handle.save_path().find_last_of("/\\") == handle.save_path().length() - 1)
-            {
-                result = QString::fromUtf8((handle.save_path() + firstFile).c_str());
-            }
-            else
-            {
-                result = QString::fromUtf8((handle.save_path() + QString(QDir::separator()).toUtf8().constData() + firstFile).c_str());
-            }
-
+            auto lhs = handle.save_path();
+            if (!lhs.empty() && lhs[lhs.size() - 1] != '\\' && lhs[lhs.size() - 1] != '/')
+                lhs += QDir::separator().toLatin1();
+            result = QString::fromUtf8((lhs + firstFile).c_str());
         }
     }
     return result;
@@ -519,8 +494,9 @@ void TorrentManager::on_deleteTaskWithID(int id, DownloadType::Type type, int de
         auto it = m_idToHandle.find(id);
         if (it != m_idToHandle.end() && it->is_valid())
         {
-            QFile::remove(utilities::PrepareCacheFolder(TORRENTS_SUB_FOLDER) + toQString(it.value().info_hash()) + ".torrent");
-            QFile::remove(utilities::PrepareCacheFolder(TORRENTS_SUB_FOLDER) + toQString(it.value().info_hash()) + ".fastresume");
+            const auto fileName = utilities::PrepareCacheFolder(TORRENTS_SUB_FOLDER) + toQString(it.value().info_hash());
+            QFile::remove(fileName + ".torrent");
+            QFile::remove(fileName + ".fastresume");
             m_session->remove_torrent(it.value(), deleteWithFiles);
         }
     }
