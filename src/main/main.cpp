@@ -20,9 +20,6 @@
 #endif //Q_OS_MAC
 
 
-// get the full content of a file and parse the link from it
-
-
 #if defined (QT_STATICPLUGINS) && !defined (Q_OS_DARWIN)
 #include <QtPlugin>
 Q_IMPORT_PLUGIN(qgif)

@@ -495,8 +495,8 @@ void TorrentManager::on_deleteTaskWithID(int id, DownloadType::Type type, int de
         if (it != m_idToHandle.end() && it->is_valid())
         {
             const auto fileName = utilities::PrepareCacheFolder(TORRENTS_SUB_FOLDER) + toQString(it.value().info_hash());
-            QFile::remove(fileName + ".torrent");
-            QFile::remove(fileName + ".fastresume");
+            utilities::DeleteFileWithWaiting(fileName + ".torrent");
+            utilities::DeleteFileWithWaiting(fileName + ".fastresume");
             m_session->remove_torrent(it.value(), deleteWithFiles);
         }
     }

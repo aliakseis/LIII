@@ -41,16 +41,9 @@ QString GetNormalizedDomain(const QUrl& url)
     return host;
 }
 
-
-bool IsExecutable(const QString& filename)
-{
-    return QFileInfo(filename).isExecutable();
-}
-
-
 void openFile(const QString& filename, QWidget* parent)
 {
-    if (!global_functions::IsExecutable(filename)
+    if (!QFileInfo(filename).isExecutable()
             || QMessageBox::question(
                 parent, QObject::tr("Possible Threat"),
                 QObject::tr("Are you sure you want to start an executable file\n\"%1\"?").arg(filename),

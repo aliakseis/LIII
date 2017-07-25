@@ -990,9 +990,7 @@ void DownloadCollectionModel::doSetPauseStopDownloadItem(TreeItem* itmSource, It
     {
         libtorrent::torrent_handle handle = TorrentManager::Instance()->torrentByModelId(id);
         Q_ASSERT_X(handle.is_valid(), Q_FUNC_INFO, "handle cannot be null!");
-        libtorrent::torrent_status status = handle.status(0x0);
-        libtorrent::torrent_status::state_t state = status.state;
-        l_oItm.setStatus((state == libtorrent::torrent_status::seeding) ? ItemDC::eFINISHED : itemStatus);
+        l_oItm.setStatus(handle.is_seed() ? ItemDC::eFINISHED : itemStatus);
     }
     else
     {
