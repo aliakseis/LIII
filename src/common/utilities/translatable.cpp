@@ -7,12 +7,11 @@
 #include "translation.h"
 #include <algorithm>
 
-namespace utilities
-{
+namespace {
 
-QString Translatable::translationFilePrefix = "translations_";
+QString translationFilePrefix = "translations_";
 
-QString Translatable::getTranslationsFolder()
+QString getTranslationsFolder()
 {
 #ifdef Q_OS_WIN32
     return QDir(QApplication::applicationDirPath()).absoluteFilePath("Translations");
@@ -37,6 +36,26 @@ QString Translatable::getTranslationsFolder()
 #endif
 }
 
+QStringList getFilenames()
+{
+    QDir dir(getTranslationsFolder());
+
+    // get names of language resources files
+    QStringList fileNames = dir.entryList(QStringList(translationFilePrefix + "*.qm"));
+
+    // replace files names with full path
+    for (auto& str : fileNames)
+        str = dir.absoluteFilePath(str);
+
+    return fileNames;
+}
+
+} // namespace
+
+namespace utilities
+{
+
+
 void Translatable::retranslateApp(const QString& locale)
 {
     if (translator_)
@@ -55,28 +74,14 @@ void Translatable::retranslateApp(const QString& locale)
     Tr::RetranslateAll(qApp);
 }
 
-QStringList Translatable::getFilenames()
-{
-    QDir dir(getTranslationsFolder());
-
-    // get names of language resources files
-    QStringList fileNames = dir.entryList(QStringList(translationFilePrefix + "*.qm"));
-
-    // replace files names with full path
-    for (auto& str : fileNames)
-        str = dir.absoluteFilePath(str);
-
-    return fileNames;
-}
 
 static const Tr::Translation LANGUAGE_NAME = {"Preferences", "English (English)"};
 
-std::map<QString, QString> Translatable::availableLanguages() const
+std::map<QString, QString> Translatable::availableLanguages()
 {
     std::map<QString, QString> result;
-    QStringList fileNames = utilities::Translatable::getFilenames();
 
-    for (const auto& filename : qAsConst(fileNames))
+    for (const auto& filename : getFilenames())
     {
         QTranslator translator;
         if (translator.load(filename))
@@ -92,6 +97,11 @@ std::map<QString, QString> Translatable::availableLanguages() const
                 result.insert(std::make_pair(locName, langStr));
             }
         }
+    }
+
+    if (result.empty())
+    {
+        result.insert(std::make_pair("en", LANGUAGE_NAME.key));
     }
 
     return result;

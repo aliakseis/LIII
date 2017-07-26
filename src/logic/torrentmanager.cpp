@@ -351,6 +351,8 @@ libtorrent::torrent_handle TorrentManager::addTorrent(
         torrentParams.save_path = savePath.toUtf8().constData();
     }
     torrentParams.flags = libtorrent::add_torrent_params::flag_paused | libtorrent::add_torrent_params::flag_override_resume_data;// | libtorrent::add_torrent_params::flag_update_subscribe;
+    if (QSettings().value(TorrentsSequentialDownload, TorrentsSequentialDownload_Default).toBool())
+        torrentParams.flags |= libtorrent::add_torrent_params::flag_sequential_download;
     torrentParams.userdata = reinterpret_cast<void*>(id);
 
     torrentParams.storage_mode = libtorrent::storage_mode_allocate;
@@ -358,16 +360,14 @@ libtorrent::torrent_handle TorrentManager::addTorrent(
     const bool enable_file_dialog = interactive 
         && QSettings().value(ShowAddTorrentDialog, ShowAddTorrentDialog_Default).toBool();
     // TODO: may be two different functions
-    bool is_adding_from_file = false;
-    if (DownloadType::determineType(torrOrMagnet) == DownloadType::MagnetLink)
+    const bool is_adding_from_file = DownloadType::determineType(torrOrMagnet) != DownloadType::MagnetLink;
+    if (!is_adding_from_file)
     {
         torrentParams.url = torrOrMagnet.toStdString();
         TorrentsListener::instance().setFileDialogEnabled(enable_file_dialog);
     }
     else
     {
-        is_adding_from_file = true;
-
         libtorrent::error_code err;
         torrentParams.ti = boost::make_shared<libtorrent::torrent_info>(torrOrMagnet.toUtf8().constData(), err);
         if (!torrentParams.ti->is_valid() || err)
@@ -478,10 +478,6 @@ libtorrent::torrent_handle TorrentManager::addTorrent(
         {
             QFile::copy(torrOrMagnet, utilities::PrepareCacheFolder(TORRENTS_SUB_FOLDER) + toQString(handle.info_hash()) + ".torrent");
         }
-
-        // Setting up sequential download
-        handle.set_sequential_download(
-            QSettings().value(TorrentsSequentialDownload, TorrentsSequentialDownload_Default).toBool());
     }
 
     return handle;
@@ -543,6 +539,8 @@ bool TorrentManager::restartTorrent(int id)
             libtorrent::add_torrent_params torrentParams;
             torrentParams.save_path = handle.save_path();
             torrentParams.flags = libtorrent::add_torrent_params::flag_paused | libtorrent::add_torrent_params::flag_override_resume_data;
+            if (QSettings().value(TorrentsSequentialDownload, TorrentsSequentialDownload_Default).toBool())
+                torrentParams.flags |= libtorrent::add_torrent_params::flag_sequential_download;
             torrentParams.userdata = reinterpret_cast<void*>(id);
             torrentParams.ti = boost::make_shared<libtorrent::torrent_info>(torrentPath.toUtf8().constData(), err);
 

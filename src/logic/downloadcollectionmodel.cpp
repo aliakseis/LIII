@@ -26,9 +26,8 @@
 
 namespace Tr = utilities::Tr;
 
-DownloadCollectionModel::DownloadCollectionModel():
-    QAbstractItemModel()
-    , rootItem(new TreeItem())
+DownloadCollectionModel::DownloadCollectionModel()
+    : rootItem(new TreeItem())
     , isDropAction(false)
 {
     loadFromFile();

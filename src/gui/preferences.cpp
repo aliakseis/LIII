@@ -289,38 +289,12 @@ void Preferences::on_pbBrowse_clicked()
 
 void Preferences::fillLanguageComboBox()
 {
-    QStringList fileNames = utilities::Translatable::getFilenames();
-    QTranslator translator;
-
-    bool added = false;
-
-    Q_FOREACH(const QString & fileName, fileNames)
+    for (const auto& language : utilities::Translatable::availableLanguages())
     {
-        if (!translator.load(fileName))
-        {
-            continue;
-        }
-
-        QString locName = utilities::locationString(fileName);
-        Q_ASSERT(!locName.isEmpty());
-
-        QString langStr = utilities::languageString(LANGUAGE_NAME, locName, translator);
-        Q_ASSERT(!locName.isEmpty());
-
-        if (!langStr.isEmpty())
-        {
-            ui->comboBoxLanguage->addItem(langStr, locName);
-            added = true;
-        }
+        ui->comboBoxLanguage->addItem(language.second, language.first);
     }
 
-    if (!added)
-    {
-        ui->comboBoxLanguage->addItem(LANGUAGE_NAME.key, "en");
-    }
-
-    int index = ui->comboBoxLanguage->findData(
-        QSettings().value(ln, ln_Default));
+    int index = ui->comboBoxLanguage->findData(QSettings().value(ln, ln_Default));
     if (index != -1)
     {
         ui->comboBoxLanguage->setCurrentIndex(index);

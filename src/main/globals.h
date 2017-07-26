@@ -88,8 +88,6 @@ Tr::Translation TREEVIEW_MENU_REMOVE                 = Tr::translate("MainWindow
 
 Tr::Translation ABOUT_TITLE                          = Tr::translate("MainWindow", "About %1");
 
-Tr::Translation LANGUAGE_NAME                        = Tr::translate("Preferences", "English (English)", "Language name in preferences");
-
 Tr::Translation DONT_SHOW_THIS_AGAIN                 = Tr::translate("MainWindow", "Don't show this again");
 
 } // namespace

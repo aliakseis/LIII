@@ -8,20 +8,15 @@ class QTranslator;
 namespace utilities
 {
 
-// inherite your application from this class and have fun ;)
+// inherite your application from this class
 class Translatable
 {
 public:
-    Translatable() : translator_(nullptr) {}
     void retranslateApp(const QString& locale);
-    static QStringList getFilenames();
-    std::map<QString, QString> availableLanguages() const;
-    static void setTransFilesPrefix(const QString& langPref) {translationFilePrefix = langPref + "_";}
+    static std::map<QString, QString> availableLanguages();
 
 private:
-    static QString getTranslationsFolder();
-    static QString translationFilePrefix;
-    QTranslator* translator_;
+    QTranslator* translator_ {};
 };
 
 } // namespace utilities
