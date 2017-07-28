@@ -31,8 +31,7 @@ int main(int argc, char* argv[])
 {
     utilities::InitializeProjectDescription();
 
-    utilities::TheLogger::setWriteToLogFile(
-        QSettings().value(app_settings::LoggingEnabled, false).toBool());
+    utilities::setWriteToLogFile(QSettings().value(app_settings::LoggingEnabled, false).toBool());
 
     // single app
     Application app(QString(PROJECT_NAME), argc, argv);

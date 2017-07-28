@@ -15,7 +15,7 @@
 
 #include "utilities/filesystem_utils.h"
 
-namespace utilities
+namespace
 {
 
 static const QString FILE_FORMAT = PROJECT_NAME"%1.txt";
@@ -27,13 +27,31 @@ static bool write_to_log_file_ = false;
 static QtMessageHandler previousMsgHandler = 0;
 void messageOutput(QtMsgType type, const QMessageLogContext& context, const QString& message);
 
+class Logger
+{
+    friend class TheLogger;
+public:
+    Logger();
+    ~Logger();
+
+    void log(const QString& text);
+
+    void InitializeLogFile();
+
+    void messageOutput(QtMsgType type, const QMessageLogContext& context, const QString& msg);
+
+private:
+    QFile* log_file_;
+    QTextStream* log_stream_;
+    QMutex m_mutex;
+    bool m_isRecursive;
+};
 
 Logger::Logger()
     : log_file_(nullptr)
     , log_stream_(nullptr)
     , m_mutex(QMutex::Recursive)
     , m_isRecursive(false)
-    , m_handler(nullptr)
 {
 }
 
@@ -74,7 +92,7 @@ void Logger::InitializeLogFile()
     log_file_->open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Append);
     log_stream_ = new QTextStream(log_file_);
 
-    previousMsgHandler = qInstallMessageHandler(&utilities::messageOutput);
+    previousMsgHandler = qInstallMessageHandler(&::messageOutput);
     qDebug() << "--- Logging Started ---";
 }
 
@@ -106,14 +124,6 @@ void Logger::log(const QString& text)
 
 void Logger::messageOutput(QtMsgType type, const QMessageLogContext& context, const QString& msg)
 {
-    if (m_handler != nullptr)
-    {
-        if (!m_handler->log(type, msg))
-        {
-            return;
-        }
-    }
-
     QString message;
 
     switch (type)
@@ -159,7 +169,18 @@ void Logger::messageOutput(QtMsgType type, const QMessageLogContext& context, co
 static Logger logger;
 
 
-void TheLogger::setWriteToLogFile(bool write_to_log_file)
+void messageOutput(QtMsgType type, const QMessageLogContext& context, const QString& message)
+{
+    logger.messageOutput(type, context, message);
+}
+
+} // namespace
+
+
+namespace utilities
+{
+    
+void setWriteToLogFile(bool write_to_log_file)
 {
     if (!write_to_log_file_)
     {
@@ -169,22 +190,6 @@ void TheLogger::setWriteToLogFile(bool write_to_log_file)
             logger.InitializeLogFile();
         }
     }
-}
-
-void TheLogger::setLogHandler(Logger::LoggerHandler* handler)
-{
-    Q_ASSERT(handler != nullptr);
-    logger.m_handler = handler;
-}
-
-void TheLogger::resetLogHandler()
-{
-    logger.m_handler = nullptr;
-}
-
-void messageOutput(QtMsgType type, const QMessageLogContext& context, const QString& message)
-{
-    logger.messageOutput(type, context, message);
 }
 
 } // namespace utilities
