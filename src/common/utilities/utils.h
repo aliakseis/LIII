@@ -112,21 +112,6 @@ inline QString asString(const QString& value)
 
 QString multiArg(const QString& str, int numArgs, const QString* args);
 
-template<typename Class, typename R>
-class MemFnAdaptorNoParams
-{
-public:
-    typedef R(Class::*FunctionType)();
-
-    MemFnAdaptorNoParams(Class* c, FunctionType f)
-        : m_c(c), m_f(f) {}
-
-    R operator()() { return (m_c->*m_f)(); }
-
-private:
-    Class* const m_c;
-    FunctionType const m_f;
-};
 
 template<typename Class, typename FunctionType>
 class MemFnAdaptor
@@ -148,12 +133,6 @@ template<typename Class, typename FunctionType>
 inline MemFnAdaptor<Class, FunctionType> getMemFnAdaptor(Class* c, FunctionType f)
 {
     return MemFnAdaptor<Class, FunctionType>(c, f);
-}
-
-template<typename Class, typename R>
-inline MemFnAdaptorNoParams<Class, R> getMemFnAdaptor(Class* c, R(Class::*f)())
-{
-    return MemFnAdaptorNoParams<Class, R>(c, f);
 }
 
 

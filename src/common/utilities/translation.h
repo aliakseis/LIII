@@ -230,14 +230,6 @@ QString SetTr(Ty* obj, MemberFunc memFunc, const Translation& translateArgs, std
 }
 
 
-template <typename Ty, typename MemberFunc>
-QString SetTr(Ty* obj, MemberFunc memFunc, const Translation& translateArgs)
-{
-    TranslationRule trRule(translateArgs, {});
-    return DoSetTr(obj, memFunc, trRule);
-}
-
-
 template <typename Ty, typename MemberFunc, typename... Args>
 QString SetTr(Ty* obj, MemberFunc memFunc, const Translation& translateArgs, const Args&... xs)
 {
