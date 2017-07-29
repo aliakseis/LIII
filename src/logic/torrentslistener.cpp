@@ -21,8 +21,11 @@
 #include <QDebug>
 #include <QPointer>
 
+#include <functional>
 
 namespace {
+
+using namespace std::placeholders;
 
 class AddTorrentFormHelper : public NotifyHelper
 {
@@ -79,9 +82,6 @@ private:
 } // namespace
 
 
-using utilities::getMemFnAdaptor;
-
-
 TorrentsListener::TorrentsListener(QObject* parent /* = 0 */)
     : QObject(parent)
     , m_askAboutFilesChoose(false)
@@ -106,8 +106,9 @@ void TorrentsListener::setAlertDispatch(libtorrent::session* s)
 
     s->set_alert_mask(alertMask);
 
-    s->set_alert_dispatch(getMemFnAdaptor(this, &TorrentsListener::alertDispatch));
-    s->add_extension(boost::shared_ptr<libtorrent::plugin>(new TorrentsListenerExtension(getMemFnAdaptor(this, &TorrentsListener::onTorrentAdded))));
+    s->set_alert_dispatch(std::bind(&TorrentsListener::alertDispatch, this, _1));
+    s->add_extension(boost::shared_ptr<libtorrent::plugin>(new TorrentsListenerExtension(
+        std::bind(&TorrentsListener::onTorrentAdded, this, _1, _2))));
 }
 
 #undef ALERT_MASK_DEF

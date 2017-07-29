@@ -113,29 +113,6 @@ inline QString asString(const QString& value)
 QString multiArg(const QString& str, int numArgs, const QString* args);
 
 
-template<typename Class, typename FunctionType>
-class MemFnAdaptor
-{
-public:
-    MemFnAdaptor(Class* c, FunctionType f)
-        : m_c(c), m_f(f) {}
-
-    template<typename... Args>
-    auto operator()(Args&&... xs) 
-    { return (m_c->*m_f)(std::forward<Args>(xs)...); }
-
-private:
-    Class* const m_c;
-    FunctionType const m_f;
-};
-
-template<typename Class, typename FunctionType>
-inline MemFnAdaptor<Class, FunctionType> getMemFnAdaptor(Class* c, FunctionType f)
-{
-    return MemFnAdaptor<Class, FunctionType>(c, f);
-}
-
-
 bool isTCPportAvalible(short int dwPort);
 bool isUDPportAvalible(short int dwPort);
 

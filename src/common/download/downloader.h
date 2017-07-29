@@ -13,6 +13,8 @@
 #include <QPointer>
 #include <QDebug>
 
+#include <functional>
+
 #include "utilities/errorcode.h"
 #include "utilities/credsretriever.h"
 #include "utilities/authentication_helper.h"
@@ -22,9 +24,6 @@
 #include "download/detail/downloader_base.h"
 #include "download/downloader_traits.h"
 #include "utilities/errorcode.h"
-
-using ::utilities::ErrorCode;
-using ::utilities::getMemFnAdaptor;
 
 namespace
 {
@@ -47,6 +46,9 @@ struct Downloadable
 
 namespace download
 {
+
+using ::utilities::ErrorCode;
+using namespace std::placeholders;
 
 struct SpeedCalculation
 {
@@ -101,8 +103,8 @@ public:
           authentication_helper_(new utilities::AuthenticationHelper(1, 1, parent)),
           authentication_helper_catcher_(new detail::AuthenticationHelperCatcher(authentication_helper_.data()))
     {
-        auto authSlot = getMemFnAdaptor(this, &class_type::AuthNeedLogin);
-        authentication_helper_catcher_->connectOnAuthNeedLogin(authSlot);
+        authentication_helper_catcher_->connectOnAuthNeedLogin(
+            std::bind(&class_type::AuthNeedLogin, this, _1));
     }
 
     ~Downloader()
@@ -348,10 +350,10 @@ private:
         download_time_.start();
         network_manager_ = network_manager;
         network_manager_catcher_->setSource(network_manager);
-        auto authenticationRequiredSlot = getMemFnAdaptor(this, &class_type::AuthenticationRequired);
-        network_manager_catcher_->connectOnAuthenticationRequired(authenticationRequiredSlot);
-        auto proxyAuthenticationRequiredSlot = getMemFnAdaptor(this, &class_type::ProxyAuthenticationRequired);
-        network_manager_catcher_->connectOnProxyAuthenticationRequired(proxyAuthenticationRequiredSlot);
+        network_manager_catcher_->connectOnAuthenticationRequired(
+            std::bind(&class_type::AuthenticationRequired, this, _1, _2));
+        network_manager_catcher_->connectOnProxyAuthenticationRequired(
+            std::bind(&class_type::ProxyAuthenticationRequired, this, _1, _2));
         // error check
         if (!CheckHeader() || !CheckSize())
         {
@@ -383,8 +385,8 @@ private:
             {
                 current_header_catcher_ = new detail::NetworkReplyCatcher(current_header_);
             }
-            auto headerFinishedSlot = getMemFnAdaptor(this, &class_type::HeaderFinished);
-            current_header_catcher_->connectOnFinished(headerFinishedSlot);
+            current_header_catcher_->connectOnFinished(
+                std::bind(&class_type::HeaderFinished, this));
         }
         // report if all data already downloaded
         FlushOutput();
@@ -404,14 +406,14 @@ private:
             {
                 current_download_catcher_ = new detail::NetworkReplyCatcher(current_download_);
             }
-            auto downloadProgressSlot = getMemFnAdaptor(this, &class_type::DownloadProgress);
-            auto downloadFinishedSlot = getMemFnAdaptor(this, &class_type::DownloadFinished);
-            auto readyReadSlot = getMemFnAdaptor(this, &class_type::ReadyRead);
-            auto remoteErrorSlot = getMemFnAdaptor(this, &class_type::RemoteError);
-            current_download_catcher_->connectOnDownloadProgress(downloadProgressSlot);
-            current_download_catcher_->connectOnFinished(downloadFinishedSlot);
-            current_download_catcher_->connectOnReadyRead(readyReadSlot);
-            current_download_catcher_->connectOnError(remoteErrorSlot);
+            current_download_catcher_->connectOnDownloadProgress(
+                std::bind(&class_type::DownloadProgress, this, _1, _2));
+            current_download_catcher_->connectOnFinished(
+                std::bind(&class_type::DownloadFinished, this));
+            current_download_catcher_->connectOnReadyRead(
+                std::bind(&class_type::ReadyRead, this));
+            current_download_catcher_->connectOnError(
+                std::bind(&class_type::RemoteError, this, _1));
         }
         speed_calculation_.previous_time = QTime::currentTime();
     }
