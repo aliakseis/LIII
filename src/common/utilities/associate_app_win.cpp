@@ -8,12 +8,12 @@
 
 namespace {
 
-const char torrentClassName[] = PROJECT_NAME ".torrent";
+const auto torrentClassName = QStringLiteral(PROJECT_NAME ".torrent");
 
 void setClassesToSelf(QSettings& settingRoot)
 {
     QString appPath = QDir::toNativeSeparators(qApp->applicationFilePath());
-    settingRoot.setValue(".", QString(torrentClassName));
+    settingRoot.setValue(".", torrentClassName);
 
     settingRoot.beginGroup("DefaultIcon");
     settingRoot.setValue(".", QString("\"%1\",0").arg(appPath));
@@ -31,9 +31,10 @@ void setClassesToSelf(QSettings& settingRoot)
 
 void associateApp(QString const& ext, WId parent = NULL)
 {
-    bool isChangeNeeded =
-        QSettings(QString("HKEY_CLASSES_ROOT\\") + torrentClassName, QSettings::NativeFormat).value(".") != PROJECT_FULLNAME ||
-        QSettings(QString("HKEY_CLASSES_ROOT\\") + ext,              QSettings::NativeFormat).value(".") != torrentClassName;
+    const bool isChangeNeeded =
+        QSettings("HKEY_CLASSES_ROOT\\" + torrentClassName, QSettings::NativeFormat).value(".") != PROJECT_FULLNAME ||
+        QSettings("HKEY_CLASSES_ROOT\\" + ext, QSettings::NativeFormat).value(".") != torrentClassName ||
+        QSettings("HKEY_CLASSES_ROOT\\" + torrentClassName + "\\shell\\open\\command", QSettings::NativeFormat).value(".") != QString("\"%1\" \"%2\"").arg(QDir::toNativeSeparators(qApp->applicationFilePath()), "%1");
 
     if (isChangeNeeded)
     {
@@ -43,11 +44,11 @@ void associateApp(QString const& ext, WId parent = NULL)
             QSettings hkcr("HKEY_CLASSES_ROOT", QSettings::NativeFormat);
             hkcr.beginGroup(ext);
             QVariant oldVal = hkcr.value(".");
-            if (!oldVal.isNull() && !oldVal.toString().isEmpty() && oldVal.toString() != torrentClassName)
+            if (!oldVal.isNull() && !oldVal.toString().isEmpty() && oldVal != torrentClassName)
             {
-                hkcr.setValue(QString(torrentClassName) + "_backup", oldVal);
+                hkcr.setValue(torrentClassName + "_backup", oldVal);
             }
-            hkcr.setValue(".", QString(torrentClassName));
+            hkcr.setValue(".", torrentClassName);
             hkcr.setValue("Content Type", "application/x-bittorrent");
             hkcr.endGroup();
 
@@ -71,12 +72,11 @@ void associateApp(QString const& ext, WId parent = NULL)
 
 bool utilities::isDefaultTorrentApp()
 {
-    const QString torrentClassNameStr(torrentClassName);
-    bool isSelf =
-        QSettings("HKEY_CLASSES_ROOT\\Magnet", QSettings::NativeFormat).value(".") == torrentClassNameStr &&
-        QSettings("HKEY_CLASSES_ROOT\\.torrent", QSettings::NativeFormat).value(".") == torrentClassNameStr &&
-        QSettings("HKEY_CLASSES_ROOT\\" + torrentClassNameStr + "\\shell\\open\\command", QSettings::NativeFormat).value(".") == QString("\"%1\" \"%2\"").arg(QDir::toNativeSeparators(qApp->applicationFilePath()), "%1") &&
-        QSettings("HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\FileExts\\.torrent\\UserChoice", QSettings::NativeFormat).value("ProgId") == torrentClassNameStr;
+    const bool isSelf =
+        QSettings("HKEY_CLASSES_ROOT\\Magnet", QSettings::NativeFormat).value(".") == torrentClassName &&
+        QSettings("HKEY_CLASSES_ROOT\\.torrent", QSettings::NativeFormat).value(".") == torrentClassName &&
+        QSettings("HKEY_CLASSES_ROOT\\" + torrentClassName + "\\shell\\open\\command", QSettings::NativeFormat).value(".") == QString("\"%1\" \"%2\"").arg(QDir::toNativeSeparators(qApp->applicationFilePath()), "%1") &&
+        QSettings("HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\FileExts\\.torrent\\UserChoice", QSettings::NativeFormat).value("ProgId") == torrentClassName;
 
     return isSelf;
 }
@@ -96,15 +96,16 @@ void utilities::setDefaultTorrentApp(WId parent)
     QSettings torrentExt("HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\FileExts\\.torrent", QSettings::NativeFormat);
 
     torrentExt.beginGroup("UserChoice");
-    torrentExt.setValue("ProgId", QString(torrentClassName));
+    torrentExt.setValue("ProgId", torrentClassName);
     torrentExt.endGroup();
 
     torrentExt.beginGroup("OpenWithProgids");
-    torrentExt.setValue(QString(torrentClassName), QByteArray());
+    torrentExt.setValue(torrentClassName, QByteArray());
     torrentExt.endGroup();
 
     torrentExt.beginGroup("OpenWithList");
-    char ind  = 'a'; while (!torrentExt.value(QString(ind)).isNull()) { ++ind; }
+    char ind  = 'a'; 
+    while (!torrentExt.value(QString(ind)).isNull()) { ++ind; }
     torrentExt.setValue(QString(ind), QString(PROJECT_NAME ".exe"));
     torrentExt.setValue("MRUList", QString(ind) + torrentExt.value("MRUList", QString()).toString());
     torrentExt.endGroup();
@@ -112,11 +113,11 @@ void utilities::setDefaultTorrentApp(WId parent)
 
 void unsetRegKey(QSettings& key)
 {
-    QVariant restoreVal = key.value(QString(torrentClassName) + "_backup");
+    QVariant restoreVal = key.value(torrentClassName + "_backup");
     if (!restoreVal.isNull())
     {
         key.setValue(".", restoreVal);
-        key.remove(QString(torrentClassName) + "_backup");
+        key.remove(torrentClassName + "_backup");
     }
     else
     {
