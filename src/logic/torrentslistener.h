@@ -64,7 +64,6 @@ inline ItemDC::eSTATUSDC torrentStatus2ItemDCStatus(libtorrent::torrent_status::
     (block_timeout_alert)\
     (state_changed_alert)
 
-class QThread;
 
 #define ALERT_TYPE_DEF(r, data, elem) struct elem;
 

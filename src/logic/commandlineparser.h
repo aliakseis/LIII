@@ -2,8 +2,6 @@
 
 class MainWindow;
 
-#include <QList>
-#include <QUrl>
 #include <QStringList>
 
 class CommandLineParser
@@ -11,12 +9,9 @@ class CommandLineParser
 public:
     explicit CommandLineParser(MainWindow* w);
 
-private:
-    void treatParams(QStringList params) ;
+    void treatParams(QStringList params);
 
 private:
     MainWindow* mainWindow;
-
-    friend class Application;
 };
 

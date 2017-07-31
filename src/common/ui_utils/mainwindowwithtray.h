@@ -16,7 +16,6 @@ class MainWindowWithTray
     : public QMainWindow
 {
     Q_OBJECT
-    friend class ::Test_MainWindowWithTray;
 public:
     explicit MainWindowWithTray(QWidget* parent, QIcon const& icon, utilities::Tr::Translation const& projFullNameTr);
     ~MainWindowWithTray();

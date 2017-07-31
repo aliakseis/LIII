@@ -1,7 +1,6 @@
 #pragma once
 
 #include <QTreeView>
-#include "downloadcollectionmodel.h"
 #include <QHeaderView>
 
 #include <array>
@@ -15,6 +14,10 @@ public:
 protected:
     void paintSection(QPainter* painter, const QRect& rect, int logicalIndex) const;
 };
+
+class DownloadCollectionModel;
+class TreeItem;
+class ItemDC;
 
 class DownloadCollectionTreeView : public QTreeView
 {

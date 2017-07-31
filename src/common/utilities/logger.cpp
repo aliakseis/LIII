@@ -29,7 +29,6 @@ void messageOutput(QtMsgType type, const QMessageLogContext& context, const QStr
 
 class Logger
 {
-    friend class TheLogger;
 public:
     Logger();
     ~Logger();

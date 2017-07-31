@@ -168,7 +168,4 @@ private:
     QString m_torrentSessionState;
 
     void onModelUpdated();
-
-    friend class DownloadManager;
-    friend class MainForm;
 };

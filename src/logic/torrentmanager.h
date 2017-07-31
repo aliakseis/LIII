@@ -6,16 +6,12 @@
 #include <QObject>
 #include <QMap>
 #include <QTimer>
-#include <QEventLoop>
 
 #include <memory>
 
 #include "downloadtype.h"
 #include "treeitem.h"
 
-
-class TorrentsListener;
-class AddTorrentForm;
 
 static const char TORRENTS_SUB_FOLDER[] = "torrents";
 
@@ -24,7 +20,6 @@ QString toQString(const libtorrent::sha1_hash& hash);
 class TorrentManager : public QObject
 {
     Q_OBJECT
-    friend class TorrentsListener;
 public:
     ~TorrentManager();
 
