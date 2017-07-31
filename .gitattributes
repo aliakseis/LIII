@@ -15,3 +15,8 @@
 *.PDF	 diff=astextplain
 *.rtf	 diff=astextplain
 *.RTF	 diff=astextplain
+
+cmake/* linguist-vendored
+imports/* linguist-vendored
+resources/* linguist-vendored
+translations/* linguist-vendored
