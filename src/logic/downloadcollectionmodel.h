@@ -101,6 +101,8 @@ public:
 
     bool loadFromFile();
 
+    void addItemsToModel(const QStringList& urls, DownloadType::Type type);
+
     template<class Fn_t> void forAll(Fn_t fn)
     {
         rootItem->forAll(fn);
@@ -121,8 +123,8 @@ public slots:
     void on_waitingTimeChange(const ItemDC& a_item);
     void on_ItemDCchange(const ItemDC& a_item);
     void on_magnetLinkInfoReceived(const ItemDC& a_item);
-protected:
 
+protected:
     void setRootItem(QObject* item)
     {
         // TODO verify cast
@@ -133,8 +135,6 @@ protected:
 
     template<bool isUp>
     QModelIndexList moveItems_helper(QModelIndexList&& selectedInds, int step);
-
-    void addItemsToModel(const QStringList& urls, DownloadType::Type type);
 
 signals:
     void signalDeleteURLFromModel(int a_ID, DownloadType::Type type, int deleteWithFiles = 0);
