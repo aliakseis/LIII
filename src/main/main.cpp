@@ -50,6 +50,8 @@ int main(int argc, char* argv[])
     app.setStyle(new LIIIStyle);
     app.retranslateApp(QSettings().value(app_settings::ln, app_settings::ln_Default).toString());
 
+    DownloadCollectionModel::instance().init();
+
     MainWindow w;
 
     QFile css_data(":/style.css");
