@@ -61,7 +61,7 @@ int main(int argc, char* argv[])
         css_data.close();
     }
 
-    CommandLineParser cmdParser(&w);
+    processCommandLine(&w);
 
 #ifdef Q_OS_DARWIN
     Darwin::SetApplicationHandler(w);
@@ -72,8 +72,6 @@ int main(int argc, char* argv[])
         QDir::toNativeSeparators(QDir::currentPath() + QDir::separator() + PROJECT_NAME
                                  + ".app/Contents/MacOS/plugins"));
 #endif //Q_OS_DARWIN
-
-    app.setCmdLineParser(&cmdParser);
 
     w.showMainWindowAndPerformChecks();
 

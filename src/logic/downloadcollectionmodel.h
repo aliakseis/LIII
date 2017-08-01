@@ -161,11 +161,10 @@ private:
     void doSetPauseStopDownloadItem(TreeItem* itmSource, ItemDC::eSTATUSDC status);
     void calculateAllProgress();
     void activeDownloadsChanged();
+    void onModelUpdated();
 
 private:
     TreeItem* rootItem;
     bool isDropAction;
     QString m_torrentSessionState;
-
-    void onModelUpdated();
 };

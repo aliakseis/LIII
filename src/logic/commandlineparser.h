@@ -1,17 +1,8 @@
 #pragma once
 
+class QString;
+
 class MainWindow;
 
-#include <QStringList>
-
-class CommandLineParser
-{
-public:
-    explicit CommandLineParser(MainWindow* w);
-
-    void treatParams(QStringList params);
-
-private:
-    MainWindow* mainWindow;
-};
-
+void processCommandLine(MainWindow* w);
+void processMessageReceived(const QString&);

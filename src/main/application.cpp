@@ -8,6 +8,20 @@
 #include "mainwindow.h"
 #include "branding.hxx"
 
+Application::Application(const QString& id, int& argc, char** argv)
+#ifdef ALLOW_TRAFFIC_CONTROL
+    : traffic_limitation::InterceptingApp(id, argc, argv)
+#else
+    : QtSingleApplication(id, argc, argv)
+#endif // ALLOW_TRAFFIC_CONTROL
+    , missionDone(false)
+    , alowAsSecondInstance_(false)
+{
+    connect(this, &QtSingleApplication::messageReceived, &processMessageReceived);
+    checkSpecialCmdLine();
+}
+
+
 void Application::passCmdLine()
 {
     if (missionDone)
@@ -21,19 +35,10 @@ void Application::passCmdLine()
     sendMessage(args.join("\n"), 1000);
 }
 
-void Application::processCmdLine(const QString& cmdLine)
-{
-    if (cmdLineParser && ! cmdLine.isEmpty())
-    {
-        cmdLineParser->treatParams(cmdLine.split("\n",  QString::SkipEmptyParts));
-    }
-}
-
 void Application::checkFirewallException(QMainWindow* mainWindow)
 {
 #ifdef Q_OS_WIN
     utilities::WindowsFirewall firewall;
-
 
     if (!firewall.isEnabled())
     {

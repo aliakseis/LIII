@@ -7,21 +7,9 @@
 #include "mainwindow.h"
 #include "application.h"
 
+namespace {
 
-CommandLineParser::CommandLineParser(MainWindow* w)
-    : mainWindow(w)
-{
-    // On Windows, the arguments() are not built from the contents of argv/argc, as the content does not support Unicode.
-    // Instead, the arguments() are constructed from the return value of GetCommandLine().
-    QStringList params = QApplication::arguments();
-    if (params.length() > 1)
-    {
-        params.removeFirst();
-        treatParams(params);
-    }
-}
-
-void CommandLineParser::treatParams(QStringList params)
+void treatParams(MainWindow* mainWindow, QStringList params)
 {
     Application* myApp = dynamic_cast<Application*>(qApp);
     if (myApp && !myApp->isMissionDone())
@@ -37,3 +25,25 @@ void CommandLineParser::treatParams(QStringList params)
     }
 }
 
+} // namespace
+
+
+void processCommandLine(MainWindow* w)
+{
+    QStringList params = QApplication::arguments();
+    if (params.length() > 1)
+    {
+        params.removeFirst();
+        treatParams(w, params);
+    }
+}
+
+void processMessageReceived(const QString& cmdLine)
+{
+    if (!cmdLine.isEmpty())
+    {
+        treatParams(
+            static_cast<MainWindow*>(utilities::getMainWindow()),
+            cmdLine.split('\n', QString::SkipEmptyParts));
+    }
+}

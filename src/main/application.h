@@ -10,7 +10,6 @@
 #include "utilities/translatable.h"
 #include "utilities/utils.h"
 
-class CommandLineParser;
 
 class Application
 #ifdef ALLOW_TRAFFIC_CONTROL
@@ -23,33 +22,15 @@ class Application
     Q_OBJECT
 public:
 
-    Application(const QString& id, int& argc, char** argv)
-#ifdef ALLOW_TRAFFIC_CONTROL
-        : traffic_limitation::InterceptingApp(id, argc, argv)
-#else
-        : QtSingleApplication(id, argc, argv)
-#endif // ALLOW_TRAFFIC_CONTROL
-        , cmdLineParser(nullptr)
-        , missionDone(false)
-        , alowAsSecondInstance_(false)
-    {
-        VERIFY(connect(this, SIGNAL(messageReceived(const QString&)), this, SLOT(processCmdLine(const QString&))));
-        checkSpecialCmdLine();
-    }
+    Application(const QString& id, int& argc, char** argv);
 
-    void setCmdLineParser(CommandLineParser* cmdParser) { cmdLineParser = cmdParser; }
     void passCmdLine();
 
     void checkFirewallException(QMainWindow* mainWindow);
-    bool allowAsSecondInstance()const {return alowAsSecondInstance_;}
-    bool isMissionDone()const {return missionDone;};
-
-
-private Q_SLOTS:
-    void processCmdLine(const QString& cmdLine);
+    bool allowAsSecondInstance() const { return alowAsSecondInstance_; }
+    bool isMissionDone() const { return missionDone; }
 
 private:
-    CommandLineParser* cmdLineParser;
     bool missionDone; // flag to ignore all other commands, if mission done in c-tor
     bool alowAsSecondInstance_;
 
