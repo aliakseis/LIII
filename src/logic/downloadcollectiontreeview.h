@@ -40,6 +40,7 @@ protected:
 private:
     void safelyDeleteVideoFile(QString const& file);
     void showTorrentDetailsDialog(TreeItem* item);
+    DownloadCollectionModel* model();
 
 public slots:
     void startDownloadItem();
@@ -70,10 +71,8 @@ signals:
     void signalOpenFolder(const QString& filename);
     void signalOpenTorrentFolder(const QString& filename, const QString& downloadDirectory);
     void signalDownloadFinished(const QString& filename);
-protected:
-    DownloadCollectionModel* m_model;
-private:
 
+private:
     std::array<bool, 4> canPRCSEnabled();// using all selected items
     void drawText(const QString& text);
 

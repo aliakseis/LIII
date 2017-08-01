@@ -17,7 +17,7 @@ class DownloadManager: public QObject
     Q_OBJECT
 public:
 
-    DownloadManager(DownloadCollectionModel* a_pModel, QObject* parent = NULL);
+    DownloadManager(QObject* parent = NULL);
     ~DownloadManager();
 
     inline bool isWorking() const {    return !(m_activeTasks.isEmpty() && m_prepareTasks.isEmpty()); }
@@ -50,8 +50,6 @@ private Q_SLOTS:
 #endif // ALLOW_TRAFFIC_CONTROL
 
 private:
-    DownloadCollectionModel* m_DLCModel;
-
     typedef QMap<int, DownloadTask*> TasksMap;
     TasksMap m_activeTasks;
     TasksMap m_prepareTasks;

@@ -84,23 +84,28 @@ void DownloadCollectionTreeView::on_internetConnectedChanged(bool isConnected)
 void DownloadCollectionTreeView::setModel(DownloadCollectionModel* a_model)
 {
     QTreeView::setModel(a_model);
-    m_model = a_model;
 
     VERIFY(connect(this, SIGNAL(clicked(const QModelIndex&)), this, SLOT(on_clicked(const QModelIndex&))));
     VERIFY(connect(this, SIGNAL(doubleClicked(const QModelIndex&)), this, SLOT(on_doubleClicked(const QModelIndex&))));
     VERIFY(connect(selectionModel(), SIGNAL(selectionChanged(const QItemSelection&, const QItemSelection&)),
                    this, SLOT(on_ItemSelectChanged(const QItemSelection&, const QItemSelection&))));
 
-    VERIFY(connect(m_model, SIGNAL(existingItemAdded(const QModelIndex&)), this, SLOT(onExistingItemAdded(const QModelIndex&))));
-    VERIFY(connect(m_model, SIGNAL(statusChanged()), this, SLOT(getUpdateItem())));
+    VERIFY(connect(a_model, SIGNAL(existingItemAdded(const QModelIndex&)), this, SLOT(onExistingItemAdded(const QModelIndex&))));
+    VERIFY(connect(a_model, SIGNAL(statusChanged()), this, SLOT(getUpdateItem())));
 
-    VERIFY(connect(m_model, SIGNAL(downloadingFinished(const ItemDC&)), this, SLOT(downloadingFinished(const ItemDC&))));
+    VERIFY(connect(a_model, SIGNAL(downloadingFinished(const ItemDC&)), this, SLOT(downloadingFinished(const ItemDC&))));
 
     header()->setSectionsMovable(false);
     setSortingEnabled(false);
 
     HeaderResize();
 }
+
+DownloadCollectionModel* DownloadCollectionTreeView::model()
+{
+    return static_cast<DownloadCollectionModel*>(QTreeView::model());
+}
+
 
 void DownloadCollectionTreeView::keyPressEvent(QKeyEvent* event)
 {
@@ -160,7 +165,7 @@ void DownloadCollectionTreeView::copyURLToClipboard()
     QClipboard* clipboard = QApplication::clipboard();
     const QModelIndexList selectedRows = selectionModel()->selectedRows();
     for (const auto& idx : qAsConst(selectedRows))
-        strList.append(m_model->getItem(idx)->initialURL().replace(" ", "%20"));
+        strList.append(model()->getItem(idx)->initialURL().replace(" ", "%20"));
     if (!strList.isEmpty())
     {
         clipboard->setText(strList.join("\n"));
@@ -173,7 +178,7 @@ void DownloadCollectionTreeView::deleteSelectedRows(bool totally)
     {
         for (const QModelIndex & index : selectionModel()->selectedRows())
         {
-            TreeItem* item = m_model->getItem(index);
+            TreeItem* item = model()->getItem(index);
             QString arch_file;
             QStringList extractFiles;
             if (totally || (item->getStatus() != ItemDC::eFINISHED && item->getStatus() != ItemDC::eSEEDING))
@@ -185,7 +190,7 @@ void DownloadCollectionTreeView::deleteSelectedRows(bool totally)
             }
             int deleteWithFiles =
                 totally ? libtorrent::session::delete_files : 0;
-            m_model->deleteURLFromModel(item->getID(), deleteWithFiles);
+            model()->deleteURLFromModel(item->getID(), deleteWithFiles);
 
             for (const QString& fname : qAsConst(extractFiles))
             {
@@ -193,7 +198,7 @@ void DownloadCollectionTreeView::deleteSelectedRows(bool totally)
             }
         }
 
-        VERIFY(QMetaObject::invokeMethod(m_model, "saveToFile", Qt::QueuedConnection));
+        VERIFY(QMetaObject::invokeMethod(model(), "saveToFile", Qt::QueuedConnection));
     }
 }
 
@@ -252,7 +257,7 @@ std::array<bool, 4> DownloadCollectionTreeView::canPRCSEnabled()
     std::fill(result.begin(), result.end(), false);
     Q_FOREACH(const QModelIndex & ind, selectionModel()->selectedRows())
     {
-        TreeItem* ti = m_model->getItem(ind);
+        TreeItem* ti = model()->getItem(ind);
         result[0] = result[0] || ti->canPause();
         result[1] = result[1] || ti->canResume();
         result[2] = result[2] || ti->canCancel();
@@ -265,10 +270,10 @@ void DownloadCollectionTreeView::startDownloadItem()
     QModelIndexList items = selectionModel()->selectedRows();
     Q_FOREACH(const QModelIndex & ind, items)
     {
-        TreeItem* ti = m_model->getItem(ind);
+        TreeItem* ti = model()->getItem(ind);
         if (ti && ti->canResume())
         {
-            m_model->setContinueDownloadItem(ind);
+            model()->setContinueDownloadItem(ind);
         }
     }
     getUpdateItem();
@@ -279,10 +284,10 @@ void DownloadCollectionTreeView::pauseDownloadItem()
     QModelIndexList items = selectionModel()->selectedRows();
     Q_FOREACH(const QModelIndex & ind, items)
     {
-        TreeItem* ti = m_model->getItem(ind);
+        TreeItem* ti = model()->getItem(ind);
         if (ti && ti->canPause())
         {
-            m_model->setPauseDownloadItem(ind);
+            model()->setPauseDownloadItem(ind);
         }
     }
     getUpdateItem();
@@ -299,14 +304,14 @@ void DownloadCollectionTreeView::on_showContextMenu(const QPoint& a_point)
             QMenu menu;
             menu.setObjectName("DownloadContextMenu");
 
-            const DownloadType::Type dlType = m_model->getItem(index)->getDownloadType();
+            const DownloadType::Type dlType = model()->getItem(index)->getDownloadType();
             // Show In Folder menu item
             QAction* openFolder = menu.addAction(QIcon(":/icons/Drop-down-folder-icon-normal.png"), utilities::Tr::Tr(TREEVIEW_MENU_OPENFOLDER), this, SLOT(on_OpenFolder()));
             openFolder->setEnabled(dlType != DownloadType::MagnetLink);
 
             if (dlType == DownloadType::TorrentFile)
             {
-                QString path = TorrentManager::Instance()->torrentRootItemPath(m_model->getItem(index)->getID());
+                QString path = TorrentManager::Instance()->torrentRootItemPath(model()->getItem(index)->getID());
                 openFolder->setEnabled(QFile::exists(path));
             }
 
@@ -348,7 +353,7 @@ void DownloadCollectionTreeView::on_showContextMenu(const QPoint& a_point)
 void DownloadCollectionTreeView::on_OpenFolder()
 {
     QModelIndex curr_index = currentIndex();
-    TreeItem* item = m_model->getItem(curr_index);
+    TreeItem* item = model()->getItem(curr_index);
 
     QString filename;
     DownloadType::Type type = item->getDownloadType();
@@ -393,7 +398,7 @@ void DownloadCollectionTreeView::on_ItemCancel()
 
 void DownloadCollectionTreeView::moveImpl(int step)
 {
-    QModelIndexList newInds = m_model->moveItems(selectionModel()->selectedRows(), step);
+    QModelIndexList newInds = model()->moveItems(selectionModel()->selectedRows(), step);
 
     selectRows(newInds);
 }
@@ -431,7 +436,7 @@ bool DownloadCollectionTreeView::cancelDownloadingQuestion(bool totally)
 
         auto foundNotFinished = std::find_if(selectedRows.constBegin(), selectedRows.constEnd(), [this](const QModelIndex & idx) ->bool
         {
-            return !m_model->getItem(idx)->isCompleted();
+            return !model()->getItem(idx)->isCompleted();
         });
 
         if (foundNotFinished != selectedRows.constEnd())
@@ -469,7 +474,7 @@ void DownloadCollectionTreeView::on_showTorrentDetails()
 {
     qDebug() << Q_FUNC_INFO;
     QModelIndex index = currentIndex();
-    TreeItem* item = m_model->getItem(index);
+    TreeItem* item = model()->getItem(index);
     showTorrentDetailsDialog(item);
 }
 
@@ -491,7 +496,7 @@ void DownloadCollectionTreeView::showTorrentDetailsDialog(TreeItem* item)
                 if (priorities != item->torrentFilesPriorities())
                 {
                     item->setTorrentFilesPriorities(priorities);
-                    VERIFY(QMetaObject::invokeMethod(m_model, "saveToFile", Qt::QueuedConnection));
+                    VERIFY(QMetaObject::invokeMethod(model(), "saveToFile", Qt::QueuedConnection));
                 }
             }
         }
@@ -516,11 +521,11 @@ void DownloadCollectionTreeView::mouseReleaseEvent(QMouseEvent* me)
 
 void DownloadCollectionTreeView::resumeAllItems()
 {
-    m_model->forAll([this](TreeItem & ti)
+    model()->forAll([this](TreeItem & ti)
     {
         if (ti.canResume())
         {
-            m_model->setContinueDownloadItem(&ti);
+            model()->setContinueDownloadItem(&ti);
         }
     });
     getUpdateItem();
@@ -528,11 +533,11 @@ void DownloadCollectionTreeView::resumeAllItems()
 
 void DownloadCollectionTreeView::pauseAllItems()
 {
-    m_model->forAll([this](TreeItem & ti)
+    model()->forAll([this](TreeItem & ti)
     {
         if (ti.canPause())
         {
-            m_model->setPauseDownloadItem(&ti);
+            model()->setPauseDownloadItem(&ti);
         }
     });
     getUpdateItem();

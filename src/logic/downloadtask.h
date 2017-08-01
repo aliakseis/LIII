@@ -24,7 +24,6 @@ public:
 #endif // ALLOW_TRAFFIC_CONTROL
 
     DownloadTask(
-        DownloadCollectionModel* download_collection_model,
         int task_id,
         const QString& url,
         QObject* parent = NULL);
@@ -64,7 +63,6 @@ private:
     virtual void onNeedLogin(utilities::ICredentialsRetriever* retriever) override;
     virtual void onReplyInvalidated() override;
 
-    DownloadCollectionModel* download_collection_model_;
     QScopedPointer<DownloaderType> downloader_;
     QScopedPointer<QNetworkAccessManager> network_manager_;
     QTime update_model_time_;

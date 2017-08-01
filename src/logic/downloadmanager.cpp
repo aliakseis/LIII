@@ -16,20 +16,19 @@
 using global_functions::GetMaximumNumberLoadsActual;
 using global_functions::GetTrafficLimitActual;
 
-DownloadManager::DownloadManager(DownloadCollectionModel* a_pModel, QObject* parent)
+DownloadManager::DownloadManager(QObject* parent)
     : QObject(parent), m_bStopDLManager(false), m_kbps(0)
 {
-    m_DLCModel = a_pModel;
-    Q_ASSERT(m_DLCModel);
+    const auto model = &DownloadCollectionModel::instance();
 
-    VERIFY(connect(m_DLCModel, SIGNAL(signalDeleteURLFromModel(int, DownloadType::Type, int)),        this, SLOT(on_deleteTaskWithID(int, DownloadType::Type, int))));
-    VERIFY(connect(m_DLCModel, SIGNAL(signalPauseDownloadItemWithID(int, DownloadType::Type)),        this, SLOT(on_pauseTaskWithID(int, DownloadType::Type))));
-    VERIFY(connect(m_DLCModel, SIGNAL(signalContinueDownloadItemWithID(int, DownloadType::Type)),    this, SLOT(startLoad())));
-    VERIFY(connect(m_DLCModel, SIGNAL(onDownloadStarted()),                                            this, SLOT(siftDownloads())));
-    VERIFY(connect(m_DLCModel, SIGNAL(onItemsReordered()),                                            this, SLOT(onItemsReordered())));
+    VERIFY(connect(model, SIGNAL(signalDeleteURLFromModel(int, DownloadType::Type, int)),        this, SLOT(on_deleteTaskWithID(int, DownloadType::Type, int))));
+    VERIFY(connect(model, SIGNAL(signalPauseDownloadItemWithID(int, DownloadType::Type)),        this, SLOT(on_pauseTaskWithID(int, DownloadType::Type))));
+    VERIFY(connect(model, SIGNAL(signalContinueDownloadItemWithID(int, DownloadType::Type)),    this, SLOT(startLoad())));
+    VERIFY(connect(model, SIGNAL(onDownloadStarted()),                                            this, SLOT(siftDownloads())));
+    VERIFY(connect(model, SIGNAL(onItemsReordered()),                                            this, SLOT(onItemsReordered())));
 
 #ifdef ALLOW_TRAFFIC_CONTROL
-    VERIFY(connect(m_DLCModel, &DownloadCollectionModel::signalModelUpdated, this, &DownloadManager::UpdateSpeedLimits));
+    VERIFY(connect(model, &DownloadCollectionModel::signalModelUpdated, this, &DownloadManager::UpdateSpeedLimits));
     setSpeedLimit(GetTrafficLimitActual());
 #endif // ALLOW_TRAFFIC_CONTROL
 
@@ -67,7 +66,7 @@ void DownloadManager::startLoad()
         }
     }
 
-    while (auto it = m_DLCModel->findItem(
+    while (auto it = DownloadCollectionModel::instance().findItem(
         [](const TreeItem* te)
         {
             return te->getStatus() == ItemDC::eQUEUED ||
@@ -125,12 +124,12 @@ bool DownloadManager::createNewTask(ItemDC& a_item)
 {
     qDebug() << "DLManager::createNewTask() id = " << a_item.getID();
     a_item.setStatus(ItemDC::eCONNECTING);
-    m_DLCModel->on_statusChange(a_item);
+    DownloadCollectionModel::instance().on_statusChange(a_item);
     DownloadType::Type dlType = DownloadType::determineType(a_item.initialURL());
 
     if (DownloadType::isDirectDownload(dlType))
     {
-        DownloadTask* dlTask = new DownloadTask(m_DLCModel, a_item.getID(), a_item.initialURL(), this);
+        DownloadTask* dlTask = new DownloadTask(a_item.getID(), a_item.initialURL(), this);
         VERIFY(connect(dlTask, SIGNAL(signalDownloadFinished(int)),                this, SLOT(onDownloadFinished(int))));
         VERIFY(connect(dlTask, SIGNAL(signalTryNewtask()),                        this, SLOT(tryNewTask())));
         VERIFY(connect(dlTask, SIGNAL(readyToDownload(int)),                    this, SLOT(startTaskDownload(int))));
@@ -148,8 +147,8 @@ bool DownloadManager::createNewTask(ItemDC& a_item)
         }
         a_item.setStatus(ItemDC::eERROR);
         a_item.setWaitingTime(0); // no recovery
-        m_DLCModel->on_statusChange(a_item);
-        m_DLCModel->on_waitingTimeChange(a_item);
+        DownloadCollectionModel::instance().on_statusChange(a_item);
+        DownloadCollectionModel::instance().on_waitingTimeChange(a_item);
     }
 
     return false;
@@ -240,7 +239,7 @@ bool DownloadManager::isPossibleStartDownload()
     const int maxDl = GetMaximumNumberLoadsActual();
 
     int activeTasks(0);
-    m_DLCModel->forAll([this, &activeTasks](const TreeItem & ti)
+    DownloadCollectionModel::instance().forAll([this, &activeTasks](const TreeItem & ti)
     {
         if (isActiveTask(ti))
         {
@@ -283,7 +282,7 @@ void DownloadManager::prepareToExit()
         TorrentManager::Instance()->close();
     }
 
-    m_DLCModel->saveToFile();
+    DownloadCollectionModel::instance().saveToFile();
 
     TorrentManager::dispose();
 }
@@ -347,9 +346,9 @@ void DownloadManager::_UpdateSpeedLimitsImpl()
 
 void DownloadManager::addItemsToModel(const QStringList& urls, DownloadType::Type type)
 {
-    m_DLCModel->addItemsToModel(urls, type);
+    DownloadCollectionModel::instance().addItemsToModel(urls, type);
     startLoad();
-    VERIFY(QMetaObject::invokeMethod(m_DLCModel, "saveToFile", Qt::QueuedConnection));
+    VERIFY(QMetaObject::invokeMethod(&DownloadCollectionModel::instance(), "saveToFile", Qt::QueuedConnection));
 }
 
 void DownloadManager::siftDownloads()
@@ -357,7 +356,7 @@ void DownloadManager::siftDownloads()
     const int maxDl = GetMaximumNumberLoadsActual();
 
     int activeTasks(0);
-    m_DLCModel->forAll([this, &activeTasks, maxDl](TreeItem & ti)
+    DownloadCollectionModel::instance().forAll([this, &activeTasks, maxDl](TreeItem & ti)
     {
         if (isActiveTask(ti))
         {
@@ -367,12 +366,12 @@ void DownloadManager::siftDownloads()
             }
             else
             {
-                m_DLCModel->deactivateDownloadItem(&ti);
+                DownloadCollectionModel::instance().deactivateDownloadItem(&ti);
             }
         }
         else if (ItemDC::eSTALLED == ti.getStatus() && activeTasks >= maxDl)
         {
-            m_DLCModel->deactivateDownloadItem(&ti);
+            DownloadCollectionModel::instance().deactivateDownloadItem(&ti);
         }
     });
 
@@ -384,7 +383,7 @@ void DownloadManager::pushQueuedDownloads()
     const int maxDl = GetMaximumNumberLoadsActual();
 
     int firstClassTasks(0);
-    m_DLCModel->findItem([this, &firstClassTasks, maxDl](const TreeItem * ti)
+    DownloadCollectionModel::instance().findItem([this, &firstClassTasks, maxDl](const TreeItem * ti)
     {
         if (firstClassTasks >= maxDl)
         {
@@ -413,7 +412,7 @@ void DownloadManager::onItemsReordered()
     const int maxDl = GetMaximumNumberLoadsActual();
 
     int activeTasks(0);
-    m_DLCModel->forAll([this, &activeTasks, maxDl](TreeItem & ti)
+    DownloadCollectionModel::instance().forAll([this, &activeTasks, maxDl](TreeItem & ti)
     {
         if (ItemDC::eDOWNLOADING == ti.getStatus())
         {
@@ -424,7 +423,7 @@ void DownloadManager::onItemsReordered()
         }
         else if (ItemDC::eSTALLED == ti.getStatus() && activeTasks >= maxDl)
         {
-            m_DLCModel->deactivateDownloadItem(&ti);
+            DownloadCollectionModel::instance().deactivateDownloadItem(&ti);
         }
     });
 }

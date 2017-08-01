@@ -10,9 +10,8 @@
 using namespace download;
 
 
-DownloadTask::DownloadTask(DownloadCollectionModel* download_collection_model, int task_id, const QString& url, QObject* parent)
+DownloadTask::DownloadTask(int task_id, const QString& url, QObject* parent)
     :    QObject(parent),
-        download_collection_model_(download_collection_model),
         downloader_(new DownloaderType(this)),
         network_manager_(new QNetworkAccessManager(this)),
         url_(url),
@@ -20,13 +19,13 @@ DownloadTask::DownloadTask(DownloadCollectionModel* download_collection_model, i
         task_id_(task_id), priority_level_(0),
         ready_to_download_(false)
 {
-    VERIFY(connect(download_collection_model_, SIGNAL(signalModelUpdated()), SLOT(updatePriority())));
+    VERIFY(connect(&DownloadCollectionModel::instance(), SIGNAL(signalModelUpdated()), SLOT(updatePriority())));
     downloader_->setObserver(this);
 }
 
 void DownloadTask::start()
 {
-    auto it = download_collection_model_->getItemByID(task_id_);
+    auto it = DownloadCollectionModel::instance().getItemByID(task_id_);
     priority_level_ = it.priority();
     update_model_time_ = QTime::currentTime();
 
@@ -60,7 +59,7 @@ void DownloadTask::download()
 
     ready_to_download_ = false;
     setStatusInModel(ItemDC::eDOWNLOADING);
-    auto it = download_collection_model_->getItemByID(task_id_);
+    auto it = DownloadCollectionModel::instance().getItemByID(task_id_);
     QFileInfo file(it.downloadedFileName());
     if (file.exists() && file.size() > 0)
     {
@@ -85,13 +84,13 @@ void DownloadTask::onError(utilities::ErrorCode::ERROR_CODES code, const QString
 {
     QString errorDescription  = (err.isEmpty()) ? ErrorCode::instance().getDescription(code).key : err;
     qDebug() << QString("%1 of task %2 (url=%3), DESCRIPTION: %4").arg(__FUNCTION__).arg(task_id_).arg(url_, errorDescription);
-    auto it = download_collection_model_->getItemByID(task_id_);
+    auto it = DownloadCollectionModel::instance().getItemByID(task_id_);
     it.setStatus(ItemDC::eERROR);
     it.setSpeed(0.f);
     it.setWaitingTime(ErrorCode::instance().getTimeout(code));
     it.setErrorCode(code);
     it.setErrorDescription(err);
-    download_collection_model_->on_ItemDCchange(it);
+    DownloadCollectionModel::instance().on_ItemDCchange(it);
     cancelTask();
 }
 
@@ -133,11 +132,11 @@ void DownloadTask::onProgress(qint64 downloadedSize)
     {
         total_file_size_ = downloader_->totalFileSize();
         it.setSize(total_file_size_);
-        download_collection_model_->on_sizeChange(it);
+        DownloadCollectionModel::instance().on_sizeChange(it);
         const int percentage = downloadedSize * 100 / total_file_size_;
         it.setPercentDownload(percentage);
         it.setSizeCurrDownl(downloadedSize);
-        download_collection_model_->on_sizeCurrDownlChange(it);
+        DownloadCollectionModel::instance().on_sizeCurrDownlChange(it);
     }
 }
 
@@ -146,7 +145,7 @@ void DownloadTask::onSpeed(qint64 bytesPerSeconds)
     ItemDC it;
     it.setID(task_id_);
     it.setSpeed(bytesPerSeconds / 1000.);
-    download_collection_model_->on_speedChange(it);
+    DownloadCollectionModel::instance().on_speedChange(it);
 }
 
 void DownloadTask::onFinished()
@@ -157,13 +156,13 @@ void DownloadTask::onFinished()
     }
     qDebug() << QString("%1 of task %2 (url=%3)").arg(__FUNCTION__).arg(task_id_).arg(url_);
     qint64 fsize = downloader_->totalFileSize();
-    auto it = download_collection_model_->getItemByID(task_id());
+    auto it = DownloadCollectionModel::instance().getItemByID(task_id());
     it.setStatus(ItemDC::eFINISHED);
     it.setPercentDownload(100);
     it.setSizeCurrDownl(fsize);
     it.setSize(fsize);
     it.setSpeed(0.f);
-    download_collection_model_->on_ItemDCchange(it);
+    DownloadCollectionModel::instance().on_ItemDCchange(it);
 
     notifyIfFinished();
 }
@@ -175,7 +174,7 @@ void DownloadTask::onFileCreated(const QString& filename)
     ItemDC it;
     it.setID(task_id());
     it.setDownloadedFileName(filename);
-    download_collection_model_->on_downloadedFileNameChange(it);
+    DownloadCollectionModel::instance().on_downloadedFileNameChange(it);
 
     on_setExtractedFilename(filename);
 }
@@ -185,7 +184,7 @@ void DownloadTask::on_setExtractedFilename(const QString& filename)
     ItemDC it;
     it.setID(task_id());
     it.setExtractedFileName(filename);
-    download_collection_model_->on_extractedFileNameChange(it);
+    DownloadCollectionModel::instance().on_extractedFileNameChange(it);
 
     first_extracted_filename_ = filename;
 }
@@ -196,12 +195,12 @@ void DownloadTask::setStatusInModel(ItemDC::eSTATUSDC a_status, int arg /* = 0*/
     ItemDC it;
     it.setID(task_id_);
     it.setStatus(a_status);
-    download_collection_model_->on_statusChange(it);
+    DownloadCollectionModel::instance().on_statusChange(it);
 
     if (a_status == ItemDC::eWAITING)
     {
         it.setWaitingTime(arg);
-        download_collection_model_->on_waitingTimeChange(it);
+        DownloadCollectionModel::instance().on_waitingTimeChange(it);
     }
 }
 
@@ -213,7 +212,7 @@ void DownloadTask::onFileToBeReleased(const QString& filename)
 
 float DownloadTask::getSpeed() const
 {
-    auto it = download_collection_model_->getItemByID(task_id_);
+    auto it = DownloadCollectionModel::instance().getItemByID(task_id_);
     return it.getSpeed();
 }
 
@@ -226,14 +225,14 @@ void DownloadTask::setSpeedLimit(int kbps)
         ItemDC it;
         it.setID(task_id_);
         it.setSpeed(std::min(static_cast<float>(kbps), getSpeed()));
-        download_collection_model_->on_speedChange(it);
+        DownloadCollectionModel::instance().on_speedChange(it);
     }
 }
 #endif // ALLOW_TRAFFIC_CONTROL
 
 void DownloadTask::updatePriority()
 {
-    auto it = download_collection_model_->getItemByID(task_id_);
+    auto it = DownloadCollectionModel::instance().getItemByID(task_id_);
     priority_level_ = it.priority();
 }
 

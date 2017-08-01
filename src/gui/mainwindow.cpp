@@ -89,7 +89,7 @@ MainWindow::MainWindow()
     VERIFY(connect(m_pModel, SIGNAL(overallProgress(int)), this, SLOT(onOverallProgress(int))));
     VERIFY(connect(m_pModel, SIGNAL(activeDownloadsNumberChanged(int)), this, SLOT(onActiveDownloadsNumberChanged(int))));
 
-    m_dlManager = new DownloadManager(m_pModel, this);
+    m_dlManager = new DownloadManager(this);
     VERIFY(connect(m_dlManager, SIGNAL(updateButtons()), this, SLOT(refreshButtons())));
     VERIFY(connect(m_dlManager, SIGNAL(needLogin(utilities::ICredentialsRetriever*)), this, SLOT(needLogin(utilities::ICredentialsRetriever*))));
 
