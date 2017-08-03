@@ -4,31 +4,30 @@
 
 DownloadType::Type DownloadType::determineType(const QString& linkOrPath)
 {
-    Type res = Unknown;
-    QRegExp torrentRx(".*\\.torrent$");
-    QRegExp magnetRx("^magnet:");
-    QRegExp webUrlRx("^https?://");
-    QRegExp fileRx("^[a-z]:[\\\\/]|^/|^~/|^file:///", Qt::CaseInsensitive);
+    const QRegExp torrentRx(".*\\.torrent$");
+    const QRegExp magnetRx("^magnet:");
+    const QRegExp webUrlRx("^https?://");
+    const QRegExp fileRx("^[a-z]:[\\\\/]|^/|^~/|^file:///", Qt::CaseInsensitive);
 
     // first priority of this check is presence of "http",
     // then check for ".torrent"
     // after that may check the rest...
     if (linkOrPath.contains(webUrlRx))
     {
-        res = RemoteUrl;
+        return RemoteUrl;
     }
     else if (linkOrPath.contains(torrentRx))
     {
-        res = TorrentFile;
+        return TorrentFile;
     }
     else if (linkOrPath.contains(magnetRx))
     {
-        res = MagnetLink;
+        return MagnetLink;
     }
     else if (linkOrPath.contains(fileRx))
     {
-        res = LocalFile;
+        return LocalFile;
     }
 
-    return res;
+    return Unknown;
 }

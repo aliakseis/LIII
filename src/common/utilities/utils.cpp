@@ -423,7 +423,7 @@ void runWithPrivileges(const wchar_t* arg, WId parent)
 
     BOOL res = ShellExecuteExW(&shex);
 
-    qDebug() << Q_FUNC_INFO << (res != FALSE ? " succeeded" : " failed");
+    qDebug() << Q_FUNC_INFO << (res ? " succeeded" : " failed");
 }
 #endif
 
