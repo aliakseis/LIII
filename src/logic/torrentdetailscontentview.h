@@ -17,7 +17,6 @@ private Q_SLOTS:
     void on_ItemOpenFolder();
     void on_ItemOpenFile();
 
-protected:
-    TorrentContentFilterModel* m_model;
-
+private:
+    TorrentContentFilterModel* model();
 };

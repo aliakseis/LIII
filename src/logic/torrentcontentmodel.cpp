@@ -288,13 +288,12 @@ void TorrentContentModel::setupModelData(const libtorrent::torrent_info& t, cons
 
     TorrentContentModelItem* parent = m_rootItem;
     TorrentContentModelItem* root_folder = parent;
-    TorrentContentModelItem* current_parent = 0;
 
     // Iterate over files
     for (int i = 0; i < t.num_files(); ++i)
     {
         const libtorrent::file_entry& fentry = t.file_at(i);
-        current_parent = root_folder;
+        TorrentContentModelItem* current_parent = root_folder;
 
         QString path = QString::fromUtf8(fentry.path.c_str());
 

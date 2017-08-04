@@ -2,6 +2,9 @@
 #include "torrentcontentmodelitem.h"
 #include <QDebug>
 
+#include <algorithm>
+#include <iterator>
+
 
 void TorrentContentModelItem::init(QString name, const qlonglong size)
 {
@@ -235,8 +238,10 @@ int TorrentContentModelItem::getPriority() const
 void TorrentContentModelItem::setPriority(int new_prio, bool update_parent)
 {
     Q_ASSERT(new_prio != prio::PARTIAL || m_type == FOLDER); // PARTIAL only applies to folders
-    const int old_prio = getPriority();
-    if (old_prio == new_prio) { return; }
+    if (getPriority() == new_prio)
+    { 
+        return; 
+    }
     qDebug("setPriority(%s, %d)", qPrintable(getName()), new_prio);
 
     m_itemData.replace(COL_PRIO, new_prio);
@@ -280,21 +285,10 @@ void TorrentContentModelItem::updatePriority()
     if (m_childItems.isEmpty()) { return; }
     // If all children have the same priority
     // then the folder should have the same priority
-    const int prio = m_childItems.first()->getPriority();
-    for (int i = 1; i < m_childItems.size(); ++i)
-    {
-        if (m_childItems.at(i)->getPriority() != prio)
-        {
-            setPriority(prio::PARTIAL);
-            return;
-        }
-    }
-    // All child items have the same priority
-    // Update own if necessary
-    if (prio != getPriority())
-    {
-        setPriority(prio);
-    }
+    const int priority = m_childItems.first()->getPriority();
+    const bool same_priprities = std::all_of(std::next(m_childItems.begin()), m_childItems.end(),
+        [priority](auto item) { return item->getPriority() == priority; });
+    setPriority(same_priprities? priority : prio::PARTIAL);
 }
 
 TorrentContentModelItem* TorrentContentModelItem::childWithName(const QString& name) const

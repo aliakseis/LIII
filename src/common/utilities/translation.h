@@ -128,7 +128,8 @@ public:
     }
     bool equals(const IQStringSetterDelegate* other) const override
     {
-        const RetranslateUICallerImpl<T, T_ui>* otherImpl = dynamic_cast<const RetranslateUICallerImpl<T, T_ui>*>(other);
+        const RetranslateUICallerImpl<T, T_ui>* otherImpl 
+            = dynamic_cast<const RetranslateUICallerImpl<T, T_ui>*>(other);
         return otherImpl != 0 && m_obj == otherImpl->m_obj;
     }
     size_t hash() const override
