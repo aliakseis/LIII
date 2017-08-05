@@ -34,36 +34,40 @@ inline ItemDC::eSTATUSDC torrentStatus2ItemDCStatus(libtorrent::torrent_status::
 
 
 #define ALERTS_OF_INTEREST \
-    (torrent_finished_alert)\
     (save_resume_data_alert)\
-    (save_resume_data_failed_alert)\
-    (file_renamed_alert)\
-    (torrent_deleted_alert)\
     (storage_moved_alert)\
-    (storage_moved_failed_alert)\
     (metadata_received_alert)\
     (file_error_alert)\
-    (file_completed_alert)\
     (torrent_paused_alert)\
     (torrent_resumed_alert)\
-    (tracker_error_alert)\
-    (tracker_reply_alert)\
-    (tracker_warning_alert)\
-    (portmap_error_alert)\
-    (portmap_alert)\
-    (peer_blocked_alert)\
-    (peer_ban_alert)\
-    (fastresume_rejected_alert)\
-    (url_seed_alert)\
-    (listen_succeeded_alert)\
-    (torrent_checked_alert)\
-    (add_torrent_alert)\
     (torrent_removed_alert)\
     (stats_alert)\
-    (block_downloading_alert)\
-    (block_timeout_alert)\
     (state_changed_alert)
 
+#if 0
+
+(torrent_finished_alert)\
+(save_resume_data_failed_alert)\
+(file_renamed_alert)\
+(torrent_deleted_alert)\
+(storage_moved_failed_alert)\
+(file_completed_alert)\
+(tracker_error_alert)\
+(tracker_reply_alert)\
+(tracker_warning_alert)\
+(portmap_error_alert)\
+(portmap_alert)\
+(peer_blocked_alert)\
+(peer_ban_alert)\
+(fastresume_rejected_alert)\
+(url_seed_alert)\
+(listen_succeeded_alert)\
+(torrent_checked_alert)\
+(add_torrent_alert)\
+(block_downloading_alert)\
+(block_timeout_alert)\
+
+#endif
 
 #define ALERT_TYPE_DEF(r, data, elem) struct elem;
 
@@ -125,9 +129,6 @@ private:
     void handler(libtorrent::storage_moved_alert const& a);
     void handler(libtorrent::save_resume_data_alert const& a);
     void handler(libtorrent::state_changed_alert const& a);
-
-    template<typename T>
-    void handler(T const& a);
 
 private:
     QMap<libtorrent::torrent_handle, int> m_handleToId;

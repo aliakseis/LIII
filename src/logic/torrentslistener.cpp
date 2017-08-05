@@ -304,12 +304,6 @@ void TorrentsListener::handler(libtorrent::state_changed_alert const& a)
     emit signalTryNewtask(); // TODO fine tune
 }
 
-template<typename T>
-void TorrentsListener::handler(T const& a)
-{
-    TRACE_ALERT
-}
-
 
 void TorrentsListener::onTorrentAdded(libtorrent::torrent_handle handle, void* userData)
 {
