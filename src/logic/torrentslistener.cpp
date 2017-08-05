@@ -283,18 +283,18 @@ void TorrentsListener::handler(libtorrent::state_changed_alert const& a)
         item.setStatus(ItemDC::eSEEDING);
         break;
     case libtorrent::torrent_status::finished:
-    {
-        item.setStatus(ItemDC::eFINISHED);
-        item.setSpeed(0);
-        item.setPercentDownload(100);
-        libtorrent::torrent_status status = a.handle.status(libtorrent::torrent_handle::query_accurate_download_counters);
-        item.setSize(status.total_wanted);
-        item.setSizeCurrDownl(status.total_wanted_done);
-        item.setDownloadType(DownloadType::TorrentFile);
-        emit sizeCurrDownlChange(item);
-        emit speedChange(item);
-    }
-    break;
+        {
+            item.setStatus(ItemDC::eFINISHED);
+            item.setSpeed(0);
+            item.setPercentDownload(100);
+            libtorrent::torrent_status status = a.handle.status(libtorrent::torrent_handle::query_accurate_download_counters);
+            item.setSize(status.total_wanted);
+            item.setSizeCurrDownl(status.total_wanted_done);
+            item.setDownloadType(DownloadType::TorrentFile);
+            emit sizeCurrDownlChange(item);
+            emit speedChange(item);
+        }
+        break;
     default:
         return;
     }
