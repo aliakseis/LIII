@@ -518,17 +518,13 @@ bool DownloadCollectionModel::deleteURLFromModel(ItemID a_ID, int deleteWithFile
 
 void DownloadCollectionModel::deleteALLFinished()
 {
-    for (int i = 0; i < getRootItem()->childCount();)
+    for (int i = getRootItem()->childCount(); --i >= 0; )
     {
         TreeItem* item = getRootItem()->child(i);
         if (item->isCompleted())
         {
             int l_ID = item->getID();
             deleteURLFromModel(l_ID);
-        }
-        else
-        {
-            ++i;
         }
     }
 

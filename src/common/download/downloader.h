@@ -54,7 +54,7 @@ struct SpeedCalculation
 {
     QTime previous_time;
     qint64 previous_progress;
-    float speed;
+    double speed;
     SpeedCalculation() : previous_progress(0), speed(0) {}
 }; // SpeedCalculation
 
@@ -347,7 +347,6 @@ private:
         header_checked_ = false;
         size_checked_ = false;
         redirect_count_ = 0;
-        download_time_.start();
         network_manager_ = network_manager;
         network_manager_catcher_->setSource(network_manager);
         network_manager_catcher_->connectOnAuthenticationRequired(
@@ -770,18 +769,15 @@ private:
         }
         total_file_size_ = total + paused_download_size_;
         observer_->onProgress(current + paused_download_size_);
-        QTime current_time = QTime::currentTime();
-        if (!utilities::IsInBounds(0, download_time_.msecsTo(current_time), 100)) // eliminate speed value overflow
+        const QTime current_time = QTime::currentTime();
+        int calculation_interval = speed_calculation_.previous_time.msecsTo(current_time);
+        if (calculation_interval > 1000)
         {
-            int calculation_interval = speed_calculation_.previous_time.msecsTo(current_time);
-            if (calculation_interval > 1000)
-            {
-                speed_calculation_.speed = (current - speed_calculation_.previous_progress) * 1000.f / calculation_interval;
-                speed_calculation_.previous_progress = current;
-                speed_calculation_.previous_time = current_time;
+            speed_calculation_.speed = (current - speed_calculation_.previous_progress) * 1000. / calculation_interval;
+            speed_calculation_.previous_progress = current;
+            speed_calculation_.previous_time = current_time;
 
-                observer_->onSpeed(speed_calculation_.speed); // update speed only when changed
-            }
+            observer_->onSpeed(speed_calculation_.speed); // update speed only when changed
         }
     }
 
@@ -884,7 +880,6 @@ private:
     QString filename_;
     QFile output_;
     QUrl current_url_;
-    QTime download_time_;
     qint64 paused_download_size_, expected_size_;
     QPointer<QNetworkReply> current_download_;
     QNetworkReply* current_header_;

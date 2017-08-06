@@ -87,32 +87,29 @@ QString torrentRootItemPath(const libtorrent::torrent_handle& handle)
 
         if (torrInfo.num_files() > 0)
         {
-            std::string firstFile = torrInfo.file_at(0).path;
-            int minLength = firstFile.length();
+            const std::string& firstFile = torrInfo.file_at(0).path;
+            auto end = firstFile.cend();
             for (int i = 1; i < torrInfo.num_files(); ++i)
             {
                 const libtorrent::file_entry& fentry = torrInfo.file_at(i);
 
-                auto itPair = std::mismatch(firstFile.begin(), firstFile.begin() + std::min(firstFile.size(), fentry.path.size()), fentry.path.begin());
-                int compareResult = std::distance(firstFile.begin(), itPair.first);
-
-                if (utilities::IsInBounds(1, compareResult, minLength))
-                {
-                    minLength = compareResult;
-                    firstFile = firstFile.substr(0, minLength);
-                }
+                auto loc = std::mismatch(firstFile.cbegin(), end, fentry.path.cbegin(), fentry.path.cend());
+                if (std::distance(loc.first, end) > 0) 
+                    end = loc.first;
             }
 
-            int lastSlash = firstFile.find_last_of("/\\");
-            if (lastSlash > 0 && lastSlash < minLength)
+            auto minLength = std::distance(firstFile.cbegin(), end);
+
+            auto lastSlash = firstFile.find_last_of("/\\", minLength);
+            if (lastSlash != std::string::npos && lastSlash > 0)
             {
-                firstFile = firstFile.substr(0, lastSlash);
+                minLength = lastSlash;
             }
 
             auto lhs = handle.save_path();
             if (!lhs.empty() && lhs[lhs.size() - 1] != '\\' && lhs[lhs.size() - 1] != '/')
                 lhs += QDir::separator().toLatin1();
-            result = QString::fromUtf8((lhs + firstFile).c_str());
+            result = QString::fromUtf8((lhs + firstFile.substr(0, minLength)).c_str());
         }
     }
     return result;
