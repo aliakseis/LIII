@@ -92,10 +92,8 @@ QString torrentRootItemPath(const libtorrent::torrent_handle& handle)
             for (int i = 1; i < torrInfo.num_files(); ++i)
             {
                 const libtorrent::file_entry& fentry = torrInfo.file_at(i);
-
                 auto loc = std::mismatch(firstFile.cbegin(), end, fentry.path.cbegin(), fentry.path.cend());
-                if (std::distance(loc.first, end) > 0) 
-                    end = loc.first;
+                end = loc.first;
             }
 
             auto minLength = std::distance(firstFile.cbegin(), end);
