@@ -48,8 +48,7 @@ QTabWidget* TabbedDialogCombo::getTabParent()
 {
     for (QObject* parentObj = parent(); parentObj != 0; parentObj = parentObj->parent())
     {
-        QTabWidget* tabWidget = qobject_cast<QTabWidget*>(parentObj);
-        if (tabWidget != 0)
+        if (QTabWidget* tabWidget = qobject_cast<QTabWidget*>(parentObj))
         {
             return tabWidget;
         }

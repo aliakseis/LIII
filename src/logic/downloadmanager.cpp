@@ -51,12 +51,12 @@ void DownloadManager::startLoad()
 {
     pushQueuedDownloads();
 
-    if (! isPossibleStartDownload())
+    if (!isPossibleStartDownload())
     {
         return;
     }
 
-    if (! m_prepareTasks.isEmpty())
+    if (!m_prepareTasks.isEmpty())
     {
         auto taskIt = std::find_if(m_prepareTasks.begin(), m_prepareTasks.end(), std::mem_fn(&DownloadTask::ready_to_download));
         if (taskIt != m_prepareTasks.end())

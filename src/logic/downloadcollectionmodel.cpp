@@ -204,7 +204,8 @@ QVariant DownloadCollectionModel::data(const QModelIndex& index, int role /* = Q
         }
         return {};
     }
-    else if (role != Qt::DisplayRole)
+
+    if (role != Qt::DisplayRole)
     {
         return {};
     }
@@ -215,87 +216,50 @@ QVariant DownloadCollectionModel::data(const QModelIndex& index, int role /* = Q
         return {};
     }
 
-    QVariant displayRoleResult;
-    if (l_colunm == eDC_ID)
+    switch (l_colunm)
     {
-        displayRoleResult = item->getID();
-    }
-    else if (l_colunm == eDC_url)
-    {
-        QString title = item->downloadedFileName();
-        displayRoleResult = utilities::GetFileName(title.isEmpty() ? item->initialURL() : title);
-    }
+    case eDC_ID:
+        return item->getID();
+    case eDC_url:
+        {
+            QString title = item->downloadedFileName();
+            return utilities::GetFileName(title.isEmpty() ? item->initialURL() : title);
+        }
 #ifdef DEVELOPER_FEATURES
-    else if (l_colunm == eDC_priority)
-    {
-        displayRoleResult = item->priority();
-    }
+    case eDC_priority:
+        return item->priority();
 #endif
-    else if (l_colunm == eDC_Status)
-    {
+    case eDC_Status:
         if (item->getStatus() != ItemDC::eERROR)
         {
-            displayRoleResult = statusName(item);
+            return statusName(item);
         }
         else
         {
             const QString errorDescr = item->errorDescription();
-            displayRoleResult = (!errorDescr.isEmpty() ? tr("Error: ") + errorDescr : statusName(item));
+            return (!errorDescr.isEmpty() ? tr("Error: ") + errorDescr : statusName(item));
         }
-    }
-    else if (l_colunm == eDC_Speed)
-    {
-        float l_speed = item->getSpeed();
-        if (l_speed <= std::numeric_limits<float>::epsilon())
+    case eDC_Speed:
+    case eDC_Speed_Uploading:
         {
-            displayRoleResult = QString();
+            const float speed = (l_colunm == eDC_Speed) ? item->getSpeed() : item->getSpeedUpload();
+            return (speed <= std::numeric_limits<float>::epsilon())
+                ? QString()
+                : QString("%1KB/s").arg(speed, 0, 'f', 1);
         }
-        else
-        {
-            displayRoleResult = QString("%1KB/s").arg(item->getSpeed(), 0, 'f', 1);
-        }
+    case eDC_percentDownl:
+        return item->getPercentDownload();
+    case eDC_Size:
+        return (item->getSize() == 0) ? ::Tr::Tr(TREEVIEW_UNKNOWN_SIZE) : item->sizeForView();
+    case eDC_Source:
+        return item->source();
+    case eDC_downlFileName:
+        return item->downloadedFileName();
+    case eDC_extrFileName:
+        return item->extractedFileNames();
+    default:
+        return {};
     }
-    else if (l_colunm == eDC_Speed_Uploading)
-    {
-        float l_speed = item->getSpeedUpload();
-        if (l_speed <= std::numeric_limits<float>::epsilon())
-        {
-            displayRoleResult = QString();
-        }
-        else
-        {
-            displayRoleResult = QString("%1KB/s").arg(l_speed, 0, 'f', 1);
-        }
-    }
-    else if (l_colunm == eDC_percentDownl)
-    {
-        displayRoleResult = item->getPercentDownload();
-    }
-    else if (l_colunm == eDC_Size)
-    {
-        if (item->getSize() == 0)
-        {
-            displayRoleResult = ::Tr::Tr(TREEVIEW_UNKNOWN_SIZE);
-        }
-        else
-        {
-            displayRoleResult = item->sizeForView();
-        }
-    }
-    else if (l_colunm == eDC_Source)
-    {
-        displayRoleResult = item->source();
-    }
-    else if (l_colunm == eDC_downlFileName)
-    {
-        displayRoleResult = item->downloadedFileName();
-    }
-    else if (l_colunm == eDC_extrFileName)
-    {
-        displayRoleResult = item->extractedFileNames();
-    }
-
-    return displayRoleResult;
 }
 
 bool DownloadCollectionModel::setData(const QModelIndex& index, const QVariant& value, int role /* = Qt::EditRole*/)
