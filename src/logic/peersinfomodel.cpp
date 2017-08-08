@@ -45,14 +45,9 @@ QVariant PeersInfoModel::data(const QModelIndex& index, int role) const
         case PeerProgress:
             return QString("%1 %").arg(peerInfo.progress * 100, 0, 'f', 0);
         case SpeedUpload:
-            {
-                const float l_speed = float(peerInfo.up_speed) / 1024.f;
-                return (l_speed <= std::numeric_limits<float>::epsilon())
-                    ? QString() : tr("%1KB/s").arg(l_speed, 0, 'f', 1);
-            }
         case SpeedDownload:
             {
-                const float l_speed = float(peerInfo.down_speed) / 1024.f;
+                const float l_speed = ((column == SpeedUpload) ? peerInfo.up_speed : peerInfo.down_speed) / 1024.f;
                 return (l_speed <= std::numeric_limits<float>::epsilon())
                     ? QString() : tr("%1KB/s").arg(l_speed, 0, 'f', 1);
             }
