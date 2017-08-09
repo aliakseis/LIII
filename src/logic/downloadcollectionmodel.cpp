@@ -995,7 +995,7 @@ void DownloadCollectionModel::setContinueDownloadItem(TreeItem* itmSource)
                 emit dataChanged(index(itmSource, eDC_url), index(itmSource, eDC_Status));
                 emit signalContinueDownloadItemWithID(id, itmSource->getDownloadType());
             }
-            return ;
+            return;
         }
     }
     ItemDC l_oItm;
@@ -1056,7 +1056,7 @@ void DownloadCollectionModel::saveToFile()
     {
         QMessageBox::critical(0, tr("Error"), tr("Not enough space on disk '%1:'\nCannot save data!").arg(folder.at(0)));
         qWarning() << "Not enough space on system disk!";
-        return ;
+        return;
     }
 #endif
 

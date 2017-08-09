@@ -363,7 +363,7 @@ void DownloadCollectionTreeView::on_OpenFolder()
     }
     else if (type == DownloadType::MagnetLink)
     {
-        return ;
+        return;
     }
     else
     {

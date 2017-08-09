@@ -20,7 +20,7 @@ public:
     DownloadManager(QObject* parent = NULL);
     ~DownloadManager();
 
-    inline bool isWorking() const {    return !(m_activeTasks.isEmpty() && m_prepareTasks.isEmpty()); }
+    inline bool isWorking() const { return !(m_activeTasks.isEmpty() && m_prepareTasks.isEmpty()); }
     void prepareToExit(); // may be called from another thread
 
     void addItemsToModel(const QStringList& urls, DownloadType::Type type);

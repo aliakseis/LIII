@@ -11,13 +11,13 @@ using namespace download;
 
 
 DownloadTask::DownloadTask(int task_id, const QString& url, QObject* parent)
-    :    QObject(parent),
-        downloader_(new DownloaderType(this)),
-        network_manager_(new QNetworkAccessManager(this)),
-        url_(url),
-        total_file_size_(0),
-        task_id_(task_id), priority_level_(0),
-        ready_to_download_(false)
+    : QObject(parent),
+    downloader_(new DownloaderType(this)),
+    network_manager_(new QNetworkAccessManager(this)),
+    url_(url),
+    total_file_size_(0),
+    task_id_(task_id), priority_level_(0),
+    ready_to_download_(false)
 {
     VERIFY(connect(&DownloadCollectionModel::instance(), SIGNAL(signalModelUpdated()), SLOT(updatePriority())));
     downloader_->setObserver(this);
