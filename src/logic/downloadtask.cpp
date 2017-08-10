@@ -27,7 +27,6 @@ void DownloadTask::start()
 {
     auto it = DownloadCollectionModel::instance().getItemByID(task_id_);
     priority_level_ = it.priority();
-    update_model_time_ = QTime::currentTime();
 
     downloader_->setDestinationPath(global_functions::GetVideoFolder());
     downloader_->setExpectedFileSize(it.getSize());
@@ -185,8 +184,6 @@ void DownloadTask::on_setExtractedFilename(const QString& filename)
     it.setID(task_id());
     it.setExtractedFileName(filename);
     DownloadCollectionModel::instance().on_extractedFileNameChange(it);
-
-    first_extracted_filename_ = filename;
 }
 
 

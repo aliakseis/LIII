@@ -6,8 +6,7 @@ class PeersSortFilterProxyModel : public QSortFilterProxyModel
 {
     Q_OBJECT
 public:
-    typedef  QSortFilterProxyModel base_class;
-    explicit PeersSortFilterProxyModel(QObject* parent = 0);
+    using QSortFilterProxyModel::QSortFilterProxyModel;
 protected:
     virtual bool lessThan(const QModelIndex& left, const QModelIndex& right) const override;
 };

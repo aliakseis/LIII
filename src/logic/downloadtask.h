@@ -26,7 +26,7 @@ public:
     DownloadTask(
         int task_id,
         const QString& url,
-        QObject* parent = NULL);
+        QObject* parent = nullptr);
     ~DownloadTask();
     DownloadTask(const DownloadTask&) = delete;
     DownloadTask& operator =(const DownloadTask&) = delete;
@@ -65,8 +65,7 @@ private:
 
     QScopedPointer<DownloaderType> downloader_;
     QScopedPointer<QNetworkAccessManager> network_manager_;
-    QTime update_model_time_;
-    QString url_, filename_, first_extracted_filename_, direct_link_;
+    QString url_, filename_, direct_link_;
     qint64 total_file_size_;
     int task_id_, priority_level_;
     bool ready_to_download_;

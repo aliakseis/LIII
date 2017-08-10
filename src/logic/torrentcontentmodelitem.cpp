@@ -134,17 +134,9 @@ void TorrentContentModelItem::setProgress(qulonglong done)
     Q_ASSERT(m_type != ROOT);
     if (getPriority() == 0) { return; }
     m_totalDone = done;
-    qulonglong size = getSize();
+    const qulonglong size = getSize();
     Q_ASSERT(m_totalDone <= size);
-    qreal progress;
-    if (size > 0)
-    {
-        progress = m_totalDone / (float)size;
-    }
-    else
-    {
-        progress = 1.;
-    }
+    const qreal progress = (size > 0) ? m_totalDone / (qreal)size : 1.;
     Q_ASSERT(progress >= 0. && progress <= 1.);
     m_itemData.replace(COL_PROGRESS, progress);
     m_parentItem->updateProgress();

@@ -242,8 +242,7 @@ int AddTorrentForm::exec()
 
 void AddTorrentForm::checkAcceptAvailable()
 {
-    QPushButton* okBtn = ui->buttonBox_2->button(QDialogButtonBox::Ok);
-    if (okBtn)
+    if (QPushButton* okBtn = ui->buttonBox_2->button(QDialogButtonBox::Ok))
     {
         okBtn->setEnabled(!m_contentModel->model()->allFiltered());
     }

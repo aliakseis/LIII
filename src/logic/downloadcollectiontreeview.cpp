@@ -179,17 +179,15 @@ void DownloadCollectionTreeView::deleteSelectedRows(bool totally)
         for (const QModelIndex & index : selectionModel()->selectedRows())
         {
             TreeItem* item = model()->getItem(index);
-            QString arch_file;
             QStringList extractFiles;
             if (totally || (item->getStatus() != ItemDC::eFINISHED && item->getStatus() != ItemDC::eSEEDING))
             {
-                arch_file = item->downloadedFileName();
+                QString arch_file = item->downloadedFileName();
                 extractFiles = item->extractedFileNames();
 
                 safelyDeleteVideoFile(arch_file);
             }
-            int deleteWithFiles =
-                totally ? libtorrent::session::delete_files : 0;
+            int deleteWithFiles = totally ? libtorrent::session::delete_files : 0;
             model()->deleteURLFromModel(item->getID(), deleteWithFiles);
 
             for (const QString& fname : qAsConst(extractFiles))
@@ -429,15 +427,15 @@ bool DownloadCollectionTreeView::cancelDownloadingQuestion(bool totally)
 
     bool result = true;
 
-    if (QSettings().value(ShowCancelWarning, ShowCancelWarning_Default).toBool()
-        && !totally)
+    if (QSettings().value(ShowCancelWarning, ShowCancelWarning_Default).toBool() && !totally)
     {
         QModelIndexList selectedRows = selectionModel()->selectedRows();
 
-        auto foundNotFinished = std::find_if(selectedRows.constBegin(), selectedRows.constEnd(), [this](const QModelIndex & idx) ->bool
-        {
-            return !model()->getItem(idx)->isCompleted();
-        });
+        auto foundNotFinished = std::find_if(selectedRows.constBegin(), selectedRows.constEnd(), 
+            [this](const QModelIndex& idx)
+            {
+                return !model()->getItem(idx)->isCompleted();
+            });
 
         if (foundNotFinished != selectedRows.constEnd())
         {

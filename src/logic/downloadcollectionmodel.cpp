@@ -174,13 +174,14 @@ QVariant DownloadCollectionModel::data(const QModelIndex& index, int role /* = Q
         return {};
     }
 
-    int l_colunm = index.column();
-
     if (role == Qt::TextAlignmentRole)
     {
         return int(Qt::AlignLeft | Qt::AlignVCenter);
     }
-    else if (role == Qt::ToolTipRole)
+
+    const int l_colunm = index.column();
+
+    if (role == Qt::ToolTipRole)
     {
         if (l_colunm == eDC_Status)
         {

@@ -17,7 +17,7 @@ class DownloadManager: public QObject
     Q_OBJECT
 public:
 
-    DownloadManager(QObject* parent = NULL);
+    DownloadManager(QObject* parent = nullptr);
     ~DownloadManager();
 
     inline bool isWorking() const { return !(m_activeTasks.isEmpty() && m_prepareTasks.isEmpty()); }

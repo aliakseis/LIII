@@ -1,11 +1,6 @@
 #include "peersinfoform_proxy_model.h"
 #include "peersinfomodel.h"
 
-PeersSortFilterProxyModel::PeersSortFilterProxyModel(QObject* parent)
-    : base_class(parent)
-{
-
-}
 
 bool PeersSortFilterProxyModel::lessThan(const QModelIndex& left, const QModelIndex& right) const
 {
@@ -30,5 +25,5 @@ bool PeersSortFilterProxyModel::lessThan(const QModelIndex& left, const QModelIn
             return leftPeerInfo.up_speed > rightPeerInfo.up_speed;
         }
     }
-    return base_class::lessThan(left, right);
+    return QSortFilterProxyModel::lessThan(left, right);
 }
