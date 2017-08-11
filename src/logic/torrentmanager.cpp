@@ -337,14 +337,8 @@ libtorrent::torrent_handle TorrentManager::addTorrent(
     const std::vector<boost::uint8_t>* file_priorities)
 {
     libtorrent::add_torrent_params torrentParams;
-    if (savePath.isEmpty())
-    {
-        torrentParams.save_path = global_functions::GetVideoFolder().toUtf8().constData();
-    }
-    else
-    {
-        torrentParams.save_path = savePath.toUtf8().constData();
-    }
+    torrentParams.save_path = 
+        (savePath.isEmpty() ? global_functions::GetVideoFolder() : savePath).toUtf8().constData();
     torrentParams.flags = libtorrent::add_torrent_params::flag_paused | libtorrent::add_torrent_params::flag_override_resume_data;// | libtorrent::add_torrent_params::flag_update_subscribe;
     if (QSettings().value(TorrentsSequentialDownload, TorrentsSequentialDownload_Default).toBool())
         torrentParams.flags |= libtorrent::add_torrent_params::flag_sequential_download;
