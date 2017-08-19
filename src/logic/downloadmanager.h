@@ -46,7 +46,7 @@ private Q_SLOTS:
     void startTaskDownload(int id);
 #ifdef ALLOW_TRAFFIC_CONTROL
     void UpdateSpeedLimits();
-    void _UpdateSpeedLimitsImpl();
+    void UpdateSpeedLimitsImpl();
 #endif // ALLOW_TRAFFIC_CONTROL
 
 private:

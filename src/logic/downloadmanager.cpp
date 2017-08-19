@@ -304,12 +304,12 @@ void DownloadManager::setSpeedLimit(int kbps)
 
 void DownloadManager::UpdateSpeedLimits()
 {
-    QTimer::singleShot(1000, this, &DownloadManager::_UpdateSpeedLimitsImpl);
+    QTimer::singleShot(1000, this, &DownloadManager::UpdateSpeedLimitsImpl);
 }
 
 const int RESERVE_TASK_LIMIT = 2;
 
-void DownloadManager::_UpdateSpeedLimitsImpl()
+void DownloadManager::UpdateSpeedLimitsImpl()
 {
     if (m_activeTasks.empty())
     {

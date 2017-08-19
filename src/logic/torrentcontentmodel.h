@@ -5,6 +5,7 @@
 #include <libtorrent/torrent_info.hpp>
 #include <libtorrent/torrent_handle.hpp>
 
+#include <functional>
 #include <vector>
 
 #include <QAbstractItemModel>
@@ -78,5 +79,5 @@ void TorrentContentModel::getFilesPriorities(std::vector<Prior_t>& prio) const
     std::transform(
         m_filesIndex.constBegin(), m_filesIndex.constEnd(),
         std::back_inserter(prio),
-        std::bind(&TorrentContentModelItem::getPriority, std::placeholders::_1));
+        std::mem_fn(&TorrentContentModelItem::getPriority));
 }
