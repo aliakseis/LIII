@@ -114,7 +114,7 @@ void Preferences::apply()
         settings.setValue(ShowSysTrayNotifications, !ui->cbHideAllTrayNotification->isChecked());
 
         int torrent_port = ui->torrentPortSettingEdit->text().toInt();
-        if (torrent_port < 1 && torrent_port > maxPort)
+        if (torrent_port < 1 || torrent_port > maxPort)
         {
             torrent_port = 6881;    // default value;
         }
