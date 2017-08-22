@@ -32,7 +32,8 @@
 DownloadCollectionTreeView::DownloadCollectionTreeView(QWidget* parent)
     : QTreeView(parent), m_internetConnected(true)
 {
-    setHeader(new MainHeaderTreeView(Qt::Horizontal, this));
+    header()->setDefaultAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+
     setSelectionBehavior(QAbstractItemView::SelectRows);
     setSelectionMode(QAbstractItemView::ExtendedSelection);
     setDragEnabled(true);
@@ -566,14 +567,4 @@ void DownloadCollectionTreeView::selectRows(const QModelIndexList& newInds)
 void DownloadCollectionTreeView::onExistingItemAdded(const QModelIndex& index)
 {
     selectRows(QModelIndexList() << index);
-}
-
-MainHeaderTreeView::MainHeaderTreeView(Qt::Orientation orientation, QWidget* parent /*= 0*/) : QHeaderView(orientation, parent)
-{
-    setDefaultAlignment(Qt::AlignLeft | Qt::AlignVCenter);
-}
-
-void MainHeaderTreeView::paintSection(QPainter* painter, const QRect& rect, int logicalIndex) const
-{
-    QHeaderView::paintSection(painter, rect, logicalIndex);
 }

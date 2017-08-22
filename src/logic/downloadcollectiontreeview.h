@@ -5,16 +5,6 @@
 
 #include <array>
 
-class MainHeaderTreeView : public QHeaderView
-{
-    Q_OBJECT
-public:
-    MainHeaderTreeView(Qt::Orientation orientation, QWidget* parent = 0);
-    virtual ~MainHeaderTreeView() {};
-protected:
-    void paintSection(QPainter* painter, const QRect& rect, int logicalIndex) const;
-};
-
 class DownloadCollectionModel;
 class TreeItem;
 class ItemDC;
