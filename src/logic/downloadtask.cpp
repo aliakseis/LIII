@@ -29,7 +29,7 @@ void DownloadTask::start()
     priority_level_ = it.priority();
 
     downloader_->setDestinationPath(global_functions::GetVideoFolder());
-    downloader_->setExpectedFileSize(it.getSize());
+    downloader_->setExpectedFileSize(it.size());
     applyStrategy();
 }
 
@@ -132,8 +132,6 @@ void DownloadTask::onProgress(qint64 downloadedSize)
         total_file_size_ = downloader_->totalFileSize();
         it.setSize(total_file_size_);
         DownloadCollectionModel::instance().on_sizeChange(it);
-        const int percentage = downloadedSize * 100 / total_file_size_;
-        it.setPercentDownload(percentage);
         it.setSizeCurrDownl(downloadedSize);
         DownloadCollectionModel::instance().on_sizeCurrDownlChange(it);
     }
@@ -157,7 +155,6 @@ void DownloadTask::onFinished()
     qint64 fsize = downloader_->totalFileSize();
     auto it = DownloadCollectionModel::instance().getItemByID(task_id());
     it.setStatus(ItemDC::eFINISHED);
-    it.setPercentDownload(100);
     it.setSizeCurrDownl(fsize);
     it.setSize(fsize);
     it.setSpeed(0.f);

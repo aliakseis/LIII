@@ -42,9 +42,6 @@ public:
         , m_eStatus(eQUEUED)
         , m_dSpeed(0.0)
         , m_dSpeedUpload(0.0)
-        , m_percentDownload(0)
-        , m_iSize(0)
-        , m_iSizeCurrDownl(0)
         , m_iWaitingTime(0)
         , m_errorCode(utilities::ErrorCode::eNOTERROR)
         , m_priority(0)
@@ -101,10 +98,12 @@ public:
     Q_PROPERTY(QString downloadedFileName READ downloadedFileName WRITE setDownloadedFileName)
     Q_PROPERTY(QStringList extractedFileNames READ extractedFileNames WRITE setExtractedFileNames)
     Q_PROPERTY(QStringList torrentFilesPriorities READ torrentFilesPriorities WRITE setTorrentFilesPriorities)
-    Q_PROPERTY(QString sizeForView READ sizeForView WRITE setSizeForView)
     Q_PROPERTY(QString hash READ hash WRITE setHash)
     Q_PROPERTY(QString torrentSavePath READ torrentSavePath WRITE setTorrentSavePath)
     Q_PROPERTY(QString errorDescription READ errorDescription WRITE setErrorDescription)
+
+    Q_PROPERTY(qint64 size READ size WRITE setSize)
+    Q_PROPERTY(qint64 sizeCurrDownl READ sizeCurrDownl WRITE setSizeCurrDownl)
 
 #undef Q_PROPERTY
 #define Q_PROPERTY(text)
@@ -131,19 +130,9 @@ public:
     float getSpeedUpload() const { return m_dSpeedUpload; }
     void setSpeedUpload(float val) { m_dSpeedUpload = val; }
 
-    Q_PROPERTY(int percentDWL READ getPercentDownload WRITE setPercentDownload NOTIFY percentDownloadChanged)
-    int getPercentDownload() const { return m_percentDownload; }
-    void setPercentDownload(int val) { m_percentDownload = val; emit percentDownloadChanged(val); }
-
-    Q_PROPERTY(qint64 size READ getSize WRITE setSize)
-    qint64 getSize() const { return m_iSize; }
-    void setSize(qint64 val);
+    int getPercentDownload() const { return (size() > 0) ? (sizeCurrDownl() * 100) / size() : 0; }
 
     void setExtractedFileName(const QString& val);
-
-    Q_PROPERTY(qint64 sizeCurrDownl READ getSizeCurrDownl WRITE setSizeCurrDownl)
-    qint64 getSizeCurrDownl() const { return m_iSizeCurrDownl; }
-    void setSizeCurrDownl(qint64 val);
 
     int getWaitingTime() const { return m_iWaitingTime; }
     void setWaitingTime(int val) { m_iWaitingTime = val; }
@@ -156,8 +145,6 @@ public:
     void setErrorCode(utilities::ErrorCode::ERROR_CODES val) { m_errorCode = val; }
 
     int priority()const {return m_priority;}
-Q_SIGNALS:
-    void percentDownloadChanged(int);
 
 public:
     bool isCompleted() const
@@ -178,9 +165,6 @@ protected:
     eSTATUSDC m_eStatus;
     double m_dSpeed;
     double m_dSpeedUpload;
-    int m_percentDownload;
-    qint64 m_iSize;
-    qint64 m_iSizeCurrDownl;
     int m_iWaitingTime;
 
     QString m_archive1stVolumeFilename;

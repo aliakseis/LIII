@@ -115,7 +115,6 @@ public slots:
     void on_statusChange(const ItemDC& a_item);
     void on_torrentMoved(const ItemDC& a_item);
     void on_speedChange(const ItemDC& a_item);
-    void on_percentDownloadChange(const ItemDC& a_item);
     void on_sizeChange(const ItemDC& a_item);
     void on_downloadedFileNameChange(const ItemDC& a_item);
     void on_extractedFileNameChange(const ItemDC& a_item);

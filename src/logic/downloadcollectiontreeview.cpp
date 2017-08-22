@@ -25,6 +25,7 @@
 #include "addtorrentform.h"
 #include "torrentdetailsform.h"
 #include "torrentmanager.h"
+#include "torrentslistener.h"
 #include <libtorrent/torrent_handle.hpp>
 #include <libtorrent/torrent_status.hpp>
 
@@ -486,8 +487,20 @@ void DownloadCollectionTreeView::showTorrentDetailsDialog(TreeItem* item)
         try
         {
             TorrentDetailsForm dlg(handle, utilities::getMainWindow());
-            VERIFY(connect(item, SIGNAL(percentDownloadChanged(int)), &dlg, SLOT(onProgressUpdated())));
-            if (dlg.exec() == QDialog::Accepted)
+            const int id = item->getID();
+            auto connection = connect(
+                &TorrentsListener::instance(),
+                &TorrentsListener::sizeCurrDownlChange,
+                [id, &dlg](const ItemDC& it)
+                {
+                    if (it.getID() == id)
+                    { 
+                        VERIFY(QMetaObject::invokeMethod(&dlg, "onProgressUpdated", Qt::QueuedConnection));
+                    }
+                });
+            const bool accepted = dlg.exec() == QDialog::Accepted;
+            disconnect(connection);
+            if (accepted)
             {
                 item->setSize(handle.status(0).total_wanted);
                 const auto priorities = dlg.filesPriorities();

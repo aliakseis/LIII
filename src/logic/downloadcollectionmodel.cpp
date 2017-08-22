@@ -251,7 +251,9 @@ QVariant DownloadCollectionModel::data(const QModelIndex& index, int role /* = Q
     case eDC_percentDownl:
         return item->getPercentDownload();
     case eDC_Size:
-        return (item->getSize() == 0) ? ::Tr::Tr(TREEVIEW_UNKNOWN_SIZE) : item->sizeForView();
+        return (item->size() > 0) 
+            ? QString("%1 / %2").arg(utilities::SizeToString(item->sizeCurrDownl(), 2), utilities::SizeToString(item->size(), 2))
+            : ::Tr::Tr(TREEVIEW_UNKNOWN_SIZE);
     case eDC_Source:
         return item->source();
     case eDC_downlFileName:
@@ -306,9 +308,6 @@ bool DownloadCollectionModel::setData(const QModelIndex& index, const QVariant& 
         item->setSpeedUpload(speed);
     }
     break;
-    case eDC_percentDownl:
-        item->setPercentDownload(value.toInt());
-        break;
     case eDC_Size:
     {
         float size;
@@ -497,15 +496,6 @@ void DownloadCollectionModel::deleteALLFinished()
 }
 
 
-void DownloadCollectionModel::on_percentDownloadChange(const ItemDC& a_item)
-{
-    if (TreeItem* item = getRootItem()->findItemByID(a_item.getID()))
-    {
-        item->setPercentDownload(a_item.getPercentDownload());
-        emit dataChanged(index(item, eDC_percentDownl), index(item, eDC_percentDownl));
-    }
-}
-
 void DownloadCollectionModel::on_statusChange(const ItemDC& a_item)
 {
     TreeItem* item = getRootItem()->findItemByID(a_item.getID());
@@ -581,7 +571,7 @@ void DownloadCollectionModel::on_sizeChange(const ItemDC& a_item)
 {
     if (TreeItem* item = getRootItem()->findItemByID(a_item.getID()))
     {
-        item->setSize(a_item.getSize());
+        item->setSize(a_item.size());
         emit dataChanged(index(item, eDC_Size), index(item, eDC_Size));
     }
 }
@@ -627,10 +617,10 @@ void DownloadCollectionModel::on_sizeCurrDownlChange(const ItemDC& a_item)
         return;
     }
 
-    const float l_fSize = a_item.getSize() > 0 ? a_item.getSize() : item->getSize();
-    const float l_fSizeCurr = a_item.getSizeCurrDownl();
+    const float l_fSize = (a_item.size() > 0) ? a_item.size() : item->size();
+    const float l_fSizeCurr = a_item.sizeCurrDownl();
 
-    item->setSizeCurrDownl(a_item.getSizeCurrDownl());
+    item->setSizeCurrDownl(a_item.sizeCurrDownl());
 
     if (l_fSize > 0)
     {
@@ -640,8 +630,6 @@ void DownloadCollectionModel::on_sizeCurrDownlChange(const ItemDC& a_item)
         }
         else
         {
-            int proc = (l_fSizeCurr * 100) / l_fSize;
-            item->setPercentDownload(proc);
             emit dataChanged(index(item, eDC_percentDownl), index(item, eDC_percentDownl));
             calculateAllProgress();
         }
@@ -659,8 +647,8 @@ void DownloadCollectionModel::calculateAllProgress()
     {
         if (item.getStatus() == ItemDC::eDOWNLOADING)
         {
-            total += item.getSize();
-            downloaded += item.getSizeCurrDownl();
+            total += item.size();
+            downloaded += item.sizeCurrDownl();
         }
     });
     emit overallProgress(total ? (downloaded * 100) / total : 100);
@@ -705,12 +693,11 @@ void DownloadCollectionModel::on_ItemDCchange(const ItemDC& a_item)
         return;
     }
 
-    item->setPercentDownload(a_item.getPercentDownload());
     item->setSpeed(a_item.getSpeed());
-    item->setSize(a_item.getSize());
+    item->setSize(a_item.size());
     item->setDownloadedFileName(a_item.downloadedFileName());
     item->setExtractedFileNames(a_item.extractedFileNames());
-    item->setSizeCurrDownl(a_item.getSizeCurrDownl());
+    item->setSizeCurrDownl(a_item.sizeCurrDownl());
     item->setWaitingTime(a_item.getWaitingTime());
     item->setErrorCode(a_item.getErrorCode());
     item->setErrorDescription(a_item.errorDescription());
@@ -729,7 +716,7 @@ void DownloadCollectionModel::on_magnetLinkInfoReceived(const ItemDC& a_item)
         return;
     }
 
-    item->setSize(a_item.getSize());
+    item->setSize(a_item.size());
     item->setDownloadedFileName(a_item.downloadedFileName());
     item->setExtractedFileNames(a_item.extractedFileNames());
     item->setSource(a_item.source());

@@ -36,20 +36,6 @@ void ItemDC::setStatusEx(int val)
     }
 }
 
-void ItemDC::setSize(qint64 val)
-{
-    m_iSize = val;
-
-    setSizeForView(QString("%1 / %2").arg(utilities::SizeToString(m_iSizeCurrDownl, 2)).arg(utilities::SizeToString(m_iSize, 2)));
-}
-
-void ItemDC::setSizeCurrDownl(qint64 val)
-{
-    m_iSizeCurrDownl = val;
-
-    setSizeForView(QString("%1 / %2").arg(utilities::SizeToString(m_iSizeCurrDownl, 2)).arg(utilities::SizeToString(m_iSize, 2)));
-}
-
 QMetaEnum const& downloadTypeMetaEnum()
 {
     static QMetaObject const& mo = DownloadType::staticMetaObject;
