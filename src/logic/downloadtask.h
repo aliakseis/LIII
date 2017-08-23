@@ -52,7 +52,6 @@ private:
     void notifyIfFinished();
     void setStatusInModel(ItemDC::eSTATUSDC a_status, int arg = 0);
     void on_download(const QString& url);
-    void on_setExtractedFilename(const QString& filename);
 
     virtual void onProgress(qint64 bytes_downloaded) override;
     virtual void onSpeed(qint64 bytes_per_second) override;

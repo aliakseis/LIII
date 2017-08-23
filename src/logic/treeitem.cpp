@@ -18,14 +18,6 @@
 
 REGISTER_QOBJECT_METATYPE(TreeItem)
 
-void ItemDC::setExtractedFileName(const QString& a_str)
-{
-    if (!extractedFileNames_.contains(a_str))
-    {
-        extractedFileNames_ << a_str;
-    }
-}
-
 void ItemDC::setStatusEx(int val)
 {
     // TODO validate

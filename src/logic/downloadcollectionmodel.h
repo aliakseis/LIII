@@ -22,7 +22,6 @@ enum eDCMODEL
     eDC_percentDownl,
     eDC_Size,
     eDC_downlFileName,
-    eDC_extrFileName,
     eDC_Source,
 
     // must be in the end of the enum
@@ -117,7 +116,6 @@ public slots:
     void on_speedChange(const ItemDC& a_item);
     void on_sizeChange(const ItemDC& a_item);
     void on_downloadedFileNameChange(const ItemDC& a_item);
-    void on_extractedFileNameChange(const ItemDC& a_item);
     void on_sizeCurrDownlChange(const ItemDC& a_item);
     void on_waitingTimeChange(const ItemDC& a_item);
     void on_ItemDCchange(const ItemDC& a_item);

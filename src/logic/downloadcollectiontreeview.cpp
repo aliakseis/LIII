@@ -150,7 +150,6 @@ void DownloadCollectionTreeView::HeaderResize(/*const int width*/)
 {
     header()->setSectionHidden(eDC_ID, true);
     header()->setSectionHidden(eDC_downlFileName, true);
-    header()->setSectionHidden(eDC_extrFileName, true);
 
     header()->resizeSection(eDC_url, 200);
     header()->resizeSection(eDC_Speed, 73);
@@ -181,21 +180,13 @@ void DownloadCollectionTreeView::deleteSelectedRows(bool totally)
         for (const QModelIndex & index : selectionModel()->selectedRows())
         {
             TreeItem* item = model()->getItem(index);
-            QStringList extractFiles;
             if (totally || (item->getStatus() != ItemDC::eFINISHED && item->getStatus() != ItemDC::eSEEDING))
             {
                 QString arch_file = item->downloadedFileName();
-                extractFiles = item->extractedFileNames();
-
                 safelyDeleteVideoFile(arch_file);
             }
             int deleteWithFiles = totally ? libtorrent::session::delete_files : 0;
             model()->deleteURLFromModel(item->getID(), deleteWithFiles);
-
-            for (const QString& fname : qAsConst(extractFiles))
-            {
-                safelyDeleteVideoFile(fname);
-            }
         }
 
         VERIFY(QMetaObject::invokeMethod(model(), "saveToFile", Qt::QueuedConnection));

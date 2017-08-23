@@ -96,7 +96,6 @@ public:
     Q_PROPERTY(QString actualURL READ actualURL WRITE setActualURL)
     Q_PROPERTY(QString source READ source WRITE setSource)
     Q_PROPERTY(QString downloadedFileName READ downloadedFileName WRITE setDownloadedFileName)
-    Q_PROPERTY(QStringList extractedFileNames READ extractedFileNames WRITE setExtractedFileNames)
     Q_PROPERTY(QStringList torrentFilesPriorities READ torrentFilesPriorities WRITE setTorrentFilesPriorities)
     Q_PROPERTY(QString hash READ hash WRITE setHash)
     Q_PROPERTY(QString torrentSavePath READ torrentSavePath WRITE setTorrentSavePath)
@@ -132,8 +131,6 @@ public:
 
     int getPercentDownload() const { return (size() > 0) ? (sizeCurrDownl() * 100) / size() : 0; }
 
-    void setExtractedFileName(const QString& val);
-
     int getWaitingTime() const { return m_iWaitingTime; }
     void setWaitingTime(int val) { m_iWaitingTime = val; }
 
@@ -144,16 +141,15 @@ public:
     utilities::ErrorCode::ERROR_CODES getErrorCode() const { return m_errorCode; }
     void setErrorCode(utilities::ErrorCode::ERROR_CODES val) { m_errorCode = val; }
 
-    int priority()const {return m_priority;}
+    int priority() const { return m_priority; }
 
-public:
     bool isCompleted() const
     {
         const ItemDC::eSTATUSDC st(getStatus());
         return
             st == ItemDC::eFINISHED ||
             st == ItemDC::eSEEDING  ||
-            st == ItemDC::eERROR ;
+            st == ItemDC::eERROR;
     }
 
 protected:

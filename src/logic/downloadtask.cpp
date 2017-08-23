@@ -171,16 +171,6 @@ void DownloadTask::onFileCreated(const QString& filename)
     it.setID(task_id());
     it.setDownloadedFileName(filename);
     DownloadCollectionModel::instance().on_downloadedFileNameChange(it);
-
-    on_setExtractedFilename(filename);
-}
-
-void DownloadTask::on_setExtractedFilename(const QString& filename)
-{
-    ItemDC it;
-    it.setID(task_id());
-    it.setExtractedFileName(filename);
-    DownloadCollectionModel::instance().on_extractedFileNameChange(it);
 }
 
 

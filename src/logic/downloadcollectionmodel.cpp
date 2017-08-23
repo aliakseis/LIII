@@ -258,8 +258,6 @@ QVariant DownloadCollectionModel::data(const QModelIndex& index, int role /* = Q
         return item->source();
     case eDC_downlFileName:
         return item->downloadedFileName();
-    case eDC_extrFileName:
-        return item->extractedFileNames();
     default:
         return {};
     }
@@ -330,9 +328,6 @@ bool DownloadCollectionModel::setData(const QModelIndex& index, const QVariant& 
     case eDC_downlFileName:
         item->setDownloadedFileName(value.toString());
         break;
-    case eDC_extrFileName:
-        item->setExtractedFileName(value.toString());
-        break;
     default: break;
     }
 
@@ -370,8 +365,6 @@ QVariant DownloadCollectionModel::headerData(int section, Qt::Orientation orient
             return ::Tr::Tr(TREEVIEW_SOURCE_HEADER);
         case eDC_downlFileName:
             return QString("Download fileName");
-        case eDC_extrFileName:
-            return QString("Extract fileName");
         }
     }
     return QVariant();
@@ -593,20 +586,9 @@ void DownloadCollectionModel::on_downloadedFileNameChange(const ItemDC& a_item)
     {
         item->setDownloadedFileName(downloadedFileName);
         emit dataChanged(index(item, eDC_downlFileName), index(item, eDC_downlFileName));
-        item->setExtractedFileNames(QStringList());
-        emit dataChanged(index(item, eDC_extrFileName), index(item, eDC_extrFileName));
     }
 
     VERIFY(QMetaObject::invokeMethod(this, "saveToFile", Qt::QueuedConnection));
-}
-
-void DownloadCollectionModel::on_extractedFileNameChange(const ItemDC& a_item)
-{
-    if (TreeItem* item = getRootItem()->findItemByID(a_item.getID()))
-    {
-        item->setExtractedFileName(a_item.extractedFileNames().first());
-        emit dataChanged(index(item, eDC_extrFileName), index(item, eDC_extrFileName));
-    }
 }
 
 void DownloadCollectionModel::on_sizeCurrDownlChange(const ItemDC& a_item)
@@ -696,7 +678,6 @@ void DownloadCollectionModel::on_ItemDCchange(const ItemDC& a_item)
     item->setSpeed(a_item.getSpeed());
     item->setSize(a_item.size());
     item->setDownloadedFileName(a_item.downloadedFileName());
-    item->setExtractedFileNames(a_item.extractedFileNames());
     item->setSizeCurrDownl(a_item.sizeCurrDownl());
     item->setWaitingTime(a_item.getWaitingTime());
     item->setErrorCode(a_item.getErrorCode());
@@ -718,7 +699,6 @@ void DownloadCollectionModel::on_magnetLinkInfoReceived(const ItemDC& a_item)
 
     item->setSize(a_item.size());
     item->setDownloadedFileName(a_item.downloadedFileName());
-    item->setExtractedFileNames(a_item.extractedFileNames());
     item->setSource(a_item.source());
     item->setDownloadType(DownloadType::TorrentFile);
 
