@@ -111,7 +111,7 @@ public:
 #undef WRITE
 
 public:
-    Q_PROPERTY(int status READ getStatus WRITE setStatusEx)
+    Q_PROPERTY(eSTATUSDC status READ getStatus WRITE setStatusEx)
     inline eSTATUSDC getStatus() const { return m_eStatus; }
     void setStatus(eSTATUSDC val)
     {
