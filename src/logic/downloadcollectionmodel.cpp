@@ -189,7 +189,7 @@ QVariant DownloadCollectionModel::data(const QModelIndex& index, int role /* = Q
             if (l_item && l_item->getStatus() == ItemDC::eERROR)
             {
                 QString errorDescr = l_item->errorDescription();
-                if (!DownloadType::isTorrentDownload(l_item->getDownloadType()))
+                if (!DownloadType::isTorrentDownload(l_item->downloadType()))
                 {
                     QString tooltipText = ::Tr::Tr(
                         utilities::ErrorCode::instance().getDescription(l_item->getErrorCode()));
@@ -449,7 +449,7 @@ bool DownloadCollectionModel::deleteURLFromModel(ItemID a_ID, int deleteWithFile
         return false;
     }
 
-    const DownloadType::Type type = item->getDownloadType();
+    const auto type = item->downloadType();
 
     TreeItem* parentTI = item->parent();
     if (!parentTI)
@@ -511,7 +511,7 @@ void DownloadCollectionModel::on_statusChange(const ItemDC& a_item)
 
     ItemDC l_itm;
     l_itm.setID(a_item.getID());
-    if (DownloadType::isTorrentDownload(item->getDownloadType()))
+    if (DownloadType::isTorrentDownload(item->downloadType()))
     {
         if (prevStatus == ItemDC::eSTOPPED && a_item.getStatus() != ItemDC::eQUEUED)
         {
@@ -913,7 +913,7 @@ void DownloadCollectionModel::doSetPauseStopDownloadItem(TreeItem* itmSource, It
     int id = itmSource->getID();
     ItemDC l_oItm;
     l_oItm.setID(id);
-    if (DownloadType::isTorrentDownload(itmSource->getDownloadType()))
+    if (DownloadType::isTorrentDownload(itmSource->downloadType()))
     {
         libtorrent::torrent_handle handle = TorrentManager::Instance()->torrentByModelId(id);
         Q_ASSERT_X(handle.is_valid(), Q_FUNC_INFO, "handle cannot be null!");
@@ -927,7 +927,7 @@ void DownloadCollectionModel::doSetPauseStopDownloadItem(TreeItem* itmSource, It
     on_statusChange(l_oItm);
     on_speedChange(l_oItm);
 
-    emit signalPauseDownloadItemWithID(id, itmSource->getDownloadType());
+    emit signalPauseDownloadItemWithID(id, itmSource->downloadType());
 }
 
 void DownloadCollectionModel::setContinueDownloadItem(const QModelIndex& a_index)
@@ -948,7 +948,7 @@ void DownloadCollectionModel::setContinueDownloadItem(TreeItem* itmSource)
 {
     int id = itmSource->getID();
     ItemDC::eSTATUSDC status = itmSource->getStatus();
-    if (DownloadType::isTorrentDownload(itmSource->getDownloadType()))
+    if (DownloadType::isTorrentDownload(itmSource->downloadType()))
     {
         if (ItemDC::eFINISHED == status)
         {
@@ -961,7 +961,7 @@ void DownloadCollectionModel::setContinueDownloadItem(TreeItem* itmSource)
             {
                 itmSource->setStatus(ItemDC::eQUEUED);
                 emit dataChanged(index(itmSource, eDC_url), index(itmSource, eDC_Status));
-                emit signalContinueDownloadItemWithID(id, itmSource->getDownloadType());
+                emit signalContinueDownloadItemWithID(id, itmSource->downloadType());
             }
             return;
         }
@@ -971,7 +971,7 @@ void DownloadCollectionModel::setContinueDownloadItem(TreeItem* itmSource)
     l_oItm.setStatus(ItemDC::eQUEUED);
     on_statusChange(l_oItm);
 
-    emit signalContinueDownloadItemWithID(id, itmSource->getDownloadType());
+    emit signalContinueDownloadItemWithID(id, itmSource->downloadType());
 }
 
 bool DownloadCollectionModel::loadFromFile()
@@ -1133,7 +1133,7 @@ void DownloadCollectionModel::init()
 {
     forAll([](TreeItem & ti)
     {
-        if (DownloadType::isTorrentDownload(ti.getDownloadType()))
+        if (DownloadType::isTorrentDownload(ti.downloadType()))
         {
             QByteArray hash = QByteArray::fromBase64(ti.hash().toLatin1());
             char hexstring[41];

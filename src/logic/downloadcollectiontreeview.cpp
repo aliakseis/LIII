@@ -212,7 +212,7 @@ void DownloadCollectionTreeView::downloadingFinished(const ItemDC& a_item)
     if (a_item.getStatus() == ItemDC::eFINISHED)
     {
         QString fileName;
-        if (DownloadType::isTorrentDownload(a_item.getDownloadType()))
+        if (DownloadType::isTorrentDownload(a_item.downloadType()))
         {
             fileName = utilities::GetFileName(TorrentManager::Instance()->torrentRootItemPath(a_item.getID()));
         }
@@ -295,7 +295,7 @@ void DownloadCollectionTreeView::on_showContextMenu(const QPoint& a_point)
             QMenu menu;
             menu.setObjectName("DownloadContextMenu");
 
-            const DownloadType::Type dlType = model()->getItem(index)->getDownloadType();
+            const auto dlType = model()->getItem(index)->downloadType();
             // Show In Folder menu item
             QAction* openFolder = menu.addAction(QIcon(":/icons/Drop-down-folder-icon-normal.png"), utilities::Tr::Tr(TREEVIEW_MENU_OPENFOLDER), this, SLOT(on_OpenFolder()));
             openFolder->setEnabled(dlType != DownloadType::MagnetLink);
@@ -347,7 +347,7 @@ void DownloadCollectionTreeView::on_OpenFolder()
     TreeItem* item = model()->getItem(curr_index);
 
     QString filename;
-    DownloadType::Type type = item->getDownloadType();
+    const auto type = item->downloadType();
     if (type == DownloadType::TorrentFile)
     {
         filename = TorrentManager::Instance()->torrentRootItemPath(item->getID());

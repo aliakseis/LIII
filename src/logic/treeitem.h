@@ -45,8 +45,7 @@ public:
         , m_iWaitingTime(0)
         , m_errorCode(utilities::ErrorCode::eNOTERROR)
         , m_priority(0)
-        , m_downloadType(DownloadType::RemoteUrl)
-    {};
+    {}
 
     enum eSTATUSDC {
         eWAITING,
@@ -104,6 +103,8 @@ public:
     Q_PROPERTY(qint64 size READ size WRITE setSize)
     Q_PROPERTY(qint64 sizeCurrDownl READ sizeCurrDownl WRITE setSizeCurrDownl)
 
+    Q_PROPERTY(DownloadType::Type downloadType READ downloadType WRITE setDownloadType)
+
 #undef Q_PROPERTY
 #define Q_PROPERTY(text)
 #undef READ
@@ -134,10 +135,6 @@ public:
     int getWaitingTime() const { return m_iWaitingTime; }
     void setWaitingTime(int val) { m_iWaitingTime = val; }
 
-    Q_PROPERTY(QString downloadType READ getDownloadTypeStr WRITE setDownloadTypeStr)
-    DownloadType::Type getDownloadType() const { return m_downloadType; }
-    void setDownloadType(DownloadType::Type val) { m_downloadType = val; }
-
     utilities::ErrorCode::ERROR_CODES getErrorCode() const { return m_errorCode; }
     void setErrorCode(utilities::ErrorCode::ERROR_CODES val) { m_errorCode = val; }
 
@@ -154,8 +151,6 @@ public:
 
 protected:
     void setStatusEx(int val);
-    QString getDownloadTypeStr() const;
-    void setDownloadTypeStr(QString const& val);
 
     ItemID m_ID;
     eSTATUSDC m_eStatus;
@@ -167,8 +162,6 @@ protected:
     utilities::ErrorCode::ERROR_CODES m_errorCode;
 
     int m_priority;
-
-    DownloadType::Type m_downloadType;
 
     QDateTime m_statusLastChanged;
 }; // class ItemDC
@@ -203,29 +196,26 @@ public:
     Q_PROPERTY(QObjectList childItems READ getChildItems WRITE setChildItems)
     QObjectList getChildItems() const;
     void setChildItems(const QObjectList& items);
-    template<class Fn_t> void forAll(Fn_t fn);
 
-    // for use as temp object
-    void detachChildren() {childItems.clear();}
+    template<class Fn_t> void forAll(Fn_t fn);
 
     void setPriority(int priority) {m_priority = priority;}
     static int currentCounter() { return l_count; }
 
-    bool canPause()const
+    bool canPause() const
     {
         const ItemDC::eSTATUSDC st(getStatus());
         return !(st == ItemDC::ePAUSED || st == ItemDC::eSTOPPED || st == ItemDC::eERROR || st == ItemDC::eFINISHED);
     }
 
-    bool canResume()const
+    bool canResume() const
     {
         const ItemDC::eSTATUSDC st(getStatus());
-        const bool isTorrentDownload(DownloadType::isTorrentDownload(getDownloadType()));
-        return (st == ItemDC::ePAUSED  || st == ItemDC::eSTOPPED || st == ItemDC::eERROR 
-            || (st == ItemDC::eFINISHED && isTorrentDownload) || (st == ItemDC::eERROR && isTorrentDownload));
+        return st == ItemDC::ePAUSED  || st == ItemDC::eSTOPPED || st == ItemDC::eERROR 
+            || (st == ItemDC::eFINISHED && DownloadType::isTorrentDownload(downloadType()));
     }
 
-    bool canCancel()const
+    bool canCancel() const
     {
         const ItemDC::eSTATUSDC st(getStatus());
         return st != ItemDC::eFINISHED && st != ItemDC::eSEEDING;

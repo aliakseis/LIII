@@ -18,6 +18,29 @@
 
 REGISTER_QOBJECT_METATYPE(TreeItem)
 
+QString itemDCStatusToString(const ItemDC::eSTATUSDC status)
+{
+    static const std::unordered_map<ItemDC::eSTATUSDC, utilities::Tr::Translation, std::hash<char> > statusToTr
+    {
+        { ItemDC::eWAITING,     TREEVIEW_WAITING_STATUS },
+        { ItemDC::eQUEUED,      TREEVIEW_QUEUED_STATUS },
+        { ItemDC::eDOWNLOADING, TREEVIEW_DOWNLOADING_STATUS },
+        { ItemDC::eCONNECTING,  TREEVIEW_CONNECTING_STATUS },
+        { ItemDC::eFINISHED,    TREEVIEW_COMPLETE_STATUS },
+        { ItemDC::ePAUSED,      TREEVIEW_PAUSED_STATUS },
+        { ItemDC::eERROR,       TREEVIEW_FAILED_STATUS },
+        { ItemDC::eSEEDING,     TREEVIEW_SEEDING_STATUS },
+        { ItemDC::eSTALLED,     TREEVIEW_STALLED_STATUS },
+        { ItemDC::eSTARTING,    TREEVIEW_STARTING_STATUS },
+        { ItemDC::eSTOPPED,     TREEVIEW_STOPPED_STATUS },
+    };
+
+    auto it = statusToTr.find(status);
+
+    return (statusToTr.end() != it ? utilities::Tr::Tr(it->second) : QString());
+}
+
+
 void ItemDC::setStatusEx(int val)
 {
     // TODO validate
@@ -28,55 +51,6 @@ void ItemDC::setStatusEx(int val)
     }
 }
 
-QMetaEnum const& downloadTypeMetaEnum()
-{
-    static QMetaObject const& mo = DownloadType::staticMetaObject;
-    static QMetaEnum   const& me = mo.enumerator(mo.indexOfEnumerator("Type"));
-    return me;
-}
-
-QString itemDCStatusToString(const ItemDC::eSTATUSDC status)
-{
-    static const std::unordered_map<ItemDC::eSTATUSDC, utilities::Tr::Translation, std::hash<char> > statusToTr
-    {
-        {ItemDC::eWAITING,     TREEVIEW_WAITING_STATUS},
-        {ItemDC::eQUEUED,      TREEVIEW_QUEUED_STATUS},
-        {ItemDC::eDOWNLOADING, TREEVIEW_DOWNLOADING_STATUS},
-        {ItemDC::eCONNECTING,  TREEVIEW_CONNECTING_STATUS},
-        {ItemDC::eFINISHED,       TREEVIEW_COMPLETE_STATUS},
-        {ItemDC::ePAUSED,       TREEVIEW_PAUSED_STATUS},
-        {ItemDC::eERROR,       TREEVIEW_FAILED_STATUS},
-        {ItemDC::eSEEDING,       TREEVIEW_SEEDING_STATUS},
-        {ItemDC::eSTALLED,       TREEVIEW_STALLED_STATUS},
-        {ItemDC::eSTARTING,       TREEVIEW_STARTING_STATUS},
-        {ItemDC::eSTOPPED,       TREEVIEW_STOPPED_STATUS},
-    };
-
-    auto it = statusToTr.find(status);
-
-    return (statusToTr.end() != it ? utilities::Tr::Tr(it->second) : QString());
-}
-
-QString ItemDC::getDownloadTypeStr() const
-{
-    Q_ASSERT(downloadTypeMetaEnum().isValid());
-    return downloadTypeMetaEnum().valueToKey(getDownloadType());
-}
-
-void ItemDC::setDownloadTypeStr(QString const& valStr)
-{
-    Q_ASSERT(downloadTypeMetaEnum().isValid());
-    int val = downloadTypeMetaEnum().keyToValue(valStr.toLatin1());
-    if (val == -1)
-    {
-        val = valStr.toInt();
-        if (val >= downloadTypeMetaEnum().keyCount())
-        {
-            val = DownloadType::Unknown;
-        }
-    }
-    setDownloadType((DownloadType::Type)val);
-}
 
 int TreeItem::l_count = 0;
 

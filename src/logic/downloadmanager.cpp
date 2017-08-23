@@ -430,7 +430,7 @@ void DownloadManager::onItemsReordered()
 
 bool DownloadManager::isActiveTask(const TreeItem& ti) const
 {
-    if (DownloadType::isDirectDownload(ti.getDownloadType()))
+    if (DownloadType::isDirectDownload(ti.downloadType()))
     {
         return m_activeTasks.find(ti.getID()) != m_activeTasks.end();
     }
