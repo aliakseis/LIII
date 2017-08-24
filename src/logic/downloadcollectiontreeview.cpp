@@ -58,6 +58,7 @@ void DownloadCollectionTreeView::drawText(const QString& text)
 
 void DownloadCollectionTreeView::paintEvent(QPaintEvent* ev)
 {
+    if (model()->rowCount())
     {
         QTreeView::paintEvent(ev);
     }
