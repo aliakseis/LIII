@@ -44,7 +44,6 @@ Tr::Translation DUPLICATE_TORRENT_HEADER             = Tr::translate("MainWindow
 Tr::Translation DUPLICATE_TORRENT_TEXT               = Tr::translate("MainWindow", "The Torrent you are trying to add is already in the list of Torrents.\nDo you want to load the trackers from it?");
 
 Tr::Translation DOWNLOAD_TO_LABEL                    = Tr::translate("Preferences", "Download to:", "Download to dialog header");
-Tr::Translation NO_INTERNET_TEXT                     = Tr::translate("MainWindow", "No Internet Connection\nYou must be online in order to download");
 Tr::Translation NO_LINKS_IN_CLIPBOARD                = Tr::translate("AddLinks", "No valid links were found in clipboard.<br/>Copy links and click 'Paste Link' again.", "No links in clipboard error message text");
 Tr::Translation PAUSE_LABEL                          = Tr::translate("MainWindow", "Pause", "Pause label");
 Tr::Translation RESET_WARNINGS_TEXT                  = Tr::translate("Preferences", "All warning dialogs you've once hidden will now appear again.\nAfter returning them you will still be able to hide them back.\nAre you sure you wish to continue?", "Reset warnings dialog text");

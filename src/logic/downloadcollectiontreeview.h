@@ -52,7 +52,6 @@ protected slots:
     void on_clicked(const QModelIndex& a_index);
     void on_doubleClicked(const QModelIndex& index);
     void on_showContextMenu(const QPoint& a_point);
-    void on_internetConnectedChanged(bool isConnected);
 
     void onExistingItemAdded(const QModelIndex& index);
 
@@ -69,6 +68,4 @@ private:
     void moveImpl(int step);
 
     void selectRows(const QModelIndexList& newInds);
-
-    bool m_internetConnected;
 };

@@ -30,7 +30,7 @@
 #include <libtorrent/torrent_status.hpp>
 
 DownloadCollectionTreeView::DownloadCollectionTreeView(QWidget* parent)
-    : QTreeView(parent), m_internetConnected(true)
+    : QTreeView(parent)
 {
     header()->setDefaultAlignment(Qt::AlignLeft | Qt::AlignVCenter);
 
@@ -58,29 +58,13 @@ void DownloadCollectionTreeView::drawText(const QString& text)
 
 void DownloadCollectionTreeView::paintEvent(QPaintEvent* ev)
 {
-    if (m_internetConnected)
     {
-        int rowCount = model()->rowCount();
-        if (rowCount)
-        {
-            QTreeView::paintEvent(ev);
-        }
-        else
-        {
-            drawText(utilities::Tr::Tr(PASTE_LINKS_CTRLV));
-        }
+        QTreeView::paintEvent(ev);
     }
     else
     {
-        QTreeView::paintEvent(ev);
-        drawText(utilities::Tr::Tr(NO_INTERNET_TEXT));
+        drawText(utilities::Tr::Tr(PASTE_LINKS_CTRLV));
     }
-}
-
-void DownloadCollectionTreeView::on_internetConnectedChanged(bool isConnected)
-{
-    m_internetConnected = isConnected;
-    repaint();
 }
 
 void DownloadCollectionTreeView::setModel(DownloadCollectionModel* a_model)
