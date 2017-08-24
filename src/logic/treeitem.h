@@ -158,7 +158,6 @@ protected:
     double m_dSpeedUpload;
     int m_iWaitingTime;
 
-    QString m_archive1stVolumeFilename;
     utilities::ErrorCode::ERROR_CODES m_errorCode;
 
     int m_priority;
@@ -181,7 +180,6 @@ public:
     TreeItem* parent() const;
     int lastIndexOf(TreeItem* a_child) const;
     bool removeChildItem(TreeItem* a_item);
-    void removeALLChild();
 
     bool insertChildren(int position, int count, int columns);
     bool removeChildren(int position, int count);
@@ -191,7 +189,6 @@ public:
 
     TreeItem* findItemByID(ItemID);
     TreeItem* findItemByURL(const QString&);
-    TreeItem* findItemByURL(const QUrl& url, QString(QUrl::*url2str)()const);
 
     Q_PROPERTY(QObjectList childItems READ getChildItems WRITE setChildItems)
     QObjectList getChildItems() const;

@@ -121,14 +121,6 @@ TreeItem* TreeItem::findItemByURL(const QString& a_str)
     return findItem([a_str](const TreeItem* it) { return it->initialURL() == a_str; });
 }
 
-TreeItem* TreeItem::findItemByURL(const QUrl& url, QString(QUrl::*url2str)()const)
-{
-    return findItem([&url, &url2str](const TreeItem* it)
-    {
-        return it->initialURL().contains(((&url)->*url2str)(), Qt::CaseInsensitive);
-    });
-}
-
 
 bool TreeItem::removeChildItem(TreeItem* a_item)
 {
@@ -138,19 +130,12 @@ bool TreeItem::removeChildItem(TreeItem* a_item)
         return false;
     }
 
-    a_item->removeALLChild();
-
     childItems.removeAt(index);
     delete a_item;
 
     return true;
 }
 
-void TreeItem::removeALLChild()
-{
-    qDeleteAll(childItems);
-    childItems.clear();
-}
 
 bool TreeItem::insertChildren(int position, int count, int columns)
 {

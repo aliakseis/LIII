@@ -346,28 +346,21 @@ void DownloadCollectionTreeView::on_OpenFolder()
     QModelIndex curr_index = currentIndex();
     TreeItem* item = model()->getItem(curr_index);
 
-    QString filename;
     const auto type = item->downloadType();
-    if (type == DownloadType::TorrentFile)
-    {
-        filename = TorrentManager::Instance()->torrentRootItemPath(item->getID());
-    }
-    else if (type == DownloadType::MagnetLink)
+    if (type == DownloadType::MagnetLink)
     {
         return;
-    }
-    else
-    {
-        filename = item->downloadedFileName();
     }
 
     if (type == DownloadType::TorrentFile)
     {
+        QString filename = TorrentManager::Instance()->torrentRootItemPath(item->getID());
         QFileInfo downloadFile(filename);
         emit signalOpenTorrentFolder(downloadFile.absoluteFilePath(), downloadFile.dir().path());
     }
     else
     {
+        QString filename = item->downloadedFileName();
         emit signalOpenFolder(filename);
     }
 }
