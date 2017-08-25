@@ -272,12 +272,10 @@ bool DownloadCollectionModel::setData(const QModelIndex& index, const QVariant& 
 
     TreeItem* item = getItem(index);
 
-    switch (index.column())
-    {
-    case eDC_ID:
+    if (index.column() == eDC_ID)
     {
         const auto id = value.value<ItemID>();
-        if (isDropAction)   // TODO: remove
+        if (isDropAction)   // TODO: remove?
         {
             if (TreeItem* source = getRootItem()->findItemByID(id))
             {
@@ -285,50 +283,6 @@ bool DownloadCollectionModel::setData(const QModelIndex& index, const QVariant& 
             }
         }
         item->setID(id);
-    }
-    break;
-    case eDC_url:
-        item->setInitialURL(value.toString());
-        break;
-    case eDC_Status:
-        break;
-    case eDC_Speed:
-    {
-        QString str_val = value.toString();
-        const float speed = str_val.left(str_val.length() - 4).toFloat();
-        item->setSpeed(speed);
-    }
-    break;
-    case eDC_Speed_Uploading:
-    {
-        QString str_val = value.toString();
-        const float speed = str_val.left(str_val.length() - 4).toFloat();
-        item->setSpeedUpload(speed);
-    }
-    break;
-    case eDC_Size:
-    {
-        float size;
-        QString str_val = value.toString();
-        if (str_val == ::Tr::Tr(TREEVIEW_UNKNOWN_SIZE))
-        {
-            size = 0;
-        }
-        else
-        {
-            size = str_val.left(str_val.length() - 2).toFloat();
-        }
-
-        item->setSize(size);
-    }
-    break;
-    case eDC_Source:
-        item->setSource(value.toString());
-        break;
-    case eDC_downlFileName:
-        item->setDownloadedFileName(value.toString());
-        break;
-    default: break;
     }
 
     item->setPriority(index.row());
