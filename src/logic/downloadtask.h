@@ -32,7 +32,6 @@ public:
     DownloadTask& operator =(const DownloadTask&) = delete;
 
     void start();
-    void applyStrategy();
     void cancelTask();
     void interruptTask();
     void download();
@@ -51,7 +50,7 @@ public:
 private:
     void notifyIfFinished();
     void setStatusInModel(ItemDC::eSTATUSDC a_status, int arg = 0);
-    void on_download(const QString& url);
+    void on_download();
 
     virtual void onProgress(qint64 bytes_downloaded) override;
     virtual void onSpeed(qint64 bytes_per_second) override;
@@ -64,7 +63,7 @@ private:
 
     QScopedPointer<DownloaderType> downloader_;
     QScopedPointer<QNetworkAccessManager> network_manager_;
-    QString url_, filename_, direct_link_;
+    QString url_, filename_;
     qint64 total_file_size_;
     int task_id_, priority_level_;
     bool ready_to_download_;

@@ -30,7 +30,7 @@ void DownloadTask::start()
 
     downloader_->setDestinationPath(global_functions::GetVideoFolder());
     downloader_->setExpectedFileSize(it.size());
-    applyStrategy();
+    on_download();
 }
 
 DownloadTask::~DownloadTask()
@@ -38,15 +38,10 @@ DownloadTask::~DownloadTask()
     qDebug() << "DLTask::~DLTask() id=" << task_id_;
 }
 
-void DownloadTask::applyStrategy()
-{
-    on_download(url_);
-}
 
-void DownloadTask::on_download(const QString& url)
+void DownloadTask::on_download()
 {
-    qDebug() << QString("%1(%2)  id=%3").arg(__FUNCTION__).arg(url).arg(task_id_);
-    direct_link_ = url;
+    qDebug() << QString("%1(%2)  id=%3").arg(__FUNCTION__).arg(url_).arg(task_id_);
     ready_to_download_ = true;
 
     emit readyToDownload(task_id_);
@@ -62,7 +57,7 @@ void DownloadTask::download()
     QFileInfo file(it.downloadedFileName());
     if (file.exists() && file.size() > 0)
     {
-        downloader_->Resume(direct_link_, network_manager_.data(), file.fileName());
+        downloader_->Resume(url_, network_manager_.data(), file.fileName());
     }
     else
     {
@@ -74,7 +69,7 @@ void DownloadTask::download()
                 filename_.clear();
             }
         }
-        downloader_->Start(direct_link_, network_manager_.data(), filename_);
+        downloader_->Start(url_, network_manager_.data(), filename_);
     }
     emit signalTryNewtask();
 }
