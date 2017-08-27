@@ -118,14 +118,11 @@ void TorrentContentModelItem::updateSize()
         return;
     }
     Q_ASSERT(m_type == FOLDER);
-    qulonglong size = 0;
-    Q_FOREACH(TorrentContentModelItem * child, m_childItems)
-    {
-        if (child->getPriority() != prio::IGNORED)
+    const qulonglong size = std::accumulate(m_childItems.constBegin(), m_childItems.constEnd(), 0u,
+        [](qulonglong sum, TorrentContentModelItem* child)
         {
-            size += child->getSize();
-        }
-    }
+            return (child->getPriority() != prio::IGNORED) ? sum + child->getSize() : sum;
+        });
     setSize(size);
 }
 
@@ -210,14 +207,11 @@ void TorrentContentModelItem::updateProgress()
 {
     if (m_type == ROOT) { return; }
     Q_ASSERT(m_type == FOLDER);
-    m_totalDone = 0;
-    Q_FOREACH(TorrentContentModelItem * child, m_childItems)
-    {
-        if (child->getPriority() > 0)
+    m_totalDone = std::accumulate(m_childItems.constBegin(), m_childItems.constEnd(), 0u,
+        [](qulonglong sum, TorrentContentModelItem* child)
         {
-            m_totalDone += child->getTotalDone();
-        }
-    }
+            return (child->getPriority() > 0) ? sum + child->getTotalDone() : sum;
+        });
     Q_ASSERT(m_totalDone <= getSize());
     setProgress(m_totalDone);
 }
@@ -278,9 +272,9 @@ void TorrentContentModelItem::updatePriority()
     // If all children have the same priority
     // then the folder should have the same priority
     const int priority = m_childItems.first()->getPriority();
-    const bool same_priprities = std::all_of(std::next(m_childItems.begin()), m_childItems.end(),
+    const bool same_priorities = std::all_of(std::next(m_childItems.begin()), m_childItems.end(),
         [priority](auto item) { return item->getPriority() == priority; });
-    setPriority(same_priprities? priority : prio::PARTIAL);
+    setPriority(same_priorities? priority : prio::PARTIAL);
 }
 
 TorrentContentModelItem* TorrentContentModelItem::childWithName(const QString& name) const
