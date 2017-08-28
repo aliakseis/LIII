@@ -84,33 +84,6 @@ public:
     inline ItemID getID() const { return m_ID; }
     void setID(ItemID val) { m_ID = val; }
 
-#ifndef Q_MOC_RUN
-#define READ ,
-#define WRITE ,
-#undef Q_PROPERTY
-#define Q_PROPERTY(...) DECLARE_Q_PROPERTY_ADAPTOR((__VA_ARGS__))
-#endif // Q_MOC_RUN
-
-    Q_PROPERTY(QString initialURL READ initialURL WRITE setInitialURL)
-    Q_PROPERTY(QString actualURL READ actualURL WRITE setActualURL)
-    Q_PROPERTY(QString source READ source WRITE setSource)
-    Q_PROPERTY(QString downloadedFileName READ downloadedFileName WRITE setDownloadedFileName)
-    Q_PROPERTY(QStringList torrentFilesPriorities READ torrentFilesPriorities WRITE setTorrentFilesPriorities)
-    Q_PROPERTY(QString hash READ hash WRITE setHash)
-    Q_PROPERTY(QString torrentSavePath READ torrentSavePath WRITE setTorrentSavePath)
-    Q_PROPERTY(QString errorDescription READ errorDescription WRITE setErrorDescription)
-
-    Q_PROPERTY(qint64 size READ size WRITE setSize)
-    Q_PROPERTY(qint64 sizeCurrDownl READ sizeCurrDownl WRITE setSizeCurrDownl)
-
-    Q_PROPERTY(DownloadType::Type downloadType READ downloadType WRITE setDownloadType)
-
-#undef Q_PROPERTY
-#define Q_PROPERTY(text)
-#undef READ
-#undef WRITE
-
-public:
     Q_PROPERTY(eSTATUSDC status READ getStatus WRITE setStatusEx)
     inline eSTATUSDC getStatus() const { return m_eStatus; }
     void setStatus(eSTATUSDC val)
@@ -163,6 +136,33 @@ protected:
     int m_priority;
 
     QDateTime m_statusLastChanged;
+
+#ifndef Q_MOC_RUN
+#define READ ,
+#define WRITE ,
+#undef Q_PROPERTY
+#define Q_PROPERTY(...) DECLARE_Q_PROPERTY_ADAPTOR((__VA_ARGS__))
+#endif // Q_MOC_RUN
+
+    Q_PROPERTY(qint64 sizeCurrDownl READ sizeCurrDownl WRITE setSizeCurrDownl)
+    Q_PROPERTY(qint64 size READ size WRITE setSize)
+
+    Q_PROPERTY(QString initialURL READ initialURL WRITE setInitialURL)
+    Q_PROPERTY(QString actualURL READ actualURL WRITE setActualURL)
+    Q_PROPERTY(QString source READ source WRITE setSource)
+    Q_PROPERTY(QString downloadedFileName READ downloadedFileName WRITE setDownloadedFileName)
+    Q_PROPERTY(QStringList torrentFilesPriorities READ torrentFilesPriorities WRITE setTorrentFilesPriorities)
+    Q_PROPERTY(QString hash READ hash WRITE setHash)
+    Q_PROPERTY(QString torrentSavePath READ torrentSavePath WRITE setTorrentSavePath)
+    Q_PROPERTY(QString errorDescription READ errorDescription WRITE setErrorDescription)
+
+    Q_PROPERTY(DownloadType::Type downloadType READ downloadType WRITE setDownloadType)
+
+#undef Q_PROPERTY
+#define Q_PROPERTY(text)
+#undef READ
+#undef WRITE
+
 }; // class ItemDC
 
 class TreeItem : public ItemDC
