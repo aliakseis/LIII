@@ -726,9 +726,9 @@ QModelIndexList DownloadCollectionModel::moveItems_helper(QModelIndexList&& sele
     /// move items and find their new indices (in the same order they was sorted, so new indices are also sorted)
     int minInd = 0;
     int maxInd = getRootItem()->childCount() - 1;
-    for (auto itInd = selectedInds.constBegin(); itInd != selectedInds.constEnd(); ++itInd)
+    for (const auto& ind : qAsConst(selectedInds))
     {
-        int preNewInd = itInd->row() + step;
+        int preNewInd = ind.row() + step;
         if (isUp && preNewInd < minInd)   //==isUp
         {
             preNewInd = minInd;
@@ -740,13 +740,12 @@ QModelIndexList DownloadCollectionModel::moveItems_helper(QModelIndexList&& sele
             --maxInd;
         }
 
-        result.push_back(
-            moveItem(*itInd, preNewInd - itInd->row())
-        );
+        result.push_back(moveItem(ind, preNewInd - ind.row()));
     }
 
     // find all rows that change their position and need to update priority value
-    QModelIndexList touchedRows; touchedRows.reserve(selectedInds.size() * 2);
+    QModelIndexList touchedRows;
+    touchedRows.reserve(selectedInds.size() * 2);
     // merge old and new indices and exclude duplicated
     std::merge(selectedInds.constBegin(), selectedInds.constEnd(), result.constBegin(), result.constEnd(), std::back_inserter(touchedRows), rowPred<isUp>());
     touchedRows.erase(
