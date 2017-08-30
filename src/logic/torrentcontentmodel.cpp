@@ -132,8 +132,6 @@ TorrentContentModelItem* TorrentContentModel::getTorrentContentModelItem(const Q
     return item;
 }
 
-#include <QFileIconProvider>
-QFileIconProvider iconProvider;
 QVariant TorrentContentModel::data(const QModelIndex& index, int role) const
 {
     if (!index.isValid())
@@ -146,17 +144,17 @@ QVariant TorrentContentModel::data(const QModelIndex& index, int role) const
     {
         if (item->isFolder())
         {
-            return iconProvider.icon(QFileIconProvider::Folder);
+            return m_iconProvider.icon(QFileIconProvider::Folder);
         }
 
         QString path = m_savePath + item->getPath();
         if ((m_savePath.isEmpty() || !QFile::exists(path)))
         {
-            return iconProvider.icon(QFileIconProvider::File);
+            return m_iconProvider.icon(QFileIconProvider::File);
         }
         else
         {
-            return iconProvider.icon(QFileInfo(path));
+            return m_iconProvider.icon(QFileInfo(path));
         }
     }
 

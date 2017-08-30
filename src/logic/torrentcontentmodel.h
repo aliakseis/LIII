@@ -13,6 +13,7 @@
 #include <QVector>
 #include <QVariant>
 #include <QString>
+#include <QFileIconProvider>
 
 
 class TorrentContentModel:  public QAbstractItemModel
@@ -54,9 +55,10 @@ private:
     TorrentContentModelItem* m_rootItem;
     QVector<TorrentContentModelItem*> m_filesIndex;
     QString m_savePath;
+    QFileIconProvider m_iconProvider;
 };
 
-//================================= implementation ==========================================
+// implementation
 
 template <class Prior_t>
 void TorrentContentModel::updateFilesPriorities(const std::vector<Prior_t>& fprio)
