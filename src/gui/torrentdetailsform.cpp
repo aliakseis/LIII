@@ -18,6 +18,8 @@
 #include <QKeyEvent>
 #include "branding.hxx"
 
+#include <algorithm>
+
 TorrentDetailsForm::TorrentDetailsForm(libtorrent::torrent_handle handle, QWidget* parent) :
     QDialog(parent),
     ui(new Ui::TorrentDetailsForm),
@@ -183,7 +185,8 @@ QStringList TorrentDetailsForm::filesPriorities() const
 {
     std::vector<int> priorities;
     m_contentModel->model()->getFilesPriorities(priorities);
-    QStringList res; res.reserve(priorities.size());
+    QStringList res;
+    res.reserve(priorities.size());
     for (int p : priorities)
         res << QString::number(p);
     return res;
@@ -191,10 +194,10 @@ QStringList TorrentDetailsForm::filesPriorities() const
 
 template<class Val_t> bool isNotAllSkipped(std::vector<Val_t> const& priorities)
 {
-    return std::find_if(priorities.begin(), priorities.end(), [](Val_t pr)
+    return std::any_of(priorities.begin(), priorities.end(), [](Val_t pr)
     {
         return pr != prio::IGNORED && pr != prio::PARTIAL;
-    }) != priorities.end();
+    });
 };
 
 void TorrentDetailsForm::accept()

@@ -2,6 +2,8 @@
 
 #include <functional>
 #include <array>
+#include <algorithm>
+
 #include <QApplication>
 #include <QClipboard>
 #include <QHeaderView>
@@ -402,13 +404,13 @@ bool DownloadCollectionTreeView::cancelDownloadingQuestion(bool totally)
     {
         QModelIndexList selectedRows = selectionModel()->selectedRows();
 
-        auto foundNotFinished = std::find_if(selectedRows.constBegin(), selectedRows.constEnd(), 
+        const bool foundNotFinished = std::any_of(selectedRows.constBegin(), selectedRows.constEnd(), 
             [this](const QModelIndex& idx)
             {
                 return !model()->getItem(idx)->isCompleted();
             });
 
-        if (foundNotFinished != selectedRows.constEnd())
+        if (foundNotFinished)
         {
             QMessageBox msgBox(
                 QMessageBox::NoIcon,
