@@ -19,6 +19,4 @@ struct Credential
     {}
 };
 
-inline bool operator== (const Credential& credential, const QString& host) {return credential.host == host;}
-
 } // namespace utilities

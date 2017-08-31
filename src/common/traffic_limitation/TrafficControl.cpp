@@ -100,7 +100,7 @@ bool handleSocketReadNotify(QObject* receiver, QEvent* e)
                             if (interceptor != 0)
                             {
                                 QHttpNetworkReplyPrivate* replyPrivate
-                                    = static_cast<QHttpNetworkReplyPrivate*>(((QConnectionObjectEx*) channel->reply)->dFunc());
+                                    = static_cast<QHttpNetworkReplyPrivate*>(static_cast<QConnectionObjectEx*>(static_cast<QObject*>(channel->reply))->dFunc());
 
                                 if (!replyPrivate->downstreamLimited)
                                 {

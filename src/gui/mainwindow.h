@@ -63,7 +63,7 @@ private:
 
 #ifdef Q_OS_WIN
     TaskBar m_taskBar;
-    bool winEvent(MSG* msg, long* result);
+    bool nativeEvent(const QByteArray& eventType, void* message, long* result) override;
 #endif
 
 Q_SIGNALS:

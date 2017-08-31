@@ -9,12 +9,10 @@
 namespace ui_utils
 {
 
-unsigned int TaskBar::m_taskBarCreatedMsg = 0;
-
 unsigned int TaskBar::InitMessage()
 {
-    m_taskBarCreatedMsg = ::RegisterWindowMessageW(L"TaskbarButtonCreated");
-    return m_taskBarCreatedMsg;
+    static const auto taskBarCreatedMsg = ::RegisterWindowMessageW(L"TaskbarButtonCreated");
+    return taskBarCreatedMsg;
 }
 
 TaskBar::TaskBar() : m_taskBar(NULL), isProgressInitialized(false), m_main(NULL), m_maximum(100)
@@ -65,7 +63,7 @@ void TaskBar::Init(WId main)
             auto ChangeWindowMessageFilterEx_ = reinterpret_cast<decltype(ChangeWindowMessageFilterEx)*>(GetProcAddress(user32, "ChangeWindowMessageFilterEx"));
             if (ChangeWindowMessageFilterEx_)
             {
-                ChangeWindowMessageFilterEx_((HWND)main, m_taskBarCreatedMsg, MSGFLT_ALLOW, &cfs);
+                ChangeWindowMessageFilterEx_((HWND)main, InitMessage(), MSGFLT_ALLOW, &cfs);
             }
             else
             {

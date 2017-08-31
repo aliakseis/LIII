@@ -18,8 +18,9 @@ namespace traffic_limitation
 {
 
 NetworkReplyAdaptor::NetworkReplyAdaptor(QHttpNetworkReply* parent)
-    : QObject(parent), replyPrivate((QHttpNetworkReplyPrivate*)((QConnectionObjectEx*) parent)->dFunc()),
-      threadDelegate((QHttpThreadDelegatePublic*) parent->parent())
+    : QObject(parent)
+    , replyPrivate(static_cast<QHttpNetworkReplyPrivate*>(static_cast<QConnectionObjectEx*>(static_cast<QObject*>(parent))->dFunc()))
+    , threadDelegate(static_cast<QHttpThreadDelegatePublic*>(parent->parent()))
 {
     VERIFY(connect(this, SIGNAL(readyRead()), threadDelegate, SLOT(readyReadSlot())));
 }

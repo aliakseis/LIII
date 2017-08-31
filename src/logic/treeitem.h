@@ -40,8 +40,8 @@ public:
     ItemDC()
         : m_ID(nullItemID)
         , m_eStatus(eQUEUED)
-        , m_dSpeed(0.0)
-        , m_dSpeedUpload(0.0)
+        , m_speed(0)
+        , m_speedUpload(0)
         , m_iWaitingTime(0)
         , m_errorCode(utilities::ErrorCode::eNOTERROR)
         , m_priority(0)
@@ -97,11 +97,11 @@ public:
 
     QDateTime statusLastChanged() const { return m_statusLastChanged; }
 
-    float getSpeed() const { return m_dSpeed; }
-    void setSpeed(float val) { m_dSpeed = val; }
+    float getSpeed() const { return m_speed; }
+    void setSpeed(float val) { m_speed = val; }
 
-    float getSpeedUpload() const { return m_dSpeedUpload; }
-    void setSpeedUpload(float val) { m_dSpeedUpload = val; }
+    float getSpeedUpload() const { return m_speedUpload; }
+    void setSpeedUpload(float val) { m_speedUpload = val; }
 
     int getPercentDownload() const { return (size() > 0) ? (sizeCurrDownl() * 100) / size() : 0; }
 
@@ -127,8 +127,8 @@ protected:
 
     ItemID m_ID;
     eSTATUSDC m_eStatus;
-    double m_dSpeed;
-    double m_dSpeedUpload;
+    float m_speed;
+    float m_speedUpload;
     int m_iWaitingTime;
 
     utilities::ErrorCode::ERROR_CODES m_errorCode;

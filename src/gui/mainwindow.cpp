@@ -144,12 +144,9 @@ MainWindow::MainWindow()
 }
 
 #if defined(Q_OS_WIN)
-static unsigned int TaskBarMsg = TaskBar::InitMessage();
-
-bool MainWindow::winEvent(MSG* msg, long* result)
+bool MainWindow::nativeEvent(const QByteArray& /*eventType*/, void* message, long* /*result*/)
 {
-    Q_UNUSED(result);
-    if (msg->message == TaskBarMsg)
+    if (message && static_cast<MSG*>(message)->message == TaskBar::InitMessage())
     {
         m_taskBar.Init(winId());
     }

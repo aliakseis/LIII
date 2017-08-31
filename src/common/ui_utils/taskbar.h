@@ -27,7 +27,6 @@ public:
     void setPaused();
     void setNormal();
 private:
-    static unsigned int m_taskBarCreatedMsg;
     ITaskbarList3* m_taskBar;
     bool isProgressInitialized;
     WId m_main;
