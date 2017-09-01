@@ -324,12 +324,14 @@ QVariant DownloadCollectionModel::headerData(int section, Qt::Orientation orient
     return QVariant();
 }
 
-void DownloadCollectionModel::addItemsToModel(const QStringList& urls, DownloadType::Type type)
+void DownloadCollectionModel::addItemsToModel(const QStringList& urls, DownloadType::Type a_type)
 {
     Q_FOREACH(const QString & l_strUrl, urls)
     {
         libtorrent::torrent_handle handle;
-        DownloadType::Type type = DownloadType::determineType(l_strUrl);
+        
+        DownloadType::Type type 
+            = (DownloadType::Unknown == a_type)? DownloadType::determineType(l_strUrl) : a_type;
         if (DownloadType::isDirectDownload(type))
         {
             if (TreeItem* item = findItemByURL(l_strUrl))

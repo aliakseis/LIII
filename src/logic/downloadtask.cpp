@@ -17,7 +17,8 @@ DownloadTask::DownloadTask(int task_id, const QString& url, QObject* parent)
     url_(url),
     total_file_size_(0),
     task_id_(task_id), priority_level_(0),
-    ready_to_download_(false)
+    ready_to_download_(false),
+    is_torrent_file_(false)
 {
     VERIFY(connect(&DownloadCollectionModel::instance(), SIGNAL(signalModelUpdated()), SLOT(updatePriority())));
     downloader_->setObserver(this);
@@ -222,4 +223,13 @@ void DownloadTask::onNeedLogin(utilities::ICredentialsRetriever* retriever)
 
 void DownloadTask::onReplyInvalidated()
 {
+}
+
+void DownloadTask::onStart(const QByteArray& data)
+{
+    const char TORRENT_IDENTIFYING_CHARACTERS[] = "d8:announce";
+    if (data.startsWith(TORRENT_IDENTIFYING_CHARACTERS))
+    {
+        is_torrent_file_ = true;
+    }
 }

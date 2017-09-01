@@ -8,5 +8,5 @@ class PeersSortFilterProxyModel : public QSortFilterProxyModel
 public:
     using QSortFilterProxyModel::QSortFilterProxyModel;
 protected:
-    virtual bool lessThan(const QModelIndex& left, const QModelIndex& right) const override;
+    bool lessThan(const QModelIndex& left, const QModelIndex& right) const override;
 };

@@ -17,7 +17,7 @@ class InterceptTimer : public QObject
 public:
     InterceptTimer(QSocketNotifier* receiver, QEvent* event, int speedLimit);
 
-    virtual void timerEvent(QTimerEvent* e) override;
+    void timerEvent(QTimerEvent* e) override;
 
     void onIntercept(int speedLimit);
 

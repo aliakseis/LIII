@@ -40,7 +40,7 @@ public:
 public Q_SLOTS:
     void restore();
     virtual void closeApp();
-    virtual void setVisible(bool visible) override;
+    void setVisible(bool visible) override;
 
 private Q_SLOTS:
     void trayAction(QSystemTrayIcon::ActivationReason reason);
@@ -49,7 +49,7 @@ signals:
     void trayMenuShouldBeUpdated();
 
 protected:
-    virtual void closeEvent(QCloseEvent* event) override;
+    void closeEvent(QCloseEvent* event) override;
     virtual void showHideNotify(); // override this function on first hide
 
 private:

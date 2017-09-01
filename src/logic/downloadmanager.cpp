@@ -89,7 +89,7 @@ void DownloadManager::onDownloadFinished(int a_id)
         {
             DownloadTask* task = it.value();
 
-            if (DownloadType::TorrentFile == DownloadType::determineType(task->fileName()))
+            if (task->is_torrent_file())//DownloadType::TorrentFile == DownloadType::determineType(task->fileName()))
             {
                 addItemsToModel(QStringList() << task->fileName(), DownloadType::TorrentFile);
             }
@@ -125,7 +125,8 @@ bool DownloadManager::createNewTask(ItemDC& a_item)
     qDebug() << "DLManager::createNewTask() id = " << a_item.getID();
     a_item.setStatus(ItemDC::eCONNECTING);
     DownloadCollectionModel::instance().on_statusChange(a_item);
-    DownloadType::Type dlType = DownloadType::determineType(a_item.initialURL());
+    DownloadType::Type dlType = (DownloadType::Unknown == a_item.downloadType()) 
+        ? DownloadType::determineType(a_item.initialURL()) : a_item.downloadType();
 
     if (DownloadType::isDirectDownload(dlType))
     {

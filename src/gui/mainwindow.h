@@ -48,7 +48,7 @@ private:
     void populateTrayMenu();
 
     void languageChange();
-    virtual void changeEvent(QEvent* event) override;
+    void changeEvent(QEvent* event) override;
 
     void checkDefaultTorrentApplication();
 
@@ -101,8 +101,8 @@ private Q_SLOTS:
 #endif //Q_OS_MAC
 
 protected:
-    virtual void dragEnterEvent(QDragEnterEvent* event) override;
-    virtual void dropEvent(QDropEvent* event) override;
-    virtual void keyPressEvent(QKeyEvent* event) override;
-    virtual void showHideNotify() override;
+    void dragEnterEvent(QDragEnterEvent* event) override;
+    void dropEvent(QDropEvent* event) override;
+    void keyPressEvent(QKeyEvent* event) override;
+    void showHideNotify() override;
 };

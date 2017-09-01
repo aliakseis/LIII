@@ -26,7 +26,7 @@ public:
 
     QStringList filesPriorities() const;
 
-    virtual void accept() override;
+    void accept() override;
 
     QString savePath() const;
     void setSavePath(const QString& savePath);
@@ -62,5 +62,5 @@ private:
     QString m_savePath;
     Q_PROPERTY(QString m_savePath READ savePath WRITE setSavePath)
 protected:
-    virtual void timerEvent(QTimerEvent* event)override;
+    void timerEvent(QTimerEvent* event)override;
 };

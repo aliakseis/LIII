@@ -38,12 +38,13 @@ public:
     float getSpeed() const;
 
     QString fileName() const { return filename_; }
-    QString url() const {return url_;}
-    int priority_level() const {return priority_level_;}
-    int task_id() const {return task_id_;}
-    bool ready_to_download() const {return ready_to_download_;}
+    QString url() const { return url_; }
+    int priority_level() const { return priority_level_; }
+    int task_id() const { return task_id_; }
+    bool ready_to_download() const { return ready_to_download_; }
+    bool is_torrent_file() const { return is_torrent_file_; }
 #ifdef ALLOW_TRAFFIC_CONTROL
-    int speedLimit() const {return downloader_ ? downloader_->speedLimit() : 0;}
+    int speedLimit() const { return downloader_ ? downloader_->speedLimit() : 0; }
     void setSpeedLimit(int kbps);
 #endif
 
@@ -52,14 +53,15 @@ private:
     void setStatusInModel(ItemDC::eSTATUSDC a_status, int arg = 0);
     void on_download();
 
-    virtual void onProgress(qint64 bytes_downloaded) override;
-    virtual void onSpeed(qint64 bytes_per_second) override;
-    virtual void onFinished() override;
-    virtual void onFileCreated(const QString& filename) override;
-    virtual void onError(utilities::ErrorCode::ERROR_CODES code, const QString& err) override;
-    virtual void onFileToBeReleased(const QString& filename) override;
-    virtual void onNeedLogin(utilities::ICredentialsRetriever* retriever) override;
-    virtual void onReplyInvalidated() override;
+    void onProgress(qint64 bytes_downloaded) override;
+    void onSpeed(qint64 bytes_per_second) override;
+    void onFinished() override;
+    void onFileCreated(const QString& filename) override;
+    void onError(utilities::ErrorCode::ERROR_CODES code, const QString& err) override;
+    void onFileToBeReleased(const QString& filename) override;
+    void onNeedLogin(utilities::ICredentialsRetriever* retriever) override;
+    void onReplyInvalidated() override;
+    void onStart(const QByteArray& data) override;
 
     QScopedPointer<DownloaderType> downloader_;
     QScopedPointer<QNetworkAccessManager> network_manager_;
@@ -67,6 +69,7 @@ private:
     qint64 total_file_size_;
     int task_id_, priority_level_;
     bool ready_to_download_;
+    bool is_torrent_file_;
 
 Q_SIGNALS:
     void signalDownloadFinished(int ID);

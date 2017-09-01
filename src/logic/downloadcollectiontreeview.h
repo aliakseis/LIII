@@ -25,7 +25,7 @@ public:
 protected:
     void keyPressEvent(QKeyEvent* event);
     void HeaderResize();
-    virtual void mouseReleaseEvent(QMouseEvent*) override;
+    void mouseReleaseEvent(QMouseEvent*) override;
 
 private:
     void safelyDeleteVideoFile(QString const& file);

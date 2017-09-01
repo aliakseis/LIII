@@ -70,7 +70,7 @@ public:
 
 private:
 	// DownloaderObserverInterface interface
-	virtual void onProgress(qint64 bytes_downloaded) override
+	void onProgress(qint64 bytes_downloaded) override
 	{
 		m_bytesDownloaded += bytes_downloaded;
 		if (m_partial && m_partial >= m_bytesDownloaded)
@@ -80,33 +80,33 @@ private:
 			exit(0);
 		}
 	}
-	virtual void onSpeed(qint64 bytes_per_second) override
+	void onSpeed(qint64 bytes_per_second) override
 	{
 	}
-	virtual void onFinished() override
+	void onFinished() override
 	{
 		m_state = Finished;
 		processEvents();
 		exit(0);
 	}
-	virtual void onFileCreated(const QString& filename) override
+	void onFileCreated(const QString& filename) override
 	{
 		m_fileCreated = filename;
 	}
-	virtual void onError(utilities::ErrorCode::ERROR_CODES code, const QString& err) override
+	void onError(utilities::ErrorCode::ERROR_CODES code, const QString& err) override
 	{
 		qDebug() << __FUNCTION__ << "code:" << code << "description:" << err;
 		m_state = Error;
 		processEvents();
 		exit(0);
 	}
-	virtual void onFileToBeReleased(const QString& filename) override
+	void onFileToBeReleased(const QString& filename) override
 	{
 		m_fileReleased = filename;
 	}
-	virtual void onNeedLogin(utilities::ICredentialsRetriever* retriever) override {}
-	virtual void onReplyInvalidated() override {}
-
+	void onNeedLogin(utilities::ICredentialsRetriever* retriever) override {}
+	void onReplyInvalidated() override {}
+    void onStart(const QByteArray&) override {}
 
 	QUrl setupUrl(const QString& fileName, const QMap<QString, QVariant>& params)
 	{

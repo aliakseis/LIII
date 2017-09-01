@@ -24,7 +24,7 @@ public:
 
     QStringList filesPriorities() const;
 
-    virtual void accept() override;
+    void accept() override;
 
     QString savePath() const;
     void setSavePath(const QString& savePath);

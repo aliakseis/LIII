@@ -13,7 +13,7 @@ public:
     using QtSingleApplication::QtSingleApplication;
 
 protected:
-    virtual bool notify(QObject* receiver, QEvent* event) override
+    bool notify(QObject* receiver, QEvent* event) override
     {
         return handleSocketReadNotify(receiver, event) || QtSingleApplication::notify(receiver, event);
     }

@@ -375,7 +375,7 @@ libtorrent::torrent_handle TorrentManager::addTorrent(
         torrentParams.file_priorities = *file_priorities;
     }
 
-    QString targetInfoHash = DownloadType::determineType(torrOrMagnet) != DownloadType::MagnetLink ? toQString(torrentParams.ti->info_hash()) : btihFromMaget(torrOrMagnet);
+    QString targetInfoHash = is_adding_from_file ? toQString(torrentParams.ti->info_hash()) : btihFromMaget(torrOrMagnet);
     if (loadFastResumeData(targetInfoHash, torrentParams.resume_data))
     {
         qDebug("Successfully loaded fast resume data");
@@ -463,7 +463,7 @@ libtorrent::torrent_handle TorrentManager::addTorrent(
         m_idToHandle[id] = handle;
 
         // Saving torrent
-        if (DownloadType::determineType(torrOrMagnet) == DownloadType::TorrentFile)
+        if (is_adding_from_file)
         {
             QFile::copy(torrOrMagnet, utilities::PrepareCacheFolder(TORRENTS_SUB_FOLDER) + toQString(handle.info_hash()) + ".torrent");
         }

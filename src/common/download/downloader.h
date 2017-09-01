@@ -69,6 +69,7 @@ struct DownloaderObserverInterface
     virtual void onNeedLogin(utilities::ICredentialsRetriever* retriever) = 0;
     virtual void onReplyInvalidated() = 0;
     virtual void onFileToBeReleased(const QString& filename) = 0;
+    virtual void onStart(const QByteArray& data) = 0;
 }; // DownloaderObserverInterface
 
 
@@ -287,7 +288,12 @@ public:
             qint64 avail = current_download_->bytesAvailable();
             if (avail > 0)
             {
-                output_.write(current_download_->read(avail));
+                const QByteArray data = current_download_->read(avail);
+                if (observer_ && output_.pos() == 0)
+                {
+                    observer_->onStart(data);
+                }
+                output_.write(data);
             }
         }
     }

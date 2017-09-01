@@ -39,15 +39,15 @@ public:
 
     QModelIndex parent(const QModelIndex& child) const override;
 
-    virtual int columnCount(const QModelIndex& parent = QModelIndex()) const override;
+    int columnCount(const QModelIndex& parent = QModelIndex()) const override;
 
     int rowCount(const QModelIndex& parent = QModelIndex()) const override;
     Qt::ItemFlags flags(const QModelIndex& index) const override;
-    virtual Qt::DropActions supportedDropActions() const override;
+    Qt::DropActions supportedDropActions() const override;
 
-    virtual bool dropMimeData(const QMimeData* data, Qt::DropAction action,
+    bool dropMimeData(const QMimeData* data, Qt::DropAction action,
                               int row, int column, const QModelIndex& parent) override;
-    virtual QMimeData* mimeData(const QModelIndexList& indexes) const override;
+    QMimeData* mimeData(const QModelIndexList& indexes) const override;
 
     QModelIndex moveItem(const QModelIndex& a_index, int numSteps);
     QModelIndexList moveItems(QModelIndexList&& selectedInds, int step);
@@ -60,7 +60,7 @@ public:
 
     QModelIndex index(TreeItem* item, int column) const;
 
-    virtual QModelIndex index(int row, int column, const QModelIndex& parent = QModelIndex()) const override;
+    QModelIndex index(int row, int column, const QModelIndex& parent = QModelIndex()) const override;
 
     TreeItem* getItem(const QModelIndex& index) const;
 
