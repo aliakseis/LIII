@@ -17,7 +17,6 @@ private Q_SLOTS:
 	void test_icon();
 	void test_version();
 	void test_StringFileInfo();
-	void test_signature();
 
 	void cleanupTestCase();
 

@@ -139,7 +139,7 @@ void Test_Resources::test_StringFileInfo()
 				std::make_pair<const QString, const QString>("CompanyName"			,	PROJECT_COMPANYNAME),
 				std::make_pair<const QString, const QString>("FileDescription"		,	PROJECT_FULLNAME),
 				std::make_pair<const QString, const QString>("FileVersion"			,	PROJECT_VERSION),
-				std::make_pair<const QString, const QString>("LegalCopyright"		,	"Copyright (C) 2013 " PROJECT_COMPANYNAME " All Rights Reserved."),
+				std::make_pair<const QString, const QString>("LegalCopyright"		,	"Copyright (C) 2017 " PROJECT_COMPANYNAME " All Rights Reserved."),
 				std::make_pair<const QString, const QString>("ProductName"			,	PROJECT_FULLNAME),
 				std::make_pair<const QString, const QString>("ProductVersion"		,	PROJECT_VERSION),
 				std::make_pair<const QString, const QString>("OriginalFilename"		,	PROJECT_NAME ".exe"),
@@ -166,11 +166,6 @@ void Test_Resources::test_StringFileInfo()
 			});
 		}
 	}
-}
-
-void Test_Resources::test_signature()
-{
-	QSKIP("Not implemented", SkipAll);
 }
 
 void Test_Resources::cleanupTestCase()

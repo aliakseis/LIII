@@ -18,7 +18,6 @@ public:
 private Q_SLOTS:
 	void initTestCase();
 
-	void test_created();
 	void test_restore();
 	void test_restore_states();
 	void test_restore_states_from_closed();

@@ -8,14 +8,11 @@ endmacro(SETUP_TESTING)
 macro(APPEND_COMMON_TESTS)
 	if(DEVELOPER_BUILD_TESTS)
 	
-		#example of using macros
-
 		do_test(AuthenticationHelper "common/modules-tests/utilities/test-AuthenticationHelper.cpp" "common/modules-tests/utilities/test-AuthenticationHelper.h")
 		do_test(Translation "common/modules-tests/utilities/test-Translation.cpp" "common/modules-tests/utilities/test-Translation.h")
 		do_test(Utils "common/modules-tests/utilities/test-Utils.cpp" "common/modules-tests/utilities/test-Utils.h")
 		do_test(Downloader "common/modules-tests/download/test-Download.cpp" "common/modules-tests/download/test-Download.h")
 		do_test(ui_utils "common/modules-tests/ui_utils/test-mainwindowwithtray.cpp" "common/modules-tests/ui_utils/test-mainwindowwithtray.h")
-		append_test_resource(ui_utils "${CMAKE_SOURCE_DIR}/src/common/modules-tests/ui_utils/res/qtdemo.ico")
 		do_test(resources_test "common/modules-tests/resources_test/test-resources.cpp" "common/modules-tests/resources_test/test-resources.h")
 		
 	endif(DEVELOPER_BUILD_TESTS)
@@ -121,11 +118,3 @@ macro(do_test testname)
 
 	ADD_TEST(test_${testname} test_${testname})
 endmacro(do_test testname)
-
-macro(append_test_resource testname)
-	set(test_resource ${ARGV1})
-	get_target_property(TEST_BINARY_FILE test_${testname} LOCATION)
-	get_filename_component(TEST_BINARY_PATH ${TEST_BINARY_FILE} PATH)
-	add_custom_command(TARGET test_${testname} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy \"${test_resource}\" ${TEST_BINARY_PATH}/)
-endmacro(append_test_resource testname)
-
