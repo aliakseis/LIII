@@ -200,24 +200,11 @@ TorrentManager::TorrentManager()
 
 
     // Speed control
-    if (QSettings().value(IsTrafficUploadLimited, IsTrafficUploadLimited_Default).toBool())
-    {
-        setUploadLimit(QSettings().value(TrafficUploadLimitKbs, TrafficUploadLimitKbs_Default).toInt() * 1024);
-    }
-    else
-    {
-        // This is guarantee that speed will reset on start
-        setUploadLimit(0);
-    }
-    if (QSettings().value(IsTrafficLimited, IsTrafficLimited_Default).toBool())
-    {
-        setDownloadLimit(QSettings().value(TrafficLimitKbs, TrafficLimitKbs_Default).toInt() * 1024);
-    }
-    else
-    {
-        // This is guarantee that speed will reset on start
-        setDownloadLimit(0);
-    }
+    setUploadLimit(QSettings().value(IsTrafficUploadLimited, IsTrafficUploadLimited_Default).toBool()
+        ? QSettings().value(TrafficUploadLimitKbs, TrafficUploadLimitKbs_Default).toInt() * 1024 : 0);
+
+    setDownloadLimit(QSettings().value(IsTrafficLimited, IsTrafficLimited_Default).toBool()
+        ? QSettings().value(TrafficLimitKbs, TrafficLimitKbs_Default).toInt() * 1024 : 0);
 
     // enable dht by default for magnets
     Q_ASSERT(m_session->is_dht_running());
@@ -272,16 +259,13 @@ void TorrentManager::close()
 
 int TorrentManager::cacheResumeTorrentsData(bool fully_data_save /* = false */)
 {
-    std::vector<libtorrent::torrent_handle> torrents = m_session->get_torrents();
-
     int cached = 0;
 
-    for (std::vector<libtorrent::torrent_handle>::iterator torrents_iterator = torrents.begin(); torrents_iterator != torrents.end(); ++torrents_iterator)
+    for (const auto& torrent : m_session->get_torrents())
     {
-        libtorrent::torrent_handle torrent = *torrents_iterator;
         try
         {
-            libtorrent::torrent_status status = torrent.status();
+            const libtorrent::torrent_status status = torrent.status();
 
             if (!torrent.is_valid() || !status.has_metadata)
             {
@@ -294,7 +278,7 @@ int TorrentManager::cacheResumeTorrentsData(bool fully_data_save /* = false */)
                 continue;
             }
 
-            libtorrent::torrent_status::state_t state = status.state;
+            const libtorrent::torrent_status::state_t state = status.state;
             if (state == libtorrent::torrent_status::checking_files || state == libtorrent::torrent_status::queued_for_checking)
             {
                 continue;

@@ -1093,7 +1093,7 @@ void DownloadCollectionModel::init()
             QByteArray hash = QByteArray::fromBase64(ti.hash().toLatin1());
             char hexstring[41];
             libtorrent::to_hex((char const*)hash.constData(), libtorrent::sha1_hash::size, hexstring);
-            QString torrOrMagnet = utilities::PrepareCacheFolder(TORRENTS_SUB_FOLDER) + QString(hexstring) + ".torrent";
+            QString torrOrMagnet = utilities::PrepareCacheFolder(TORRENTS_SUB_FOLDER) + hexstring + ".torrent";
             if (!QFile::exists(torrOrMagnet))
             {
                 torrOrMagnet = ti.initialURL();
