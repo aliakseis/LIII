@@ -474,7 +474,8 @@ void DownloadCollectionModel::on_statusChange(const ItemDC& a_item)
             return;    // ignore such status change
         }
         if (prevStatus == ItemDC::eQUEUED
-                && (a_item.getStatus() == ItemDC::ePAUSED || a_item.getStatus() == ItemDC::eDOWNLOADING || a_item.getStatus() == ItemDC::eSTALLED))
+                && (a_item.getStatus() == ItemDC::ePAUSED 
+                    || a_item.getStatus() == ItemDC::eDOWNLOADING || a_item.getStatus() == ItemDC::eSTALLED))
         {
             return;    // ignore such status change
         }
@@ -749,7 +750,9 @@ QModelIndexList DownloadCollectionModel::moveItems_helper(QModelIndexList&& sele
     QModelIndexList touchedRows;
     touchedRows.reserve(selectedInds.size() * 2);
     // merge old and new indices and exclude duplicated
-    std::merge(selectedInds.constBegin(), selectedInds.constEnd(), result.constBegin(), result.constEnd(), std::back_inserter(touchedRows), rowPred<isUp>());
+    std::merge(selectedInds.constBegin(), selectedInds.constEnd(), 
+        result.constBegin(), result.constEnd(), 
+        std::back_inserter(touchedRows), rowPred<isUp>());
     touchedRows.erase(
         std::unique(touchedRows.begin(), touchedRows.end(), isRowEqual),
         touchedRows.end()

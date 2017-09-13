@@ -35,7 +35,6 @@ class ItemDC
 {
     Q_OBJECT
     Q_ENUMS(eSTATUSDC)
-    Q_ENUMS(eITEMPLAY)
 public:
     ItemDC()
         : m_ID(nullItemID)
@@ -61,21 +60,6 @@ public:
         eSTARTING,
         eSTOPPED,
         eUNKNOWN
-    };
-    enum eITEMPLAY {
-        ePLAY_PREPARE,
-        ePLAYREADY,
-        ePLAYIMPOSSIBLE,
-        eDOWNLOAD_FAILED,
-        ePLAYQUEUED,
-        ePLAYPAUSED,
-        ePLAY_ENABLED = 10,
-        ePLAY_DISABLED,
-        eFILE_DISABLED,
-        eFILE_ENABLED,
-        eFOLDER,
-        eFOLDER_DISABLED,
-        eWAITING_INFO
     };
 
     bool isValid() const { return m_ID != nullItemID; }

@@ -119,16 +119,11 @@ private:
     void saveTorrentFile(const libtorrent::torrent_handle& handle);
     void askOpentorrentUser(const libtorrent::torrent_handle& handle);
 
+#define HANDLER_DEF(r, data, elem) void handler(const libtorrent::elem&);
 
-    void handler(libtorrent::stats_alert const& a);
-    void handler(libtorrent::torrent_removed_alert const& a);
-    void handler(libtorrent::torrent_paused_alert const& a);
-    void handler(libtorrent::torrent_resumed_alert const& a);
-    void handler(libtorrent::file_error_alert const& a);
-    void handler(libtorrent::metadata_received_alert const& a);
-    void handler(libtorrent::storage_moved_alert const& a);
-    void handler(libtorrent::save_resume_data_alert const& a);
-    void handler(libtorrent::state_changed_alert const& a);
+    BOOST_PP_SEQ_FOR_EACH(HANDLER_DEF, _, ALERTS_OF_INTEREST)
+
+#undef HANDLER_DEF
 
 private:
     QMap<libtorrent::torrent_handle, int> m_handleToId;
