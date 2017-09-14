@@ -33,8 +33,9 @@ void LIIIStyle::drawControl(ControlElement element, const QStyleOption* option, 
         rectPrBar.setWidth((totalWidth * progressOptions->progress) / 100);
 
         //gradient
-        QBrush brush(QColor("#50BD40"));
-        QPen pen(QColor("#50BD40"));
+        QColor green(0x50BD40);
+        QBrush brush(green);
+        QPen pen(green);
 
         painter->save();
         // draw  progress
@@ -74,7 +75,8 @@ void LIIIStyle::drawControl(ControlElement element, const QStyleOption* option, 
 #ifdef Q_OS_WIN32
         windowsClassicBug = rctGroove;
 #endif
-        QColor color = (option->state & QStyle::State_Selected) ? QColor("#ffffff") : QColor("#e5e5e5");
+        QColor color = (option->state & QStyle::State_Selected) 
+            ? QColor(Qt::white) : QColor(0xe5e5e5);
 
         QPen pen(color);
         QBrush brush(color);
