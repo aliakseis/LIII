@@ -9,5 +9,5 @@ public:
     explicit DownloadCollectionDelegate(QWidget* parent = 0);
     ~DownloadCollectionDelegate();
 
-    void paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const;
+    void paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const override;
 };

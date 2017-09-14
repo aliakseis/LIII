@@ -9,9 +9,6 @@ class LIIIStyle
     Q_OBJECT
 
 public:
-    LIIIStyle() {};
-    ~LIIIStyle() {};
-
-    void drawControl(ControlElement element,    const QStyleOption* option,    QPainter* painter,    const QWidget* widget) const;
-    void drawPrimitive(PrimitiveElement element, const QStyleOption* option, QPainter* painter, const QWidget* widget) const;
+    void drawControl(ControlElement element,    const QStyleOption* option,    QPainter* painter,    const QWidget* widget) const override;
+    void drawPrimitive(PrimitiveElement element, const QStyleOption* option, QPainter* painter, const QWidget* widget) const override;
 };

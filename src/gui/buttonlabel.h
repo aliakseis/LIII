@@ -20,12 +20,12 @@ protected:
         sDisabled,
     };
 
-    void mouseDoubleClickEvent(QMouseEvent* event);
-    void mousePressEvent(QMouseEvent* event);
-    void mouseReleaseEvent(QMouseEvent* event);
-    void enterEvent(QEvent* event);
-    void leaveEvent(QEvent* event);
-    void changeEvent(QEvent* event);
+    void mouseDoubleClickEvent(QMouseEvent* event) override;
+    void mousePressEvent(QMouseEvent* event) override;
+    void mouseReleaseEvent(QMouseEvent* event) override;
+    void enterEvent(QEvent* event) override;
+    void leaveEvent(QEvent* event) override;
+    void changeEvent(QEvent* event) override;
 
     State m_state;
 

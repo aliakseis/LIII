@@ -24,8 +24,8 @@ protected:
         sError,
     };
 
-    void focusInEvent(QFocusEvent* event);
-    virtual void keyPressEvent(QKeyEvent*);
+    void focusInEvent(QFocusEvent* event) override;
+    void keyPressEvent(QKeyEvent*) override;
 
     State m_state;
 };

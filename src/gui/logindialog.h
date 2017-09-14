@@ -19,7 +19,7 @@ public:
     QString login();
     QString password();
 protected:
-    void changeEvent(QEvent* e);
+    void changeEvent(QEvent* e) override;
 
 private:
     Ui::LoginDialog* m_ui;

@@ -13,8 +13,6 @@ namespace Ui
 class AddLinks;
 }
 
-const QRgb COLOR_CHECKED_ITEM = 0xff101010;
-const QRgb COLOR_UNCHECKED_ITEM = 0xff808080;
 
 class ComboboxDelegate : public QStyledItemDelegate
 {
@@ -24,18 +22,16 @@ public:
     ComboboxDelegate(QObject* parent = 0);
 
     void paint(QPainter* painter,
-               const QStyleOptionViewItem& option, const QModelIndex& index) const;
+               const QStyleOptionViewItem& option, const QModelIndex& index) const override;
     QWidget* createEditor(QWidget* parent, const QStyleOptionViewItem& option,
-                          const QModelIndex& index) const;
-    void setEditorData(QWidget* editor, const QModelIndex& index) const;
+                          const QModelIndex& index) const override;
+    void setEditorData(QWidget* editor, const QModelIndex& index) const override;
     void setModelData(QWidget* editor, QAbstractItemModel* model,
-                      const QModelIndex& index) const;
+                      const QModelIndex& index) const override;
 };
 
-class AddLinks
-    : public QDialog
+class AddLinks : public QDialog
 {
-
     Q_OBJECT
 
 public:
@@ -55,5 +51,4 @@ private Q_SLOTS:
     void on_selectAllButton_clicked();
     void on_selectNoneButton_clicked();
     void on_listWidget_itemClicked(QTreeWidgetItem* item);
-
 };
