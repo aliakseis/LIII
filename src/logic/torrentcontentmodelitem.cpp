@@ -31,7 +31,7 @@ TorrentContentModelItem::TorrentContentModelItem(
     m_parentItem(parent), m_type(TFILE), m_fileIndex(file_index), m_totalDone(0)
 {
     Q_ASSERT(parent);
-    m_path = QString::fromUtf8(f.path.c_str());
+    m_path = QString::fromStdString(f.path);
     QString name = QFileInfo(m_path).fileName();
 
     init(name, f.size);

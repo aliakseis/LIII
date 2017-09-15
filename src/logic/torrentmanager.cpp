@@ -107,7 +107,7 @@ QString torrentRootItemPath(const libtorrent::torrent_handle& handle)
             auto lhs = handle.save_path();
             if (!lhs.empty() && lhs[lhs.size() - 1] != '\\' && lhs[lhs.size() - 1] != '/')
                 lhs += QDir::separator().toLatin1();
-            result = QString::fromUtf8((lhs + firstFile.substr(0, minLength)).c_str());
+            result = QString::fromStdString(lhs + firstFile.substr(0, minLength));
         }
     }
     return result;
@@ -478,7 +478,7 @@ void TorrentManager::on_pauseTaskWithID(int id, DownloadType::Type type)
         auto it = m_idToHandle.find(id);
         if (it != m_idToHandle.end() && it->is_valid())
         {
-            qDebug() << __FUNCTION__ << "pausing:" << QString::fromUtf8(it.value().name().c_str());
+            qDebug() << __FUNCTION__ << "pausing:" << it.value().name().c_str();
             it.value().pause();
         }
     }
@@ -489,7 +489,7 @@ bool TorrentManager::resumeTorrent(int id)
     auto it = m_idToHandle.find(id);
     if (it != m_idToHandle.end())
     {
-        qDebug() << __FUNCTION__ << "resuming:" << QString::fromUtf8(it.value().name().c_str());
+        qDebug() << __FUNCTION__ << "resuming:" << it.value().name().c_str();
         it.value().resume();
         return true;
     }

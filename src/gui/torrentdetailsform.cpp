@@ -66,8 +66,8 @@ void TorrentDetailsForm::initialize()
 
     Q_ASSERT(m_torrentInfo->is_valid());
 
-    ui->lblName->setText(QString::fromUtf8(m_torrentInfo->name().c_str()));
-    QString comment = QString::fromUtf8(m_torrentInfo->comment().c_str());
+    ui->lblName->setText(QString::fromStdString(m_torrentInfo->name()));
+    QString comment = QString::fromStdString(m_torrentInfo->comment());
     ui->lblComment->setText(comment.replace('\n', ' '));
 
     initTorrentContentTab();

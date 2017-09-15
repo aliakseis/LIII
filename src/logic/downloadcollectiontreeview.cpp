@@ -280,7 +280,7 @@ void DownloadCollectionTreeView::on_showContextMenu(const QPoint& a_point)
     {
         {
             QMenu menu;
-            menu.setObjectName("DownloadContextMenu");
+            menu.setObjectName(QStringLiteral("DownloadContextMenu"));
 
             const auto dlType = model()->getItem(index)->downloadType();
             // Show In Folder menu item

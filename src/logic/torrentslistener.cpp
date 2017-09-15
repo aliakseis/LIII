@@ -207,7 +207,7 @@ void TorrentsListener::handler(libtorrent::file_error_alert const& a)
     ItemDC item;
     item.setID(getItemID(a.handle));
     item.setStatus(ItemDC::eERROR);
-    item.setErrorDescription(QString::fromUtf8(a.error.message().c_str()));
+    item.setErrorDescription(QString::fromStdString(a.error.message()));
     emit statusChange(item);
 }
 
@@ -371,7 +371,7 @@ void TorrentsListener::handleItemMetadata(const libtorrent::torrent_handle& hand
         ItemDC item;
         item.setID(getItemID(handle));
         item.setSize(status.total_wanted);
-        item.setDownloadedFileName(QString::fromUtf8(handle.get_torrent_info().name().c_str()));
+        item.setDownloadedFileName(QString::fromStdString(handle.get_torrent_info().name()));
         item.setSource("Torrent");
 
         // Save Path

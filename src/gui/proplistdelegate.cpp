@@ -58,7 +58,7 @@ void PropListDelegate::paint(QPainter* painter, const QStyleOptionViewItem& opti
             }
 
             progressBarOption.progress = (int)progress;
-            progressBarOption.text = QString(QByteArray::number(progress, 'f', 1)) + QString::fromUtf8("%");
+            progressBarOption.text = QString(QByteArray::number(progress, 'f', 1)) + "%";
             QApplication::style()->drawControl(QStyle::CE_ProgressBar, &progressBarOption, painter);
         }
         else

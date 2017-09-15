@@ -77,7 +77,7 @@ MainWindow::MainWindow()
 
     QHBoxLayout* horizontalLayout = new QHBoxLayout(ui->menuBar);
     horizontalLayout->setSpacing(6);
-    horizontalLayout->setObjectName(QString::fromUtf8("horizontalMenuBarLayout"));
+    horizontalLayout->setObjectName(QStringLiteral("horizontalMenuBarLayout"));
     horizontalLayout->setContentsMargins(0, 2, 8, 2);
 
     QSpacerItem* horizSpacer1 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
@@ -686,7 +686,7 @@ do shell script \\\"echo \\\" & item 1 in brandFiles\" | /usr/bin/osascript"
             }
         }
         pclose(pipe);
-        return QString::fromUtf8(result.c_str()).replace("\n", "");
+        return QString::fromStdString(result).replace("\n", "");
     }
 }
 #endif //Q_OS_MAC

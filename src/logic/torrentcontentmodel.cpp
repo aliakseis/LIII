@@ -290,7 +290,7 @@ void TorrentContentModel::setupModelData(const libtorrent::torrent_info& t, cons
         const libtorrent::file_entry& fentry = t.file_at(i);
         TorrentContentModelItem* current_parent = m_rootItem;
 
-        QString path = QString::fromUtf8(fentry.path.c_str());
+        QString path = QString::fromStdString(fentry.path);
 
         // Iterate of parts of the path to create necessary folders
         QStringList pathFolders = path.split(QRegExp("[/\\\\]"), QString::SkipEmptyParts);

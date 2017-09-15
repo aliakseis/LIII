@@ -379,7 +379,7 @@ void DownloadCollectionModel::addItemsToModel(const QStringList& urls, DownloadT
                 {
                     ti->setSize(handle.status(0).total_wanted);
                     ti->setDownloadType(DownloadType::TorrentFile);
-                    ti->setDownloadedFileName(QString::fromUtf8(handle.get_torrent_info().name().c_str()));
+                    ti->setDownloadedFileName(QString::fromStdString(handle.get_torrent_info().name()));
                 }
             }
             catch (libtorrent::libtorrent_exception const& e)
@@ -1119,7 +1119,7 @@ void DownloadCollectionModel::init()
             {
                 if (ItemDC::eSEEDING == ti.getStatus())
                 {
-                    qDebug() << __FUNCTION__ << "resuming torrent that is to be seeding:" << QString::fromUtf8(handle.name().c_str());
+                    qDebug() << __FUNCTION__ << "resuming torrent that is to be seeding:" << handle.name().c_str();
                     handle.resume();
                 }
             }

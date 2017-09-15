@@ -32,7 +32,7 @@ void TorrentDetailsContentView::on_showTreeTorentContextMenu(const QPoint& pos)
     if (index.isValid())
     {
         QMenu menu;
-        menu.setObjectName("TorrentDetailsContextMenu");
+        menu.setObjectName(QStringLiteral("TorrentDetailsContextMenu"));
         menu.addAction(QIcon(), tr("Open in folder"), this, SLOT(on_ItemOpenFolder()));
         menu.addAction(QIcon(), tr("Open File"), this, SLOT(on_ItemOpenFile()));
 

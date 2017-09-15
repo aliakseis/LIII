@@ -82,8 +82,8 @@ void AddTorrentForm::initialize()
 
     // List files in torrent
     m_contentModel->model()->setupModelData(*m_torrentInfo, libtorrent::torrent_status());
-    ui->lblName->setText(QString::fromUtf8(m_torrentInfo->name().c_str()));
-    QString comment = QString::fromUtf8(m_torrentInfo->comment().c_str());
+    ui->lblName->setText(QString::fromStdString(m_torrentInfo->name()));
+    QString comment = QString::fromStdString(m_torrentInfo->comment());
     ui->lblComment->setText(comment.replace('\n', ' '));
     updateDiskSpaceLabel();
     VERIFY(connect(m_contentModel->model(), SIGNAL(filteredFilesChanged()), SLOT(updateDiskSpaceLabel())));
