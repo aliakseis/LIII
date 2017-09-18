@@ -80,7 +80,7 @@ bool MoveToTrashImpl(const QString& file)
             QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
         paths.append(home + "/.local/share/Trash");
         paths.append(home + "/.trash");
-        Q_FOREACH(const QString & path, paths)
+        for (const QString& path : qAsConst(paths))
         {
             if (TrashPath.isEmpty())
             {

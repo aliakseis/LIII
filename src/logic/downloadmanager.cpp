@@ -331,7 +331,7 @@ void DownloadManager::UpdateSpeedLimitsImpl()
 
         int kbps = m_kbps - m_activeTasks.size() * RESERVE_TASK_LIMIT; // reserve n kb to each task
 
-        Q_FOREACH(DownloadTask * task, sortedTasks)
+        for (DownloadTask* task : qAsConst(sortedTasks))
         {
             int curLimit = std::max(RESERVE_TASK_LIMIT, kbps); // it may take all traffic when it will start
 

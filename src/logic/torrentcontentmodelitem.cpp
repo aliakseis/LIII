@@ -245,7 +245,7 @@ void TorrentContentModelItem::setPriority(int new_prio, bool update_parent)
     if (new_prio != prio::PARTIAL && !m_childItems.empty())
     {
         qDebug("Updating children items");
-        Q_FOREACH(TorrentContentModelItem * child, m_childItems)
+        for (TorrentContentModelItem* child : qAsConst(m_childItems))
         {
             // Do not update the parent since
             // the parent is causing the update
@@ -279,7 +279,7 @@ void TorrentContentModelItem::updatePriority()
 
 TorrentContentModelItem* TorrentContentModelItem::childWithName(const QString& name) const
 {
-    Q_FOREACH(TorrentContentModelItem * child, m_childItems)
+    for (TorrentContentModelItem* child : qAsConst(m_childItems))
     {
         if (child->getName() == name)
         {

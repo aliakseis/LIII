@@ -295,7 +295,7 @@ void TorrentContentModel::setupModelData(const libtorrent::torrent_info& t, cons
         // Iterate of parts of the path to create necessary folders
         QStringList pathFolders = path.split(QRegExp("[/\\\\]"), QString::SkipEmptyParts);
         pathFolders.removeLast();
-        Q_FOREACH(const QString & pathPart, pathFolders)
+        for (const QString& pathPart : qAsConst(pathFolders))
         {
             if (pathPart == ".unwanted")
             {

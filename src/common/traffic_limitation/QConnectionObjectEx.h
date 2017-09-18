@@ -27,8 +27,8 @@ inline decltype((*(T*)0)((QObject*)0)) findFirstThat(const QObject* obj, const c
         return 0;
     }
 
-    QObjectList receivers = static_cast<const QConnectionObjectEx*>(obj)->receiverList(signal);
-    Q_FOREACH(QObject * item, receivers)
+    const QObjectList receivers = static_cast<const QConnectionObjectEx*>(obj)->receiverList(signal);
+    for (QObject* item : receivers)
     {
         if (auto result = fun(item))
         {
@@ -47,8 +47,8 @@ inline decltype((*(T*)0)((QObject*)0)) findFirstThat(const QObject* obj, T fun)
         return 0;
     }
 
-    QObjectList senders = static_cast<const QConnectionObjectEx*>(obj)->senderList();
-    Q_FOREACH(QObject * item, senders)
+    const QObjectList senders = static_cast<const QConnectionObjectEx*>(obj)->senderList();
+    for (QObject* item : senders)
     {
         if (auto result = fun(item))
         {

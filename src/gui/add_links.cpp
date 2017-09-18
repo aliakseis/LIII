@@ -87,7 +87,7 @@ AddLinks::AddLinks(const QStringList& urls, QWidget* parent)
     setWindowFlags(Qt::Dialog | Qt::WindowTitleHint | Qt::WindowCloseButtonHint);
     ui->selectAllButton->setEnabled(false);
 
-    Q_FOREACH(const QString & url, urls)
+    for (const QString& url : urls)
     {
         addUrlToList(url);
     }

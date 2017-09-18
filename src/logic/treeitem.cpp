@@ -181,7 +181,7 @@ void TreeItem::setChildItems(const QObjectList& items)
     qDeleteAll(childItems);
     childItems.clear();
     childItems.reserve(items.size());
-    Q_FOREACH(QObject * item, items)
+    for (QObject* item : items)
     {
         Q_ASSERT_X(dynamic_cast<TreeItem*>(item), Q_FUNC_INFO, "Argument is not a list of TreeItem-s!");
 

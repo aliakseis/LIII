@@ -224,7 +224,7 @@ case QMetaType::TypeName: strValue = primitiveTypeToString<RealType>(value, m_ca
             else if (qMetaTypeId<QObjectList>() == userType)
             {
                 const QObjectList& qObjectList = *reinterpret_cast<const QObjectList*>(value.constData());
-                Q_FOREACH(QObject * item, qObjectList)
+                for (QObject* item : qObjectList)
                 {
                     serializeObjectInternal(item, propName);
                 }

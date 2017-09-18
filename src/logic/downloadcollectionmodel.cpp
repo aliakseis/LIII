@@ -326,7 +326,7 @@ QVariant DownloadCollectionModel::headerData(int section, Qt::Orientation orient
 
 void DownloadCollectionModel::addItemsToModel(const QStringList& urls, DownloadType::Type a_type)
 {
-    Q_FOREACH(const QString & l_strUrl, urls)
+    for (const QString& l_strUrl : urls)
     {
         libtorrent::torrent_handle handle;
         

@@ -232,8 +232,8 @@ void DownloadCollectionTreeView::on_ItemSelectChanged(const QItemSelection& curr
 std::array<bool, 4> DownloadCollectionTreeView::canPRCSEnabled()
 {
     std::array<bool, 4> result; // bool canPause, bool canResume, bool canCancel
-    std::fill(result.begin(), result.end(), false);
-    Q_FOREACH(const QModelIndex & ind, selectionModel()->selectedRows())
+    result.fill(false);
+    for (const QModelIndex& ind : selectionModel()->selectedRows())
     {
         TreeItem* ti = model()->getItem(ind);
         result[0] = result[0] || ti->canPause();
@@ -245,8 +245,7 @@ std::array<bool, 4> DownloadCollectionTreeView::canPRCSEnabled()
 
 void DownloadCollectionTreeView::startDownloadItem()
 {
-    QModelIndexList items = selectionModel()->selectedRows();
-    Q_FOREACH(const QModelIndex & ind, items)
+    for (const QModelIndex& ind : selectionModel()->selectedRows())
     {
         TreeItem* ti = model()->getItem(ind);
         if (ti && ti->canResume())
@@ -259,8 +258,7 @@ void DownloadCollectionTreeView::startDownloadItem()
 
 void DownloadCollectionTreeView::pauseDownloadItem()
 {
-    QModelIndexList items = selectionModel()->selectedRows();
-    Q_FOREACH(const QModelIndex & ind, items)
+    for (const QModelIndex& ind : selectionModel()->selectedRows())
     {
         TreeItem* ti = model()->getItem(ind);
         if (ti && ti->canPause())
@@ -529,7 +527,7 @@ void DownloadCollectionTreeView::pauseAllItems()
 void DownloadCollectionTreeView::selectRows(const QModelIndexList& newInds)
 {
     selectionModel()->select(QItemSelection(), QItemSelectionModel::Clear);
-    Q_FOREACH(const QModelIndex & idx, newInds)
+    for (const QModelIndex& idx : newInds)
     {
         selectionModel()->select(idx, QItemSelectionModel::Select | QItemSelectionModel::Rows);
     }

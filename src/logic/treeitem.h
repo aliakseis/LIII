@@ -214,7 +214,7 @@ template<class Fn_t>
 void TreeItem::forAll(Fn_t fn)
 {
     fn(*this);
-    Q_FOREACH(TreeItem * ti, childItems)
+    for (TreeItem* ti : qAsConst(childItems))
     {
         ti->forAll(fn);
     }

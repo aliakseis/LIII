@@ -181,27 +181,26 @@ QString SizeToString(quint64 size, int precision, int fieldWidth)
 
     if (size < Kbytes_limit)
     {
-        return QString("%1 B").arg(size);
+        return QStringLiteral("%1 B").arg(size);
     }
     else if (size < Mbytes_limit)
     {
         const double sizef = size / static_cast<double>(Kbytes_limit);
-        return QString("%1 kB").arg(sizef, fieldWidth, 'f', precision);
+        return QStringLiteral("%1 kB").arg(sizef, fieldWidth, 'f', precision);
     }
     else if (size < Gbytes_limit)
     {
         const double sizef = size / static_cast<double>(Mbytes_limit);
-        return QString("%1 MB").arg(sizef, fieldWidth, 'f', precision);
+        return QStringLiteral("%1 MB").arg(sizef, fieldWidth, 'f', precision);
     }
 
     const double sizef = size / static_cast<double>(Gbytes_limit);
-    return QString("%1 GB").arg(sizef, fieldWidth, 'f', precision);
+    return QStringLiteral("%1 GB").arg(sizef, fieldWidth, 'f', precision);
 }
 
 
 QString secondsToString(int seconds)
 {
-    QString result;
     int s = seconds % 60;
     int m = seconds / 60;
     int h = seconds / 3600;
@@ -209,12 +208,12 @@ QString secondsToString(int seconds)
 
     if (h > 0)
     {
-        result = "%3:%2:%1";
-        return result.arg(s, 2, 10, QChar('0')).arg(m, 2, 10, QChar('0')).arg(h, 2, 10, QChar('0'));
+        return QStringLiteral("%3:%2:%1")
+            .arg(s, 2, 10, QChar('0')).arg(m, 2, 10, QChar('0')).arg(h, 2, 10, QChar('0'));
     }
 
-    result = "%2:%1";
-    return result.arg(s, 2, 10, QChar('0')).arg(m, 2, 10, QChar('0'));
+    return QStringLiteral("%2:%1")
+        .arg(s, 2, 10, QChar('0')).arg(m, 2, 10, QChar('0'));
 }
 
 // shamelessly stolen from qstring.cpp
@@ -429,7 +428,7 @@ void runWithPrivileges(const wchar_t* arg, WId parent)
 
 QMainWindow* getMainWindow()
 {
-    Q_FOREACH(QWidget *widget, QApplication::topLevelWidgets())
+    for (QWidget* widget : QApplication::topLevelWidgets())
         if (QMainWindow *mainWindow = qobject_cast<QMainWindow*>(widget))
             return mainWindow;
     return nullptr;

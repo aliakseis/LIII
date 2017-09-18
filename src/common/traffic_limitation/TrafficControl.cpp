@@ -85,9 +85,9 @@ bool handleSocketReadNotify(QObject* receiver, QEvent* e)
                             std::shared_ptr<traffic_limitation::ISocketReadInterceptor> interceptor;
                             {
                                 QReadLocker locker(&receiverMapLock);
-                                QObjectList receivers 
+                                const QObjectList receivers 
                                     = static_cast<const QConnectionObjectEx*>(delegate)->receiverList("downloadData(QByteArray)");
-                                Q_FOREACH(QObject * receiver, receivers)
+                                for (QObject* receiver : receivers)
                                 {
                                     auto it = receiverMap.find(receiver);
                                     if (it != receiverMap.end())
