@@ -366,7 +366,7 @@ bool CheckPortAvailable(int targetPort, const char** reason)
     {
         if (reason)
         {
-            *reason = "This TCP port has already used";
+            *reason = "This TCP port is already in use.";
         }
         return false;
     }
@@ -375,7 +375,7 @@ bool CheckPortAvailable(int targetPort, const char** reason)
     {
         if (reason)
         {
-            *reason = "This UDP port has already used";
+            *reason = "This UDP port is already in use.";
         }
         return false;
     }
