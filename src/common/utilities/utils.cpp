@@ -126,16 +126,10 @@ QStringList ParseUrls(const QString& data)
 
 void InitializeProjectDescription()
 {
-    static struct Initializer
-    {
-        Initializer()
-        {
-            QCoreApplication::setApplicationVersion(BRAND_VERSION);
-            QCoreApplication::setApplicationName(PROJECT_NAME);
-            QCoreApplication::setOrganizationName(PROJECT_NAME);
-            QCoreApplication::setOrganizationDomain(PROJECT_DOMAIN);
-        }
-    } initializer;
+    QCoreApplication::setApplicationVersion(BRAND_VERSION);
+    QCoreApplication::setApplicationName(PROJECT_NAME);
+    QCoreApplication::setOrganizationName(PROJECT_NAME);
+    QCoreApplication::setOrganizationDomain(PROJECT_DOMAIN);
 }
 
 QFont GetAdaptedFont(int size, int additional_amount)
