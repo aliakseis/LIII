@@ -7,7 +7,7 @@ DownloadType::Type DownloadType::determineType(const QString& linkOrPath)
     const QRegExp torrentRx(".*\\.torrent$");
     const QRegExp magnetRx("^magnet:");
     const QRegExp webUrlRx("^https?://");
-    const QRegExp fileRx("^[a-z]:[\\\\/]|^/|^~/|^file:///", Qt::CaseInsensitive);
+    const QRegExp fileRx("^[a-z]:[\\\\/]|^/|^~/|^file://", Qt::CaseInsensitive);
 
     // first priority of this check is presence of "http",
     // then check for ".torrent"

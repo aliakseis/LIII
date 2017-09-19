@@ -43,20 +43,13 @@
 namespace utilities
 {
 
-const char kValidIPAddressRegex[] =
-    "^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$";
-const char kValidHostnameRegex[] = // modified to have at least one '.'
-    "^(([a-zA-Z]|[a-zA-Z][a-zA-Z0-9\\-]*[a-zA-Z0-9])\\.)+([A-Za-z]|[A-Za-z][A-Za-z0-9\\-]*[A-Za-z0-9])$";
-const char* kURLPrefixes[] = {"http://", "https://", "vidxden://1", "ftp://"};
-const int kOffsetPastSeparator[] = {2, 2, 3, 2};
-
-template <typename T, size_t N>
-char(&ArraySizeHelper(T(&array)[N]))[N];
-#define arraysize(array) (sizeof(ArraySizeHelper(array)))
+const char* kURLPrefixes[] = { "http://", "https://", "vidxden://1", "ftp://", "file://", "magnet:" };
+const auto kNumberOfPrefixes = sizeof(kURLPrefixes) / sizeof(kURLPrefixes[0]);
+const int kOffsetPastSeparator[kNumberOfPrefixes] = { 3, 3, 4, 3, 3, 1 };
 
 QStringList ParseUrls(const QString& data)
 {
-    QStringList list = data.split(QRegExp("[\\s\\\"\\n]+"), QString::SkipEmptyParts);
+    const QStringList list = data.split(QRegExp("[\\s\\\"\\n]+"), QString::SkipEmptyParts);
     QStringList res;
     for (auto it = list.begin(); it != list.end(); ++it)
     {
@@ -66,21 +59,13 @@ QStringList ParseUrls(const QString& data)
             continue;
         }
 
-        if (QRegExp("^[a-z]:[\\\\/]|^/|^~/|^file:///|^magnet:", Qt::CaseInsensitive).indexIn(t) > -1)
-        {
-            res << t;
-            continue;
-        }
-
         QUrl url;
 
-        int offset = t.indexOf("//");
+        int offset = t.indexOf(':');
         if (offset > 0)
         {
             // fix for urls that have few starting symbols lost
-            static_assert(arraysize(kURLPrefixes) == arraysize(kOffsetPastSeparator),
-                          "Sizes of kURLPrefixes and kOffsetPastSeparator should be the same");
-            for (size_t i = 0; i < arraysize(kURLPrefixes); ++i)
+            for (size_t i = 0; i < kNumberOfPrefixes; ++i)
             {
                 int start = offset + kOffsetPastSeparator[i];
                 QString protocol_prefix = t.left(start);
@@ -92,33 +77,14 @@ QStringList ParseUrls(const QString& data)
                 }
             }
         }
-        else
-        {
-            // Assume that http:// is default
-            if (0 == offset)
-            {
-                t = t.mid(2);
-            }
-            else if (t.startsWith('/'))
-            {
-                t = t.mid(1);
-            }
 
-            url.setUrl("http://" + t);
-            QString host = url.host();
-            if (!host.contains(QRegExp(kValidIPAddressRegex)) &&
-                    !host.contains(QRegExp(kValidHostnameRegex)))
-            {
-                continue;
-            }
-            if (url.path().isEmpty())
-            {
-                continue;
-            }
-        }
         if (url.isValid())
         {
             res << url.toString();
+        }
+        else if (QRegExp("^[a-z]:[\\\\/]|^/|^~/", Qt::CaseInsensitive).indexIn(t) > -1)
+        {
+            res << t;
         }
     }
     return res;
