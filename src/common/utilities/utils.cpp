@@ -43,9 +43,9 @@
 namespace utilities
 {
 
-const char* kURLPrefixes[] = { "http://", "https://", "vidxden://1", "ftp://", "file://", "magnet:" };
+const char* kURLPrefixes[] = { "http://", "https://", "vidxden://1", "ftp://", "file://", "magnet:?" };
 const auto kNumberOfPrefixes = sizeof(kURLPrefixes) / sizeof(kURLPrefixes[0]);
-const int kOffsetPastSeparator[kNumberOfPrefixes] = { 3, 3, 4, 3, 3, 1 };
+const int kOffsetPastSeparator[kNumberOfPrefixes] = { 3, 3, 4, 3, 3, 2 };
 
 QStringList ParseUrls(const QString& data)
 {
@@ -62,7 +62,7 @@ QStringList ParseUrls(const QString& data)
         QUrl url;
 
         int offset = t.indexOf(':');
-        if (offset > 0)
+        if (offset != -1)
         {
             // fix for urls that have few starting symbols lost
             for (size_t i = 0; i < kNumberOfPrefixes; ++i)
@@ -82,7 +82,7 @@ QStringList ParseUrls(const QString& data)
         {
             res << url.toString();
         }
-        else if (QRegExp("^[a-z]:[\\\\/]|^/|^~/", Qt::CaseInsensitive).indexIn(t) > -1)
+        else if (QRegExp("^[a-z]:[\\\\/]|^/|^~/", Qt::CaseInsensitive).indexIn(t) != -1)
         {
             res << t;
         }
