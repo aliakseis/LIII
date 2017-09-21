@@ -118,7 +118,7 @@ void TorrentContentModelItem::updateSize()
         return;
     }
     Q_ASSERT(m_type == FOLDER);
-    const qulonglong size = std::accumulate(m_childItems.constBegin(), m_childItems.constEnd(), 0u,
+    const qulonglong size = std::accumulate(m_childItems.constBegin(), m_childItems.constEnd(), 0ull,
         [](qulonglong sum, TorrentContentModelItem* child)
         {
             return (child->getPriority() != prio::IGNORED) ? sum + child->getSize() : sum;
@@ -207,10 +207,10 @@ void TorrentContentModelItem::updateProgress()
 {
     if (m_type == ROOT) { return; }
     Q_ASSERT(m_type == FOLDER);
-    m_totalDone = std::accumulate(m_childItems.constBegin(), m_childItems.constEnd(), 0u,
+    m_totalDone = std::accumulate(m_childItems.constBegin(), m_childItems.constEnd(), 0ull,
         [](qulonglong sum, TorrentContentModelItem* child)
         {
-            return (child->getPriority() > 0) ? sum + child->getTotalDone() : sum;
+            return (child->getPriority() != prio::IGNORED) ? sum + child->getTotalDone() : sum;
         });
     Q_ASSERT(m_totalDone <= getSize());
     setProgress(m_totalDone);
