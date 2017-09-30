@@ -9,7 +9,8 @@ namespace utilities
 
 struct FileSaveGuard
 {
-    explicit FileSaveGuard(const QString& filename): tmpfile(filename), ok_(false), tempFileNotNeeded(false)
+    explicit FileSaveGuard(const QString& filename)
+    : tmpfile(filename), ok_(false), tempFileNotNeeded(false)
     {
         if (QFile::exists(filename))
         {

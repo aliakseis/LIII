@@ -18,8 +18,7 @@ public:
 
     // File Construction
     TorrentContentModelItem(const libtorrent::file_entry& f,
-                            TorrentContentModelItem* parent,
-                            int file_index);
+                            TorrentContentModelItem* parent);
     // Folder constructor
     TorrentContentModelItem(const QString& name, TorrentContentModelItem* parent = 0);
     // Invisible root item constructor
@@ -28,8 +27,6 @@ public:
     ~TorrentContentModelItem();
 
     FileType getType() const;
-
-    int getFileIndex() const;
 
     QString getPath() const;
     QString getName() const;
@@ -71,7 +68,6 @@ private:
     FileType m_type;
     QList<TorrentContentModelItem*> m_childItems;
     QList<QVariant> m_itemData;
-    int m_fileIndex;
     qulonglong m_totalDone;
     QString m_path;
 

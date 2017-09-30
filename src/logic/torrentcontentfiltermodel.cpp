@@ -1,8 +1,8 @@
 #include "torrentcontentfiltermodel.h"
 #include "torrentcontentmodel.h"
 
-TorrentContentFilterModel::TorrentContentFilterModel(QObject* parent):
-    QSortFilterProxyModel(parent), m_model(new TorrentContentModel(this))
+TorrentContentFilterModel::TorrentContentFilterModel(QObject* parent)
+    : QSortFilterProxyModel(parent), m_model(new TorrentContentModel(this))
 {
     VERIFY(connect(m_model, SIGNAL(filteredFilesChanged()), this, SIGNAL(filteredFilesChanged())));
     setSourceModel(m_model);
@@ -26,11 +26,6 @@ TorrentContentModel* TorrentContentFilterModel::model() const
 TorrentContentModelItem::FileType TorrentContentFilterModel::getType(const QModelIndex& index) const
 {
     return m_model->getType(mapToSource(index));
-}
-
-int TorrentContentFilterModel::getFileIndex(const QModelIndex& index) const
-{
-    return m_model->getFileIndex(mapToSource(index));
 }
 
 QModelIndex TorrentContentFilterModel::parent(const QModelIndex& child) const

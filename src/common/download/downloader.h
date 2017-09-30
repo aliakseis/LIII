@@ -735,7 +735,7 @@ private:
         if (QFile::exists(path))
             switch (download_name_policy_)
             {
-            case (kGenerateNewName):
+            case kGenerateNewName:
             {
                 QFileInfo ff(path);
                 QString left = destination_path_;
@@ -754,7 +754,7 @@ private:
                 filename_ = QFileInfo(new_path).fileName();
                 return new_path;
             }
-            case (kReplaceFile):
+            case kReplaceFile:
                 if (!utilities::DeleteFileWithWaiting(path) && delete_file_if_error)
                 {
                     DownloadError(ErrorCode::eDOWLDUNKWNFILERR, "Cannot delete file to replace");

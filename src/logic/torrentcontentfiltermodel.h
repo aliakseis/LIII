@@ -16,7 +16,6 @@ public:
 
     TorrentContentModel* model() const;
     TorrentContentModelItem::FileType getType(const QModelIndex& index) const;
-    int getFileIndex(const QModelIndex& index) const;
     TorrentContentModelItem* getTorrentContentModelItem(const QModelIndex& index)const;
     virtual QModelIndex parent(const QModelIndex& child) const;
 

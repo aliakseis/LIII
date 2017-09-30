@@ -26,9 +26,8 @@ void TorrentContentModelItem::init(QString name, const qlonglong size)
 
 TorrentContentModelItem::TorrentContentModelItem(
     const libtorrent::file_entry& f,
-    TorrentContentModelItem* parent,
-    int file_index):
-    m_parentItem(parent), m_type(TFILE), m_fileIndex(file_index), m_totalDone(0)
+    TorrentContentModelItem* parent)
+    : m_parentItem(parent), m_type(TFILE), m_totalDone(0)
 {
     Q_ASSERT(parent);
     m_path = QString::fromStdString(f.path);
@@ -39,14 +38,14 @@ TorrentContentModelItem::TorrentContentModelItem(
     m_parentItem->updateSize();
 }
 
-TorrentContentModelItem::TorrentContentModelItem(const QString& name, TorrentContentModelItem* parent):
-    m_parentItem(parent), m_type(FOLDER), m_totalDone(0)
+TorrentContentModelItem::TorrentContentModelItem(const QString& name, TorrentContentModelItem* parent)
+    : m_parentItem(parent), m_type(FOLDER), m_totalDone(0)
 {
     init(name, 0);
 }
 
-TorrentContentModelItem::TorrentContentModelItem(const QList<QVariant>& data):
-    m_parentItem(0), m_type(ROOT), m_itemData(data), m_fileIndex(0), m_totalDone(0)
+TorrentContentModelItem::TorrentContentModelItem(const QList<QVariant>& data)
+    : m_parentItem(0), m_type(ROOT), m_itemData(data), m_totalDone(0)
 {
     Q_ASSERT(data.size() == NB_COL);
 }
@@ -59,12 +58,6 @@ TorrentContentModelItem::~TorrentContentModelItem()
 TorrentContentModelItem::FileType TorrentContentModelItem::getType() const
 {
     return m_type;
-}
-
-int TorrentContentModelItem::getFileIndex() const
-{
-    Q_ASSERT(m_type == TFILE);
-    return m_fileIndex;
 }
 
 void TorrentContentModelItem::deleteAllChildren()

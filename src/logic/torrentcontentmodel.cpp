@@ -4,9 +4,9 @@
 
 #include <QDir>
 
-TorrentContentModel::TorrentContentModel(QObject* parent):
-    QAbstractItemModel(parent),
-    m_rootItem(
+TorrentContentModel::TorrentContentModel(QObject* parent)
+    : QAbstractItemModel(parent)
+    , m_rootItem(
         new TorrentContentModelItem(
             QList<QVariant>() << tr("Name") << tr("Size") << tr("Status") << tr("Progress") << tr("Priority")))
 {
@@ -118,12 +118,6 @@ TorrentContentModelItem::FileType TorrentContentModel::getType(const QModelIndex
 {
     const TorrentContentModelItem* item = static_cast<const TorrentContentModelItem*>(index.internalPointer());
     return item->getType();
-}
-
-int TorrentContentModel::getFileIndex(const QModelIndex& index)
-{
-    TorrentContentModelItem* item = static_cast<TorrentContentModelItem*>(index.internalPointer());
-    return item->getFileIndex();
 }
 
 TorrentContentModelItem* TorrentContentModel::getTorrentContentModelItem(const QModelIndex& index)const
@@ -313,7 +307,7 @@ void TorrentContentModel::setupModelData(const libtorrent::torrent_info& t, cons
         {
             current_parent->setStatus(torrentStatus2ItemDCStatus(tStatus.state));
         }
-        m_filesIndex.push_back(new TorrentContentModelItem(fentry, current_parent, i));
+        m_filesIndex.push_back(new TorrentContentModelItem(fentry, current_parent));
     }
     emit layoutChanged();
 }

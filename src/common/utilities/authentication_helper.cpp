@@ -7,7 +7,8 @@
 namespace utilities
 {
 
-AuthenticationHelper::AuthenticationHelper(int proxyChecks, int networkChecks, QObject* parent): QObject(parent)
+AuthenticationHelper::AuthenticationHelper(int proxyChecks, int networkChecks, QObject* parent)
+    : QObject(parent)
     , m_proxyCounter(proxyChecks)
     , m_networkCounter(networkChecks)
 {
