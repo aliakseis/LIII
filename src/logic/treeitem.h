@@ -228,9 +228,9 @@ TreeItem* TreeItem::findItem(Pr pr)
         return this;
     }
 
-    for (int i = 0; i < childItems.count(); i++)
+    for (TreeItem* ti : qAsConst(childItems))
     {
-        if (TreeItem* l_child = childItems[i]->findItem(pr))
+        if (TreeItem* l_child = ti->findItem(pr))
         {
             return l_child;
         }
