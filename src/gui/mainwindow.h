@@ -21,11 +21,6 @@
 #include "ui_utils/taskbar.h"
 
 
-#ifdef Q_OS_WIN
-using ui_utils::TaskBar;
-#endif //Q_OS_WIN
-
-
 namespace Ui
 {
 class MainWindow;
@@ -62,7 +57,7 @@ private:
     bool                        isAutorun;
 
 #ifdef Q_OS_WIN
-    TaskBar m_taskBar;
+    ui_utils::TaskBar m_taskBar;
     bool nativeEvent(const QByteArray& eventType, void* message, long* result) override;
 #endif
 
