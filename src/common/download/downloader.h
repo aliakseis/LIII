@@ -47,9 +47,6 @@ struct Downloadable
 namespace download
 {
 
-using ::utilities::ErrorCode;
-using namespace std::placeholders;
-
 struct SpeedCalculation
 {
     QTime previous_time;
@@ -62,7 +59,7 @@ struct SpeedCalculation
 struct DownloaderObserverInterface
 {
     virtual void onFinished() = 0;
-    virtual void onError(ErrorCode::ERROR_CODES code, const QString& description) = 0;
+    virtual void onError(utilities::ErrorCode::ERROR_CODES code, const QString& description) = 0;
     virtual void onProgress(qint64 bytes_downloaded) = 0;
     virtual void onSpeed(qint64 bytes_per_second) = 0;
     virtual void onFileCreated(const QString& filename) = 0;
@@ -105,7 +102,7 @@ public:
           authentication_helper_catcher_(new detail::AuthenticationHelperCatcher(authentication_helper_.data()))
     {
         authentication_helper_catcher_->connectOnAuthNeedLogin(
-            std::bind(&class_type::AuthNeedLogin, this, _1));
+            std::bind(&class_type::AuthNeedLogin, this, std::placeholders::_1));
     }
 
     ~Downloader()
@@ -342,6 +339,8 @@ private:
 
     void ProcessNetworkReply(QNetworkReply* reply, QNetworkAccessManager* network_manager, bool seekToTheEnd, speed_readable_tag)
     {
+        using namespace std::placeholders;
+
         qDebug() << __FUNCTION__;
         Q_ASSERT(reply);
         Q_ASSERT(network_manager);
@@ -368,7 +367,7 @@ private:
         if (!output_.open(QIODevice::ReadWrite))
         {
             qDebug() << "ProcessNetworkReply() can't open file for writing url=" << current_url_ << ", filename=\"" << output_.fileName() << '"';
-            DownloadError(ErrorCode::eDOWLDOPENFILERR);
+            DownloadError(utilities::ErrorCode::eDOWLDOPENFILERR);
             return;
         }
         output_.seek(seekToTheEnd ? output_.size() : 0);
@@ -481,7 +480,7 @@ private:
         }
         else
         {
-            DownloadError(ErrorCode::eDOWLDOPENFILERR, "File's not found");
+            DownloadError(utilities::ErrorCode::eDOWLDOPENFILERR, "File's not found");
             Cancel();
         }
         return false;
@@ -497,14 +496,16 @@ private:
             if (current_download_->error())
             {
                 qDebug() << "Downloader: network error: " << current_download_->error();
-                DownloadError(ErrorCode::eDOWLDNETWORKERR, QString("Downloader network error: ") + QString::number(current_download_->error()));
+                DownloadError(utilities::ErrorCode::eDOWLDNETWORKERR,
+                    QString("Downloader network error: ") + QString::number(current_download_->error()));
                 return false;
             }
             int http_code = current_download_->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
             qDebug() << "HTTP status: "<< http_code;
             if (http_code >= 400)
             {
-                Restart(ErrorCode::eDOWLDHTTPCODERR, utilities::Tr::Tr(utilities::NETWORK_ERROR_HTTP_STATUS).arg(http_code));
+                Restart(utilities::ErrorCode::eDOWLDHTTPCODERR,
+                    utilities::Tr::Tr(utilities::NETWORK_ERROR_HTTP_STATUS).arg(http_code));
                 return false;
             }
             QString redirect_src = current_download_->attribute(QNetworkRequest::RedirectionTargetAttribute).toString();
@@ -514,7 +515,7 @@ private:
                 {
                     KillReply();
                     KillFile();
-                    DownloadError(ErrorCode::eENDLESSREDIRECT, redirect_src);
+                    DownloadError(utilities::ErrorCode::eENDLESSREDIRECT, redirect_src);
                 }
                 else
                 {
@@ -553,7 +554,7 @@ private:
                     replyText.truncate(endlPos);
                 }
 
-                Restart(ErrorCode::eDOWLDCONTENTLENGTHERR, replyText);
+                Restart(utilities::ErrorCode::eDOWLDCONTENTLENGTHERR, replyText);
                 return false;
             }
         }
@@ -575,7 +576,7 @@ private:
                          current_header_->header(QNetworkRequest::ContentTypeHeader).toString()))
                 {
                     qDebug() << "Downloader: file size mismatch";
-                    Restart(ErrorCode::eDOWLDCONTENTLENGTHERR);
+                    Restart(utilities::ErrorCode::eDOWLDCONTENTLENGTHERR);
                     return false;
                 }
             }
@@ -641,7 +642,7 @@ private:
         utilities::DeleteFileWithWaiting(output_.fileName()); // invoking DownloadError must be incorrect here
     }
     // attempts to restart failed download in case of failure
-    void Restart(ErrorCode::ERROR_CODES error_code, QString const& errText = QString())
+    void Restart(utilities::ErrorCode::ERROR_CODES error_code, QString const& errText = QString())
     {
         if (paused_download_size_)
         {
@@ -650,8 +651,6 @@ private:
             QUrl url = current_download_->url();
             KillReply();
             output_.close();
-            //KillFile();
-            //Start(url, network_manager_, filename_);
             download_from_url_ = true;
             current_url_ = url;
             QNetworkReply* new_reply = network_manager_->get(QNetworkRequest(current_url_));
@@ -663,7 +662,7 @@ private:
         }
     }
 
-    void DownloadError(ErrorCode::ERROR_CODES code, const QString& text = QString())
+    void DownloadError(utilities::ErrorCode::ERROR_CODES code, const QString& text = QString())
     {
         qDebug() << __FUNCTION__ << " code=" << utilities::ErrorCode::instance().getDescription(code).key << " url= " << current_url_;
         KillReply();
@@ -702,7 +701,6 @@ private:
                 path = default_filename_;
             }
         }
-        //path = path.toLatin1();
         path.remove('\"').replace(QRegExp("[/\\\\:*?<>|]"), "_");
         if (!destination_path_.isEmpty())
         {
@@ -757,11 +755,11 @@ private:
             case kReplaceFile:
                 if (!utilities::DeleteFileWithWaiting(path) && delete_file_if_error)
                 {
-                    DownloadError(ErrorCode::eDOWLDUNKWNFILERR, "Cannot delete file to replace");
+                    DownloadError(utilities::ErrorCode::eDOWLDUNKWNFILERR, "Cannot delete file to replace");
                 }
                 break;
             default:
-                DownloadError(ErrorCode::eDOWLDUNKWNFILERR, "Unknown duplicate file name policy");
+                DownloadError(utilities::ErrorCode::eDOWLDUNKWNFILERR, "Unknown duplicate file name policy");
             }
         return path;
     }
@@ -830,10 +828,12 @@ private:
         }
         else if (paused_download_size_ > 0) // Let's try to download from scratch first if we are resuming
         {
-            Restart(ErrorCode::eDOWLDHTTPCODERR, utilities::Tr::Tr(utilities::NETWORK_ERROR_NO_MSG).arg(current_download_->error()));
+            Restart(utilities::ErrorCode::eDOWLDHTTPCODERR,
+                utilities::Tr::Tr(utilities::NETWORK_ERROR_NO_MSG).arg(current_download_->error()));
             return;
         }
-        DownloadError(ErrorCode::eDOWLDNETWORKERR, utilities::Tr::Tr(utilities::NETWORK_ERROR_NO_MSG).arg(current_download_->error()));
+        DownloadError(utilities::ErrorCode::eDOWLDNETWORKERR,
+            utilities::Tr::Tr(utilities::NETWORK_ERROR_NO_MSG).arg(current_download_->error()));
     }
 
     // sets expected file size if reported in reply header

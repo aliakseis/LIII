@@ -77,12 +77,12 @@ void DownloadTask::download()
 
 void DownloadTask::onError(utilities::ErrorCode::ERROR_CODES code, const QString& err)
 {
-    QString errorDescription  = (err.isEmpty()) ? ErrorCode::instance().getDescription(code).key : err;
+    QString errorDescription  = (err.isEmpty()) ? utilities::ErrorCode::instance().getDescription(code).key : err;
     qDebug() << QString("%1 of task %2 (url=%3), DESCRIPTION: %4").arg(__FUNCTION__).arg(task_id_).arg(url_, errorDescription);
     auto it = DownloadCollectionModel::instance().getItemByID(task_id_);
     it.setStatus(ItemDC::eERROR);
     it.setSpeed(0.f);
-    it.setWaitingTime(ErrorCode::instance().getTimeout(code));
+    it.setWaitingTime(utilities::ErrorCode::instance().getTimeout(code));
     it.setErrorCode(code);
     it.setErrorDescription(err);
     DownloadCollectionModel::instance().on_ItemDCchange(it);
