@@ -52,7 +52,7 @@
    </font>
   </property>
   <property name="windowTitle">
-   <string notr="true">LIII Download Manager</string>
+   <string notr="true">LIII BitTorrent Client</string>
   </property>
   <property name="windowIcon">
    <iconset resource="../../resources/LIII/resources-LIII.qrc">

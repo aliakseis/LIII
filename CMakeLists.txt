@@ -17,7 +17,7 @@ set(PROJECT_NAME
 )
 
 set(PROJECT_FULLNAME
-	"${PROJECT_NAME} Download Manager" CACHE STRING "${PROJECT_NAME} fullname"
+	"${PROJECT_NAME} BitTorrent Client" CACHE STRING "${PROJECT_NAME} fullname"
 )
 
 set(PROJECT_DOMAIN
