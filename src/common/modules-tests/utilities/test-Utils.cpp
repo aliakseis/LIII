@@ -7,23 +7,6 @@
 #include <QString>
 #include "utilities/filesystem_utils.h"
 
-namespace {
-
-QString dump(const QVariant& data)
-{
-	QString result = data.toString();
-	if (result.isEmpty())
-	{
-		QDebug(&result) << data;
-		result = result.trimmed();
-	}
-
-	return result;
-}
-
-} // namespace
-
-/********************** Tests for functions from utils.h ****************************/
 
 void Test_Utils::GetFileName_data()
 {
@@ -89,5 +72,5 @@ void Test_Utils::SizeToString()
 	QCOMPARE(utilities::SizeToString(size, precision, fieldWidth), result);
 }
 
-/********************** DECLARE TEST MAIN ****************************/
+
 QTEST_MAIN(Test_Utils)

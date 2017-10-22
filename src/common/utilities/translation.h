@@ -240,9 +240,6 @@ QString SetTr(Ty* obj, MemberFunc memFunc, const Translation& translateArgs, con
 
 } // namespace Tr
 
-QString locationString(const QString& fileName);
-QString languageString(const Tr::Translation& translation, const QString& locName, QTranslator& translator);
-
 } // namespace utilities
 
 Q_DECLARE_METATYPE(utilities::Tr::TranslationRules)

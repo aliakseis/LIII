@@ -50,6 +50,34 @@ QStringList getFilenames()
     return fileNames;
 }
 
+QString languageString(const utilities::Tr::Translation& translation, const QString& locName, QTranslator& translator)
+{
+    QLocale loc(locName);
+    QString langStr = translator.translate(translation.context, translation.key, translation.disambiguation);
+    if (langStr.isEmpty())
+    {
+        langStr = QString("%1 (%2)").arg(loc.nativeLanguageName())
+            .arg(QLocale::languageToString(loc.language()));
+    }
+
+    return langStr;
+}
+
+QString locationString(const QString& fileName)
+{
+    QString locName;
+
+    // parse location from filenames like LIII_en.qm ONLY
+    QRegExp rx("^.+_(\\S{2})\\.qm$", Qt::CaseInsensitive);
+    if (rx.exactMatch(fileName))
+    {
+        locName = rx.cap(1).toLower();
+    }
+
+    return locName;
+}
+
+
 } // namespace
 
 namespace utilities
@@ -86,10 +114,10 @@ std::map<QString, QString> Translatable::availableLanguages()
         QTranslator translator;
         if (translator.load(filename))
         {
-            QString locName = utilities::locationString(filename);
+            QString locName = locationString(filename);
             Q_ASSERT(!locName.isEmpty());
 
-            QString langStr = utilities::languageString(LANGUAGE_NAME, locName, translator);
+            QString langStr = languageString(LANGUAGE_NAME, locName, translator);
             Q_ASSERT(!langStr.isEmpty());
 
             if (!langStr.isEmpty())
