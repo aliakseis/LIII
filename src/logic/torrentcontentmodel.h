@@ -24,20 +24,21 @@ public:
     explicit TorrentContentModel(QObject* parent = 0);
     ~TorrentContentModel();
 
+    int columnCount(const QModelIndex& parent = QModelIndex()) const override;
+    bool setData(const QModelIndex& index, const QVariant& value, int role = Qt::EditRole) override;
+    QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
+    Qt::ItemFlags flags(const QModelIndex& index) const override;
+    QVariant headerData(int section, Qt::Orientation orientation, int role) const override;
+    QModelIndex index(int row, int column, const QModelIndex& parent = QModelIndex()) const override;
+    QModelIndex parent(const QModelIndex& index) const override;
+    int rowCount(const QModelIndex& parent = QModelIndex()) const override;
+
     void updateFilesProgress(const std::vector<boost::int64_t>& fp);
     template <class Prior_t> void updateFilesPriorities(const std::vector<Prior_t>& fprio);
     template <class Prior_t> void getFilesPriorities(std::vector<Prior_t>& prio) const;
     bool allFiltered() const;
-    virtual int columnCount(const QModelIndex& parent = QModelIndex()) const;
-    virtual bool setData(const QModelIndex& index, const QVariant& value, int role = Qt::EditRole);
     TorrentContentModelItem::FileType getType(const QModelIndex& index) const;
     TorrentContentModelItem* getTorrentContentModelItem(const QModelIndex& index)const;
-    virtual QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const;
-    virtual Qt::ItemFlags flags(const QModelIndex& index) const;
-    virtual QVariant headerData(int section, Qt::Orientation orientation, int role) const;
-    virtual QModelIndex index(int row, int column, const QModelIndex& parent = QModelIndex()) const;
-    virtual QModelIndex parent(const QModelIndex& index) const;
-    virtual int rowCount(const QModelIndex& parent = QModelIndex()) const;
     void clear();
     void setupModelData(const libtorrent::torrent_info& t, const libtorrent::torrent_status& tStatus);
     void setSavePath(const QString& savePath);

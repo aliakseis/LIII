@@ -16,14 +16,14 @@ public:
 
     TorrentContentModel* model() const;
     TorrentContentModelItem::FileType getType(const QModelIndex& index) const;
-    TorrentContentModelItem* getTorrentContentModelItem(const QModelIndex& index)const;
-    virtual QModelIndex parent(const QModelIndex& child) const;
+    TorrentContentModelItem* getTorrentContentModelItem(const QModelIndex& index) const;
+    QModelIndex parent(const QModelIndex& child) const override;
 
 signals:
     void filteredFilesChanged();
 
 protected:
-    virtual bool filterAcceptsRow(int source_row, const QModelIndex& source_parent) const;
+    bool filterAcceptsRow(int source_row, const QModelIndex& source_parent) const override;
 
 public slots:
     void selectAll();
