@@ -143,19 +143,12 @@ qulonglong TorrentContentModelItem::getTotalDone() const
     return m_totalDone;
 }
 
-ItemDC::eSTATUSDC TorrentContentModelItem::getStatus()const
+ItemDC::eSTATUSDC TorrentContentModelItem::getStatus() const
 {
     QVariant v = m_itemData.value(COL_STATUS, ItemDC::eUNKNOWN);
-    ItemDC::eSTATUSDC result = ItemDC::eUNKNOWN;
-    if (!v.isValid() || v.isNull())
-    {
-        result = m_parentItem->getStatus();
-    }
-    else
-    {
-        result = (ItemDC::eSTATUSDC)v.toInt();
-    }
-    return result;
+    return (!v.isValid() || v.isNull())
+        ? m_parentItem->getStatus()
+        : (ItemDC::eSTATUSDC)v.toInt();
 }
 
 void TorrentContentModelItem::setStatus(ItemDC::eSTATUSDC status)

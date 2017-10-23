@@ -37,7 +37,7 @@ public:
     void updateSize();
     qulonglong getTotalDone() const;
 
-    ItemDC::eSTATUSDC getStatus()const;
+    ItemDC::eSTATUSDC getStatus() const;
     void setStatus(ItemDC::eSTATUSDC);
     void updateStatus();
 
