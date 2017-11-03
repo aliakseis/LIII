@@ -278,7 +278,7 @@ void BIO_clear_flags(BIO *b, int flags);
 /* The callback is called before and after the underling operation,
  * The BIO_CB_RETURN flag indicates if it is after the call */
 #define BIO_CB_RETURN	0x80
-#define BIO_CB_return(a) ((a)|BIO_CB_RETURN))
+#define BIO_CB_return(a) ((a)|BIO_CB_RETURN)
 #define BIO_cb_pre(a)	(!((a)&BIO_CB_RETURN))
 #define BIO_cb_post(a)	((a)&BIO_CB_RETURN)
 
