@@ -100,11 +100,7 @@ macro(do_test testname)
 		${RESOURCES_TEST}
 	)
 
-	if(DEVELOPER_QT5)
 		set(QTX_TEST_LIBRARY ${Qt5Test_LIBRARIES})
-	else(DEVELOPER_QT5)
-		set(QTX_TEST_LIBRARY ${QT_QTTEST_LIBRARY})
-	endif(DEVELOPER_QT5)
 
 	target_link_libraries(test_${testname}
 		${FUNCTIONAL_MODULE}

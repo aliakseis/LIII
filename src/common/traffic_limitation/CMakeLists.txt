@@ -21,12 +21,10 @@ if(WIN32)
 	)
 endif(WIN32)
 
-if(DEVELOPER_QT5)
 	include_directories(
 		${Qt5Network_PRIVATE_INCLUDE_DIRS}
 		${Qt5Core_PRIVATE_INCLUDE_DIRS}
 	)
-endif(DEVELOPER_QT5)
 
 set(HEADERS_TOMOC
 	InterceptTimer.h

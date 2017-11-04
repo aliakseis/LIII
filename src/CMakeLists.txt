@@ -425,9 +425,7 @@ add_executable(${PROJECT_NAME}
 	${RESOURCE_OS_ALL}
 )
 
-if(DEVELOPER_QT5)
 	set(QTX_QTMAIN_LIBRARY ${Qt5Core_QTMAIN_LIBRARIES})
-endif(DEVELOPER_QT5)
 
 target_link_libraries(${PROJECT_NAME}
 	${QTX_QTMAIN_LIBRARY}

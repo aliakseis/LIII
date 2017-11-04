@@ -151,9 +151,8 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/resources/qt.conf ${CMAKE_CURRENT_SOU
 
 
 
-DETECT_QT()
+#DETECT_QT()
 
-if(DEVELOPER_QT5)
 	set(QT_COMPONENTS_TO_USE 
 		Qt5Core
 		Qt5Gui
@@ -168,16 +167,6 @@ if(DEVELOPER_QT5)
 		Qt5Qml
 		Qt5Quick
 	)
-else()
-	set(QT_COMPONENTS_TO_USE 
-		QtMain
-		QtCore
-		QtGui
-		QtNetwork
-		QtXml
-		QtWebKit
-	)
-endif()
 
 INTEGRATE_QT(${QT_COMPONENTS_TO_USE})
 
