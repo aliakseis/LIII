@@ -7,10 +7,6 @@
 #define PROJECT_NAME    "LIII"
 #endif
 
-#ifndef PLAYER_NAME
-#define PLAYER_NAME    "Player"
-#endif
-
 #ifndef PROJECT_DOMAIN
 #define    PROJECT_DOMAIN    "LIII.com";
 #endif
