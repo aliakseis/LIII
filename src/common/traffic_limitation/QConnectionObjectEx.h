@@ -39,24 +39,4 @@ inline auto findFirstThat(const QObject* obj, const char* signal, T fun) -> decl
     return 0;
 }
 
-template<typename T>
-inline auto findFirstThat(const QObject* obj, T fun) -> decltype(fun(nullptr))
-{
-    if (0 == obj)
-    {
-        return 0;
-    }
-
-    const QObjectList senders = static_cast<const QConnectionObjectEx*>(obj)->senderList();
-    for (QObject* item : senders)
-    {
-        if (auto result = fun(item))
-        {
-            return result;
-        }
-    }
-
-    return 0;
-}
-
 } // namespace traffic_limitation

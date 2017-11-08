@@ -63,8 +63,7 @@ bool handleSocketReadNotify(QObject* receiver, QEvent* e)
             QSocketNotifier::Type type = notifier->type();
             if (QSocketNotifier::Read == type && receiver->parent() != 0)
             {
-                QTcpSocket* tcpSocket = qobject_cast<QTcpSocket*>(receiver->parent()->parent());
-                if (tcpSocket != 0)
+                if (QTcpSocket* tcpSocket = qobject_cast<QTcpSocket*>(receiver->parent()->parent()))
                 {
 
                     QHttpNetworkConnectionChannel* channel 
@@ -79,14 +78,13 @@ bool handleSocketReadNotify(QObject* receiver, QEvent* e)
 
                     if (channel != 0 && channel->reply != 0 && notifier->isEnabled())
                     {
-                        QObject* delegate = channel->reply->parent();
-                        if (delegate != 0)
+                        if (QObject* delegate = channel->reply->parent())
                         {
                             std::shared_ptr<traffic_limitation::ISocketReadInterceptor> interceptor;
                             {
-                                QReadLocker locker(&receiverMapLock);
                                 const QObjectList receivers 
                                     = static_cast<const QConnectionObjectEx*>(delegate)->receiverList("downloadData(QByteArray)");
+                                QReadLocker locker(&receiverMapLock);
                                 for (QObject* receiver : receivers)
                                 {
                                     auto it = receiverMap.find(receiver);
@@ -97,7 +95,7 @@ bool handleSocketReadNotify(QObject* receiver, QEvent* e)
                                     }
                                 }
                             }
-                            if (interceptor != 0)
+                            if (interceptor)
                             {
                                 QHttpNetworkReplyPrivate* replyPrivate
                                     = static_cast<QHttpNetworkReplyPrivate*>(static_cast<QConnectionObjectEx*>(static_cast<QObject*>(channel->reply))->dFunc());
