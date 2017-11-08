@@ -4,6 +4,7 @@
 
 #include <algorithm>
 #include <type_traits>
+#include <utility>
 
 #include "iparentadvice.h"
 
@@ -69,7 +70,7 @@ inline QDateTime parseIsoDateTime(const C* str, bool& ok)
 }
 
 
-typedef std::remove_cv < std::remove_pointer < decltype(((QString*)0)->utf16()) >::type >::type Utf16Char;
+typedef std::remove_cv_t<std::remove_pointer_t<decltype(std::declval<QString>().utf16())>> Utf16Char;
 
 inline const Utf16Char* utf16(const QStringRef& s)
 {

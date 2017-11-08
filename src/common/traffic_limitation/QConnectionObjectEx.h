@@ -20,7 +20,7 @@ public:
 };
 
 template<typename T>
-inline decltype((*(T*)0)((QObject*)0)) findFirstThat(const QObject* obj, const char* signal, T fun)
+inline auto findFirstThat(const QObject* obj, const char* signal, T fun) -> decltype(fun(nullptr))
 {
     if (0 == obj)
     {
@@ -40,7 +40,7 @@ inline decltype((*(T*)0)((QObject*)0)) findFirstThat(const QObject* obj, const c
 }
 
 template<typename T>
-inline decltype((*(T*)0)((QObject*)0)) findFirstThat(const QObject* obj, T fun)
+inline auto findFirstThat(const QObject* obj, T fun) -> decltype(fun(nullptr))
 {
     if (0 == obj)
     {
