@@ -50,6 +50,21 @@ using utilities::Credential;
 
 using namespace app_settings;
 
+namespace {
+
+QString extractLinkFromFile(const QString& fn)
+{
+    QString link;
+
+    if (QFile::exists(fn))
+    {
+        QSettings settings(fn, QSettings::IniFormat);
+        link = settings.value("InternetShortcut/URL").toString();
+    }
+    return link;
+}
+
+}
 
 MainWindow::MainWindow()
     : ui_utils::MainWindowWithTray(nullptr, QIcon(PROJECT_ICON), PROJECT_FULLNAME_TRANSLATION),
@@ -517,18 +532,6 @@ void MainWindow::dragEnterEvent(QDragEnterEvent* event)
     }
 }
 
-static QString extractLinkFromFile(const QString& fn)
-{
-    QString link;
-
-    if (QFile::exists(fn))
-    {
-        QSettings settings(fn, QSettings::IniFormat);
-        link = settings.value("InternetShortcut/URL").toString();
-    }
-    return link;
-}
-
 void MainWindow::dropEvent(QDropEvent* event)
 {
     QString text;
@@ -546,8 +549,7 @@ void MainWindow::dropEvent(QDropEvent* event)
     }
     else if (event->mimeData()->hasFormat("text/uri-list"))
     {
-        QByteArray data = event->mimeData()->data("text/uri-list");
-        text = data;
+        text = event->mimeData()->data("text/uri-list");
         intrestedDataRx = QRegExp("(http|ftp|file|magnet|[a-z]):[^\\s\\n]+", Qt::CaseInsensitive);
     }
     else
@@ -558,7 +560,6 @@ void MainWindow::dropEvent(QDropEvent* event)
     qDebug() << "Some data dropped to program. Trying to manage it.";
 
     int pos = 0;
-    QUrl url;
     QStringList linksForDownload;
     while ((pos = intrestedDataRx.indexIn(text, pos)) != -1)
     {
@@ -586,7 +587,7 @@ void MainWindow::dropEvent(QDropEvent* event)
         }
         linksForDownload << someLink;
     }
-    addLinks(utilities::ParseUrls(linksForDownload.join("\n")));
+    addLinks(linksForDownload);
 
     event->acceptProposedAction();
 }

@@ -51,9 +51,9 @@ QStringList ParseUrls(const QString& data)
 {
     const QStringList list = data.split(QRegExp("[\\s\\\"\\n]+"), QString::SkipEmptyParts);
     QStringList res;
-    for (auto it = list.begin(); it != list.end(); ++it)
+    for (const auto& v : list)
     {
-        QString t = it->trimmed();
+        QString t = v.trimmed();
         if (t.isEmpty())
         {
             continue;
