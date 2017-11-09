@@ -64,7 +64,7 @@ QFont GetAdaptedFont(int size, int additional_amount = 2);
 QStringList ParseUrls(const QString& data);
 bool DeserializeObject(QXmlStreamReader* stream, QObject* object, const QString& name = QString());
 void SerializeObject(QXmlStreamWriter* stream, QObject* object, const QString& name);
-QString SizeToString(quint64 size, int precision = -1, int fieldWidth = 0);
+QString SizeToString(quint64 size, int precision = 2, int fieldWidth = 0);
 QString secondsToString(int seconds);
 
 

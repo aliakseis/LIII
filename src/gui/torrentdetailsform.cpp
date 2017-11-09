@@ -177,7 +177,7 @@ void TorrentDetailsForm::updateDiskSpaceLabel()
         torrent_size = m_torrentInfo->total_size();
     }
 
-    QString size_string = utilities::SizeToString(torrent_size, 2);
+    QString size_string = utilities::SizeToString(torrent_size);
     ui->lblSize->setText(size_string);
 }
 

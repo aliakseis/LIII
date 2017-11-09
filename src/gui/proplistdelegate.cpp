@@ -25,7 +25,7 @@ void PropListDelegate::paint(QPainter* painter, const QStyleOptionViewItem& opti
     {
         QStyleOptionViewItem opt(option);
         initStyleOption(&opt, index);
-        opt.text = utilities::SizeToString(index.data().toLongLong(), 2);
+        opt.text = utilities::SizeToString(index.data().toLongLong());
         QApplication::style()->drawControl(QStyle::CE_ItemViewItem, &opt, painter, opt.widget);
 
         break;

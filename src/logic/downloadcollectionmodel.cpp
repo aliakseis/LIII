@@ -252,7 +252,7 @@ QVariant DownloadCollectionModel::data(const QModelIndex& index, int role /* = Q
         return item->getPercentDownload();
     case eDC_Size:
         return (item->size() > 0) 
-            ? QString("%1 / %2").arg(utilities::SizeToString(item->sizeCurrDownl(), 2), utilities::SizeToString(item->size(), 2))
+            ? QString("%1 / %2").arg(utilities::SizeToString(item->sizeCurrDownl()), utilities::SizeToString(item->size()))
             : ::Tr::Tr(TREEVIEW_UNKNOWN_SIZE);
     case eDC_Source:
         return item->source();
