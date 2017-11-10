@@ -248,8 +248,6 @@ QVariant DownloadCollectionModel::data(const QModelIndex& index, int role /* = Q
                 ? QString()
                 : QString("%1KB/s").arg(speed, 0, 'f', 1);
         }
-    case eDC_percentDownl:
-        return item->getPercentDownload();
     case eDC_Size:
         return (item->size() > 0) 
             ? QString("%1 / %2").arg(utilities::SizeToString(item->sizeCurrDownl()), utilities::SizeToString(item->size()))

@@ -87,8 +87,6 @@ public:
     float getSpeedUpload() const { return m_speedUpload; }
     void setSpeedUpload(float val) { m_speedUpload = val; }
 
-    int getPercentDownload() const { return (size() > 0) ? (sizeCurrDownl() * 100) / size() : 0; }
-
     int getWaitingTime() const { return m_iWaitingTime; }
     void setWaitingTime(int val) { m_iWaitingTime = val; }
 
