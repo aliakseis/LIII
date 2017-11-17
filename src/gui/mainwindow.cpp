@@ -24,7 +24,6 @@
 #include "utilities/associate_app.h"
 
 
-#include "aboutdialog.h"
 #include "add_links.h"
 #include "preferences.h"
 #include "logindialog.h"
@@ -33,6 +32,7 @@
 #include "globals.h"
 #include "qnamespace.h"
 #include "branding.hxx"
+#include "version.hxx"
 
 
 #if defined (Q_OS_WIN)
@@ -42,7 +42,6 @@
 #include "darwin/AppHandler.h"
 #endif
 
-#define PROJECT_SITE "http://www." PROJECT_DOMAIN
 
 namespace Tr = utilities::Tr;
 
@@ -191,7 +190,6 @@ void MainWindow::moveToScreenCenter()
 
 void MainWindow::showMainWindowAndPerformChecks()
 {
-
     moveToScreenCenter();
 
     m_dlManager->startLoad();
@@ -268,7 +266,10 @@ void MainWindow::onAboutClicked()
 {
     raise();
     activateWindow();
-    AboutDialog(this).exec();
+    QMessageBox::about(
+        this,
+        QString(::Tr::Tr(ABOUT_TITLE)).arg(::Tr::Tr(PROJECT_FULLNAME_TRANSLATION)),
+        ::Tr::Tr(PROJECT_FULLNAME_TRANSLATION) + " " PROJECT_VERSION);
 }
 
 void MainWindow::onActionCloseLinkClicked()

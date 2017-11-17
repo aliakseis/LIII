@@ -97,7 +97,6 @@ source_group(main FILES
 ##############
 
 set(HEADERS_TOMOC_GUI
-	gui/aboutdialog.h
 	gui/buttonlabel.h
 	gui/add_links.h
 	gui/add_links_widget.h
@@ -111,7 +110,6 @@ set(HEADERS_TOMOC_GUI
 )
 
 set(SOURCES_GUI
-	gui/aboutdialog.cpp
 	gui/buttonlabel.cpp
 	gui/add_links.cpp
 	gui/add_links_widget.cpp
@@ -125,7 +123,6 @@ set(SOURCES_GUI
 )
 
 set(FORMS_GUI
-	gui/aboutdialog.ui
 	gui/addtorrentform.ui
 	gui/add_links.ui
 	gui/logindialog.ui
