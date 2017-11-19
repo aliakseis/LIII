@@ -379,12 +379,12 @@ void MainWindow::needLogin(utilities::ICredentialsRetriever* icr)
     icr->SetCredentials(cred);
 }
 
-template <class Tab_t>
-void MainWindow::OpenPreferences(Tab_t tab)
+void MainWindow::on_buttonOptions_clicked()
 {
-    static_assert(std::is_same<Tab_t, Preferences::TAB>::value, "Tab_t must be Preferences::TAB");
+    raise();
+    activateWindow();
 
-    Preferences prefDlg(this, tab);
+    Preferences prefDlg(this, Preferences::GENERAL);
     VERIFY(connect(&prefDlg, SIGNAL(newPreferencesApply()), m_dlManager, SLOT(siftDownloads())));
     if (prefDlg.exec() == QDialog::Accepted)
     {
@@ -394,13 +394,6 @@ void MainWindow::OpenPreferences(Tab_t tab)
         m_dlManager->startLoad();
         refreshButtons();
     }
-}
-
-void MainWindow::on_buttonOptions_clicked()
-{
-    raise();
-    activateWindow();
-    OpenPreferences(Preferences::GENERAL);
 }
 
 void MainWindow::onButtonOpenFolderClicked(const QString& filename)

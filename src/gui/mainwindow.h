@@ -47,14 +47,11 @@ private:
 
     void checkDefaultTorrentApplication();
 
-    template<class Tab_t> // as we cannot use Preferences::TAB here
-    void OpenPreferences(Tab_t);
-
     void moveToScreenCenter();
 
-    Ui::MainWindow*                ui;
-    DownloadManager*                    m_dlManager;
-    bool                        isAutorun;
+    Ui::MainWindow* ui;
+    DownloadManager* m_dlManager;
+    bool isAutorun;
 
 #ifdef Q_OS_WIN
     ui_utils::TaskBar m_taskBar;
