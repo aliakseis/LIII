@@ -268,7 +268,7 @@ void MainWindow::onAboutClicked()
     activateWindow();
     QMessageBox::about(
         this,
-        QString(::Tr::Tr(ABOUT_TITLE)).arg(::Tr::Tr(PROJECT_FULLNAME_TRANSLATION)),
+        QString(::Tr::Tr(ABOUT_TITLE)).arg(PROJECT_NAME),
         ::Tr::Tr(PROJECT_FULLNAME_TRANSLATION) + " " PROJECT_VERSION);
 }
 
