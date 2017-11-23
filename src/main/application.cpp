@@ -63,10 +63,8 @@ void Application::checkFirewallException(QMainWindow* mainWindow)
             const bool isOk = firewall.addApplicationPolicy(appPath, PROJECT_NAME);
             if (!isOk)
             {
-                msgBox.setInformativeText(tr("%1 failed to apply firewall rules. Please<br>setup your firewall manually "
-                                  "or <a href='http://www." PROJECT_DOMAIN "/support.htm'>request for support</a>.")
+                msgBox.setInformativeText(tr("%1 failed to apply firewall rules. Please<br>setup your firewall manually.")
                                .arg(utilities::Tr::Tr(PROJECT_FULLNAME_TRANSLATION)));
-
                 msgBox.exec();
             }
         }
