@@ -68,7 +68,7 @@ WindowsFirewall::FirewallStatus WindowsFirewall::getFirewallStatus(const QString
 {
     try
     {
-        _bstr_t procImgFilename((const wchar_t*)QDir::toNativeSeparators(imageName).utf16());
+        _bstr_t procImgFilename(qUtf16Printable(QDir::toNativeSeparators(imageName)));
         CComPtr<INetFwAuthorizedApplications> fwApps;
         CComPtr<INetFwAuthorizedApplication> fwApp;
 
@@ -109,8 +109,8 @@ bool WindowsFirewall::addApplicationPolicy(const QString& imageName, const QStri
 
     try
     {
-        _bstr_t procImgFilename((const wchar_t*)QDir::toNativeSeparators(imageName).utf16());
-        _bstr_t appNameStr((const wchar_t*)applicationName.utf16());
+        _bstr_t procImgFilename(qUtf16Printable(QDir::toNativeSeparators(imageName)));
+        _bstr_t appNameStr(qUtf16Printable(applicationName));
 
         // query authorized firewall applications
         CComPtr<INetFwAuthorizedApplications> fwApps;

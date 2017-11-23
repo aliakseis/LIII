@@ -159,23 +159,6 @@ QString SizeToString(quint64 size, int precision, int fieldWidth)
 }
 
 
-QString secondsToString(int seconds)
-{
-    int s = seconds % 60;
-    int m = seconds / 60;
-    int h = seconds / 3600;
-    m = m - h * 60;
-
-    if (h > 0)
-    {
-        return QStringLiteral("%3:%2:%1")
-            .arg(s, 2, 10, QChar('0')).arg(m, 2, 10, QChar('0')).arg(h, 2, 10, QChar('0'));
-    }
-
-    return QStringLiteral("%2:%1")
-        .arg(s, 2, 10, QChar('0')).arg(m, 2, 10, QChar('0'));
-}
-
 // shamelessly stolen from qstring.cpp
 int getEscape(const QChar* uc, int* pos, int len, int maxNumber = 999)
 {
@@ -368,15 +351,18 @@ bool isAdminRights()
 
 void runWithPrivileges(const wchar_t* arg, WId parent)
 {
+    const auto applicationFilePath = qApp->applicationFilePath();
+    const auto applicationDirPath = qApp->applicationDirPath();
+
     SHELLEXECUTEINFOW shex =
     {
         sizeof(SHELLEXECUTEINFOW),
-        0,                                                        // fMask
+        0, // fMask
         ((parent) ? (HWND)parent : GetDesktopWindow()),
         L"runas",
-        (LPCWSTR)qApp->applicationFilePath().utf16(),
+        qUtf16Printable(applicationFilePath),
         arg,
-        (LPCWSTR)qApp->applicationDirPath().utf16(),
+        qUtf16Printable(applicationDirPath),
         SW_NORMAL
     };
 

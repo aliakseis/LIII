@@ -43,7 +43,7 @@ bool MoveToTrashImpl(const QString& file)
         return false;
     }
     QString absPath = fileinfo.absoluteFilePath() + '\0'; // This string must be double-null terminated
-    SHFILEOPSTRUCTW fileop = {0, FO_DELETE, (wchar_t*)absPath.utf16(), 0, FOF_ALLOWUNDO | FOF_NOCONFIRMATION | FOF_NOERRORUI | FOF_SILENT};
+    SHFILEOPSTRUCTW fileop = {0, FO_DELETE, qUtf16Printable(absPath), 0, FOF_ALLOWUNDO | FOF_NOCONFIRMATION | FOF_NOERRORUI | FOF_SILENT};
     int rv = SHFileOperationW(&fileop);
     if (0 != rv)
     {

@@ -973,7 +973,7 @@ void DownloadCollectionModel::saveToFile()
 
 #ifdef Q_OS_WIN32
     QString folder = utilities::PrepareCacheFolder();
-    const wchar_t* ch = reinterpret_cast<const wchar_t*>(folder.utf16());
+    const wchar_t* ch = qUtf16Printable(folder);
     ULARGE_INTEGER freeBytesAvailable;
     BOOL b = GetDiskFreeSpaceExW(ch, &freeBytesAvailable, 0, 0);
     if (b && freeBytesAvailable.QuadPart < 1024 * 1024 * 5)
