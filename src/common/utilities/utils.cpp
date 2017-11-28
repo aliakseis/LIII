@@ -41,6 +41,41 @@
 
 namespace {
 
+int getEscape(const QChar* uc, int* pos, int len, int maxNumber = 999)
+{
+    int i = *pos;
+    ++i;
+    if (i < len && uc[i] == QLatin1Char('L'))
+    {
+        ++i;
+    }
+    if (i < len)
+    {
+        int escape = uc[i].unicode() - '0';
+        if (uint(escape) >= 10U)
+        {
+            return -1;
+        }
+        ++i;
+        while (i < len)
+        {
+            int digit = uc[i].unicode() - '0';
+            if (uint(digit) >= 10U)
+            {
+                break;
+            }
+            escape = (escape * 10) + digit;
+            ++i;
+        }
+        if (escape <= maxNumber)
+        {
+            *pos = i;
+            return escape;
+        }
+    }
+    return -1;
+}
+
 bool isPortAvalible(unsigned short int dwPort, int type)
 {
     struct sockaddr_in client;
@@ -65,7 +100,7 @@ bool isPortAvalible(unsigned short int dwPort, int type)
 namespace utilities
 {
 
-const char* kURLPrefixes[] = { "http://", "https://", "vidxden://1", "ftp://", "file://", "magnet:?" };
+const char* const kURLPrefixes[] = { "http://", "https://", "vidxden://1", "ftp://", "file://", "magnet:?" };
 const auto kNumberOfPrefixes = sizeof(kURLPrefixes) / sizeof(kURLPrefixes[0]);
 const int kOffsetPastSeparator[kNumberOfPrefixes] = { 3, 3, 4, 3, 3, 2 };
 
@@ -193,41 +228,6 @@ QString ProgressString(double progress)
 }
 
 // shamelessly stolen from qstring.cpp
-int getEscape(const QChar* uc, int* pos, int len, int maxNumber = 999)
-{
-    int i = *pos;
-    ++i;
-    if (i < len && uc[i] == QLatin1Char('L'))
-    {
-        ++i;
-    }
-    if (i < len)
-    {
-        int escape = uc[i].unicode() - '0';
-        if (uint(escape) >= 10U)
-        {
-            return -1;
-        }
-        ++i;
-        while (i < len)
-        {
-            int digit = uc[i].unicode() - '0';
-            if (uint(digit) >= 10U)
-            {
-                break;
-            }
-            escape = (escape * 10) + digit;
-            ++i;
-        }
-        if (escape <= maxNumber)
-        {
-            *pos = i;
-            return escape;
-        }
-    }
-    return -1;
-}
-
 QString multiArg(const QString& str, int numArgs, const QString* args)
 {
     QString result;
