@@ -39,6 +39,28 @@
 #include <set>
 #include <map>
 
+namespace {
+
+bool isPortAvalible(unsigned short int dwPort, int type)
+{
+    struct sockaddr_in client;
+
+    client.sin_family      = AF_INET;
+    client.sin_port        = htons(dwPort);
+    client.sin_addr.s_addr = inet_addr("127.0.0.1");
+
+    auto sock = socket(AF_INET, type, 0);
+    int result = bind(sock, (struct sockaddr*) &client, sizeof(client));
+#ifdef Q_OS_WIN
+    closesocket(sock);
+#else
+    close(sock);
+#endif
+    return result != SOCKET_ERROR;
+}
+
+} // namespace
+
 
 namespace utilities
 {
@@ -267,43 +289,6 @@ QString multiArg(const QString& str, int numArgs, const QString* args)
     return result;
 }
 
-bool isTCPportAvalible(short int dwPort)
-{
-    struct sockaddr_in client;
-    int sock;
-
-    client.sin_family      = AF_INET;
-    client.sin_port        = htons(dwPort);
-    client.sin_addr.s_addr = inet_addr("127.0.0.1");
-
-    sock = (int) socket(AF_INET, SOCK_STREAM, 0);
-    int result = bind(sock, (struct sockaddr*) &client, sizeof(client));
-#ifdef Q_OS_WIN
-    closesocket(sock);
-#else
-    close(sock);
-#endif
-    return result != SOCKET_ERROR;
-}
-
-bool isUDPportAvalible(short int dwPort)
-{
-    struct sockaddr_in client;
-    int sock;
-
-    client.sin_family      = AF_INET;
-    client.sin_port        = htons(dwPort);
-    client.sin_addr.s_addr = inet_addr("127.0.0.1");
-
-    sock = (int) socket(AF_INET, SOCK_DGRAM, 0);
-    int result = bind(sock, (struct sockaddr*) &client, sizeof(sockaddr_in));
-#ifdef Q_OS_WIN
-    closesocket(sock);
-#else
-    close(sock);
-#endif
-    return result != SOCKET_ERROR;
-}
 
 bool CheckPortAvailable(int targetPort, const char** reason)
 {
@@ -316,7 +301,7 @@ bool CheckPortAvailable(int targetPort, const char** reason)
         return false;
     }
 
-    if (!isTCPportAvalible(targetPort))
+    if (!isPortAvalible(targetPort, SOCK_STREAM))
     {
         if (reason)
         {
@@ -325,7 +310,7 @@ bool CheckPortAvailable(int targetPort, const char** reason)
         return false;
     }
 
-    if (!isUDPportAvalible(targetPort))
+    if (!isPortAvalible(targetPort, SOCK_DGRAM))
     {
         if (reason)
         {

@@ -104,10 +104,6 @@ inline QString asString(const QString& value)
 
 QString multiArg(const QString& str, int numArgs, const QString* args);
 
-
-bool isTCPportAvalible(short int dwPort);
-bool isUDPportAvalible(short int dwPort);
-
 // performs port bounds check, TCP and UDP availability;
 // if returns false, reason holds text message
 bool CheckPortAvailable(int targetPort, const char** reason);
