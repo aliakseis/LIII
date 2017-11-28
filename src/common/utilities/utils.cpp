@@ -158,6 +158,17 @@ QString SizeToString(quint64 size, int precision, int fieldWidth)
     return QStringLiteral("%1 GB").arg(sizef, fieldWidth, 'f', precision);
 }
 
+QString ProgressString(double progress)
+{
+    // We don't want to display 100% unless the torrent is really complete
+    if (progress > 99.9 && progress < 100.)
+    {
+        progress = 99.9;
+    }
+
+    return 
+        (progress <= 0) ? "0%" : ((progress >= 100) ? "100%" : QString("%1%").arg(progress, 0, 'f', 1));
+}
 
 // shamelessly stolen from qstring.cpp
 int getEscape(const QChar* uc, int* pos, int len, int maxNumber = 999)

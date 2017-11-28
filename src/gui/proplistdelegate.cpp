@@ -48,17 +48,10 @@ void PropListDelegate::paint(QPainter* painter, const QStyleOptionViewItem& opti
             progressBarOption.textAlignment = Qt::AlignCenter;
             progressBarOption.textVisible = true;
 
-            qreal progress = index.data().toDouble() * 100.;
+            const qreal progress = index.data().toDouble() * 100.;
 
-            // We don't want to display 100% unless
-            // the torrent is really complete
-            if (progress > 99.9 && progress < 100.)
-            {
-                progress = 99.9;
-            }
-
-            progressBarOption.progress = (int)progress;
-            progressBarOption.text = QString(QByteArray::number(progress, 'f', 1)) + "%";
+            progressBarOption.progress = static_cast<int>(progress);
+            progressBarOption.text = utilities::ProgressString(progress);
             QApplication::style()->drawControl(QStyle::CE_ProgressBar, &progressBarOption, painter);
         }
         else
