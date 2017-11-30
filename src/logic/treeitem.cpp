@@ -22,7 +22,6 @@ QString itemDCStatusToString(const ItemDC::eSTATUSDC status)
 {
     static const std::unordered_map<ItemDC::eSTATUSDC, utilities::Tr::Translation, std::hash<char> > statusToTr
     {
-        { ItemDC::eWAITING,     TREEVIEW_WAITING_STATUS },
         { ItemDC::eQUEUED,      TREEVIEW_QUEUED_STATUS },
         { ItemDC::eDOWNLOADING, TREEVIEW_DOWNLOADING_STATUS },
         { ItemDC::eCONNECTING,  TREEVIEW_CONNECTING_STATUS },
@@ -45,7 +44,7 @@ void ItemDC::setStatusEx(int val)
 {
     // TODO validate
     m_eStatus = (eSTATUSDC) val;
-    if (eWAITING == m_eStatus || eDOWNLOADING == m_eStatus || eCONNECTING == m_eStatus || eSTALLED == m_eStatus)
+    if (eDOWNLOADING == m_eStatus || eCONNECTING == m_eStatus || eSTALLED == m_eStatus)
     {
         m_eStatus = eQUEUED;
     }

@@ -33,7 +33,6 @@ private:
 };
 
 static Tr::Translation NETWORK_ERROR_NO_MSG        = Tr::translate("ErrorMsg", "Network error: %1");
-static Tr::Translation NETWORK_ERROR_SIZE_MISMATCH = Tr::translate("ErrorMsg", "Download file size mismatch");
 static Tr::Translation NETWORK_ERROR_HTTP_STATUS   = Tr::translate("ErrorMsg", "HTTP status: %1");
 
 } // namespace utilities

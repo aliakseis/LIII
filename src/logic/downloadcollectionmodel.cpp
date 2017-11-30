@@ -1133,15 +1133,6 @@ void DownloadCollectionModel::init()
 inline QVariant DownloadCollectionModel::statusName(TreeItem* item) const
 {
     const ItemDC::eSTATUSDC status = item->getStatus();
-
-    if (status == ItemDC::eWAITING)
-    {
-        const int waitingTime = item->getWaitingTime();
-        return (waitingTime > 0)
-               ? ::Tr::Tr(TREEVIEW_WAITING_STATUS_SEC).arg(waitingTime)
-               : ::Tr::Tr(TREEVIEW_WAITING_STATUS);
-    }
-
     return itemDCStatusToString(status);
 }
 

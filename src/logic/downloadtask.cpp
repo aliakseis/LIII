@@ -176,12 +176,6 @@ void DownloadTask::setStatusInModel(ItemDC::eSTATUSDC a_status, int arg /* = 0*/
     it.setID(task_id_);
     it.setStatus(a_status);
     DownloadCollectionModel::instance().on_statusChange(it);
-
-    if (a_status == ItemDC::eWAITING)
-    {
-        it.setWaitingTime(arg);
-        DownloadCollectionModel::instance().on_waitingTimeChange(it);
-    }
 }
 
 void DownloadTask::onFileToBeReleased(const QString& filename)

@@ -47,7 +47,6 @@ public:
     {}
 
     enum eSTATUSDC {
-        eWAITING,
         eQUEUED,
         eDOWNLOADING,
         eCONNECTING,
