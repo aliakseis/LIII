@@ -15,11 +15,6 @@ public:
     enum ERROR_CODES
     {
         eNOTERROR,
-        eSCRPHTTPERR,
-        eSCRPNETWORKERR,
-        eSCRPHTMLLOADERR,
-        eSCRPCLOSEDWEBVIEWERR,
-        eSCRPWAITINGERR,
         eDOWLDOPENFILERR,
         eDOWLDNETWORKERR,
         eDOWLDHTTPCODERR,
