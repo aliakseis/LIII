@@ -160,12 +160,6 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/resources/qt.conf ${CMAKE_CURRENT_SOU
 		Qt5Network
 		Qt5Xml
 		Qt5LinguistTools #?
-		Qt5Multimedia
-		Qt5MultimediaWidgets
-		Qt5OpenGL
-		Qt5PrintSupport
-		Qt5Qml
-		Qt5Quick
 	)
 
 INTEGRATE_QT(${QT_COMPONENTS_TO_USE})

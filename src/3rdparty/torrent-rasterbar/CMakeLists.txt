@@ -355,11 +355,11 @@ else()
 	set (LIBDIR "lib")
 endif()
 
-install(TARGETS torrent-rasterbar DESTINATION ${LIBDIR})
-install(DIRECTORY include/libtorrent
-	DESTINATION include
-	PATTERN ".svn" EXCLUDE)
-install(FILES ${CMAKE_CURRENT_BINARY_DIR}/libtorrent-rasterbar.pc DESTINATION ${LIBDIR}/pkgconfig)
+#install(TARGETS torrent-rasterbar DESTINATION ${LIBDIR})
+#install(DIRECTORY include/libtorrent
+#	DESTINATION include
+#	PATTERN ".svn" EXCLUDE)
+#install(FILES ${CMAKE_CURRENT_BINARY_DIR}/libtorrent-rasterbar.pc DESTINATION ${LIBDIR}/pkgconfig)
 
 # === set up examples directory as an independent project ===
 #file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/examples)
