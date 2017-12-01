@@ -41,7 +41,7 @@ libtorrent::fingerprint getFingerprint()
 {
     int version[4] {};
     sscanf(PROJECT_VERSION, "%d.%d.%d.%d", version, version + 1, version + 2, version + 3);
-    const char torrentClientId[3] = { (char)std::toupper(PROJECT_NAME[0]), (char)std::toupper(PROJECT_NAME[1]), 0 }; // "LI" for LIII
+    const char torrentClientId[] = "53";
     return { torrentClientId, version[0], version[1], version[2], version[3] };
 }
 
@@ -49,7 +49,7 @@ bool loadFastResumeData(const QString& hash, std::vector<char>& buf)
 {
     const QString fastresume_path = utilities::PrepareCacheFolder(TORRENTS_SUB_FOLDER) + hash + ".fastresume";
 
-    qDebug() << "Trying to load fastresume data: " << qPrintable(fastresume_path);
+    qDebug() << "Trying to load fastresume data: " << fastresume_path;
 
     QFile fastresume_file(fastresume_path);
     if (fastresume_file.size() <= 0 || !fastresume_file.open(QIODevice::ReadOnly))

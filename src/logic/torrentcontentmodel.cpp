@@ -60,19 +60,18 @@ bool TorrentContentModel::setData(const QModelIndex& index, const QVariant& valu
     if (index.column() == 0 && role == Qt::CheckStateRole)
     {
         TorrentContentModelItem* item = static_cast<TorrentContentModelItem*>(index.internalPointer());
-        qDebug("setData(%s, %d", qPrintable(item->getName()), value.toInt());
+        qDebug("setData(%s, %d)", qPrintable(item->getName()), value.toInt());
         if (item->getPriority() != value.toInt())
         {
-            if (value.toInt() == Qt::PartiallyChecked)
+            switch (value.toInt())
             {
+            case Qt::PartiallyChecked:
                 item->setPriority(prio::PARTIAL);
-            }
-            else if (value.toInt() == Qt::Unchecked)
-            {
+                break;
+            case Qt::Unchecked:
                 item->setPriority(prio::IGNORED);
-            }
-            else
-            {
+                break;
+            default:
                 item->setPriority(prio::NORMAL);
             }
             emit dataChanged(this->index(0, 0), this->index(rowCount() - 1, columnCount() - 1));
@@ -100,11 +99,9 @@ bool TorrentContentModel::setData(const QModelIndex& index, const QVariant& valu
             item->setProgress(value.toDouble());
             break;
         case TorrentContentModelItem::COL_PRIO:
-        {
             item->setPriority(value.toInt());
             emit filteredFilesChanged();
-        }
-        break;
+            break;
         default:
             return false;
         }
