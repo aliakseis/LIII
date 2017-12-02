@@ -908,6 +908,8 @@ void DownloadCollectionModel::setContinueDownloadItem(TreeItem* itmSource)
     {
         if (ItemDC::eFINISHED == status)
         {
+            itmSource->setStatus(ItemDC::eSTARTING);
+            emit dataChanged(index(itmSource, eDC_Status), index(itmSource, eDC_Status));
             TorrentManager::Instance()->resumeTorrent(id); // seeding
             return;
         }
