@@ -43,13 +43,13 @@ QVariant PeersInfoModel::data(const QModelIndex& index, int role) const
         case IpAddress:
             return QString::fromStdString(peerInfo.ip.address().to_string());
         case PeerProgress:
-            return QString("%1 %").arg(peerInfo.progress * 100, 0, 'f', 0);
+            return QString("%1%").arg(peerInfo.progress * 100, 0, 'f', 0);
         case SpeedUpload:
         case SpeedDownload:
             {
                 const float speed = ((column == SpeedUpload) ? peerInfo.up_speed : peerInfo.down_speed) / 1024.f;
                 return (speed <= std::numeric_limits<float>::epsilon())
-                    ? QString() : tr("%1KB/s").arg(speed, 0, 'f', 1);
+                    ? QString() : tr("%1 KB/s").arg(speed, 0, 'f', 1);
             }
         }
     }

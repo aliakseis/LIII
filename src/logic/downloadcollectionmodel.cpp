@@ -246,7 +246,7 @@ QVariant DownloadCollectionModel::data(const QModelIndex& index, int role /* = Q
             const float speed = (l_colunm == eDC_Speed) ? item->getSpeed() : item->getSpeedUpload();
             return (speed <= std::numeric_limits<float>::epsilon())
                 ? QString()
-                : QString("%1KB/s").arg(speed, 0, 'f', 1);
+                : QString("%1 KB/s").arg(speed, 0, 'f', 1);
         }
     case eDC_Size:
         return (item->size() > 0) 
