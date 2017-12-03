@@ -39,6 +39,8 @@
 #include <set>
 #include <map>
 
+#include "version.hxx"
+
 namespace {
 
 int getEscape(const QChar* uc, int* pos, int len, int maxNumber = 999)
@@ -149,7 +151,7 @@ QStringList ParseUrls(const QString& data)
 
 void InitializeProjectDescription()
 {
-    QCoreApplication::setApplicationVersion(BRAND_VERSION);
+    QCoreApplication::setApplicationVersion(PROJECT_VERSION);
     QCoreApplication::setApplicationName(PROJECT_NAME);
     QCoreApplication::setOrganizationName(PROJECT_NAME);
     QCoreApplication::setOrganizationDomain(PROJECT_DOMAIN);

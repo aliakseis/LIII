@@ -34,9 +34,6 @@
 #define    PROJECT_DOMAIN "abstract-project.com"
 #endif//PROJECT_DOMAIN
 
-#ifndef BRAND_VERSION
-#define BRAND_VERSION "1.0"
-#endif//BRAND_VERSION
 
 class QString;
 class QFont;
