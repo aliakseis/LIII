@@ -82,8 +82,11 @@ void fun_wrap(bool& done, condition_variable& e, mutex& m, boost::function<void(
 void torrent_wait(bool& done, aux::session_impl& ses)
 {
 	blocking_call();
+	if (!done)
+	{
 	mutex::scoped_lock l(ses.mut);
 	while (!done) { ses.cond.wait(l); };
+	}
 }
 
 void sync_call(aux::session_impl& ses, boost::function<void(void)> f)
