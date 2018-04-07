@@ -90,17 +90,5 @@ macro(INSTALL_OPENSSL)
 					${CMAKE_COMMAND} -E copy \"${dllFile}\" $<TARGET_FILE_DIR:${PROJECT_NAME}>
 		)
 		endforeach(dllFile ${OPENSSL_LIBRARIES})
-
-                    # We find the msvc110.dll file to install it within the executables directory
-                    find_file(MSVCR_PATH msvcr110.dll
-                              NO_DEFAULT_PATH
-                              PATHS ENV VCINSTALLDIR "C:/Windows/System32"
-                              )
-                    if(MSVCR_PATH)
-                        message("Redistributable found: ${MSVCR_PATH}")
-                        install(FILES ${MSVCR_PATH} DESTINATION .)
-                    else(MSVCR_PATH)
-                        message("Visual Studio 2012 redistributable not found!")
-                    endif(MSVCR_PATH)
 	endif(WIN32)
 endmacro(INSTALL_OPENSSL)
