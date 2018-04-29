@@ -80,14 +80,14 @@ int getEscape(const QChar* uc, int* pos, int len, int maxNumber = 999)
 
 bool isPortAvalible(unsigned short int dwPort, int type)
 {
-    struct sockaddr_in client;
+    sockaddr_in client {};
 
     client.sin_family      = AF_INET;
     client.sin_port        = htons(dwPort);
-    client.sin_addr.s_addr = inet_addr("127.0.0.1");
+    client.sin_addr.s_addr = htonl(INADDR_LOOPBACK);
 
     auto sock = socket(AF_INET, type, 0);
-    int result = bind(sock, (struct sockaddr*) &client, sizeof(client));
+    int result = bind(sock, (sockaddr*) &client, sizeof(client));
 #ifdef Q_OS_WIN
     closesocket(sock);
 #else
