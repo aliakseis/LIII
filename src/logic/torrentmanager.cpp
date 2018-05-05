@@ -125,6 +125,19 @@ QString btihFromMaget(const QString& magnet)
     return QString();
 }
 
+bool mergeTrackers()
+{
+    QMessageBox msgBox(
+        QMessageBox::NoIcon,
+        utilities::Tr::Tr(PROJECT_FULLNAME_TRANSLATION),
+        utilities::Tr::Tr(DUPLICATE_TORRENT_TEXT),
+        QMessageBox::Yes | QMessageBox::No,
+        utilities::getMainWindow());
+    msgBox.setDefaultButton(QMessageBox::No);
+
+    return msgBox.exec() == QMessageBox::Yes;
+}
+
 }  // namespace
 
 QString toQString(const libtorrent::sha1_hash& hash)
@@ -374,24 +387,11 @@ libtorrent::torrent_handle TorrentManager::addTorrent(
         }
     }
 
-    libtorrent::torrent_handle duplicate_tor;
-    if ((duplicate_tor = m_session->find_torrent(hashFromQString(targetInfoHash))).is_valid()) // errors::duplicate_torrent?
+    libtorrent::torrent_handle duplicate_tor = m_session->find_torrent(hashFromQString(targetInfoHash));
+    if (duplicate_tor.is_valid()) // errors::duplicate_torrent?
     {
         // Merge trackers list
-        bool is_merge_trakers = false;
-        if (interactive)
-        {
-            QMessageBox msgBox(
-                QMessageBox::NoIcon,
-                utilities::Tr::Tr(PROJECT_FULLNAME_TRANSLATION),
-                utilities::Tr::Tr(DUPLICATE_TORRENT_TEXT),
-                QMessageBox::Yes | QMessageBox::No,
-                utilities::getMainWindow());
-            msgBox.setDefaultButton(QMessageBox::No);
-
-            is_merge_trakers = (msgBox.exec() == QMessageBox::Yes);
-        }
-        if (is_merge_trakers)
+        if (interactive && mergeTrackers())
         {
             std::vector<libtorrent::announce_entry> trackers_new;
             if (is_adding_from_file)
@@ -420,7 +420,6 @@ libtorrent::torrent_handle TorrentManager::addTorrent(
                     duplicate_tor.add_tracker(ent);
                 }
             }
-
         }
         return {};
     }
