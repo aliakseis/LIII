@@ -39,6 +39,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #include <set>
 #include <vector>
+#include <iterator>
 
 #include <boost/limits.hpp>
 #include <boost/utility.hpp>
@@ -165,13 +166,13 @@ namespace detail
 			TORRENT_ASSERT(j != i);
 
 			boost::uint32_t first_access = i->access;
-			boost::uint32_t last_access = boost::prior(j)->access;
+			boost::uint32_t last_access = std::prev(j)->access;
 
 			if (i->start != first && first_access != flags)
 			{
 				i = m_access_list.insert(i, range(first, flags));
 			}
-			else if (i != m_access_list.begin() && boost::prior(i)->access == flags)
+			else if (i != m_access_list.begin() && std::prev(i)->access == flags)
 			{
 				--i;
 				first_access = i->access;
@@ -179,7 +180,7 @@ namespace detail
 			TORRENT_ASSERT(!m_access_list.empty());
 			TORRENT_ASSERT(i != m_access_list.end());
 
-			if (i != j) m_access_list.erase(boost::next(i), j);
+			if (i != j) m_access_list.erase(std::next(i), j);
 			if (i->start == first)
 			{
 				// we can do this const-cast because we know that the new
