@@ -213,8 +213,8 @@ namespace detail
 			typename range_t::const_iterator i = m_access_list.upper_bound(addr);
 			if (i != m_access_list.begin()) --i;
 			TORRENT_ASSERT(i != m_access_list.end());
-			TORRENT_ASSERT(i->start <= addr && (boost::next(i) == m_access_list.end()
-				|| addr < boost::next(i)->start));
+			TORRENT_ASSERT(i->start <= addr && (std::next(i) == m_access_list.end()
+				|| addr < std::next(i)->start));
 			return i->access;
 		}
 

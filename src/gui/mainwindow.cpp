@@ -5,6 +5,7 @@
 #include <QPair>
 #include <QMimeData>
 
+#include <functional>
 #include <iostream>
 #include <stdio.h>
 
@@ -478,7 +479,7 @@ void MainWindow::on_cancelButton_clicked()
 void MainWindow::refreshButtons()
 {
     const bool isCompletedItems 
-        = DownloadCollectionModel::instance().findItem([](const TreeItem * ti) {return ti->isCompleted();}) != nullptr;
+        = DownloadCollectionModel::instance().findItem(std::mem_fn(&TreeItem::isCompleted)) != nullptr;
     ui->lblClearText->setVisible(!ui->linkEdit->text().isEmpty());
     ui->clearButton->setEnabled(isCompletedItems);
     ui->actionCleanup->setEnabled(isCompletedItems);

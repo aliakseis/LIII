@@ -276,52 +276,50 @@ void DownloadCollectionTreeView::on_showContextMenu(const QPoint& a_point)
     QModelIndex index = selectionModel()->currentIndex();
     if (index.isValid())
     {
+        QMenu menu;
+        menu.setObjectName(QStringLiteral("DownloadContextMenu"));
+
+        const auto dlType = model()->getItem(index)->downloadType();
+        // Show In Folder menu item
+        QAction* openFolder = menu.addAction(QIcon(":/icons/Drop-down-folder-icon-normal.png"), utilities::Tr::Tr(TREEVIEW_MENU_OPENFOLDER), this, SLOT(on_OpenFolder()));
+        openFolder->setEnabled(dlType != DownloadType::MagnetLink);
+
+        if (dlType == DownloadType::TorrentFile)
         {
-            QMenu menu;
-            menu.setObjectName(QStringLiteral("DownloadContextMenu"));
-
-            const auto dlType = model()->getItem(index)->downloadType();
-            // Show In Folder menu item
-            QAction* openFolder = menu.addAction(QIcon(":/icons/Drop-down-folder-icon-normal.png"), utilities::Tr::Tr(TREEVIEW_MENU_OPENFOLDER), this, SLOT(on_OpenFolder()));
-            openFolder->setEnabled(dlType != DownloadType::MagnetLink);
-
-            if (dlType == DownloadType::TorrentFile)
-            {
-                QString path = TorrentManager::Instance()->torrentRootItemPath(model()->getItem(index)->getID());
-                openFolder->setEnabled(QFile::exists(path));
-            }
-
-            // Torrent Details menu item
-            if (DownloadType::isTorrentDownload(dlType))
-            {
-                menu.addAction(QIcon(":/icons/Drop-down-torrent-icon-normal.png"), utilities::Tr::Tr(TORRENT_DETAILS_INFO), this, SLOT(on_showTorrentDetails()))
-                ->setEnabled(dlType == DownloadType::TorrentFile);
-            }
-
-            menu.addSeparator();
-            // Download Control section: start, pause, stop, remove, cancel
-            QAction* re = menu.addAction(QIcon(":/icons/Drop-down-start-icon-normal.png"), utilities::Tr::Tr(START_LABEL), this, SLOT(on_ItemResume()));
-            QAction* pa = menu.addAction(QIcon(":/icons/Drop-down-pause-icon-normal.png"),  utilities::Tr::Tr(PAUSE_LABEL) ,  this, SLOT(on_ItemPause()));
-
-            auto prc = canPRCSEnabled();
-            if (std::get<2>(prc)) // can Cancel?
-            {
-                menu.addAction(QIcon(":/icons/Drop-down-cancel-icon-normal.png"), utilities::Tr::Tr(TREEVIEW_MENU_CANCEL), this, SLOT(on_ItemCancel()));
-            }
-            else
-            {
-                menu.addAction(QIcon(":/icons/Drop-down-clean-icon-normal.png"), utilities::Tr::Tr(TREEVIEW_MENU_REMOVE), this, SLOT(on_ItemCancel()));
-            }
-
-            pa->setEnabled(std::get<0>(prc));
-            re->setEnabled(std::get<1>(prc));
-
-            menu.addSeparator();
-            menu.addAction(QIcon(":/icons/Drop-down-up-icon-normal.png"), utilities::Tr::Tr(TREEVIEW_MENU_MOVEUP), this, SLOT(on_MoveUp()));
-            menu.addAction(QIcon(":/icons/Drop-down-down-icon-normal.png"), utilities::Tr::Tr(TREEVIEW_MENU_MOVEDOWN), this, SLOT(on_MoveDown()));
-
-            menu.exec(cursorPos);
+            QString path = TorrentManager::Instance()->torrentRootItemPath(model()->getItem(index)->getID());
+            openFolder->setEnabled(QFile::exists(path));
         }
+
+        // Torrent Details menu item
+        if (DownloadType::isTorrentDownload(dlType))
+        {
+            menu.addAction(QIcon(":/icons/Drop-down-torrent-icon-normal.png"), utilities::Tr::Tr(TORRENT_DETAILS_INFO), this, SLOT(on_showTorrentDetails()))
+            ->setEnabled(dlType == DownloadType::TorrentFile);
+        }
+
+        menu.addSeparator();
+        // Download Control section: start, pause, stop, remove, cancel
+        QAction* re = menu.addAction(QIcon(":/icons/Drop-down-start-icon-normal.png"), utilities::Tr::Tr(START_LABEL), this, SLOT(on_ItemResume()));
+        QAction* pa = menu.addAction(QIcon(":/icons/Drop-down-pause-icon-normal.png"),  utilities::Tr::Tr(PAUSE_LABEL) ,  this, SLOT(on_ItemPause()));
+
+        auto prc = canPRCSEnabled();
+        if (std::get<2>(prc)) // can Cancel?
+        {
+            menu.addAction(QIcon(":/icons/Drop-down-cancel-icon-normal.png"), utilities::Tr::Tr(TREEVIEW_MENU_CANCEL), this, SLOT(on_ItemCancel()));
+        }
+        else
+        {
+            menu.addAction(QIcon(":/icons/Drop-down-clean-icon-normal.png"), utilities::Tr::Tr(TREEVIEW_MENU_REMOVE), this, SLOT(on_ItemCancel()));
+        }
+
+        pa->setEnabled(std::get<0>(prc));
+        re->setEnabled(std::get<1>(prc));
+
+        menu.addSeparator();
+        menu.addAction(QIcon(":/icons/Drop-down-up-icon-normal.png"), utilities::Tr::Tr(TREEVIEW_MENU_MOVEUP), this, SLOT(on_MoveUp()));
+        menu.addAction(QIcon(":/icons/Drop-down-down-icon-normal.png"), utilities::Tr::Tr(TREEVIEW_MENU_MOVEDOWN), this, SLOT(on_MoveDown()));
+
+        menu.exec(cursorPos);
     }
 }
 
