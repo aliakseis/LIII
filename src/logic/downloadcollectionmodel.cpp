@@ -256,6 +256,8 @@ QVariant DownloadCollectionModel::data(const QModelIndex& index, int role /* = Q
         return item->source();
     case eDC_downlFileName:
         return item->downloadedFileName();
+    case eDC_percentDownl:
+        return (item->size() > 0) ? (item->sizeCurrDownl() * 100.) / item->size() : 0.;
     default:
         return {};
     }

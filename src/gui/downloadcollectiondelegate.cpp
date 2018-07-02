@@ -42,8 +42,7 @@ void DownloadCollectionDelegate::paint(QPainter* painter, const QStyleOptionView
         progressBarOption.textVisible = true;
 
         // Set the progress and text values of the style option.
-        TreeItem* childItem = static_cast<TreeItem*>(index.internalPointer());
-        const double progress = (childItem->size() > 0) ? (childItem->sizeCurrDownl() * 100.) / childItem->size() : 0;
+        const double progress = index.data(Qt::DisplayRole).toDouble();
 
         progressBarOption.progress = static_cast<int>(progress);
         progressBarOption.text = utilities::ProgressString(progress);
