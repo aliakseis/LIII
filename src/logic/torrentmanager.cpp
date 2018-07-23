@@ -333,6 +333,8 @@ libtorrent::torrent_handle TorrentManager::addTorrent(
     const QString& savePath,
     const std::vector<boost::uint8_t>* file_priorities)
 {
+    qDebug() << __FUNCTION__ << " adding file: " << torrOrMagnet;
+
     libtorrent::add_torrent_params torrentParams;
     torrentParams.save_path = 
         (savePath.isEmpty() ? global_functions::GetVideoFolder() : savePath).toUtf8().constData();
