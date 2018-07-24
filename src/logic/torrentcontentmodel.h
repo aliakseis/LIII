@@ -37,8 +37,6 @@ public:
     template <class Prior_t> void updateFilesPriorities(const std::vector<Prior_t>& fprio);
     template <class Prior_t> void getFilesPriorities(std::vector<Prior_t>& prio) const;
     bool allFiltered() const;
-    TorrentContentModelItem::FileType getType(const QModelIndex& index) const;
-    TorrentContentModelItem* getTorrentContentModelItem(const QModelIndex& index)const;
     void clear();
     void setupModelData(const libtorrent::torrent_info& t, const libtorrent::torrent_status& tStatus);
     void setSavePath(const QString& savePath);

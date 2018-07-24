@@ -4,6 +4,15 @@
 
 #include <QDir>
 
+namespace {
+
+TorrentContentModelItem* getItem(const QModelIndex& index)
+{
+    return static_cast<TorrentContentModelItem*>(index.internalPointer());
+}
+
+} // namespace
+
 TorrentContentModel::TorrentContentModel(QObject* parent)
     : QAbstractItemModel(parent)
     , m_rootItem(
@@ -45,7 +54,7 @@ int TorrentContentModel::columnCount(const QModelIndex& parent) const
 {
     if (parent.isValid())
     {
-        return static_cast<TorrentContentModelItem*>(parent.internalPointer())->columnCount();
+        return getItem(parent)->columnCount();
     }
     return m_rootItem->columnCount();
 }
@@ -59,7 +68,7 @@ bool TorrentContentModel::setData(const QModelIndex& index, const QVariant& valu
 
     if (index.column() == 0 && role == Qt::CheckStateRole)
     {
-        TorrentContentModelItem* item = static_cast<TorrentContentModelItem*>(index.internalPointer());
+        TorrentContentModelItem* item = getItem(index);
         qDebug("setData(%s, %d)", qPrintable(item->getName()), value.toInt());
         if (item->getPriority() != value.toInt())
         {
@@ -83,7 +92,7 @@ bool TorrentContentModel::setData(const QModelIndex& index, const QVariant& valu
 
     if (role == Qt::EditRole)
     {
-        TorrentContentModelItem* item = static_cast<TorrentContentModelItem*>(index.internalPointer());
+        TorrentContentModelItem* item = getItem(index);
         switch (index.column())
         {
         case TorrentContentModelItem::COL_NAME:
@@ -111,18 +120,6 @@ bool TorrentContentModel::setData(const QModelIndex& index, const QVariant& valu
     return false;
 }
 
-TorrentContentModelItem::FileType TorrentContentModel::getType(const QModelIndex& index) const
-{
-    const TorrentContentModelItem* item = static_cast<const TorrentContentModelItem*>(index.internalPointer());
-    return item->getType();
-}
-
-TorrentContentModelItem* TorrentContentModel::getTorrentContentModelItem(const QModelIndex& index)const
-{
-    TorrentContentModelItem* item = static_cast<TorrentContentModelItem*>(index.internalPointer());
-    return item;
-}
-
 QVariant TorrentContentModel::data(const QModelIndex& index, int role) const
 {
     if (!index.isValid())
@@ -130,7 +127,7 @@ QVariant TorrentContentModel::data(const QModelIndex& index, int role) const
         return QVariant();
     }
 
-    TorrentContentModelItem* item = static_cast<TorrentContentModelItem*>(index.internalPointer());
+    TorrentContentModelItem* item = getItem(index);
     if (index.column() == 0 && role == Qt::DecorationRole)
     {
         if (item->isFolder())
@@ -177,7 +174,7 @@ Qt::ItemFlags TorrentContentModel::flags(const QModelIndex& index) const
         return 0;
     }
 
-    if (getType(index) == TorrentContentModelItem::FOLDER)
+    if (getItem(index)->getType() == TorrentContentModelItem::FOLDER)
     {
         return Qt::ItemIsEditable | Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsUserCheckable | Qt::ItemIsTristate;
     }
@@ -201,7 +198,7 @@ QModelIndex TorrentContentModel::index(int row, int column, const QModelIndex& p
         return QModelIndex();
     }
 
-    TorrentContentModelItem* parentItem = parent.isValid() ? static_cast<TorrentContentModelItem*>(parent.internalPointer()) : m_rootItem;
+    TorrentContentModelItem* parentItem = parent.isValid() ? getItem(parent) : m_rootItem;
 
     Q_ASSERT(parentItem);
     if (row >= parentItem->childCount())
@@ -226,7 +223,7 @@ QModelIndex TorrentContentModel::parent(const QModelIndex& index) const
         return QModelIndex();
     }
 
-    TorrentContentModelItem* childItem = static_cast<TorrentContentModelItem*>(index.internalPointer());
+    TorrentContentModelItem* childItem = getItem(index);
     if (!childItem)
     {
         return QModelIndex();
@@ -248,7 +245,7 @@ int TorrentContentModel::rowCount(const QModelIndex& parent) const
         return 0;
     }
 
-    TorrentContentModelItem* parentItem = parent.isValid() ? static_cast<TorrentContentModelItem*>(parent.internalPointer()) : m_rootItem;
+    TorrentContentModelItem* parentItem = parent.isValid() ? getItem(parent) : m_rootItem;
 
     return parentItem->childCount();
 }
