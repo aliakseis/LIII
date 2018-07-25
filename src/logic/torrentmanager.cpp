@@ -6,7 +6,9 @@
 #include <vector>
 #include <utility>
 #include <algorithm>
+#include <functional>
 #include <stdio.h>
+#include <boost/function_output_iterator.hpp>
 #include <libtorrent/version.hpp>
 #include <libtorrent/magnet_uri.hpp>
 #include <libtorrent/bencode.hpp>
@@ -136,6 +138,12 @@ std::vector<libtorrent::announce_entry> parseTrackersList(const QString& torrOrM
         pos += trackersRx.matchedLength();
     }
     return trackers_new;
+}
+
+auto makeAddTrackerIterator(libtorrent::torrent_handle& h)
+{
+    return boost::make_function_output_iterator(
+        std::bind(&libtorrent::torrent_handle::add_tracker, &h, std::placeholders::_1));
 }
 
 bool mergeTrackers()
@@ -414,14 +422,10 @@ libtorrent::torrent_handle TorrentManager::addTorrent(
 
             auto trackerPr = [](libtorrent::announce_entry const & l, libtorrent::announce_entry const & r) {return l.url < r.url;};
             std::sort(trackers_current.begin(), trackers_current.end(), trackerPr);
-            for (const auto& ent : trackers_new)
-            {
-                bool found = std::binary_search(trackers_current.begin(), trackers_current.end(), ent, trackerPr);
-                if (!found)
-                {
-                    duplicate_tor.add_tracker(ent);
-                }
-            }
+            std::sort(trackers_new.begin(), trackers_new.end(), trackerPr);
+            std::set_difference(trackers_new.begin(), trackers_new.end(), 
+                trackers_current.begin(), trackers_current.end(),
+                makeAddTrackerIterator(duplicate_tor), trackerPr);
         }
         return {};
     }
