@@ -125,6 +125,19 @@ QString btihFromMaget(const QString& magnet)
     return QString();
 }
 
+std::vector<libtorrent::announce_entry> parseTrackersList(const QString& torrOrMagnet)
+{
+    std::vector<libtorrent::announce_entry> trackers_new;
+    QRegExp trackersRx("&tr(?:.[0-9]+)?=([^&\\n\\r]+)", Qt::CaseInsensitive);
+    int pos = 0;
+    while ((pos = trackersRx.indexIn(torrOrMagnet, pos)) != -1)
+    {
+        trackers_new.push_back(libtorrent::announce_entry(trackersRx.cap(1).toUtf8().constData()));
+        pos += trackersRx.matchedLength();
+    }
+    return trackers_new;
+}
+
 bool mergeTrackers()
 {
     QMessageBox msgBox(
@@ -395,21 +408,8 @@ libtorrent::torrent_handle TorrentManager::addTorrent(
         // Merge trackers list
         if (interactive && mergeTrackers())
         {
-            std::vector<libtorrent::announce_entry> trackers_new;
-            if (is_adding_from_file)
-            {
-                trackers_new = torrentParams.ti->trackers();
-            }
-            else
-            {
-                QRegExp trackersRx("&tr(?:.[0-9]+)?=([^&\\n\\r]+)", Qt::CaseInsensitive);
-                int pos = 0;
-                while ((pos = trackersRx.indexIn(torrOrMagnet, pos)) != -1)
-                {
-                    trackers_new.push_back(libtorrent::announce_entry(trackersRx.cap(1).toUtf8().constData()));
-                    pos += trackersRx.matchedLength();
-                }
-            }
+            std::vector<libtorrent::announce_entry> trackers_new
+                = is_adding_from_file? torrentParams.ti->trackers() : parseTrackersList(torrOrMagnet);
             std::vector<libtorrent::announce_entry> trackers_current = duplicate_tor.trackers();
 
             auto trackerPr = [](libtorrent::announce_entry const & l, libtorrent::announce_entry const & r) {return l.url < r.url;};
