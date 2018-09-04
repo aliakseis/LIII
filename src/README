@@ -4,3 +4,9 @@ BOOST_LIBRARYDIR=C:\boost_1_63_0\lib32-msvc-14.0
 BOOST_ROOT=C:\boost_1_63_0
 Path=C:\Qt\Qt5.8.0\5.8\msvc2015\bin;
 QTDIR=C:\Qt\Qt5.8.0\5.8\msvc2015
+
+ilbtorrent subtree:
+
+git remote add libtorrent https://github.com/arvidn/libtorrent.git
+git fetch libtorrent
+git subtree add -P src/3rdparty/torrent-rasterbar libtorrent/RC_1_1 --squash
