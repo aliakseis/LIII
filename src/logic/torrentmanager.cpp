@@ -30,7 +30,6 @@
 #include "downloadtype.h"
 
 #include "mainwindow.h"
-#include "settings_declaration.h"
 #include "utilities/translation.h"
 #include "version.hxx"
 #include "branding.hxx"
