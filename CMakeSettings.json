@@ -1,0 +1,17 @@
+{
+  "configurations": [
+    {
+      "name": "x86-Release",
+      "generator": "Ninja",
+      "configurationType": "RelWithDebInfo",
+      "inheritEnvironments": [
+        "msvc_x86"
+      ],
+      "buildRoot": "${projectDir}/build/${name}",
+      "installRoot": "${projectDir}/install/${name}",
+      "cmakeCommandArgs": "",
+      "buildCommandArgs": "-v",
+      "ctestCommandArgs": ""
+    }
+  ]
+}
