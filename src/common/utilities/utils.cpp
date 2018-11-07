@@ -349,8 +349,8 @@ bool isAdminRights()
 
 void runWithPrivileges(const wchar_t* arg, WId parent)
 {
-    const auto applicationFilePath = qApp->applicationFilePath();
-    const auto applicationDirPath = qApp->applicationDirPath();
+    const auto applicationFilePath = QCoreApplication::applicationFilePath();
+    const auto applicationDirPath = QCoreApplication::applicationDirPath();
 
     SHELLEXECUTEINFOW shex =
     {

@@ -72,7 +72,7 @@ MainWindow::MainWindow()
       m_dlManager(nullptr)
       , isAutorun(false)
 {
-    qApp->setWindowIcon(QIcon(PROJECT_ICON));
+    QApplication::setWindowIcon(QIcon(PROJECT_ICON));
 
     ui->setupUi(this);
 
@@ -153,7 +153,7 @@ MainWindow::MainWindow()
 
     VERIFY(connect(ui->linkEdit, SIGNAL(linksAdd(bool)), ui->lblClearText, SLOT(setVisible(bool))));
     VERIFY(connect(ui->linkEdit, SIGNAL(returnPressed()), this, SLOT(on_buttonStart_clicked())));
-    VERIFY(connect(ui->lblClearText, SIGNAL(clicked()), this, SLOT(onlblClearTextCliced())));
+    VERIFY(connect(ui->lblClearText, SIGNAL(clicked()), this, SLOT(onlblClearTextClicked())));
 
     refreshButtons();
 }
@@ -211,7 +211,8 @@ void MainWindow::showMainWindowAndPerformChecks()
 
 void MainWindow::checkDefaultTorrentApplication()
 {
-    if (QSettings().value(ShowAssociateTorrentDialog, ShowAssociateTorrentDialog_Default).toBool()
+    const bool initiallyShowDialog = ShowAssociateTorrentDialog_Default && !utilities::IsPortableMode();
+    if (QSettings().value(ShowAssociateTorrentDialog, initiallyShowDialog).toBool()
         && !utilities::isDefaultTorrentApp())
     {
         QMessageBox msgBox(
@@ -318,7 +319,7 @@ void MainWindow::prepareToExit()
 #endif
 }
 
-void MainWindow::onlblClearTextCliced()
+void MainWindow::onlblClearTextClicked()
 {
     ui->linkEdit->setText(QString());
     refreshButtons();

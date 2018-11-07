@@ -71,7 +71,7 @@ public Q_SLOTS:
     void closeApp();
     void onAboutClicked();
     void on_openTorrent_clicked();
-    void onlblClearTextCliced();
+    void onlblClearTextClicked();
 
 private Q_SLOTS:
     void prepareToExit();

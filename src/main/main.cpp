@@ -27,11 +27,25 @@ Q_IMPORT_PLUGIN(qico)
 #endif//QT_STATICPLUGINS
 
 
+// Called once QCoreApplication exists
+static void ApplicationDependentInitialization()
+{
+    if (utilities::IsPortableMode())
+    {
+        QSettings::setDefaultFormat(QSettings::IniFormat);
+        QSettings::setPath(QSettings::IniFormat, QSettings::UserScope,
+            QCoreApplication::applicationDirPath());
+    }
+
+    utilities::setWriteToLogFile(
+        QSettings().value(app_settings::LoggingEnabled, false).toBool());
+}
+
+Q_COREAPP_STARTUP_FUNCTION(ApplicationDependentInitialization)
+
 int main(int argc, char* argv[])
 {
     utilities::InitializeProjectDescription();
-
-    utilities::setWriteToLogFile(QSettings().value(app_settings::LoggingEnabled, false).toBool());
 
     // single app
     Application app(QString(PROJECT_NAME), argc, argv);

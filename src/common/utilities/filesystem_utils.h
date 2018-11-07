@@ -21,6 +21,8 @@ void SelectFile(const QString& fileName, const QString& defFolderName);
 QString GetFileName(QNetworkReply* reply);
 QString GetFileName(const QString& full_path);
 
+bool IsPortableMode();
+
 // Parameter: const QString & subdir - subdir to create;  Returns:  QString - directory name with ending slash
 QString PrepareCacheFolder(const QString& subdir = QString());
 

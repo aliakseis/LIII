@@ -202,7 +202,7 @@ template<class Val_t> bool isNotAllSkipped(std::vector<Val_t> const& priorities)
 
 void TorrentDetailsForm::accept()
 {
-    qApp->processEvents(); // must call this to stop editing operations
+    QCoreApplication::processEvents(); // must call this to stop editing operations
 
     bool isEverithingOk = true;
     if (m_torrentHandle.is_valid())

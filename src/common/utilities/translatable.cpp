@@ -88,7 +88,7 @@ void Translatable::retranslateApp(const QString& locale)
 {
     if (translator_)
     {
-        qApp->removeTranslator(translator_);
+        QCoreApplication::removeTranslator(translator_);
         translator_->deleteLater();
     }
     translator_ = new QTranslator(qApp);
@@ -96,7 +96,7 @@ void Translatable::retranslateApp(const QString& locale)
     QString filename = translationFilePrefix + locale;
     if (translator_->load(filename, getTranslationsFolder()))
     {
-        qApp->installTranslator(translator_);
+        QCoreApplication::installTranslator(translator_);
     }
 
     Tr::RetranslateAll(qApp);

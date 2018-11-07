@@ -1,9 +1,11 @@
 #include "filesystem_utils.h"
 
+#include <QApplication>
 #include <QFileInfo>
 #include <QFile>
 #include <QDir>
 #include <QDebug>
+#include <QSettings>
 #include <QThread>
 #include <QProcess>
 #include <QNetworkReply>
@@ -23,6 +25,9 @@ typedef HRESULT(STDAPICALLTYPE* GetPathFunc)(REFKNOWNFOLDERID, DWORD, HANDLE, PW
 #endif
 
 namespace {
+
+const char PORTABLE_MODE_FILE[]        =    "portable";
+const char DOWNLOADS_FOLDER_NAME[]     =    "downloads";
 
 #ifdef Q_OS_WIN32
 const char EXPLORER_LABEL[]            =    "explorer";
@@ -153,6 +158,27 @@ bool MoveToTrashImpl(const QString& file)
 }
 #endif //Q_OS_MAC
 
+QString StringOrEmpty(const QStringList& list)
+{
+    return list.empty() ? QString() : list.at(0);
+}
+
+QString GetOrganizationName()
+{
+    return
+#ifdef Q_OS_MAC
+    QCoreApplication::organizationDomain().isEmpty()
+        ? QCoreApplication::organizationName()
+        : QCoreApplication::organizationDomain()
+#else
+    QCoreApplication::organizationName().isEmpty()
+        ? QCoreApplication::organizationDomain()
+        : QCoreApplication::organizationName()
+#endif
+    ;
+}
+
+
 } // namespace
 
 
@@ -239,22 +265,30 @@ QString GetFileName(const QString& full_path)
     return (file_name.isEmpty()) ? full_path : file_name;
 }
 
+bool IsPortableMode()
+{
+    static const bool isPortableMode = QFileInfo::exists(
+        QCoreApplication::applicationDirPath() + QDir::separator() + PORTABLE_MODE_FILE);
+    return isPortableMode;
+}
+
 QString getPathForDownloadFolder()
 {
-    QStringList paths = QStandardPaths::standardLocations(QStandardPaths::DownloadLocation);
-    QString startPath = !paths.empty() ? paths.at(0) : QString();
-    return startPath;
+    return IsPortableMode()
+        ? PrepareCacheFolder(DOWNLOADS_FOLDER_NAME)
+        : StringOrEmpty(QStandardPaths::standardLocations(QStandardPaths::DownloadLocation));
 }
 
 
 QString PrepareCacheFolder(const QString& subdir)
 {
-    QStringList paths = QStandardPaths::standardLocations(QStandardPaths::DataLocation);
-    QString path = !paths.isEmpty() ? paths.at(0) : QString();
+    QString path = IsPortableMode()
+        ? QCoreApplication::applicationDirPath()
+        : StringOrEmpty(QStandardPaths::standardLocations(QStandardPaths::DataLocation));
 
-    if (!subdir.isEmpty())
+    if (!subdir.isEmpty() || IsPortableMode()) // indirect top level portable stuff like settings do
     {
-        path += QDir::separator() + subdir;
+        path += QDir::separator() + (subdir.isEmpty()? GetOrganizationName() : subdir);
     }
     Q_ASSERT(!path.isEmpty());
 

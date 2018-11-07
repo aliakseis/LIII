@@ -12,7 +12,7 @@ const auto torrentClassName = QStringLiteral(PROJECT_NAME ".torrent");
 
 void setClassesToSelf(QSettings& settingRoot)
 {
-    QString appPath = QDir::toNativeSeparators(qApp->applicationFilePath());
+    QString appPath = QDir::toNativeSeparators(QCoreApplication::applicationFilePath());
     settingRoot.setValue(".", torrentClassName);
 
     settingRoot.beginGroup("DefaultIcon");
@@ -34,7 +34,7 @@ void associateApp(QString const& ext, WId parent = NULL)
     const bool isChangeNeeded =
         QSettings("HKEY_CLASSES_ROOT\\" + torrentClassName, QSettings::NativeFormat).value(".") != PROJECT_FULLNAME ||
         QSettings("HKEY_CLASSES_ROOT\\" + ext, QSettings::NativeFormat).value(".") != torrentClassName ||
-        QSettings("HKEY_CLASSES_ROOT\\" + torrentClassName + "\\shell\\open\\command", QSettings::NativeFormat).value(".") != QString("\"%1\" \"%2\"").arg(QDir::toNativeSeparators(qApp->applicationFilePath()), "%1");
+        QSettings("HKEY_CLASSES_ROOT\\" + torrentClassName + "\\shell\\open\\command", QSettings::NativeFormat).value(".") != QString("\"%1\" \"%2\"").arg(QDir::toNativeSeparators(QCoreApplication::applicationFilePath()), "%1");
 
     if (isChangeNeeded)
     {
@@ -75,7 +75,7 @@ bool utilities::isDefaultTorrentApp()
     const bool isSelf =
         QSettings("HKEY_CLASSES_ROOT\\Magnet", QSettings::NativeFormat).value(".") == torrentClassName &&
         QSettings("HKEY_CLASSES_ROOT\\.torrent", QSettings::NativeFormat).value(".") == torrentClassName &&
-        QSettings("HKEY_CLASSES_ROOT\\" + torrentClassName + "\\shell\\open\\command", QSettings::NativeFormat).value(".") == QString("\"%1\" \"%2\"").arg(QDir::toNativeSeparators(qApp->applicationFilePath()), "%1") &&
+        QSettings("HKEY_CLASSES_ROOT\\" + torrentClassName + "\\shell\\open\\command", QSettings::NativeFormat).value(".") == QString("\"%1\" \"%2\"").arg(QDir::toNativeSeparators(QCoreApplication::applicationFilePath()), "%1") &&
         QSettings("HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\FileExts\\.torrent\\UserChoice", QSettings::NativeFormat).value("ProgId") == torrentClassName;
 
     return isSelf;

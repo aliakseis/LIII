@@ -59,8 +59,8 @@ void MainWindowWithTray::trayAction(QSystemTrayIcon::ActivationReason reason)
 void MainWindowWithTray::closeApp()
 {
     m_isExiting = true;
-    qApp->closeAllWindows();
-    qApp->exit(0);
+    QApplication::closeAllWindows();
+    QCoreApplication::exit(0);
 }
 
 void MainWindowWithTray::setVisible(bool visible)
@@ -104,7 +104,7 @@ void MainWindowWithTray::showHideNotify() {}
 
 void MainWindowWithTray::createTrayMenu(QIcon const& icon, utilities::Tr::Translation const& projFullNameTr)
 {
-    qApp->setWindowIcon(icon);
+    QApplication::setWindowIcon(icon);
 #if !defined(Q_OS_MAC)
     m_tray = new QSystemTrayIcon(this);
     utilities::Tr::SetTr(m_tray, &QSystemTrayIcon::setToolTip, projFullNameTr);
@@ -136,7 +136,7 @@ QAction* MainWindowWithTray::addTrayMenuItem(TrayMenu::ItemType itemType)
     case TrayMenu::Show:
     {
         action = createAction("actionShow", appShowTr, QKeySequence::UnknownKey, SLOT(restore()));
-        action->setIcon(qApp->windowIcon());
+        action->setIcon(QApplication::windowIcon());
         action->setIconVisibleInMenu(true);
         m_tray->contextMenu()->addAction(action);
     }
