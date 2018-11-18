@@ -2,6 +2,7 @@
 
 #include <QObject>
 #include <QScopedPointer>
+#include <QPointer>
 
 #include "utilities/credsretriever.h"
 
@@ -68,6 +69,7 @@ private:
     QString url_, filename_;
     qint64 total_file_size_;
     int task_id_;
+    QPointer<TreeItem> tree_item_;
     bool ready_to_download_;
     bool is_torrent_file_;
 

@@ -17,6 +17,7 @@ DownloadTask::DownloadTask(int task_id, const QString& url, QObject* parent)
     url_(url),
     total_file_size_(0),
     task_id_(task_id),
+    tree_item_(DownloadCollectionModel::instance().getRootItem()->findItemByID(task_id)),
     ready_to_download_(false),
     is_torrent_file_(false)
 {
@@ -203,9 +204,9 @@ void DownloadTask::setSpeedLimit(int kbps)
 
 int DownloadTask::priority_level() const
 {
-    if (TreeItem* itm = DownloadCollectionModel::instance().getRootItem()->findItemByID(task_id_))
+    if (tree_item_)
     {
-        return itm->priority();
+        return tree_item_->priority();
     }
     return 0;
 }
