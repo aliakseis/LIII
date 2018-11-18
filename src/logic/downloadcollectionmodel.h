@@ -109,6 +109,8 @@ public:
 
     void queueSaveToFile();
 
+    void setTorrentFilesPriorities(ItemID a_ID, QStringList priorities);
+
 public slots:
     void saveToFile();
 

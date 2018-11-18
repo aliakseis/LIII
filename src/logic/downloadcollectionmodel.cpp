@@ -1021,6 +1021,15 @@ void DownloadCollectionModel::queueSaveToFile()
     VERIFY(QMetaObject::invokeMethod(this, "saveToFile", Qt::QueuedConnection));
 }
 
+void DownloadCollectionModel::setTorrentFilesPriorities(ItemID a_ID, QStringList priorities)
+{
+    if (TreeItem* item = getRootItem()->findItemByID(a_ID))
+    {
+        item->setTorrentFilesPriorities(std::move(priorities));
+        queueSaveToFile();
+    }
+}
+
 TreeItem* DownloadCollectionModel::findItemByURL(const QString& a_url) const
 {
     return getRootItem()->findItemByURL(a_url);

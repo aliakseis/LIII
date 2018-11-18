@@ -471,10 +471,10 @@ void DownloadCollectionTreeView::showTorrentDetailsDialog(TreeItem* item)
             if (accepted)
             {
                 item->setSize(handle.status(0).total_wanted);
-                const auto priorities = dlg.filesPriorities();
+                auto priorities = dlg.filesPriorities();
                 if (priorities != item->torrentFilesPriorities())
                 {
-                    item->setTorrentFilesPriorities(priorities);
+                    item->setTorrentFilesPriorities(std::move(priorities));
                     model()->queueSaveToFile();
                 }
             }

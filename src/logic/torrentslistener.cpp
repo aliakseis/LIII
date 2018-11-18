@@ -25,8 +25,6 @@
 
 namespace {
 
-using namespace std::placeholders;
-
 class AddTorrentFormHelper : public NotifyHelper
 {
 public:
@@ -45,12 +43,14 @@ public:
         {
             if (status == QDialog::Rejected) // main thread
             {
-                DownloadCollectionModel::instance()
-                .deleteURLFromModel(m_listener->getItemID(m_handle), libtorrent::session::delete_files);
+                DownloadCollectionModel::instance().deleteURLFromModel(
+                    m_listener->getItemID(m_handle), libtorrent::session::delete_files);
             }
             else
             {
                 m_listener->handleItemMetadata(m_handle);
+                DownloadCollectionModel::instance().setTorrentFilesPriorities(
+                    m_listener->getItemID(m_handle), addDialog->filesPriorities());
             }
         }
 
@@ -97,6 +97,8 @@ TorrentsListener::~TorrentsListener()
 
 void TorrentsListener::setAlertDispatch(libtorrent::session* s)
 {
+    using namespace std::placeholders;
+
     const boost::uint32_t alertMask
         = 0
           BOOST_PP_SEQ_FOR_EACH(ALERT_MASK_DEF, _, ALERTS_OF_INTEREST)
