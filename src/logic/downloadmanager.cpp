@@ -349,7 +349,7 @@ void DownloadManager::addItemsToModel(const QStringList& urls, DownloadType::Typ
 {
     DownloadCollectionModel::instance().addItemsToModel(urls, type);
     startLoad();
-    VERIFY(QMetaObject::invokeMethod(&DownloadCollectionModel::instance(), "saveToFile", Qt::QueuedConnection));
+    DownloadCollectionModel::instance().queueSaveToFile();
 }
 
 void DownloadManager::siftDownloads()

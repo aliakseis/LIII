@@ -441,7 +441,7 @@ void DownloadCollectionModel::deleteALLFinished()
         }
     }
 
-    VERIFY(QMetaObject::invokeMethod(this, "saveToFile", Qt::QueuedConnection));
+    queueSaveToFile();
 }
 
 
@@ -545,7 +545,7 @@ void DownloadCollectionModel::on_downloadedFileNameChange(const ItemDC& a_item)
         emit dataChanged(index(item, eDC_downlFileName), index(item, eDC_downlFileName));
     }
 
-    VERIFY(QMetaObject::invokeMethod(this, "saveToFile", Qt::QueuedConnection));
+    queueSaveToFile();
 }
 
 void DownloadCollectionModel::on_sizeCurrDownlChange(const ItemDC& a_item)
@@ -661,7 +661,7 @@ void DownloadCollectionModel::on_magnetLinkInfoReceived(const ItemDC& a_item)
 
     emit dataChanged(index(item, eDC_ID), index(item, eDC_Source));
 
-    VERIFY(QMetaObject::invokeMethod(this, "saveToFile", Qt::QueuedConnection));
+    queueSaveToFile();
 }
 
 ItemDC DownloadCollectionModel::getItemByID(ItemID a_item)
@@ -1014,6 +1014,11 @@ void DownloadCollectionModel::saveToFile()
     {
         qWarning() << "Could not save model data to the file: " << filePath;
     }
+}
+
+void DownloadCollectionModel::queueSaveToFile()
+{
+    VERIFY(QMetaObject::invokeMethod(this, "saveToFile", Qt::QueuedConnection));
 }
 
 TreeItem* DownloadCollectionModel::findItemByURL(const QString& a_url) const

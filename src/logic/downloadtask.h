@@ -39,7 +39,7 @@ public:
 
     QString fileName() const { return filename_; }
     QString url() const { return url_; }
-    int priority_level() const { return priority_level_; }
+    int priority_level() const;
     int task_id() const { return task_id_; }
     bool ready_to_download() const { return ready_to_download_; }
     bool is_torrent_file() const { return is_torrent_file_; }
@@ -67,7 +67,7 @@ private:
     QScopedPointer<QNetworkAccessManager> network_manager_;
     QString url_, filename_;
     qint64 total_file_size_;
-    int task_id_, priority_level_;
+    int task_id_;
     bool ready_to_download_;
     bool is_torrent_file_;
 
@@ -76,7 +76,4 @@ Q_SIGNALS:
     void signalTryNewtask();
     void readyToDownload(int id);
     void needLogin(utilities::ICredentialsRetriever* retriever);
-
-private Q_SLOTS:
-    void updatePriority();
 };

@@ -16,20 +16,17 @@ DownloadTask::DownloadTask(int task_id, const QString& url, QObject* parent)
     network_manager_(new QNetworkAccessManager(this)),
     url_(url),
     total_file_size_(0),
-    task_id_(task_id), priority_level_(0),
+    task_id_(task_id),
     ready_to_download_(false),
     is_torrent_file_(false)
 {
-    VERIFY(connect(&DownloadCollectionModel::instance(), SIGNAL(signalModelUpdated()), SLOT(updatePriority())));
     downloader_->setObserver(this);
 }
 
 void DownloadTask::start()
 {
-    auto it = DownloadCollectionModel::instance().getItemByID(task_id_);
-    priority_level_ = it.priority();
-
     downloader_->setDestinationPath(global_functions::GetVideoFolder());
+    auto it = DownloadCollectionModel::instance().getItemByID(task_id_);
     downloader_->setExpectedFileSize(it.size());
     on_download();
 }
@@ -204,10 +201,13 @@ void DownloadTask::setSpeedLimit(int kbps)
 }
 #endif // ALLOW_TRAFFIC_CONTROL
 
-void DownloadTask::updatePriority()
+int DownloadTask::priority_level() const
 {
-    auto it = DownloadCollectionModel::instance().getItemByID(task_id_);
-    priority_level_ = it.priority();
+    if (TreeItem* itm = DownloadCollectionModel::instance().getRootItem()->findItemByID(task_id_))
+    {
+        return itm->priority();
+    }
+    return 0;
 }
 
 void DownloadTask::onNeedLogin(utilities::ICredentialsRetriever* retriever)

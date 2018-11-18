@@ -176,7 +176,7 @@ void DownloadCollectionTreeView::deleteSelectedRows(bool totally)
             model()->deleteURLFromModel(item->getID(), deleteWithFiles);
         }
 
-        VERIFY(QMetaObject::invokeMethod(model(), "saveToFile", Qt::QueuedConnection));
+        model()->queueSaveToFile();
     }
 }
 
@@ -475,7 +475,7 @@ void DownloadCollectionTreeView::showTorrentDetailsDialog(TreeItem* item)
                 if (priorities != item->torrentFilesPriorities())
                 {
                     item->setTorrentFilesPriorities(priorities);
-                    VERIFY(QMetaObject::invokeMethod(model(), "saveToFile", Qt::QueuedConnection));
+                    model()->queueSaveToFile();
                 }
             }
         }

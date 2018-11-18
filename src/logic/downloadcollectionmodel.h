@@ -107,6 +107,8 @@ public:
         rootItem->forAll(fn);
     }
 
+    void queueSaveToFile();
+
 public slots:
     void saveToFile();
 
