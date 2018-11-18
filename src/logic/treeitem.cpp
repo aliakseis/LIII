@@ -53,9 +53,11 @@ void ItemDC::setStatusEx(int val)
 
 int TreeItem::l_count = 0;
 
-TreeItem::TreeItem(const QString& a_url, TreeItem* a_parent): ItemDC()
+TreeItem::TreeItem(const QString& a_url, TreeItem* a_parent)
+    : ItemDC()
+    , m_priority(0)
 {
-    m_ID = ++l_count;
+    setID(++l_count);
     setInitialURL(a_url);
     QString l_source = global_functions::GetNormalizedDomain(a_url);
     setSource(l_source);

@@ -43,7 +43,6 @@ public:
         , m_speedUpload(0)
         , m_iWaitingTime(0)
         , m_errorCode(utilities::ErrorCode::eNOTERROR)
-        , m_priority(0)
     {}
 
     enum eSTATUSDC {
@@ -92,8 +91,6 @@ public:
     utilities::ErrorCode::ERROR_CODES getErrorCode() const { return m_errorCode; }
     void setErrorCode(utilities::ErrorCode::ERROR_CODES val) { m_errorCode = val; }
 
-    int priority() const { return m_priority; }
-
     bool isCompleted() const
     {
         const ItemDC::eSTATUSDC st(getStatus());
@@ -103,7 +100,7 @@ public:
             st == ItemDC::eERROR;
     }
 
-protected:
+private:
     void setStatusEx(int val);
 
     ItemID m_ID;
@@ -113,8 +110,6 @@ protected:
     int m_iWaitingTime;
 
     utilities::ErrorCode::ERROR_CODES m_errorCode;
-
-    int m_priority;
 
     QDateTime m_statusLastChanged;
 
@@ -132,18 +127,10 @@ protected:
     Q_PROPERTY(QString actualURL READ actualURL WRITE setActualURL)
     Q_PROPERTY(QString source READ source WRITE setSource)
     Q_PROPERTY(QString downloadedFileName READ downloadedFileName WRITE setDownloadedFileName)
-    Q_PROPERTY(QStringList torrentFilesPriorities READ torrentFilesPriorities WRITE setTorrentFilesPriorities)
-    Q_PROPERTY(QString hash READ hash WRITE setHash)
     Q_PROPERTY(QString torrentSavePath READ torrentSavePath WRITE setTorrentSavePath)
     Q_PROPERTY(QString errorDescription READ errorDescription WRITE setErrorDescription)
 
     Q_PROPERTY(DownloadType::Type downloadType READ downloadType WRITE setDownloadType)
-
-#undef Q_PROPERTY
-#define Q_PROPERTY(text)
-#undef READ
-#undef WRITE
-
 }; // class ItemDC
 
 class TreeItem : public ItemDC
@@ -171,12 +158,22 @@ public:
     TreeItem* findItemByID(ItemID);
     TreeItem* findItemByURL(const QString&);
 
+    Q_PROPERTY(QStringList torrentFilesPriorities READ torrentFilesPriorities WRITE setTorrentFilesPriorities)
+    Q_PROPERTY(QString hash READ hash WRITE setHash)
+
+#undef Q_PROPERTY
+#define Q_PROPERTY(text)
+#undef READ
+#undef WRITE
+
+public:
     Q_PROPERTY(QObjectList childItems READ getChildItems WRITE setChildItems)
     QObjectList getChildItems() const;
     void setChildItems(const QObjectList& items);
 
     template<class Fn_t> void forAll(Fn_t fn);
 
+    int priority() const { return m_priority; }
     void setPriority(int priority) {m_priority = priority;}
     static int currentCounter() { return l_count; }
 
@@ -201,6 +198,8 @@ public:
 
 private:
     static int l_count;
+
+    int m_priority;
 
     QList<TreeItem*> childItems;
     TreeItem* parentItem;
