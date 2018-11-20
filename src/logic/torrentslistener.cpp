@@ -209,7 +209,7 @@ void TorrentsListener::handler(libtorrent::file_error_alert const& a)
     ItemDC item;
     item.setID(getItemID(a.handle));
     item.setStatus(ItemDC::eERROR);
-    item.setErrorDescription(QString::fromStdString(a.error.message()));
+    item.setErrorDescription(QString::fromLocal8Bit(a.error.message().c_str()));
     emit statusChange(item);
 }
 
@@ -344,7 +344,7 @@ void TorrentsListener::saveTorrentFile(const libtorrent::torrent_handle& handle)
 
         std::vector<char> out;
         bencode(back_inserter(out), torrent_entry);
-        QFile torrent_file(fileName.toLatin1());
+        QFile torrent_file(fileName);
         if (!out.empty() && torrent_file.open(QIODevice::WriteOnly))
         {
             torrent_file.write(&out[0], out.size());
