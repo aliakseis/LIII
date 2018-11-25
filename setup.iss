@@ -23,8 +23,8 @@ SolidCompression=yes
 Name: "english"; MessagesFile: "compiler:Default.isl"
 
 [Tasks]
-Name: "portable"; Description: "Set up portable mode"; Flags: unchecked
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
+Name: "portable"; Description: "Set up portable (standalone) mode"; GroupDescription: "Advanced settings:"; Flags: unchecked
 
 [Files]
 Source: "build\bin\LIII.exe"; DestDir: "{app}"; Flags: ignoreversion
