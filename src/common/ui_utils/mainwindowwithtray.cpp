@@ -180,9 +180,9 @@ void MainWindowWithTray::restore()
     QApplication::alert(this);
 }
 
-QAction* MainWindowWithTray::createAction(const char* actName, utilities::Tr::Translation translation, QKeySequence shortcut, const char* onTriggered)
+QAction* MainWindowWithTray::createAction(const char* actName, utilities::Tr::Translation translation, const QKeySequence& shortcut, const char* onTriggered)
 {
-    QAction* action = new QAction(this);
+    auto* action = new QAction(this);
     action->setObjectName(actName);
     action->setAutoRepeat(false);
     action->setIconVisibleInMenu(false);

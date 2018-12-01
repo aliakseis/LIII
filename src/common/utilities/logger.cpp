@@ -18,13 +18,13 @@
 namespace
 {
 
-static const QString FILE_FORMAT = PROJECT_NAME"%1.txt";
-static const QString FIRST_FILE = PROJECT_NAME".txt";
-static int MAX_FILE_SIZE = 1024 * 1024 * 5;
+const QString FILE_FORMAT = PROJECT_NAME"%1.txt";
+const QString FIRST_FILE = PROJECT_NAME".txt";
+const int MAX_FILE_SIZE = 1024 * 1024 * 5;
 
-static bool write_to_log_file_ = false;
+bool write_to_log_file_ = false;
 
-static QtMessageHandler previousMsgHandler = 0;
+QtMessageHandler previousMsgHandler = 0;
 void messageOutput(QtMsgType type, const QMessageLogContext& context, const QString& message);
 
 class Logger
@@ -32,6 +32,9 @@ class Logger
 public:
     Logger();
     ~Logger();
+
+    Logger(const Logger&) = delete;
+    Logger& operator =(const Logger&) = delete;
 
     void log(const QString& text);
 
@@ -59,7 +62,7 @@ Logger::~Logger()
     //    it causes weird crash
     //    if (log_file_)
     //        qDebug() << "--- Logging Stopped ---";
-    qInstallMessageHandler(0);
+    qInstallMessageHandler(nullptr);
 
     delete log_stream_;
     delete log_file_;
@@ -73,11 +76,11 @@ void Logger::InitializeLogFile()
     while (i < fileList.size() && fileList[i].size() >= MAX_FILE_SIZE) { ++i; }
 
     QString path;
-    if (i < fileList.size() && fileList.size() > 0)
+    if (i < fileList.size())
     {
         path = fileList[i].absoluteFilePath();
     }
-    else if (fileList.size() == 0)
+    else if (fileList.empty())
     {
         path = dir.absoluteFilePath(FIRST_FILE);
     }
@@ -165,7 +168,7 @@ void Logger::messageOutput(QtMsgType type, const QMessageLogContext& context, co
 }
 
 
-static Logger logger;
+Logger logger;
 
 
 void messageOutput(QtMsgType type, const QMessageLogContext& context, const QString& message)

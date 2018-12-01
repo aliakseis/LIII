@@ -57,13 +57,13 @@ bool handleSocketReadNotify(QObject* receiver, QEvent* e)
 {
     if (QEvent::SockAct == e->type())
     {
-        QSocketNotifier* notifier = qobject_cast<QSocketNotifier*>(receiver);
+        auto* notifier = qobject_cast<QSocketNotifier*>(receiver);
         if (notifier != 0 && notifier->isEnabled())
         {
             QSocketNotifier::Type type = notifier->type();
             if (QSocketNotifier::Read == type && receiver->parent() != 0)
             {
-                if (QTcpSocket* tcpSocket = qobject_cast<QTcpSocket*>(receiver->parent()->parent()))
+                if (auto* tcpSocket = qobject_cast<QTcpSocket*>(receiver->parent()->parent()))
                 {
 
                     QHttpNetworkConnectionChannel* channel 
@@ -72,7 +72,7 @@ bool handleSocketReadNotify(QObject* receiver, QEvent* e)
                     if (0 == channel)
                     {
                         // presumably SSL stuff
-                        QTcpSocket* sslSocket = qobject_cast<QTcpSocket*>(tcpSocket->parent());
+                        auto* sslSocket = qobject_cast<QTcpSocket*>(tcpSocket->parent());
                         channel = findFirstThat(sslSocket, "readyRead()", IsHttpNetworkConnectionChannel());
                     }
 
@@ -97,13 +97,13 @@ bool handleSocketReadNotify(QObject* receiver, QEvent* e)
                             }
                             if (interceptor)
                             {
-                                QHttpNetworkReplyPrivate* replyPrivate
+                                auto* replyPrivate
                                     = static_cast<QHttpNetworkReplyPrivate*>(static_cast<QConnectionObjectEx*>(static_cast<QObject*>(channel->reply))->dFunc());
 
                                 if (!replyPrivate->downstreamLimited)
                                 {
                                     VERIFY(QObject::disconnect(channel->reply, SIGNAL(readyRead()), delegate, SLOT(readyReadSlot())));
-                                    NetworkReplyAdaptor* networkReplyAdaptor = new NetworkReplyAdaptor(channel->reply);
+                                    auto* networkReplyAdaptor = new NetworkReplyAdaptor(channel->reply);
                                     VERIFY(QObject::connect(tcpSocket, SIGNAL(readyRead()), networkReplyAdaptor, SLOT(readyReadSlot())));
 
                                     replyPrivate->downstreamLimited = true;

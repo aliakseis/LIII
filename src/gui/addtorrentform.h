@@ -18,7 +18,7 @@ class AddTorrentForm : public QDialog
 {
     Q_OBJECT
 public:
-    AddTorrentForm(libtorrent::torrent_handle handle, QWidget* parent = 0);
+    AddTorrentForm(const libtorrent::torrent_handle& handle, QWidget* parent = 0);
     AddTorrentForm(libtorrent::add_torrent_params* params, QWidget* parent = 0);
     ~AddTorrentForm();
 

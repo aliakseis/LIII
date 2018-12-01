@@ -20,7 +20,7 @@
 
 #include <algorithm>
 
-TorrentDetailsForm::TorrentDetailsForm(libtorrent::torrent_handle handle, QWidget* parent) :
+TorrentDetailsForm::TorrentDetailsForm(const libtorrent::torrent_handle& handle, QWidget* parent) :
     QDialog(parent),
     ui(new Ui::TorrentDetailsForm),
     m_contentModel(nullptr),
@@ -107,7 +107,7 @@ void TorrentDetailsForm::initTorrentContentTab()
     m_contentModel->model()->setSavePath(savePath());
     ui->treeTorrentContent->setModel(m_contentModel);
 
-    PropListDelegate* contentDelegate = new PropListDelegate(this);
+    auto* contentDelegate = new PropListDelegate(this);
     ui->treeTorrentContent->setItemDelegate(contentDelegate);
     VERIFY(connect(ui->treeTorrentContent, SIGNAL(expanded(QModelIndex)), this, SLOT(onItemExpanded(QModelIndex))));
 

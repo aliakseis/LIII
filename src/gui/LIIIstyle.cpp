@@ -18,7 +18,7 @@ void LIIIStyle::drawControl(ControlElement element, const QStyleOption* option, 
     {
     case QStyle::CE_ProgressBarContents:
     {
-        const QStyleOptionProgressBar* progressOptions = qstyleoption_cast<const QStyleOptionProgressBar*>(option);
+        const auto* progressOptions = qstyleoption_cast<const QStyleOptionProgressBar*>(option);
         if (progressOptions->progress == 0)
         {
             return;
@@ -88,7 +88,7 @@ void LIIIStyle::drawControl(ControlElement element, const QStyleOption* option, 
     }
     case QStyle::CE_ProgressBarLabel:
     {
-        const QStyleOptionProgressBar* progressOptions = qstyleoption_cast<const QStyleOptionProgressBar*>(option);
+        const auto* progressOptions = qstyleoption_cast<const QStyleOptionProgressBar*>(option);
 
         painter->save();
         QFont font = painter->font();

@@ -43,7 +43,7 @@ inline QString ttoa(T value, StringCache& m_cache)
 
     do
     {
-        unsigned digval = unsigned(value % radix);
+        const auto digval = unsigned(value % radix);
         *(--cur) = (radix <= 10 || digval < 10) ? digval + '0' : (digval - 10 + 'a');
         value /= radix;
     }
@@ -64,7 +64,7 @@ inline QString ttoa(T value, StringCache& m_cache)
             s = QString(cur, len);
             return s;
         }
-        else if (s.isDetached())
+        if (s.isDetached())
         {
             Q_ASSERT(s.length() == len);
             memcpy(s.data(), cur, len * sizeof(QChar));
@@ -83,13 +83,13 @@ template<typename T> QString primitiveTypeToString(QVariant& v, StringCache& cac
 }
 
 template<>
-QString primitiveTypeToString<void>(QVariant& v, StringCache&)
+QString primitiveTypeToString<void>(QVariant&, StringCache&)
 {
     return QString();
 }
 
 template<>
-QString primitiveTypeToString<std::nullptr_t>(QVariant& v, StringCache&)
+QString primitiveTypeToString<std::nullptr_t>(QVariant&, StringCache&)
 {
     return QString();
 }
@@ -98,7 +98,7 @@ template<>
 QString primitiveTypeToString<bool>(QVariant& v, StringCache&)
 {
     static const QString values[2] = { "0", "1" };
-    return values[v.value<bool>()];
+    return values[v.toBool()];
 }
 
 template<>
@@ -165,7 +165,7 @@ void ModelSerializer::serializeObjectInternal(
             QVariant value = prop.read(object);
             if (QVariant::StringList == value.type())
             {
-                QStringList qStringList = value.value<QStringList>();
+                QStringList qStringList = value.toStringList();
                 QString separatedList = qStringList.join("|");
                 m_stream.writeAttribute(propName, separatedList);
             }
@@ -217,7 +217,7 @@ case QMetaType::TypeName: strValue = primitiveTypeToString<RealType>(value, m_ca
                 const QObjectMap& qObjectList = *reinterpret_cast<const QObjectMap*>(value.constData());
                 for (auto it(qObjectList.begin()), itEnd(qObjectList.end()); it != itEnd; ++it)
                 {
-                    const QString key = it.key();
+                    const QString& key = it.key();
                     serializeObjectInternal(*it, propName, &key);
                 }
             }

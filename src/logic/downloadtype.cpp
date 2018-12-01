@@ -16,15 +16,15 @@ DownloadType::Type DownloadType::determineType(const QString& linkOrPath)
     {
         return RemoteUrl;
     }
-    else if (linkOrPath.contains(torrentRx))
+    if (linkOrPath.contains(torrentRx))
     {
         return TorrentFile;
     }
-    else if (linkOrPath.contains(magnetRx))
+    if (linkOrPath.contains(magnetRx))
     {
         return MagnetLink;
     }
-    else if (linkOrPath.contains(fileRx))
+    if (linkOrPath.contains(fileRx))
     {
         return LocalFile;
     }

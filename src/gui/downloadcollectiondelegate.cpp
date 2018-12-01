@@ -11,8 +11,7 @@ DownloadCollectionDelegate::DownloadCollectionDelegate(QWidget* parent/* = 0*/) 
 }
 
 DownloadCollectionDelegate::~DownloadCollectionDelegate()
-{
-}
+= default;
 
 void DownloadCollectionDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const
 {

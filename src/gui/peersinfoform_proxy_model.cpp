@@ -4,11 +4,11 @@
 
 bool PeersSortFilterProxyModel::lessThan(const QModelIndex& left, const QModelIndex& right) const
 {
-    if (PeersInfoModel* model = qobject_cast<PeersInfoModel*>(sourceModel()))
+    if (auto* model = qobject_cast<PeersInfoModel*>(sourceModel()))
     {
         const libtorrent::peer_info& leftPeerInfo = model->getItem(left.row());
         const libtorrent::peer_info& rightPeerInfo = model->getItem(right.row());
-        PeersInfoModel::PeersColumns column = static_cast<PeersInfoModel::PeersColumns>(left.column());
+        auto column = static_cast<PeersInfoModel::PeersColumns>(left.column());
         switch (column)
         {
         case  PeersInfoModel::ClientName:

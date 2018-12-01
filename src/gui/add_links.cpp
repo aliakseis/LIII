@@ -48,7 +48,7 @@ void ComboboxDelegate::paint(QPainter* painter,
 QWidget* ComboboxDelegate::createEditor(QWidget* parent, const QStyleOptionViewItem& option,
                                         const QModelIndex& index) const
 {
-    QComboBox* box = new QComboBox(parent);
+    auto* box = new QComboBox(parent);
     box->addItems(QStringList()  << defaultPriority << "Medium" << "Low");
     return box;
 }
@@ -56,7 +56,7 @@ QWidget* ComboboxDelegate::createEditor(QWidget* parent, const QStyleOptionViewI
 void ComboboxDelegate::setEditorData(QWidget* editor, const QModelIndex& index) const
 {
     QString value = index.model()->data(index, Qt::EditRole).toString();
-    if (QComboBox* comboBox = qobject_cast<QComboBox*>(editor))
+    if (auto* comboBox = qobject_cast<QComboBox*>(editor))
     {
         comboBox->setCurrentIndex(comboBox->findText(value));
     }
@@ -69,7 +69,7 @@ void ComboboxDelegate::setEditorData(QWidget* editor, const QModelIndex& index) 
 void ComboboxDelegate::setModelData(QWidget* editor, QAbstractItemModel* model,
                                     const QModelIndex& index) const
 {
-    if (QComboBox* comboBox = qobject_cast<QComboBox*>(editor))
+    if (auto* comboBox = qobject_cast<QComboBox*>(editor))
     {
         model->setData(index, comboBox->currentText(), Qt::EditRole);
     }
@@ -93,7 +93,7 @@ AddLinks::AddLinks(const QStringList& urls, QWidget* parent)
     }
 
     setBaseSize(minimumSizeHint());
-    ComboboxDelegate* delegate = new ComboboxDelegate(ui->listWidget);
+    auto* delegate = new ComboboxDelegate(ui->listWidget);
     ui->listWidget->setItemDelegateForColumn(2, delegate);
 
     const int count = ui->listWidget->topLevelItemCount();
@@ -144,7 +144,7 @@ void AddLinks::addUrlToList(const QString& url)
 {
     if (ui->listWidget->findItems(url, Qt::MatchExactly).isEmpty())
     {
-        QTreeWidgetItem* item = new QTreeWidgetItem(ui->listWidget);
+        auto* item = new QTreeWidgetItem(ui->listWidget);
         item->setFlags(Qt::ItemIsUserCheckable | Qt::ItemIsEditable | item->flags());
         item->setCheckState(0, Qt::Checked);
         item->setText(1, url);

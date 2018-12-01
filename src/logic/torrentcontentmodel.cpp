@@ -140,10 +140,8 @@ QVariant TorrentContentModel::data(const QModelIndex& index, int role) const
         {
             return m_iconProvider.icon(QFileIconProvider::File);
         }
-        else
-        {
-            return m_iconProvider.icon(QFileInfo(path));
-        }
+        
+        return m_iconProvider.icon(QFileInfo(path));
     }
 
     if (index.column() == 0 && role == Qt::CheckStateRole)
@@ -195,7 +193,7 @@ QModelIndex TorrentContentModel::index(int row, int column, const QModelIndex& p
 {
     if ((parent.isValid() && parent.column() != 0) || column >= TorrentContentModelItem::NB_COL)
     {
-        return QModelIndex();
+        return {};
     }
 
     TorrentContentModelItem* parentItem = parent.isValid() ? getItem(parent) : m_rootItem;
@@ -203,36 +201,34 @@ QModelIndex TorrentContentModel::index(int row, int column, const QModelIndex& p
     Q_ASSERT(parentItem);
     if (row >= parentItem->childCount())
     {
-        return QModelIndex();
+        return {};
     }
 
     if (TorrentContentModelItem* childItem = parentItem->child(row))
     {
         return createIndex(row, column, childItem);
     }
-    else
-    {
-        return QModelIndex();
-    }
+    
+    return {};
 }
 
 QModelIndex TorrentContentModel::parent(const QModelIndex& index) const
 {
     if (!index.isValid())
     {
-        return QModelIndex();
+        return {};
     }
 
     TorrentContentModelItem* childItem = getItem(index);
     if (!childItem)
     {
-        return QModelIndex();
+        return {};
     }
     TorrentContentModelItem* parentItem = childItem->parent();
 
     if (parentItem == m_rootItem)
     {
-        return QModelIndex();
+        return {};
     }
 
     return createIndex(parentItem->row(), 0, parentItem);

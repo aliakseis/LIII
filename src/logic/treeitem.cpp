@@ -54,8 +54,7 @@ void ItemDC::setStatusEx(int val)
 int TreeItem::l_count = 0;
 
 TreeItem::TreeItem(const QString& a_url, TreeItem* a_parent)
-    : ItemDC()
-    , m_priority(0)
+    : m_priority(0)
 {
     setID(++l_count);
     setInitialURL(a_url);
@@ -186,7 +185,7 @@ void TreeItem::setChildItems(const QObjectList& items)
     {
         Q_ASSERT_X(dynamic_cast<TreeItem*>(item), Q_FUNC_INFO, "Argument is not a list of TreeItem-s!");
 
-        TreeItem* treeItem = static_cast<TreeItem*>(item);
+        auto* treeItem = static_cast<TreeItem*>(item);
         treeItem->parentItem = this;
         childItems.push_back(treeItem);
     }

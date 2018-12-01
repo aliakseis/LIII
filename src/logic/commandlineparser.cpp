@@ -1,5 +1,7 @@
 #include "commandlineparser.h"
 
+#include <utility>
+
 #include "utilities/utils.h"
 #include "utilities/autorun_utils.h"
 
@@ -11,7 +13,7 @@ namespace {
 
 void treatParams(MainWindow* mainWindow, QStringList params)
 {
-    Application* myApp = dynamic_cast<Application*>(qApp);
+    auto* myApp = dynamic_cast<Application*>(qApp);
     if (myApp && !myApp->isMissionDone())
     {
         if (utilities::isAutorunMode())
@@ -20,7 +22,7 @@ void treatParams(MainWindow* mainWindow, QStringList params)
         }
         else
         {
-            mainWindow->addLinks(params);
+            mainWindow->addLinks(std::move(params));
         }
     }
 }

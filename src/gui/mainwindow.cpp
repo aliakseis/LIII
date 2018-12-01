@@ -18,6 +18,7 @@
 #include <QClipboard>
 #include <QDesktopWidget>
 #include <QCheckBox>
+#include <utility>
 
 #include "utilities/credential.h"
 #include "utilities/utils.h"
@@ -90,12 +91,12 @@ MainWindow::MainWindow()
     ::Tr::SetTr(this, &QWidget::setWindowTitle, PROJECT_FULLNAME_TRANSLATION);
     ::Tr::SetTr(ui->actionAbout_LIII, &QAction::setText, ABOUT_TITLE, PROJECT_NAME);
 
-    QHBoxLayout* horizontalLayout = new QHBoxLayout(ui->menuBar);
+    auto* horizontalLayout = new QHBoxLayout(ui->menuBar);
     horizontalLayout->setSpacing(6);
     horizontalLayout->setObjectName(QStringLiteral("horizontalMenuBarLayout"));
     horizontalLayout->setContentsMargins(0, 2, 8, 2);
 
-    QSpacerItem* horizSpacer1 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+    auto* horizSpacer1 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
     horizontalLayout->addItem(horizSpacer1);
 
     DownloadCollectionModel* m_pModel = &DownloadCollectionModel::instance();
@@ -203,7 +204,7 @@ void MainWindow::showMainWindowAndPerformChecks()
         show();
         checkDefaultTorrentApplication();
     }
-    if (Application* myApp = dynamic_cast<Application*>(qApp))
+    if (auto* myApp = dynamic_cast<Application*>(qApp))
     {
         myApp->checkFirewallException(this);
     }
@@ -437,7 +438,7 @@ void MainWindow::on_clearButton_clicked()
             QMessageBox::NoIcon,
             ::Tr::Tr(PROJECT_FULLNAME_TRANSLATION),
             ::Tr::Tr(CLEANUP_TEXT),
-            0,
+            nullptr,
             this);
         msgBox.setCheckBox(new QCheckBox(::Tr::Tr(DONT_SHOW_THIS_AGAIN)));
         QPushButton* removeButton = msgBox.addButton(tr("Remove"), QMessageBox::ActionRole);
@@ -690,7 +691,7 @@ do shell script \\\"echo \\\" & item 1 in brandFiles\" | /usr/bin/osascript"
 
 void MainWindow::openTorrent(QStringList magnetUrls)
 {
-    addLinks(magnetUrls);
+    addLinks(std::move(magnetUrls));
 }
 
 void MainWindow::onOverallProgress(int progress)

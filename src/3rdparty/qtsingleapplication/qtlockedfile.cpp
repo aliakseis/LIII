@@ -87,7 +87,6 @@
     \sa QFile::QFile()
 */
 QtLockedFile::QtLockedFile()
-    : QFile()
 {
 #ifdef Q_OS_WIN
     wmutex = 0;

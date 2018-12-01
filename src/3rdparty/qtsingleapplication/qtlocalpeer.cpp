@@ -50,6 +50,7 @@
 #include <QtCore/QTime>
 
 #include <QDataStream>
+#include <utility>
 
 #if defined(Q_OS_WIN)
 #include <QtCore/QLibrary>
@@ -77,8 +78,8 @@ namespace QtLP_Private
 
 const char* QtLocalPeer::ack = "ack";
 
-QtLocalPeer::QtLocalPeer(QObject* parent, const QString& appId)
-    : QObject(parent), id(appId)
+QtLocalPeer::QtLocalPeer(QObject* parent, QString  appId)
+    : QObject(parent), id(std::move(appId))
 {
     QString prefix = id;
     if (id.isEmpty())

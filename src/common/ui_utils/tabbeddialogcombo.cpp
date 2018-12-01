@@ -16,7 +16,7 @@ bool TabbedDialogCombo::eventFilter(QObject* receiver, QEvent* event)
 {
     if (event->type() == QEvent::KeyPress)
     {
-        QKeyEvent* keyEvent = (QKeyEvent*)event;
+        auto* keyEvent = static_cast<QKeyEvent*>(event);
         if (keyEvent->matches(QKeySequence::NextChild))
         {
             if (QTabWidget* tabWidget = getTabParent())
@@ -26,7 +26,7 @@ bool TabbedDialogCombo::eventFilter(QObject* receiver, QEvent* event)
 
             return true;
         }
-        else if (keyEvent->matches(QKeySequence::PreviousChild))
+        if (keyEvent->matches(QKeySequence::PreviousChild))
         {
             if (QTabWidget* tabWidget = getTabParent())
             {
@@ -48,7 +48,7 @@ QTabWidget* TabbedDialogCombo::getTabParent()
 {
     for (QObject* parentObj = parent(); parentObj != 0; parentObj = parentObj->parent())
     {
-        if (QTabWidget* tabWidget = qobject_cast<QTabWidget*>(parentObj))
+        if (auto* tabWidget = qobject_cast<QTabWidget*>(parentObj))
         {
             return tabWidget;
         }

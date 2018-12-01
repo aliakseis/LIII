@@ -21,7 +21,7 @@ class TorrentDetailsForm : public QDialog
 {
     Q_OBJECT
 public:
-    TorrentDetailsForm(libtorrent::torrent_handle handle, QWidget* parent = 0);
+    TorrentDetailsForm(const libtorrent::torrent_handle& handle, QWidget* parent = 0);
     ~TorrentDetailsForm();
 
     QStringList filesPriorities() const;

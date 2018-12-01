@@ -1,5 +1,7 @@
 #include "downloadtask.h"
 
+#include <utility>
+
 #include "utilities/utils.h"
 
 #include "downloadcollectionmodel.h"
@@ -10,11 +12,11 @@
 using namespace download;
 
 
-DownloadTask::DownloadTask(int task_id, const QString& url, QObject* parent)
+DownloadTask::DownloadTask(int task_id, QString  url, QObject* parent)
     : QObject(parent),
     downloader_(new DownloaderType(this)),
     network_manager_(new QNetworkAccessManager(this)),
-    url_(url),
+    url_(std::move(url)),
     total_file_size_(0),
     task_id_(task_id),
     tree_item_(DownloadCollectionModel::instance().getRootItem()->findItemByID(task_id)),

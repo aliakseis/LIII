@@ -26,7 +26,7 @@ public:
 
     DownloadTask(
         int task_id,
-        const QString& url,
+        QString  url,
         QObject* parent = nullptr);
     ~DownloadTask();
     DownloadTask(const DownloadTask&) = delete;

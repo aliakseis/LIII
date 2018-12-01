@@ -54,7 +54,7 @@ protected:
 
 private:
     void createTrayMenu(QIcon const& icon, utilities::Tr::Translation const& projFullNameTr);
-    QAction* createAction(const char* actName, utilities::Tr::Translation translation, QKeySequence shortcut, const char* onTriggered);
+    QAction* createAction(const char* actName, utilities::Tr::Translation translation, const QKeySequence& shortcut, const char* onTriggered);
 
     QSystemTrayIcon* m_tray;
     bool m_isExiting;

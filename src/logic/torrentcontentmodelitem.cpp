@@ -319,7 +319,7 @@ QVariant TorrentContentModelItem::data(int column) const
         {
             return getProgress();
         }
-        else if (column == COL_STATUS)
+        if (column == COL_STATUS)
         {
             return itemDCStatusToString(getStatus());
         }

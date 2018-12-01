@@ -202,12 +202,12 @@ QString SizeToString(quint64 size, int precision, int fieldWidth)
     {
         return QStringLiteral("%1 B").arg(size);
     }
-    else if (size < Mbytes_limit)
+    if (size < Mbytes_limit)
     {
         const double sizef = size / static_cast<double>(Kbytes_limit);
         return QStringLiteral("%1 kB").arg(sizef, fieldWidth, 'f', precision);
     }
-    else if (size < Gbytes_limit)
+    if (size < Gbytes_limit)
     {
         const double sizef = size / static_cast<double>(Mbytes_limit);
         return QStringLiteral("%1 MB").arg(sizef, fieldWidth, 'f', precision);
@@ -373,7 +373,7 @@ void runWithPrivileges(const wchar_t* arg, WId parent)
 QMainWindow* getMainWindow()
 {
     for (QWidget* widget : QApplication::topLevelWidgets())
-        if (QMainWindow *mainWindow = qobject_cast<QMainWindow*>(widget))
+        if (auto *mainWindow = qobject_cast<QMainWindow*>(widget))
             return mainWindow;
     return nullptr;
 }

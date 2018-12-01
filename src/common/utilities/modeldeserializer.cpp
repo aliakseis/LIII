@@ -18,7 +18,7 @@
 namespace {
 
 template<int radix, typename C, typename T>
-inline bool atot(T& result, const C* begin, const C** end = 0)
+inline bool atot(T& result, const C* begin, const C** end = nullptr)
 {
     bool ok = false;
     result = 0;
@@ -145,11 +145,14 @@ template <typename T>
 class MapStringToT : public QMap<MetaNode*, T>
 {
 public:
+    MapStringToT() = default;
     ~MapStringToT()
     {
         std::for_each<typename QMap<MetaNode*, T>::const_iterator, void (*)(const T&)>(
             this->constBegin(), this->constEnd(), qDeleteAll<T>);
     }
+    MapStringToT(const MapStringToT&) = delete;
+    MapStringToT& operator =(const MapStringToT&) = delete;
 };
 
 } // namespace

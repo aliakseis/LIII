@@ -112,27 +112,25 @@ void InterceptTimer::handleEvent()
             m_isStopped = true;
             break;
         }
+                
+        int interval = (int) timer.restart();
+
+        int desiredInterval = readBytes * 1000 / m_speedLimit / 1024;
+        plannedInterval = (desiredInterval - (interval - plannedInterval));
+        if (plannedInterval < 0)
+        {
+            plannedInterval = 0;
+        }
         else
         {
-            int interval = (int) timer.restart();
-
-            int desiredInterval = readBytes * 1000 / m_speedLimit / 1024;
-            plannedInterval = (desiredInterval - (interval - plannedInterval));
-            if (plannedInterval < 0)
+            if (plannedInterval > MAX_PLANNED_INTERVAL)
             {
-                plannedInterval = 0;
+                plannedInterval = MAX_PLANNED_INTERVAL;
             }
-            else
-            {
-                if (plannedInterval > MAX_PLANNED_INTERVAL)
-                {
-                    plannedInterval = MAX_PLANNED_INTERVAL;
-                }
 
-                const int id = startTimer(plannedInterval);
-                Q_ASSERT(id != 0);
-                break;
-            }
+            const int id = startTimer(plannedInterval);
+            Q_ASSERT(id != 0);
+            break;
         }
     }
 }

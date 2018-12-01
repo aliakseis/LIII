@@ -13,7 +13,7 @@
 #include "libtorrent/torrent_status.hpp"
 
 
-AddTorrentForm::AddTorrentForm(libtorrent::torrent_handle handle, QWidget* parent) :
+AddTorrentForm::AddTorrentForm(const libtorrent::torrent_handle& handle, QWidget* parent) :
     QDialog(parent),
     ui(new Ui::AddTorrentForm),
     m_contentModel(nullptr),
@@ -76,7 +76,7 @@ void AddTorrentForm::initialize()
     VERIFY(connect(ui->selectAllButton, SIGNAL(clicked()), this, SLOT(selectAll())));
 
 
-    PropListDelegate* contentDelegate = new PropListDelegate(this);
+    auto* contentDelegate = new PropListDelegate(this);
     ui->treeTorrentContent->setItemDelegate(contentDelegate);
     VERIFY(connect(ui->treeTorrentContent, SIGNAL(clicked(const QModelIndex&)), ui->treeTorrentContent, SLOT(edit(const QModelIndex&))));
 

@@ -21,10 +21,7 @@ QString getTranslationsFolder()
     {
         return trPath.absoluteFilePath("translations");
     }
-    else
-    {
-        return QDir(QApplication::applicationDirPath()).absoluteFilePath("translations");
-    }
+    return QDir(QApplication::applicationDirPath()).absoluteFilePath("translations");
 #elif defined(Q_OS_MAC)
     QStringList binPathList = QApplication::applicationDirPath().split(QDir::separator(), QString::SkipEmptyParts);
     binPathList.removeLast();
@@ -56,8 +53,7 @@ QString languageString(const utilities::Tr::Translation& translation, const QStr
     QString langStr = translator.translate(translation.context, translation.key, translation.disambiguation);
     if (langStr.isEmpty())
     {
-        langStr = QString("%1 (%2)").arg(loc.nativeLanguageName())
-            .arg(QLocale::languageToString(loc.language()));
+        langStr = QString("%1 (%2)").arg(loc.nativeLanguageName(), QLocale::languageToString(loc.language()));
     }
 
     return langStr;

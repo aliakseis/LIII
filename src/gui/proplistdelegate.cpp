@@ -14,7 +14,7 @@ PropListDelegate::PropListDelegate(QObject* parent /*= 0*/) : QStyledItemDelegat
 {
 }
 
-PropListDelegate::~PropListDelegate() {}
+PropListDelegate::~PropListDelegate() = default;
 
 void PropListDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const
 {
@@ -102,7 +102,7 @@ void PropListDelegate::paint(QPainter* painter, const QStyleOptionViewItem& opti
 
 void PropListDelegate::setEditorData(QWidget* editor, const QModelIndex& index) const
 {
-    QComboBox* combobox = static_cast<QComboBox*>(editor);
+    auto* combobox = static_cast<QComboBox*>(editor);
     // Set combobox index
     const int priority = index.data().toInt();
     switch (priority)
@@ -133,7 +133,7 @@ QWidget* PropListDelegate::createEditor(QWidget* parent, const QStyleOptionViewI
 {
     if (index.column() != TorrentContentModelItem::COL_PRIO) { return 0; }
 
-    QComboBox* editor = new QComboBox(parent);
+    auto* editor = new QComboBox(parent);
     editor->setFocusPolicy(Qt::WheelFocus);
     editor->addItem(tr("High", "High (priority)"));
     editor->addItem(tr("Normal", "Normal (priority)"));
@@ -153,7 +153,7 @@ QWidget* PropListDelegate::createEditor(QWidget* parent, const QStyleOptionViewI
 
 void PropListDelegate::setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const
 {
-    QComboBox* combobox = static_cast<QComboBox*>(editor);
+    auto* combobox = static_cast<QComboBox*>(editor);
     int value = combobox->currentIndex();
     qDebug("PropListDelegate: setModelData(%d)", value);
     switch (value)

@@ -30,7 +30,7 @@ libtorrent::peer_info PeersInfoModel::getItem(int row)
 
 QVariant PeersInfoModel::data(const QModelIndex& index, int role) const
 {
-    PeersColumns column = static_cast<PeersColumns>(index.column());
+    auto column = static_cast<PeersColumns>(index.column());
     const libtorrent::peer_info& peerInfo = m_peersInfo[index.row()];
     if (role == Qt::DisplayRole)
     {
@@ -68,7 +68,7 @@ QVariant PeersInfoModel::headerData(int section, Qt::Orientation orientation, in
 {
     if (orientation == Qt::Horizontal && role == Qt::DisplayRole)
     {
-        PeersColumns column = static_cast<PeersColumns>(section);
+        auto column = static_cast<PeersColumns>(section);
         switch (column)
         {
         case ClientName:
