@@ -56,7 +56,7 @@
 #include <QtCore/QLibrary>
 #include <QtCore/qt_windows.h>
 typedef BOOL(WINAPI* PProcessIdToSessionId)(DWORD, DWORD*);
-static PProcessIdToSessionId pProcessIdToSessionId = 0;
+static PProcessIdToSessionId pProcessIdToSessionId = nullptr;
 #endif
 #if defined(Q_OS_UNIX)
 #include <time.h>

@@ -80,7 +80,7 @@ QtSingleCoreApplication::QtSingleCoreApplication(int& argc, char** argv)
     : QCoreApplication(argc, argv)
 {
     peer = new QtLocalPeer(this);
-    connect(peer, SIGNAL(messageReceived(const QString&)), SIGNAL(messageReceived(const QString&)));
+    connect(peer, SIGNAL(messageReceived(QString)), SIGNAL(messageReceived(QString)));
 }
 
 
@@ -93,7 +93,7 @@ QtSingleCoreApplication::QtSingleCoreApplication(const QString& appId, int& argc
     : QCoreApplication(argc, argv)
 {
     peer = new QtLocalPeer(this, appId);
-    connect(peer, SIGNAL(messageReceived(const QString&)), SIGNAL(messageReceived(const QString&)));
+    connect(peer, SIGNAL(messageReceived(QString)), SIGNAL(messageReceived(QString)));
 }
 
 

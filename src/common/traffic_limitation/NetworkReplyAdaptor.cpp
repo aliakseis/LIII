@@ -28,7 +28,7 @@ NetworkReplyAdaptor::NetworkReplyAdaptor(QHttpNetworkReply* parent)
 void NetworkReplyAdaptor::readyReadSlot()
 {
     if (replyPrivate->statusCode != 401 && replyPrivate->statusCode != 407 && //replyPrivate->shouldEmitSignals()
-            threadDelegate->getHttpReply() != 0)
+            threadDelegate->getHttpReply() != nullptr)
     {
         emit readyRead();
     }

@@ -40,9 +40,9 @@ struct IsHttpNetworkConnectionChannel
 {
     QHttpNetworkConnectionChannel* operator()(QObject* item) const
     {
-        if (0 == item || 0 != strcmp("QHttpNetworkConnectionChannel", item->metaObject()->className()))
+        if (nullptr == item || 0 != strcmp("QHttpNetworkConnectionChannel", item->metaObject()->className()))
         {
-            return 0;
+            return nullptr;
         }
         return static_cast<QHttpNetworkConnectionChannel*>(item);
     }
@@ -57,26 +57,26 @@ bool handleSocketReadNotify(QObject* receiver, QEvent* e)
 {
     if (QEvent::SockAct == e->type())
     {
-        auto* notifier = qobject_cast<QSocketNotifier*>(receiver);
-        if (notifier != 0 && notifier->isEnabled())
+        auto notifier = qobject_cast<QSocketNotifier*>(receiver);
+        if (notifier != nullptr && notifier->isEnabled())
         {
             QSocketNotifier::Type type = notifier->type();
-            if (QSocketNotifier::Read == type && receiver->parent() != 0)
+            if (QSocketNotifier::Read == type && receiver->parent() != nullptr)
             {
-                if (auto* tcpSocket = qobject_cast<QTcpSocket*>(receiver->parent()->parent()))
+                if (auto tcpSocket = qobject_cast<QTcpSocket*>(receiver->parent()->parent()))
                 {
 
                     QHttpNetworkConnectionChannel* channel 
                         = findFirstThat(tcpSocket, "readyRead()", IsHttpNetworkConnectionChannel());
 
-                    if (0 == channel)
+                    if (nullptr == channel)
                     {
                         // presumably SSL stuff
-                        auto* sslSocket = qobject_cast<QTcpSocket*>(tcpSocket->parent());
+                        auto sslSocket = qobject_cast<QTcpSocket*>(tcpSocket->parent());
                         channel = findFirstThat(sslSocket, "readyRead()", IsHttpNetworkConnectionChannel());
                     }
 
-                    if (channel != 0 && channel->reply != 0 && notifier->isEnabled())
+                    if (channel != nullptr && channel->reply != nullptr && notifier->isEnabled())
                     {
                         if (QObject* delegate = channel->reply->parent())
                         {
@@ -97,13 +97,13 @@ bool handleSocketReadNotify(QObject* receiver, QEvent* e)
                             }
                             if (interceptor)
                             {
-                                auto* replyPrivate
+                                auto replyPrivate
                                     = static_cast<QHttpNetworkReplyPrivate*>(static_cast<QConnectionObjectEx*>(static_cast<QObject*>(channel->reply))->dFunc());
 
                                 if (!replyPrivate->downstreamLimited)
                                 {
                                     VERIFY(QObject::disconnect(channel->reply, SIGNAL(readyRead()), delegate, SLOT(readyReadSlot())));
-                                    auto* networkReplyAdaptor = new NetworkReplyAdaptor(channel->reply);
+                                    auto networkReplyAdaptor = new NetworkReplyAdaptor(channel->reply);
                                     VERIFY(QObject::connect(tcpSocket, SIGNAL(readyRead()), networkReplyAdaptor, SLOT(readyReadSlot())));
 
                                     replyPrivate->downstreamLimited = true;
@@ -124,7 +124,7 @@ bool handleSocketReadNotify(QObject* receiver, QEvent* e)
 
 void subscribeSocketReadInterceptor(QNetworkReply* reply, const std::shared_ptr<ISocketReadInterceptor>& interceptor)
 {
-    if (0 == reply || 0 == interceptor || interceptor->isInterceptorSet)
+    if (nullptr == reply || nullptr == interceptor || interceptor->isInterceptorSet)
     {
         return;
     }

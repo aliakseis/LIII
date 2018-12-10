@@ -89,8 +89,8 @@
 QtLockedFile::QtLockedFile()
 {
 #ifdef Q_OS_WIN
-    wmutex = 0;
-    rmutex = 0;
+    wmutex = nullptr;
+    rmutex = nullptr;
 #endif
     m_lock_mode = NoLock;
 }
@@ -106,8 +106,8 @@ QtLockedFile::QtLockedFile(const QString& name)
     : QFile(name)
 {
 #ifdef Q_OS_WIN
-    wmutex = 0;
-    rmutex = 0;
+    wmutex = nullptr;
+    rmutex = nullptr;
 #endif
     m_lock_mode = NoLock;
 }
