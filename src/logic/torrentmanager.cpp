@@ -217,8 +217,8 @@ TorrentManager::TorrentManager()
 
     TorrentsListener::instance().setAlertDispatch(m_session.get());
 
-    VERIFY(connect(dlcModel, SIGNAL(signalDeleteURLFromModel(int, DownloadType::Type, int)), this, SLOT(on_deleteTaskWithID(int, DownloadType::Type, int))));
-    VERIFY(connect(dlcModel, SIGNAL(signalPauseDownloadItemWithID(int, DownloadType::Type)), this, SLOT(on_pauseTaskWithID(int, DownloadType::Type))));
+    VERIFY(connect(dlcModel, SIGNAL(signalDeleteURLFromModel(int, DownloadType::Type, int)), SLOT(on_deleteTaskWithID(int, DownloadType::Type, int))));
+    VERIFY(connect(dlcModel, SIGNAL(signalPauseDownloadItemWithID(int, DownloadType::Type)), SLOT(on_pauseTaskWithID(int, DownloadType::Type))));
 
     if (!QSettings().value(TorrentsPortIsAuto, TorrentsPortIsAuto_Default).toBool())
     {
@@ -253,7 +253,7 @@ TorrentManager::TorrentManager()
     }
 
     // Regular saving of fastresume data
-    VERIFY(connect(&m_resumeDataTimer, SIGNAL(timeout()), this, SLOT(cacheResumeTorrentsData())));
+    VERIFY(connect(&m_resumeDataTimer, SIGNAL(timeout()), SLOT(cacheResumeTorrentsData())));
     m_resumeDataTimer.setSingleShot(false);
     m_resumeDataTimer.start(200000); // 3.3min
 }

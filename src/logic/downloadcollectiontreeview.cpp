@@ -45,7 +45,7 @@ DownloadCollectionTreeView::DownloadCollectionTreeView(QWidget* parent)
     setDragDropMode(QAbstractItemView::InternalMove);
 
     setContextMenuPolicy(Qt::CustomContextMenu);
-    VERIFY(connect(this, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(on_showContextMenu(const QPoint&))));
+    VERIFY(connect(this, SIGNAL(customContextMenuRequested(const QPoint&)), SLOT(on_showContextMenu(const QPoint&))));
 }
 
 void DownloadCollectionTreeView::drawText(const QString& text)
@@ -74,15 +74,15 @@ void DownloadCollectionTreeView::setModel(DownloadCollectionModel* a_model)
 {
     QTreeView::setModel(a_model);
 
-    VERIFY(connect(this, SIGNAL(clicked(const QModelIndex&)), this, SLOT(on_clicked(const QModelIndex&))));
-    VERIFY(connect(this, SIGNAL(doubleClicked(const QModelIndex&)), this, SLOT(on_doubleClicked(const QModelIndex&))));
+    VERIFY(connect(this, SIGNAL(clicked(const QModelIndex&)), SLOT(on_clicked(const QModelIndex&))));
+    VERIFY(connect(this, SIGNAL(doubleClicked(const QModelIndex&)), SLOT(on_doubleClicked(const QModelIndex&))));
     VERIFY(connect(selectionModel(), SIGNAL(selectionChanged(const QItemSelection&, const QItemSelection&)),
-                   this, SLOT(on_ItemSelectChanged(const QItemSelection&, const QItemSelection&))));
+                   SLOT(on_ItemSelectChanged(const QItemSelection&, const QItemSelection&))));
 
-    VERIFY(connect(a_model, SIGNAL(existingItemAdded(const QModelIndex&)), this, SLOT(onExistingItemAdded(const QModelIndex&))));
-    VERIFY(connect(a_model, SIGNAL(statusChanged()), this, SLOT(getUpdateItem())));
+    VERIFY(connect(a_model, SIGNAL(existingItemAdded(const QModelIndex&)), SLOT(onExistingItemAdded(const QModelIndex&))));
+    VERIFY(connect(a_model, SIGNAL(statusChanged()), SLOT(getUpdateItem())));
 
-    VERIFY(connect(a_model, SIGNAL(downloadingFinished(const ItemDC&)), this, SLOT(downloadingFinished(const ItemDC&))));
+    VERIFY(connect(a_model, SIGNAL(downloadingFinished(const ItemDC&)), SLOT(downloadingFinished(const ItemDC&))));
 
     header()->setSectionsMovable(false);
     setSortingEnabled(false);

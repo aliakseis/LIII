@@ -61,8 +61,8 @@ void TorrentDetailsForm::initialize()
     }
 
     // Setting up other saving path stuffs
-    VERIFY(connect(ui->savePathButton, SIGNAL(clicked()), this, SLOT(browseSavePath())));
-    VERIFY(connect(ui->savePathEdit, SIGNAL(textEdited(QString)), this, SLOT(savePathEdited(QString))));
+    VERIFY(connect(ui->savePathButton, SIGNAL(clicked()), SLOT(browseSavePath())));
+    VERIFY(connect(ui->savePathEdit, SIGNAL(textEdited(QString)), SLOT(savePathEdited(QString))));
 
     Q_ASSERT(m_torrentInfo->is_valid());
 
@@ -87,7 +87,7 @@ void TorrentDetailsForm::initPeersInfoTab()
     ui->peersView->setRootIsDecorated(false);
     ui->peersView->setModel(m_PeersInfoproxy);
     ui->peersView->setSortingEnabled(true);
-    VERIFY(connect(ui->peersView->header(), SIGNAL(sectionDoubleClicked(int)), this, SLOT(adaptColumns(int))));
+    VERIFY(connect(ui->peersView->header(), SIGNAL(sectionDoubleClicked(int)), SLOT(adaptColumns(int))));
     ui->peersView->setSortingEnabled(true);
     m_updateTimeId = startTimer(5000);
 
@@ -109,7 +109,7 @@ void TorrentDetailsForm::initTorrentContentTab()
 
     auto* contentDelegate = new PropListDelegate(this);
     ui->treeTorrentContent->setItemDelegate(contentDelegate);
-    VERIFY(connect(ui->treeTorrentContent, SIGNAL(expanded(QModelIndex)), this, SLOT(onItemExpanded(QModelIndex))));
+    VERIFY(connect(ui->treeTorrentContent, SIGNAL(expanded(QModelIndex)), SLOT(onItemExpanded(QModelIndex))));
 
     // List files in torrent
     m_contentModel->model()->setupModelData(*m_torrentInfo, (m_torrentHandle.is_valid() ? m_torrentHandle.status(0) : libtorrent::torrent_status()));

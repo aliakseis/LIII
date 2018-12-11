@@ -35,12 +35,12 @@ DownloadCollectionModel::DownloadCollectionModel()
     rootItem->setStatus(ItemDC::eROOTSTATUS);
 
     VERIFY(qRegisterMetaType<ItemDC>("ItemDC"));
-    VERIFY(connect(&TorrentsListener::instance(), SIGNAL(statusChange(ItemDC)), this, SLOT(on_statusChange(ItemDC))));
-    VERIFY(connect(&TorrentsListener::instance(), SIGNAL(sizeChange(ItemDC)), this, SLOT(on_sizeChange(ItemDC))));
-    VERIFY(connect(&TorrentsListener::instance(), SIGNAL(sizeCurrDownlChange(ItemDC)), this, SLOT(on_sizeCurrDownlChange(ItemDC))));
-    VERIFY(connect(&TorrentsListener::instance(), SIGNAL(speedChange(ItemDC)), this, SLOT(on_speedChange(ItemDC))));
-    VERIFY(connect(&TorrentsListener::instance(), SIGNAL(itemMetadataReceived(ItemDC)), this, SLOT(on_magnetLinkInfoReceived(ItemDC))));
-    VERIFY(connect(&TorrentsListener::instance(), SIGNAL(torrentMoved(ItemDC)), this, SLOT(on_torrentMoved(ItemDC))));
+    VERIFY(connect(&TorrentsListener::instance(), SIGNAL(statusChange(ItemDC)), SLOT(on_statusChange(ItemDC))));
+    VERIFY(connect(&TorrentsListener::instance(), SIGNAL(sizeChange(ItemDC)), SLOT(on_sizeChange(ItemDC))));
+    VERIFY(connect(&TorrentsListener::instance(), SIGNAL(sizeCurrDownlChange(ItemDC)), SLOT(on_sizeCurrDownlChange(ItemDC))));
+    VERIFY(connect(&TorrentsListener::instance(), SIGNAL(speedChange(ItemDC)), SLOT(on_speedChange(ItemDC))));
+    VERIFY(connect(&TorrentsListener::instance(), SIGNAL(itemMetadataReceived(ItemDC)), SLOT(on_magnetLinkInfoReceived(ItemDC))));
+    VERIFY(connect(&TorrentsListener::instance(), SIGNAL(torrentMoved(ItemDC)), SLOT(on_torrentMoved(ItemDC))));
 }
 
 DownloadCollectionModel::~DownloadCollectionModel()

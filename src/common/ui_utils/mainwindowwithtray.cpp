@@ -109,8 +109,8 @@ void MainWindowWithTray::createTrayMenu(QIcon const& icon, utilities::Tr::Transl
     m_tray = new QSystemTrayIcon(this);
     utilities::Tr::SetTr(m_tray, &QSystemTrayIcon::setToolTip, projFullNameTr);
     m_tray->setIcon(icon);
-    VERIFY(connect(m_tray, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(trayAction(QSystemTrayIcon::ActivationReason))));
-    VERIFY(connect(m_tray, SIGNAL(messageClicked()), this, SLOT(restore())));
+    VERIFY(connect(m_tray, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), SLOT(trayAction(QSystemTrayIcon::ActivationReason))));
+    VERIFY(connect(m_tray, SIGNAL(messageClicked()), SLOT(restore())));
     m_tray->setContextMenu(new QMenu(this)); // TODO: doubt if need this
     m_tray->show();
 #endif

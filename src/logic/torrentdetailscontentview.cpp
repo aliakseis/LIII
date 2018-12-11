@@ -11,14 +11,14 @@
 TorrentDetailsContentView::TorrentDetailsContentView(QWidget* parent /*= 0*/): QTreeView(parent)
 {
     setContextMenuPolicy(Qt::CustomContextMenu);
-    VERIFY(connect(this, SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(on_showTreeTorentContextMenu(const QPoint&))));
+    VERIFY(connect(this, SIGNAL(customContextMenuRequested(const QPoint&)), SLOT(on_showTreeTorentContextMenu(const QPoint&))));
 }
 
 void TorrentDetailsContentView::setModel(TorrentContentFilterModel* a_model)
 {
     QTreeView::setModel(a_model);
 
-    VERIFY(connect(this, SIGNAL(doubleClicked(const QModelIndex&)), this, SLOT(on_ItemOpenFolder())));
+    VERIFY(connect(this, SIGNAL(doubleClicked(const QModelIndex&)), SLOT(on_ItemOpenFolder())));
 }
 
 TorrentContentFilterModel* TorrentDetailsContentView::model()

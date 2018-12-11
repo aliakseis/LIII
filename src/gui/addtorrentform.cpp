@@ -70,10 +70,10 @@ void AddTorrentForm::initialize()
     ui->treeTorrentContent->setModel(m_contentModel);
 
     // Setting up other saving path stuffs
-    VERIFY(connect(ui->savePathButton, SIGNAL(clicked()), this, SLOT(browseSavePath())));
-    VERIFY(connect(ui->savePathLineEdit, SIGNAL(textEdited(QString)), this, SLOT(savePathEdited(QString))));
-    VERIFY(connect(ui->selectNoneButton, SIGNAL(clicked()), this, SLOT(selectNone())));
-    VERIFY(connect(ui->selectAllButton, SIGNAL(clicked()), this, SLOT(selectAll())));
+    VERIFY(connect(ui->savePathButton, SIGNAL(clicked()), SLOT(browseSavePath())));
+    VERIFY(connect(ui->savePathLineEdit, SIGNAL(textEdited(QString)), SLOT(savePathEdited(QString))));
+    VERIFY(connect(ui->selectNoneButton, SIGNAL(clicked()), SLOT(selectNone())));
+    VERIFY(connect(ui->selectAllButton, SIGNAL(clicked()), SLOT(selectAll())));
 
 
     auto* contentDelegate = new PropListDelegate(this);

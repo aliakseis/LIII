@@ -48,27 +48,27 @@ Preferences::Preferences(QWidget* parent, TAB tab)
 
     setWindowFlags(Qt::Dialog | Qt::WindowTitleHint | Qt::WindowCloseButtonHint);
 
-    VERIFY(connect(ui->buttonOK, SIGNAL(clicked()), this, SLOT(accept())));
-    VERIFY(connect(ui->buttonApply, SIGNAL(clicked()), this, SLOT(apply())));
-    VERIFY(connect(ui->buttonCancel, SIGNAL(clicked()), this, SLOT(reject())));
+    VERIFY(connect(ui->buttonOK, SIGNAL(clicked()), SLOT(accept())));
+    VERIFY(connect(ui->buttonApply, SIGNAL(clicked()), SLOT(apply())));
+    VERIFY(connect(ui->buttonCancel, SIGNAL(clicked()), SLOT(reject())));
 
     //handle data changes signals
-    VERIFY(connect(ui->comboBoxLanguage, SIGNAL(currentIndexChanged(int)), this, SIGNAL(anyDataChanged())));
-    VERIFY(connect(ui->sbMaxNum, SIGNAL(valueChanged(int)), this, SIGNAL(anyDataChanged())));
-    VERIFY(connect(ui->sbTrafficLimit, SIGNAL(valueChanged(int)), this, SIGNAL(anyDataChanged())));
-    VERIFY(connect(ui->cbTrafficLimit, SIGNAL(stateChanged(int)), this, SIGNAL(anyDataChanged())));
-    VERIFY(connect(ui->leFolder, SIGNAL(textEdited(const QString&)), this, SIGNAL(anyDataChanged())));
-    VERIFY(connect(ui->maximumNumberLoads, SIGNAL(stateChanged(int)), this, SIGNAL(anyDataChanged())));
-    VERIFY(connect(ui->cbHideAllTrayNotification, SIGNAL(stateChanged(int)), this, SIGNAL(anyDataChanged())));
+    VERIFY(connect(ui->comboBoxLanguage, SIGNAL(currentIndexChanged(int)), SIGNAL(anyDataChanged())));
+    VERIFY(connect(ui->sbMaxNum, SIGNAL(valueChanged(int)), SIGNAL(anyDataChanged())));
+    VERIFY(connect(ui->sbTrafficLimit, SIGNAL(valueChanged(int)), SIGNAL(anyDataChanged())));
+    VERIFY(connect(ui->cbTrafficLimit, SIGNAL(stateChanged(int)), SIGNAL(anyDataChanged())));
+    VERIFY(connect(ui->leFolder, SIGNAL(textEdited(const QString&)), SIGNAL(anyDataChanged())));
+    VERIFY(connect(ui->maximumNumberLoads, SIGNAL(stateChanged(int)), SIGNAL(anyDataChanged())));
+    VERIFY(connect(ui->cbHideAllTrayNotification, SIGNAL(stateChanged(int)), SIGNAL(anyDataChanged())));
 
-    VERIFY(connect(this, SIGNAL(anyDataChanged()), this, SLOT(dataChanged())));
+    VERIFY(connect(this, SIGNAL(anyDataChanged()), SLOT(dataChanged())));
 
-    VERIFY(connect(ui->torrentAssociateCheckbox, SIGNAL(stateChanged(int)), this, SLOT(on_torrentAssociateCheckBoxChanged(int))));
-    VERIFY(connect(ui->torrentAssociateCheckbox, SIGNAL(stateChanged(int)), this, SIGNAL(anyDataChanged())));
-    VERIFY(connect(ui->torrentPortSettingEdit, SIGNAL(textChanged(QString)), this, SIGNAL(anyDataChanged())));
-    VERIFY(connect(ui->torrentSpeedUploadLimitSpin, SIGNAL(valueChanged(QString)), this, SIGNAL(anyDataChanged())));
-    VERIFY(connect(ui->torrentStartAsSequel, SIGNAL(stateChanged(int)), this, SIGNAL(anyDataChanged())));
-    VERIFY(connect(ui->torrentSpeedLimitedCheckbox, SIGNAL(stateChanged(int)), this, SIGNAL(anyDataChanged())));
+    VERIFY(connect(ui->torrentAssociateCheckbox, SIGNAL(stateChanged(int)), SLOT(on_torrentAssociateCheckBoxChanged(int))));
+    VERIFY(connect(ui->torrentAssociateCheckbox, SIGNAL(stateChanged(int)), SIGNAL(anyDataChanged())));
+    VERIFY(connect(ui->torrentPortSettingEdit, SIGNAL(textChanged(QString)), SIGNAL(anyDataChanged())));
+    VERIFY(connect(ui->torrentSpeedUploadLimitSpin, SIGNAL(valueChanged(QString)), SIGNAL(anyDataChanged())));
+    VERIFY(connect(ui->torrentStartAsSequel, SIGNAL(stateChanged(int)), SIGNAL(anyDataChanged())));
+    VERIFY(connect(ui->torrentSpeedLimitedCheckbox, SIGNAL(stateChanged(int)), SIGNAL(anyDataChanged())));
 
     ui->tabWidget->setCurrentIndex(tab);
 
@@ -81,7 +81,7 @@ Preferences::Preferences(QWidget* parent, TAB tab)
 #ifdef Q_OS_WIN
     Tr::SetTr(ui->startLIIIOnStartingWindows, &QCheckBox::setText, START_LIII_ON_STARTING_WINDOWS_LABEL, PROJECT_NAME);
     ui->startLIIIOnStartingWindows->setChecked(m_startLIIIOnStartingWindows);
-    VERIFY(connect(ui->startLIIIOnStartingWindows, SIGNAL(stateChanged(int)), this, SIGNAL(anyDataChanged())));
+    VERIFY(connect(ui->startLIIIOnStartingWindows, SIGNAL(stateChanged(int)), SIGNAL(anyDataChanged())));
 #else
     ui->startLIIIOnStartingWindows->hide();
 
