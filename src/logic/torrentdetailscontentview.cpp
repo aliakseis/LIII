@@ -3,10 +3,14 @@
 #include <QMenu>
 #include <QFileInfo>
 #include <QDir>
+#include <QFocusEvent>
+#include <QApplication>
 #include "utilities/utils.h"
 #include "utilities/filesystem_utils.h"
 #include "torrentcontentmodel.h"
 #include "global_functions.h"
+
+#include <utility>
 
 TorrentDetailsContentView::TorrentDetailsContentView(QWidget* parent /*= 0*/): QTreeView(parent)
 {
@@ -78,4 +82,42 @@ void TorrentDetailsContentView::on_ItemOpenFile()
     }
 
     global_functions::openFile(filename);
+}
+
+bool TorrentDetailsContentView::event(QEvent *event)
+{
+    if (event->type() == QEvent::FocusOut
+        && static_cast<QFocusEvent*>(event)->reason() == Qt::MouseFocusReason)
+    {
+        if (QWidget *widget = QApplication::focusWidget()) 
+        {
+            const QModelIndexList selectedRows = selectionModel()->selectedRows(TorrentContentModelItem::COL_PRIO);
+            for (const auto& idx : qAsConst(selectedRows))
+            {
+                if (indexWidget(idx) == widget)
+                {
+                    return QAbstractScrollArea::event(event);
+                }
+            }
+        }
+    }
+
+    return QTreeView::event(event);
+}
+
+void TorrentDetailsContentView::commitData(QWidget *editor)
+{
+    QModelIndexList selectedRows = selectionModel()->selectedRows(TorrentContentModelItem::COL_PRIO);
+    for (const auto& idx : qAsConst(selectedRows))
+    {
+        if (indexWidget(idx) == editor)
+        {
+            model()->setSelectedRows(std::move(selectedRows));
+            break;
+        }
+    }
+
+    QTreeView::commitData(editor);
+
+    model()->setSelectedRows(QModelIndexList());
 }

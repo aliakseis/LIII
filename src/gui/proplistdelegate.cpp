@@ -153,25 +153,32 @@ QWidget* PropListDelegate::createEditor(QWidget* parent, const QStyleOptionViewI
 
 void PropListDelegate::setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const
 {
+    QModelIndexList selectedRows(dynamic_cast<const TorrentContentFilterModel*>(index.model())->selectedRows());
+    if (selectedRows.empty())
+        selectedRows = { index };
+
     auto* combobox = static_cast<QComboBox*>(editor);
     int value = combobox->currentIndex();
     qDebug("PropListDelegate: setModelData(%d)", value);
-    switch (value)
+    for (const auto& index : qAsConst(selectedRows))
     {
-    case 0:
-        model->setData(index, prio::HIGH);
-        break;
-    case 1:
-        model->setData(index, prio::NORMAL);
-        break;
-    case 2:
-        model->setData(index, prio::LOW);
-        break;
-    case 3:
-        model->setData(index, prio::IGNORED);
-        break;
-    default:
-        break;
+        switch (value)
+        {
+        case 0:
+            model->setData(index, prio::HIGH);
+            break;
+        case 1:
+            model->setData(index, prio::NORMAL);
+            break;
+        case 2:
+            model->setData(index, prio::LOW);
+            break;
+        case 3:
+            model->setData(index, prio::IGNORED);
+            break;
+        default:
+            break;
+        }
     }
     emit filteredFilesChanged();
 }

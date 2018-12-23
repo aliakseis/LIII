@@ -3,6 +3,8 @@
 #include <QSortFilterProxyModel>
 #include "torrentcontentmodelitem.h"
 
+#include <utility>
+
 class TorrentContentModel;
 
 class TorrentContentFilterModel
@@ -19,6 +21,9 @@ public:
     TorrentContentModelItem* getTorrentContentModelItem(const QModelIndex& index) const;
     QModelIndex parent(const QModelIndex& child) const override;
 
+    const QModelIndexList& selectedRows() const { return m_selectedRows; }
+    void setSelectedRows(QModelIndexList rows) { m_selectedRows = std::move(rows); }
+
 signals:
     void filteredFilesChanged();
 
@@ -31,4 +36,5 @@ public slots:
 
 private:
     TorrentContentModel* m_model;
+    QModelIndexList m_selectedRows;
 };

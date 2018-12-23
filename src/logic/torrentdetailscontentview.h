@@ -12,6 +12,10 @@ public:
 
     void setModel(TorrentContentFilterModel* a_model);
 
+    bool event(QEvent *event) override;
+    void commitData(QWidget *editor) override;
+
+
 private Q_SLOTS:
     void on_showTreeTorentContextMenu(const QPoint& pos);
     void on_ItemOpenFolder();
