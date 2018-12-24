@@ -7,6 +7,7 @@
 
 #include <functional>
 #include <iostream>
+#include <utility>
 #include <stdio.h>
 
 #include "ui_mainwindow.h"
@@ -18,7 +19,6 @@
 #include <QClipboard>
 #include <QDesktopWidget>
 #include <QCheckBox>
-#include <utility>
 
 #include "utilities/credential.h"
 #include "utilities/utils.h"
@@ -170,29 +170,9 @@ bool MainWindow::nativeEvent(const QByteArray& /*eventType*/, void* message, lon
 }
 #endif
 
-void MainWindow::moveToScreenCenter()
-{
-    // adjust window size to screen if low resolution
-    QRect desktopAvailRect    = QApplication::desktop()->availableGeometry();
-    QRect windowDefaultRect    = geometry();
-    const QSize screenSize = desktopAvailRect.size();
-    if (windowDefaultRect.width() > screenSize.width())
-    {
-        windowDefaultRect.setWidth(screenSize.width());
-    }
-    if (windowDefaultRect.height() > screenSize.height())
-    {
-        windowDefaultRect.setHeight(screenSize.height());
-        showMaximized(); // to place window header to the screen as well
-    }
-    windowDefaultRect.moveCenter(desktopAvailRect.center());
-
-    setGeometry(windowDefaultRect);
-}
-
 void MainWindow::showMainWindowAndPerformChecks()
 {
-    moveToScreenCenter();
+    readPositionSettings();
 
     m_dlManager->startLoad();
     VERIFY(connect(qApp, SIGNAL(aboutToQuit()), SLOT(prepareToExit())));
@@ -709,4 +689,61 @@ void MainWindow::onActiveDownloadsNumberChanged(int number)
 #elif defined(Q_OS_MAC)
     Darwin::setDockBadge(number);
 #endif
+}
+
+const char SETTINGS_MAINWINDOW[] = "mainwindow";
+const char MAINWINDOW_GEOMETRY[] = "geometry";
+const char MAINWINDOW_SAVESTATE[] = "savestate";
+const char MAINWINDOW_MAXIMIZED[] = "maximized";
+const char MAINWINDOW_POS[] = "pos";
+const char MAINWINDOW_SIZE[] = "size";
+
+// https://stackoverflow.com/questions/74690/how-do-i-store-the-window-size-between-sessions-in-qt
+void MainWindow::writePositionSettings()
+{
+    QSettings qsettings;
+
+    qsettings.beginGroup(SETTINGS_MAINWINDOW);
+
+    qsettings.setValue(MAINWINDOW_GEOMETRY, saveGeometry());
+    qsettings.setValue(MAINWINDOW_SAVESTATE, saveState());
+    qsettings.setValue(MAINWINDOW_MAXIMIZED, isMaximized());
+    if (!isMaximized()) {
+        qsettings.setValue(MAINWINDOW_POS, pos());
+        qsettings.setValue(MAINWINDOW_SIZE, size());
+    }
+
+    qsettings.endGroup();
+}
+
+
+void MainWindow::readPositionSettings()
+{
+    QSettings qsettings;
+
+    qsettings.beginGroup(SETTINGS_MAINWINDOW);
+
+    restoreGeometry(qsettings.value(MAINWINDOW_GEOMETRY, saveGeometry()).toByteArray());
+    restoreState(qsettings.value(MAINWINDOW_SAVESTATE, saveState()).toByteArray());
+    move(qsettings.value(MAINWINDOW_POS, pos()).toPoint());
+    resize(qsettings.value(MAINWINDOW_SIZE, size()).toSize());
+    if (qsettings.value(MAINWINDOW_MAXIMIZED, isMaximized()).toBool())
+        showMaximized();
+
+    qsettings.endGroup();
+}
+
+void MainWindow::moveEvent(QMoveEvent*)
+{
+    writePositionSettings();
+}
+
+void MainWindow::resizeEvent(QResizeEvent*)
+{
+    writePositionSettings();
+}
+
+void MainWindow::closeEvent(QCloseEvent*)
+{
+    writePositionSettings();
 }
