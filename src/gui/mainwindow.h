@@ -98,8 +98,4 @@ protected:
     void dropEvent(QDropEvent* event) override;
     void keyPressEvent(QKeyEvent* event) override;
     void showHideNotify() override;
-
-    void moveEvent(QMoveEvent*) override;
-    void resizeEvent(QResizeEvent*) override;
-    void closeEvent(QCloseEvent*) override;
 };

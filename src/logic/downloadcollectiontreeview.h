@@ -14,7 +14,7 @@ class DownloadCollectionTreeView : public QTreeView
     Q_OBJECT
 public:
     explicit DownloadCollectionTreeView(QWidget* parent = 0);
-    virtual ~DownloadCollectionTreeView() {}
+    virtual ~DownloadCollectionTreeView();
 
     void setModel(DownloadCollectionModel* a_model);
     void paintEvent(QPaintEvent*);

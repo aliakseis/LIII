@@ -31,6 +31,8 @@
 #include <libtorrent/torrent_handle.hpp>
 #include <libtorrent/torrent_status.hpp>
 
+const char DOWNLOADS_HEADER_SIZES[] = "DownloadsHeaderSizes";
+
 DownloadCollectionTreeView::DownloadCollectionTreeView(QWidget* parent)
     : QTreeView(parent)
 {
@@ -46,6 +48,14 @@ DownloadCollectionTreeView::DownloadCollectionTreeView(QWidget* parent)
 
     setContextMenuPolicy(Qt::CustomContextMenu);
     VERIFY(connect(this, SIGNAL(customContextMenuRequested(const QPoint&)), SLOT(on_showContextMenu(const QPoint&))));
+}
+
+DownloadCollectionTreeView::~DownloadCollectionTreeView()
+{
+    QStringList list;
+    for (int i = eDC_url; i < eDC_columnsCount; ++i)
+        list << QString::number(header()->sectionSize(i));
+    QSettings().setValue(DOWNLOADS_HEADER_SIZES, list);
 }
 
 void DownloadCollectionTreeView::drawText(const QString& text)
@@ -136,15 +146,30 @@ void DownloadCollectionTreeView::keyPressEvent(QKeyEvent* event)
 void DownloadCollectionTreeView::HeaderResize(/*const int width*/)
 {
     header()->setSectionHidden(eDC_ID, true);
-    header()->setSectionHidden(eDC_downlFileName, true);
 
-    header()->resizeSection(eDC_url, 200);
-    header()->resizeSection(eDC_Speed, 73);
-    header()->resizeSection(eDC_Speed_Uploading, 70);
-    header()->resizeSection(eDC_percentDownl, 100);
-    header()->resizeSection(eDC_Size, 100);
+    const QStringList list = QSettings().value(DOWNLOADS_HEADER_SIZES, QStringList()).toStringList();
+    bool ok = list.size() == eDC_columnsCount - eDC_url;
+    if (ok)
+    {
+        int idx = eDC_url;
+        for (const QString& s : list)
+        {
+            const int value = s.toInt(&ok);
+            if (!ok)
+                break;
+            header()->resizeSection(idx++, value);
+        }
+    }
 
-    header()->resizeSection(eDC_Source, 80);
+    if (!ok)
+    {
+        header()->resizeSection(eDC_url, 200);
+        header()->resizeSection(eDC_Speed, 73);
+        header()->resizeSection(eDC_Speed_Uploading, 70);
+        header()->resizeSection(eDC_percentDownl, 100);
+        header()->resizeSection(eDC_Size, 100);
+        header()->resizeSection(eDC_Source, 80);
+    }
 }
 
 void DownloadCollectionTreeView::copyURLToClipboard()

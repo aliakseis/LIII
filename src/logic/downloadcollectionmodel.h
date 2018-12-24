@@ -12,16 +12,15 @@
 enum eDCMODEL
 {
     eDC_ID = 0,
-    eDC_url,
 #ifdef DEVELOPER_FEATURES
     eDC_priority,
 #endif
+    eDC_url,
     eDC_Status,
     eDC_Speed,
     eDC_Speed_Uploading,
     eDC_percentDownl,
     eDC_Size,
-    eDC_downlFileName,
     eDC_Source,
 
     // must be in the end of the enum

@@ -254,8 +254,6 @@ QVariant DownloadCollectionModel::data(const QModelIndex& index, int role /* = Q
             : ::Tr::Tr(TREEVIEW_UNKNOWN_SIZE);
     case eDC_Source:
         return item->source();
-    case eDC_downlFileName:
-        return item->downloadedFileName();
     case eDC_percentDownl:
         return (item->size() > 0) ? (item->sizeCurrDownl() * 100.) / item->size() : 0.;
     default:
@@ -317,8 +315,6 @@ QVariant DownloadCollectionModel::headerData(int section, Qt::Orientation orient
             return ::Tr::Tr(TREEVIEW_SIZE_HEADER);
         case eDC_Source:
             return ::Tr::Tr(TREEVIEW_SOURCE_HEADER);
-        case eDC_downlFileName:
-            return QString("Download fileName");
         }
     }
     return QVariant();
@@ -542,7 +538,6 @@ void DownloadCollectionModel::on_downloadedFileNameChange(const ItemDC& a_item)
                         ) != 0)
     {
         item->setDownloadedFileName(downloadedFileName);
-        emit dataChanged(index(item, eDC_downlFileName), index(item, eDC_downlFileName));
     }
 
     queueSaveToFile();

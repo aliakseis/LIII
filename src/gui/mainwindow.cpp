@@ -294,6 +294,7 @@ void MainWindow::closeApp()
 void MainWindow::prepareToExit()
 {
     qDebug() << __FUNCTION__;
+    writePositionSettings();
     m_dlManager->prepareToExit();
 #ifdef Q_OS_WIN
     m_taskBar.Uninit();
@@ -731,19 +732,4 @@ void MainWindow::readPositionSettings()
         showMaximized();
 
     qsettings.endGroup();
-}
-
-void MainWindow::moveEvent(QMoveEvent*)
-{
-    writePositionSettings();
-}
-
-void MainWindow::resizeEvent(QResizeEvent*)
-{
-    writePositionSettings();
-}
-
-void MainWindow::closeEvent(QCloseEvent*)
-{
-    writePositionSettings();
 }
