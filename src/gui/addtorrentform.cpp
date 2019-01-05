@@ -111,6 +111,7 @@ void AddTorrentForm::initialize()
     ui->treeTorrentContent->hideColumn(TorrentContentModelItem::COL_PROGRESS);
     ui->treeTorrentContent->hideColumn(TorrentContentModelItem::COL_PRIO);
 
+    ui->treeTorrentContent->header()->setSortIndicator(TorrentContentModelItem::COL_NAME, Qt::AscendingOrder);
 }
 
 void AddTorrentForm::updateDiskSpaceLabel()

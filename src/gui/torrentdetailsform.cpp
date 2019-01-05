@@ -139,6 +139,8 @@ void TorrentDetailsForm::initTorrentContentTab()
 
     VERIFY(connect(m_contentModel->model(), SIGNAL(filteredFilesChanged()), SLOT(updateDiskSpaceLabel())));
     VERIFY(connect(m_contentModel->model(), SIGNAL(filteredFilesChanged()), ui->treeTorrentContent, SLOT(updateEditorData())));
+
+    ui->treeTorrentContent->header()->setSortIndicator(TorrentContentModelItem::COL_NAME, Qt::AscendingOrder);
 }
 
 void TorrentDetailsForm::onItemExpanded(const QModelIndex& index)
