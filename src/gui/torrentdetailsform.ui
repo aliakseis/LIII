@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>618</width>
+    <width>668</width>
     <height>510</height>
    </rect>
   </property>
@@ -215,7 +215,7 @@
                <enum>QFrame::Plain</enum>
               </property>
               <property name="selectionMode">
-                 <enum>QAbstractItemView::ExtendedSelection</enum>
+               <enum>QAbstractItemView::ExtendedSelection</enum>
               </property>
               <property name="sortingEnabled">
                <bool>true</bool>

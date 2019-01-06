@@ -94,7 +94,7 @@ void TorrentDetailsForm::initPeersInfoTab()
 #ifndef DEVELOPER_FEATURES
     ui->peersView->header()->setSectionHidden(PeersInfoModel::Country, true);
 #endif
-    ui->peersView->header()->resizeSection(PeersInfoModel::ClientName, 200); // 250 in spec (too large)
+    ui->peersView->header()->resizeSection(PeersInfoModel::ClientName, 250);
     ui->peersView->header()->resizeSection(PeersInfoModel::IpAddress, 120);
     ui->peersView->header()->resizeSection(PeersInfoModel::PeerProgress, 80);
     ui->peersView->header()->resizeSection(PeersInfoModel::SpeedUpload, 63);
@@ -132,10 +132,10 @@ void TorrentDetailsForm::initTorrentContentTab()
     openPersistentEditors();
 
     // Sized
-    ui->treeTorrentContent->header()->resizeSection(TorrentContentModelItem::COL_NAME, 166);
+    ui->treeTorrentContent->header()->resizeSection(TorrentContentModelItem::COL_NAME, 250);
     ui->treeTorrentContent->header()->resizeSection(TorrentContentModelItem::COL_SIZE, 63);
     ui->treeTorrentContent->header()->resizeSection(TorrentContentModelItem::COL_STATUS, 88);
-    ui->treeTorrentContent->header()->resizeSection(TorrentContentModelItem::COL_PROGRESS, 125);
+    ui->treeTorrentContent->header()->resizeSection(TorrentContentModelItem::COL_PROGRESS, 100);
 
     VERIFY(connect(m_contentModel->model(), SIGNAL(filteredFilesChanged()), SLOT(updateDiskSpaceLabel())));
     VERIFY(connect(m_contentModel->model(), SIGNAL(filteredFilesChanged()), ui->treeTorrentContent, SLOT(updateEditorData())));
