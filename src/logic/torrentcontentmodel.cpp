@@ -128,38 +128,43 @@ QVariant TorrentContentModel::data(const QModelIndex& index, int role) const
     }
 
     TorrentContentModelItem* item = getItem(index);
-    if (index.column() == 0 && role == Qt::DecorationRole)
+    switch (role)
     {
-        if (item->isFolder())
+    case Qt::DecorationRole:
+        if (index.column() == 0)
         {
-            return m_iconProvider.icon(QFileIconProvider::Folder);
+            if (item->isFolder())
+            {
+                return m_iconProvider.icon(QFileIconProvider::Folder);
+            }
+
+            QString path = m_savePath + item->getPath();
+            if ((m_savePath.isEmpty() || !QFile::exists(path)))
+            {
+                return m_iconProvider.icon(QFileIconProvider::File);
+            }
+
+            return m_iconProvider.icon(QFileInfo(path));
         }
-
-        QString path = m_savePath + item->getPath();
-        if ((m_savePath.isEmpty() || !QFile::exists(path)))
+        break;
+    case Qt::CheckStateRole:
+        if (index.column() == 0)
         {
-            return m_iconProvider.icon(QFileIconProvider::File);
+            switch (item->data(TorrentContentModelItem::COL_PRIO).toInt())
+            {
+            case prio::IGNORED:
+                return Qt::Unchecked;
+            case prio::PARTIAL:
+                return Qt::PartiallyChecked;
+            default:
+                return Qt::Checked;
+            };
         }
-        
-        return m_iconProvider.icon(QFileInfo(path));
-    }
-
-    if (index.column() == 0 && role == Qt::CheckStateRole)
-    {
-        switch (item->data(TorrentContentModelItem::COL_PRIO).toInt())
-        {
-        case prio::IGNORED:
-            return Qt::Unchecked;
-        case prio::PARTIAL:
-            return Qt::PartiallyChecked;
-        default:
-            return Qt::Checked;
-        };
-    }
-
-    if (role == Qt::DisplayRole)
-    {
+        break;
+    case Qt::DisplayRole:
         return item->data(index.column());
+    case Qt::ToolTipRole:
+        return item->data(TorrentContentModelItem::COL_NAME);
     }
 
     return QVariant();
