@@ -39,13 +39,13 @@
      </property>
      <layout class="QGridLayout" name="gridLayout_5">
       <property name="leftMargin">
-       <number>30</number>
+       <number>14</number>
       </property>
       <property name="topMargin">
        <number>10</number>
       </property>
       <property name="rightMargin">
-       <number>30</number>
+       <number>14</number>
       </property>
       <property name="bottomMargin">
        <number>8</number>
@@ -283,7 +283,7 @@
       <number>0</number>
      </property>
      <property name="rightMargin">
-      <number>30</number>
+      <number>14</number>
      </property>
      <item>
       <widget class="QDialogButtonBox" name="buttonBox_2">
