@@ -74,7 +74,7 @@ void DownloadManager::startLoad()
                     && QDateTime::currentDateTimeUtc() > te->statusLastChanged().addSecs(te->getWaitingTime()));
         }))
     {
-        ItemDC l_item(*it);
+        auto l_item = it->copyItemDC();
         if (!l_item.isValid() || createNewTask(l_item))
             break;
     }
@@ -393,7 +393,7 @@ void DownloadManager::pushQueuedDownloads()
 
         if (ItemDC::eQUEUED == ti->getStatus())
         {
-            ItemDC tempItemDC = ItemDC(*ti);
+            auto tempItemDC = ti->copyItemDC();
             createNewTask(tempItemDC);
             ++firstClassTasks;
         }

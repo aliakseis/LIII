@@ -663,7 +663,7 @@ ItemDC DownloadCollectionModel::getItemByID(ItemID a_item)
 {
     if (TreeItem* itm = getRootItem()->findItemByID(a_item))
     {
-        return *itm;
+        return itm->copyItemDC();
     }
     return {};
 }

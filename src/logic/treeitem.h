@@ -171,6 +171,8 @@ public:
     QObjectList getChildItems() const;
     void setChildItems(const QObjectList& items);
 
+    ItemDC copyItemDC() const { return static_cast<const ItemDC&>(*this); }
+
     template<class Fn_t> void forAll(Fn_t fn);
 
     int priority() const { return m_priority; }
