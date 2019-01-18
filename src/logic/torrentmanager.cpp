@@ -133,7 +133,7 @@ std::vector<libtorrent::announce_entry> parseTrackersList(const QString& torrOrM
     int pos = 0;
     while ((pos = trackersRx.indexIn(torrOrMagnet, pos)) != -1)
     {
-        trackers_new.push_back(libtorrent::announce_entry(trackersRx.cap(1).toUtf8().constData()));
+        trackers_new.emplace_back(trackersRx.cap(1).toUtf8().constData());
         pos += trackersRx.matchedLength();
     }
     return trackers_new;
@@ -403,7 +403,7 @@ libtorrent::torrent_handle TorrentManager::addTorrent(
     // Check firewall state
     if (interactive)
     {
-        if (Application* myApp = dynamic_cast<Application*>(qApp))
+        if (auto* myApp = dynamic_cast<Application*>(qApp))
         {
             myApp->checkFirewallException(utilities::getMainWindow());
         }

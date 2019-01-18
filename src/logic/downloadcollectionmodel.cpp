@@ -52,7 +52,7 @@ TreeItem* DownloadCollectionModel::getItem(const QModelIndex& index) const
 {
     if (index.isValid())
     {
-        if (TreeItem* item = static_cast<TreeItem*>(index.internalPointer())) 
+        if (auto* item = static_cast<TreeItem*>(index.internalPointer())) 
         { 
             return item; 
         }
@@ -65,7 +65,7 @@ QModelIndex DownloadCollectionModel::index(int row, int column, const QModelInde
 {
     if (!hasIndex(row, column, parent))
     {
-        return QModelIndex();
+        return {};
     }
 
     TreeItem* parentItem = parent.isValid() ? static_cast<TreeItem*>(parent.internalPointer()) : rootItem;
@@ -74,14 +74,14 @@ QModelIndex DownloadCollectionModel::index(int row, int column, const QModelInde
     {
         return createIndex(row, column, childItem);
     }
-    return QModelIndex();
+    return {};
 }
 
 QModelIndex DownloadCollectionModel::index(TreeItem* item, int column) const
 {
     if (!item || (item == getRootItem()))
     {
-        return QModelIndex();
+        return {};
     }
 
     TreeItem* parentItem = item->parent();
@@ -99,15 +99,15 @@ QModelIndex DownloadCollectionModel::parent(const QModelIndex& index) const
 {
     if (!index.isValid())
     {
-        return QModelIndex();
+        return {};
     }
 
-    TreeItem* childItem = static_cast<TreeItem*>(index.internalPointer());
+    auto* childItem = static_cast<TreeItem*>(index.internalPointer());
     TreeItem* parentItem = childItem->parent();
 
     if (parentItem == rootItem)
     {
-        return QModelIndex();
+        return {};
     }
 
     return createIndex(parentItem->row(), 0, parentItem);
@@ -185,7 +185,7 @@ QVariant DownloadCollectionModel::data(const QModelIndex& index, int role /* = Q
     {
         if (l_colunm == eDC_Status)
         {
-            TreeItem* l_item = static_cast<TreeItem*>(index.internalPointer());
+            auto* l_item = static_cast<TreeItem*>(index.internalPointer());
             if (l_item && l_item->getStatus() == ItemDC::eERROR)
             {
                 QString errorDescr = l_item->errorDescription();
@@ -211,7 +211,7 @@ QVariant DownloadCollectionModel::data(const QModelIndex& index, int role /* = Q
         return {};
     }
 
-    TreeItem* item = static_cast<TreeItem*>(index.internalPointer());
+    auto* item = static_cast<TreeItem*>(index.internalPointer());
     if (!item)
     {
         return {};
@@ -360,7 +360,7 @@ void DownloadCollectionModel::addItemsToModel(const QStringList& urls, DownloadT
         }
 
         beginInsertRows(QModelIndex(), getRootItem()->childCount(), getRootItem()->childCount() + 1);
-        TreeItem* ti = new TreeItem(l_strUrl, getRootItem());
+        auto* ti = new TreeItem(l_strUrl, getRootItem());
         ti->setDownloadType(type);
         if (DownloadType::isTorrentDownload(type))
         {
@@ -672,7 +672,7 @@ QModelIndex DownloadCollectionModel::moveItem(const QModelIndex& a_index, int nu
 {
     if (!a_index.isValid())
     {
-        return QModelIndex();
+        return {};
     }
 
     const auto i_id = getItem(a_index)->getID();
@@ -769,7 +769,7 @@ QModelIndexList DownloadCollectionModel::moveItems_helper(QModelIndexList&& sele
 
 QModelIndexList DownloadCollectionModel::moveItems(QModelIndexList&& selectedInds, int step)
 {
-    if (step == 0 || selectedInds.size() == 0)
+    if (step == 0 || selectedInds.empty())
     {
         return selectedInds;
     }
@@ -910,7 +910,7 @@ void DownloadCollectionModel::setContinueDownloadItem(TreeItem* itmSource)
             TorrentManager::Instance()->resumeTorrent(id); // seeding
             return;
         }
-        else if (ItemDC::eERROR == status)
+        if (ItemDC::eERROR == status)
         {
             if (TorrentManager::Instance()->restartTorrent(id))
             {

@@ -215,7 +215,7 @@ void TorrentDetailsForm::accept()
         if (isEverithingOk)
         {
             m_torrentHandle.prioritize_files(priorities);
-            if (m_torrentHandle.save_path().compare(savePath().toUtf8().constData()) != 0)
+            if (m_torrentHandle.save_path() != savePath().toUtf8().constData())
             {
                 if (QDir().mkpath(savePath()))
                 {

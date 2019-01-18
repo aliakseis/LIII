@@ -160,7 +160,6 @@ void DownloadManager::startTaskDownload(int id)
     TasksMap::iterator it = m_prepareTasks.find(id);
     if (m_prepareTasks.end() != it)
     {
-        QString hoster = global_functions::GetNormalizedDomain((*it)->url());
         DownloadTask* task = it.value();
 
         m_activeTasks[id] = task;

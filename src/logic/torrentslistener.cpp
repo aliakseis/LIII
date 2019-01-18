@@ -22,6 +22,7 @@
 #include <QPointer>
 
 #include <functional>
+#include <utility>
 
 namespace {
 
@@ -36,7 +37,7 @@ public:
 
     void slotNoParams() override
     {
-        AddTorrentForm* addDialog = new AddTorrentForm(m_handle, utilities::getMainWindow());
+        auto* addDialog = new AddTorrentForm(m_handle, utilities::getMainWindow());
 
         const int status = addDialog->exec();
         if (!m_listener.isNull())
@@ -68,7 +69,7 @@ private:
 class TorrentsListenerExtension : public libtorrent::plugin
 {
 public:
-    TorrentsListenerExtension(std::function<void(libtorrent::torrent_handle, void*)> callback) : m_callback(callback) {}
+    TorrentsListenerExtension(std::function<void(libtorrent::torrent_handle, void*)> callback) : m_callback(std::move(callback)) {}
 
     boost::shared_ptr<libtorrent::torrent_plugin> new_torrent(libtorrent::torrent_handle const& h, void* user) override
     {
@@ -360,7 +361,7 @@ void TorrentsListener::setFileDialogEnabled(bool enabled)
 
 void TorrentsListener::askOpentorrentUser(const libtorrent::torrent_handle& handle)
 {
-    AddTorrentFormHelper* helper = new AddTorrentFormHelper(this, handle);
+    auto* helper = new AddTorrentFormHelper(this, handle);
     QMetaObject::invokeMethod(helper, "slotNoParams", Qt::QueuedConnection);
 }
 

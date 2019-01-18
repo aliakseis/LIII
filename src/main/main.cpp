@@ -59,9 +59,9 @@ int main(int argc, char* argv[])
 
     qDebug() << "Starting " PROJECT_FULLNAME " version " PROJECT_VERSION " built " __DATE__ " " __TIME__;
 
-    app.setQuitOnLastWindowClosed(false);
+    Application::setQuitOnLastWindowClosed(false);
 
-    app.setStyle(new LIIIStyle);
+    Application::setStyle(new LIIIStyle);
     app.retranslateApp(QSettings().value(app_settings::ln, app_settings::ln_Default).toString());
 
     DownloadCollectionModel::instance().init();
@@ -94,7 +94,7 @@ int main(int argc, char* argv[])
     app.setActivationWindow(&w);
     VERIFY(QObject::connect(&app, SIGNAL(messageReceived(QString)), &w, SLOT(restore())));
 
-    int retcode = app.exec();
+    int retcode = Application::exec();
 
     qDebug() << "End " PROJECT_NAME;
 
