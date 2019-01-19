@@ -272,6 +272,7 @@ void Preferences::on_btnResetWarnings_clicked()
         settings.setValue(ShowCleanupWarning, true);
         settings.setValue(ShowExitWarning, true);
         settings.setValue(ShowSysTrayNotifications, true);
+        settings.setValue(ShowSysTrayNotificationOnHide, true);
         settings.setValue(ShowAddTorrentDialog, true);
         settings.setValue(ShowAssociateTorrentDialog, true);
     }

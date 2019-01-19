@@ -7,6 +7,7 @@
 #include <QAction>
 #include <QMenu>
 
+
 #ifdef Q_OS_WIN
 #include <windows.h>
 #endif
@@ -93,7 +94,8 @@ void MainWindowWithTray::setVisible(bool visible)
 void MainWindowWithTray::closeEvent(QCloseEvent* event)
 {
     hide();
-#if !defined(Q_OS_MAC)// && !defined(DEVELOPER_FEATURES)
+
+#if !defined(Q_OS_MAC)
     event->ignore();
 #else
     QMainWindow::closeEvent(event);

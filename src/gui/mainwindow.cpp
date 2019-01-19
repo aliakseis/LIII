@@ -576,7 +576,7 @@ void MainWindow::showHideNotify()
         && QSettings().value(ShowSysTrayNotificationOnHide, ShowSysTrayNotificationOnHide_Default).toBool())
     {
         QSettings().setValue(ShowSysTrayNotificationOnHide, false);
-        showTrayMessage(tr("%1 continues running. Click this button to open it").arg(::Tr::Tr(PROJECT_FULLNAME_TRANSLATION)));
+        showTrayMessage(::Tr::Tr(MINIMIZE_TEXT).arg(PROJECT_NAME));
     }
 }
 

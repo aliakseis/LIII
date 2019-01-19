@@ -34,7 +34,10 @@ Tr::Translation CLEANUP_TEXT                         = Tr::translate("MainWindow
 
 Tr::Translation DELETE_DOWNLOAD_TEXT                 = Tr::translate("MainWindow", "Are you sure you wish to delete this download?<br/>Deleting will stop the download and remove the<br style=\"font-size:20px\"/>item from the disk.");
 Tr::Translation CANCEL_DOWNLOAD_TEXT                 = Tr::translate("MainWindow", "Are you sure you wish to cancel this download?<br/>Canceling will stop the download and remove the<br style=\"font-size:20px\"/>item from the list.");
-Tr::Translation EXIT_TEXT                            = Tr::translate("MainWindow", "<span style=\"margin-bottom:14px;\">Are you sure you wish to exit %1?</span><br/>Video playback and download will be stopped when <br style=\"font-size:20px\"/>closing this window.");
+Tr::Translation MINIMIZE_TEXT = Tr::translate("MainWindow", 
+    "Application %1 is still running!\nApplication %1 will continue to run so that download and seeding won't be stopped.\nTo completely exit %1, righ-click the tray icon then click Exit.");
+Tr::Translation EXIT_TEXT                            = Tr::translate("MainWindow", 
+    "<span style=\"margin-bottom:14px;\">Are you sure you wish to exit %1?</span><br/>Download and seeding will be stopped when <br style=\"font-size:20px\"/>closing this window.");
 Tr::Translation ASSOCIATE_TORRENT_TEXT               = Tr::translate("MainWindow", "Would you like to make %1 the default torrent application?");
 Tr::Translation DUPLICATE_TORRENT_HEADER             = Tr::translate("MainWindow", "Torrent is already in the list");
 Tr::Translation DUPLICATE_TORRENT_TEXT               = Tr::translate("MainWindow", "The Torrent you are trying to add is already in the list of Torrents.\nDo you want to load the trackers from it?");
@@ -42,7 +45,8 @@ Tr::Translation DUPLICATE_TORRENT_TEXT               = Tr::translate("MainWindow
 Tr::Translation DOWNLOAD_TO_LABEL                    = Tr::translate("Preferences", "Download to:", "Download to dialog header");
 Tr::Translation NO_LINKS_IN_CLIPBOARD                = Tr::translate("AddLinks", "No valid links were found in clipboard.<br/>Copy links and click 'Paste Link' again.", "No links in clipboard error message text");
 Tr::Translation PAUSE_LABEL                          = Tr::translate("MainWindow", "Pause", "Pause label");
-Tr::Translation RESET_WARNINGS_TEXT                  = Tr::translate("Preferences", "All warning dialogs you've once hidden will now appear again.\nAfter returning them you will still be able to hide them back.\nAre you sure you wish to continue?", "Reset warnings dialog text");
+Tr::Translation RESET_WARNINGS_TEXT                  = Tr::translate("Preferences", 
+    "All warning dialogs you've once hidden will now appear again.\nAfter returning them you will still be able to hide them back.\nAre you sure you wish to continue?", "Reset warnings dialog text");
 #ifdef Q_OS_WIN
 Tr::Translation START_LIII_ON_STARTING_WINDOWS_LABEL = Tr::translate("Preferences", "Start %1 when Windows starts up", "start LIII on starting Windows label");
 #endif
