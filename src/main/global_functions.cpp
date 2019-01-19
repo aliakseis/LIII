@@ -64,9 +64,11 @@ QString GetVideoFolder()
 
 int GetMaximumNumberLoadsActual()
 {
+    enum { PSEUDO_UNLIMITED_NUMBER_OF_DOWNLOADS = 100 };
     QSettings settings;
     return settings.value(UnlimitedLabel, UnlimitedLabel_Default).toBool()
-        ? 10 : settings.value(MaximumNumberLoads, MaximumNumberLoads_Default).toInt();
+        ? PSEUDO_UNLIMITED_NUMBER_OF_DOWNLOADS
+        : settings.value(MaximumNumberLoads, MaximumNumberLoads_Default).toInt();
 }
 
 int GetTrafficLimitActual()
