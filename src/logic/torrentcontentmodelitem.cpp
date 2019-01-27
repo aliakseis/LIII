@@ -284,16 +284,7 @@ void TorrentContentModelItem::appendChild(TorrentContentModelItem* item)
 {
     Q_ASSERT(item);
     Q_ASSERT(m_type != TFILE);
-    int i = 0;
-    for (; i < m_childItems.size(); ++i)
-    {
-        QString newchild_name = item->getName();
-        if (QString::localeAwareCompare(newchild_name, m_childItems.at(i)->getName()) < 0)
-        {
-            break;
-        }
-    }
-    m_childItems.insert(i, item);
+    m_childItems.append(item);
 }
 
 TorrentContentModelItem* TorrentContentModelItem::child(int row) const

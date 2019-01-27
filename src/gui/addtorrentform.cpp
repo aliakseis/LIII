@@ -78,7 +78,8 @@ void AddTorrentForm::initialize()
 
     auto* contentDelegate = new PropListDelegate(this);
     ui->treeTorrentContent->setItemDelegate(contentDelegate);
-    VERIFY(connect(ui->treeTorrentContent, SIGNAL(clicked(const QModelIndex&)), ui->treeTorrentContent, SLOT(edit(const QModelIndex&))));
+    VERIFY(connect(ui->treeTorrentContent, SIGNAL(clicked(const QModelIndex&)), 
+        ui->treeTorrentContent, SLOT(edit(const QModelIndex&))));
 
     // List files in torrent
     m_contentModel->model()->setupModelData(*m_torrentInfo, libtorrent::torrent_status());
