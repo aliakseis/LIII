@@ -134,13 +134,5 @@ bool setAutorun(bool runWithOS)
 #endif
 }
 
-// checks if launched in autorun mode
-bool isAutorunMode()
-{
-    const QStringList args = QApplication::arguments();
-    QStringList::const_iterator autostartParam = std::find(args.constBegin(), args.constEnd(), "-autorun");
-    return autostartParam != args.end();
-}
-
 }
 

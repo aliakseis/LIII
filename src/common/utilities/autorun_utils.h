@@ -10,7 +10,4 @@ bool isAutorunEnabled();
 // returns true is operation succeeded
 bool setAutorun(bool runWithOS = true);
 
-// checks if launched in autorun mode
-bool isAutorunMode();
-
 }

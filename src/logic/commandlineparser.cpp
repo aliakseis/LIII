@@ -11,12 +11,20 @@
 
 namespace {
 
+// checks if launched in autorun mode
+bool isAutorunMode(const QStringList& args)
+{
+    QStringList::const_iterator autostartParam = std::find(
+        args.constBegin(), args.constEnd(), "-autorun");
+    return autostartParam != args.constEnd();
+}
+
 void treatParams(MainWindow* mainWindow, QStringList params)
 {
     auto* myApp = dynamic_cast<Application*>(qApp);
     if (myApp && !myApp->isMissionDone())
     {
-        if (utilities::isAutorunMode())
+        if (isAutorunMode(params))
         {
             mainWindow->setAutorunMode();
         }
