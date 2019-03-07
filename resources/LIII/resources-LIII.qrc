@@ -10,10 +10,9 @@
 		<file alias="stop-disabled.png">images/stop-disabled.png</file>
     <file alias="start-normal.png">images/start-normal.png</file>
 		<file alias="start-disabled.png">images/start-disabled.png</file>
-		<file alias="checkbox_checked.png">images/checkbox_checked.png</file>
-		<file alias="checkbox_disabled_uncheck.png">images/checkbox_disabled_uncheck.png</file>
-		<file alias="checkbox_disabled_check.png">images/checkbox_disabled_check.png</file>
-		<file alias="checkbox_unchecked.png">images/checkbox_unchecked.png</file>
+		<file alias="combobox-down-arrow-hover.png">images/combobox-down-arrow-hover.png</file>
+		<file alias="combobox-down-arrow-normal.png">images/combobox-down-arrow-normal.png</file>
+		<file alias="combobox-down-arrow-press.png">images/combobox-down-arrow-press.png</file>
     <file alias="cleanup_hover.png">images/cleanup_hover.png</file>
 		<file alias="cleanup.png">images/cleanup.png</file>
 		<file alias="cleanup_disabled.png">images/cleanup_disabled.png</file>

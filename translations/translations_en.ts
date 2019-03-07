@@ -388,7 +388,7 @@ Please, enter login and password.</source>
     </message>
     <message>
         <location filename="../build/src/ui_mainwindow.h" line="604"/>
-        <source>DOWNLOAD</source>
+        <source>Download</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

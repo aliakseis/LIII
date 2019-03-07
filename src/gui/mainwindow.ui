@@ -51,6 +51,9 @@
     <family>Segoe UI</family>
    </font>
   </property>
+  <property name="cursor">
+   <cursorShape>ArrowCursor</cursorShape>
+  </property>
   <property name="windowTitle">
    <string notr="true">LIII BitTorrent Client</string>
   </property>
@@ -66,9 +69,6 @@
     <width>48</width>
     <height>48</height>
    </size>
-  </property>
-  <property name="cursor">
-   <cursorShape>ArrowCursor</cursorShape>
   </property>
   <widget class="QWidget" name="centralWidget">
    <property name="sizePolicy">
@@ -106,13 +106,13 @@
      <number>0</number>
     </property>
     <property name="leftMargin">
-     <number>8</number>
+     <number>0</number>
     </property>
     <property name="topMargin">
      <number>0</number>
     </property>
     <property name="rightMargin">
-     <number>6</number>
+     <number>0</number>
     </property>
     <property name="bottomMargin">
      <number>7</number>
@@ -145,13 +145,13 @@
         <number>5</number>
        </property>
        <property name="leftMargin">
-        <number>0</number>
+        <number>10</number>
        </property>
        <property name="topMargin">
         <number>0</number>
        </property>
        <property name="rightMargin">
-        <number>0</number>
+        <number>10</number>
        </property>
        <property name="bottomMargin">
         <number>0</number>
@@ -575,13 +575,13 @@
         <number>0</number>
        </property>
        <property name="leftMargin">
-        <number>0</number>
+        <number>6</number>
        </property>
        <property name="topMargin">
         <number>0</number>
        </property>
        <property name="rightMargin">
-        <number>0</number>
+        <number>6</number>
        </property>
        <property name="bottomMargin">
         <number>0</number>
@@ -611,7 +611,7 @@
            <number>0</number>
           </property>
           <property name="rightMargin">
-           <number>5</number>
+           <number>4</number>
           </property>
           <property name="bottomMargin">
            <number>0</number>
@@ -832,7 +832,7 @@
                   <string notr="true"/>
                  </property>
                  <property name="text">
-                  <string>DOWNLOAD</string>
+                  <string>Download</string>
                  </property>
                  <property name="iconSize">
                   <size>
