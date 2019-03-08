@@ -1,6 +1,8 @@
 #include "LIIIstyle.h"
 #include <QStyleOption>
 #include <QPainter>
+#include <QComboBox>
+#include <QAbstractItemView>
 
 #ifdef Q_OS_WIN
 enum { ROUND_RADIUS = 3, FONT_SIZE = 8 };
@@ -112,4 +114,57 @@ void LIIIStyle::drawPrimitive(PrimitiveElement element, const QStyleOption* opti
     {
         QProxyStyle::drawPrimitive(element, option, painter, widget);
     }
+}
+
+// https://stackoverflow.com/questions/20554940/qcombobox-pop-up-expanding-and-qtwebkit/20909625#20909625
+int LIIIStyle::styleHint(StyleHint hint, const QStyleOption *option, const QWidget *widget, QStyleHintReturn *returnData) const
+{
+    if (hint == QStyle::SH_ComboBox_Popup) 
+    {
+        auto combo = static_cast<const QComboBox *>(widget);
+        QAbstractItemView* view = nullptr;
+        for (auto child : combo->children())
+        {
+            for (auto v : child->children())
+            {
+                view = qobject_cast<QAbstractItemView*>(v);
+                if (view)
+                {
+                    break;
+                }
+            }
+
+            if (view) 
+            {
+                break;
+            }
+        }
+
+        if (view) 
+        {
+            const int iconSize = combo->iconSize().width();
+            const QFontMetrics fontMetrics1 = view->fontMetrics();
+            const QFontMetrics fontMetrics2 = combo->fontMetrics();
+            const int j = combo->count();
+            int width = combo->width(); //default width
+
+            for (int i = 0; i < j; ++i) {
+                const int textWidth = qMax(
+                    fontMetrics1.width(combo->itemText(i) + "WW"),
+                    fontMetrics2.width(combo->itemText(i) + "WW")
+                );
+
+                if (combo->itemIcon(i).isNull()) {
+                    width = qMax(width, textWidth);
+                }
+                else {
+                    width = qMax(width, textWidth + iconSize);
+                }
+            }
+
+            view->setFixedWidth(width);
+        }
+    }
+
+    return QProxyStyle::styleHint(hint, option, widget, returnData);
 }

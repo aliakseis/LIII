@@ -125,10 +125,14 @@ QComboBox
     border-radius: 4px;
     background-color: white;
     margin-right: 0px;
+    margin-top: 3px;
+    margin-bottom: 3px;
 }
 
 QComboBox:on { /* shift the text when the popup opens */
     border-bottom-left-radius: 0px;
+    padding-bottom: 3px;
+    margin-bottom: 0px;
 }
 
 QComboBox::drop-down
@@ -177,32 +181,10 @@ QComboBox::down-arrow:on
     image: url(:/combobox-down-arrow-press.png);
 }
 
-
 QComboBox QAbstractItemView 
 {
      border: 1px solid #cfcfcf;
      border-top: none;
      selection-background-color: #d1f3fc;
      selection-color: black;
-}
-
-TorrentDetailsForm QComboBox
-{
-    margin-top: 3px;
-    margin-bottom: 3px;
-}
-
-TorrentDetailsForm QComboBox:on { /* shift the text when the popup opens */
-    padding-bottom: 3px;
-    margin-bottom: 0px;
-}
-
-AddLinks QComboBox
-{
-    margin-top: 3px;
-    margin-bottom: 3px;
-}
-AddLinks QComboBox:on { /* shift the text when the popup opens */
-    padding-bottom: 3px;
-    margin-bottom: 0px;
 }
