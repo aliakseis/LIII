@@ -33,13 +33,18 @@ public:
 
     libtorrent::torrent_handle torrentHandle() const { return m_torrentHandle; }
 
+    void onProgressUpdated();
+
+Q_SIGNALS:
+    void updateFilesProgress(const std::vector<boost::int64_t>& fp);
+
 private Q_SLOTS:
     void updateDiskSpaceLabel();
     void browseSavePath();
     void savePathEdited(const QString& sPath);
     void adaptColumns(int col);
-    void onProgressUpdated();
     void onItemExpanded(const QModelIndex& index);
+    void onUpdateFilesProgress(const std::vector<boost::int64_t>& fp);
 
     void openPersistentEditors();
 private:

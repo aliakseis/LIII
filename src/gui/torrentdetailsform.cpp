@@ -31,6 +31,7 @@ TorrentDetailsForm::TorrentDetailsForm(const libtorrent::torrent_handle& handle,
     m_PeersInfoproxy(nullptr),
     m_updateTimeId(-1)
 {
+    VERIFY(qRegisterMetaType<std::vector<boost::int64_t>>("std::vector<boost::int64_t>"));
     ui->setupUi(this);
     // Initialize using torrent handle
     setWindowFlags(Qt::Dialog | Qt::WindowTitleHint);
@@ -63,6 +64,9 @@ void TorrentDetailsForm::initialize()
     // Setting up other saving path stuffs
     VERIFY(connect(ui->savePathButton, SIGNAL(clicked()), SLOT(browseSavePath())));
     VERIFY(connect(ui->savePathEdit, SIGNAL(textEdited(QString)), SLOT(savePathEdited(QString))));
+
+    connect(this, &TorrentDetailsForm::updateFilesProgress,
+        this, &TorrentDetailsForm::onUpdateFilesProgress);
 
     Q_ASSERT(m_torrentInfo->is_valid());
 
@@ -301,6 +305,14 @@ void TorrentDetailsForm::onProgressUpdated()
 {
     std::vector<boost::int64_t> fp;
     m_torrentHandle.file_progress(fp);
+    if (!fp.empty())
+    {
+        emit updateFilesProgress(fp);
+    }
+}
+
+void TorrentDetailsForm::onUpdateFilesProgress(const std::vector<boost::int64_t>& fp)
+{
     m_contentModel->model()->updateFilesProgress(fp);
     ui->treeTorrentContent->viewport()->repaint();
 }

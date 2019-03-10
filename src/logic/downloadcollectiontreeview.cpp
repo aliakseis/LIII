@@ -488,7 +488,7 @@ void DownloadCollectionTreeView::showTorrentDetailsDialog(TreeItem* item)
                 {
                     if (it.getID() == id)
                     { 
-                        VERIFY(QMetaObject::invokeMethod(&dlg, "onProgressUpdated", Qt::QueuedConnection));
+                        dlg.onProgressUpdated();
                     }
                 });
             const bool accepted = dlg.exec() == QDialog::Accepted;
