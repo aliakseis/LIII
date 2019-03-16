@@ -3,6 +3,7 @@
 #include <functional>
 #include <array>
 #include <algorithm>
+#include <memory>
 
 #include <QApplication>
 #include <QClipboard>
@@ -479,24 +480,41 @@ void DownloadCollectionTreeView::showTorrentDetailsDialog(TreeItem* item)
     {
         try
         {
-            TorrentDetailsForm dlg(handle, utilities::getMainWindow());
+            auto dlg = std::make_shared<TorrentDetailsForm>(handle, utilities::getMainWindow());
             const int id = item->getID();
-            auto connection = connect(
+            auto progressConnection = connect(
                 &TorrentsListener::instance(),
                 &TorrentsListener::sizeCurrDownlChange,
-                [id, &dlg](const ItemDC& it)
+                [id, weakPtr = std::weak_ptr<TorrentDetailsForm>(dlg)](const ItemDC& it)
                 {
                     if (it.getID() == id)
-                    { 
-                        dlg.onProgressUpdated();
+                    {
+                        if (auto obj = weakPtr.lock())
+                        {
+                            obj->onProgressUpdated();
+                        }
                     }
                 });
-            const bool accepted = dlg.exec() == QDialog::Accepted;
-            disconnect(connection);
+            auto peersConnection = connect(
+                &TorrentsListener::instance(),
+                &TorrentsListener::speedChange,
+                [id, weakPtr = std::weak_ptr<TorrentDetailsForm>(dlg)](const ItemDC& it)
+            {
+                if (it.getID() == id)
+                {
+                    if (auto obj = weakPtr.lock())
+                    {
+                        obj->onPeersUpdated();
+                    }
+                }
+            });
+            const bool accepted = dlg->exec() == QDialog::Accepted;
+            disconnect(progressConnection);
+            disconnect(peersConnection);
             if (accepted)
             {
                 item->setSize(handle.status(0).total_wanted);
-                auto priorities = dlg.filesPriorities();
+                auto priorities = dlg->filesPriorities();
                 if (priorities != item->torrentFilesPriorities())
                 {
                     item->setTorrentFilesPriorities(std::move(priorities));

@@ -1,11 +1,12 @@
 #pragma once
 
 #include <QDialog>
+#include <QSortFilterProxyModel>
 #include <libtorrent/torrent_info.hpp>
 #include <libtorrent/add_torrent_params.hpp>
 #include <libtorrent/torrent_handle.hpp>
+#include <atomic>
 
-#include <QSortFilterProxyModel>
 
 class TorrentContentFilterModel;
 
@@ -34,9 +35,11 @@ public:
     libtorrent::torrent_handle torrentHandle() const { return m_torrentHandle; }
 
     void onProgressUpdated();
+    void onPeersUpdated();
 
 Q_SIGNALS:
     void updateFilesProgress(const std::vector<boost::int64_t>& fp);
+    void updatePeersInfo(const std::vector<libtorrent::peer_info>& peersInfo);
 
 private Q_SLOTS:
     void updateDiskSpaceLabel();
@@ -44,6 +47,7 @@ private Q_SLOTS:
     void savePathEdited(const QString& sPath);
     void adaptColumns(int col);
     void onItemExpanded(const QModelIndex& index);
+    void onRefreshPeersClicked(bool checked);
     void onUpdateFilesProgress(const std::vector<boost::int64_t>& fp);
 
     void openPersistentEditors();
@@ -62,10 +66,9 @@ private:
 
     PeersInfoModel* m_PeersInfomodel;
     QSortFilterProxyModel* m_PeersInfoproxy;
-    int m_updateTimeId;
+
+    std::atomic_bool m_refreshPeers;
 
     QString m_savePath;
     Q_PROPERTY(QString m_savePath READ savePath WRITE setSavePath)
-protected:
-    void timerEvent(QTimerEvent* event)override;
 };

@@ -21,7 +21,7 @@ public:
     explicit PeersInfoModel(libtorrent::torrent_handle torrentHandle, QObject* parent = 0);
     libtorrent::peer_info getItem(int row);
 public slots:
-    void updatePeersInfo();
+    void updatePeersInfo(const std::vector<libtorrent::peer_info>& peersInfo);
 
 protected:
     int rowCount(const QModelIndex& parent = QModelIndex()) const override;

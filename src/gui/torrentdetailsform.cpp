@@ -29,9 +29,10 @@ TorrentDetailsForm::TorrentDetailsForm(const libtorrent::torrent_handle& handle,
     m_torrentHandle(handle),
     m_PeersInfomodel(nullptr),
     m_PeersInfoproxy(nullptr),
-    m_updateTimeId(-1)
+    m_refreshPeers(true)
 {
     VERIFY(qRegisterMetaType<std::vector<boost::int64_t>>("std::vector<boost::int64_t>"));
+    VERIFY(qRegisterMetaType<std::vector<libtorrent::peer_info>>("std::vector<libtorrent::peer_info>"));
     ui->setupUi(this);
     // Initialize using torrent handle
     setWindowFlags(Qt::Dialog | Qt::WindowTitleHint);
@@ -93,7 +94,11 @@ void TorrentDetailsForm::initPeersInfoTab()
     ui->peersView->setSortingEnabled(true);
     VERIFY(connect(ui->peersView->header(), SIGNAL(sectionDoubleClicked(int)), SLOT(adaptColumns(int))));
     ui->peersView->setSortingEnabled(true);
-    m_updateTimeId = startTimer(5000);
+
+    connect(this, &TorrentDetailsForm::updatePeersInfo,
+        m_PeersInfomodel, &PeersInfoModel::updatePeersInfo);
+    connect(ui->chbAutoRefresh, &QCheckBox::clicked,
+        this, &TorrentDetailsForm::onRefreshPeersClicked);
 
 #ifndef DEVELOPER_FEATURES
     ui->peersView->header()->setSectionHidden(PeersInfoModel::Country, true);
@@ -158,6 +163,11 @@ void TorrentDetailsForm::onItemExpanded(const QModelIndex& index)
             ui->treeTorrentContent->openPersistentEditor(ind);
         }
     }
+}
+
+void TorrentDetailsForm::onRefreshPeersClicked(bool checked)
+{
+    m_refreshPeers = checked;
 }
 
 void TorrentDetailsForm::updateDiskSpaceLabel()
@@ -292,15 +302,6 @@ void TorrentDetailsForm::adaptColumns(int col)
     ui->peersView->resizeColumnToContents(col);
 }
 
-void TorrentDetailsForm::timerEvent(QTimerEvent* event)
-{
-    if (ui->chbAutoRefresh->checkState() == Qt::Checked && event->timerId() == m_updateTimeId)
-    {
-        m_PeersInfomodel->updatePeersInfo();
-    }
-    return QDialog::timerEvent(event);
-}
-
 void TorrentDetailsForm::onProgressUpdated()
 {
     std::vector<boost::int64_t> fp;
@@ -308,6 +309,16 @@ void TorrentDetailsForm::onProgressUpdated()
     if (!fp.empty())
     {
         emit updateFilesProgress(fp);
+    }
+}
+
+void TorrentDetailsForm::onPeersUpdated()
+{
+    if (m_refreshPeers)
+    {
+        std::vector<libtorrent::peer_info> peersInfo;
+        m_torrentHandle.get_peer_info(peersInfo);
+        emit updatePeersInfo(peersInfo);
     }
 }
 

@@ -5,7 +5,7 @@ PeersInfoModel::PeersInfoModel(libtorrent::torrent_handle torrentHandle, QObject
     m_torrentHandle(torrentHandle)
 {
     torrentHandle.resolve_countries(true);
-    updatePeersInfo();
+    m_torrentHandle.get_peer_info(m_peersInfo);
 }
 
 int PeersInfoModel::rowCount(const QModelIndex& parent) const
@@ -57,10 +57,10 @@ QVariant PeersInfoModel::data(const QModelIndex& index, int role) const
     return QVariant();
 }
 
-void PeersInfoModel::updatePeersInfo()
+void PeersInfoModel::updatePeersInfo(const std::vector<libtorrent::peer_info>& peersInfo)
 {
     beginResetModel();
-    m_torrentHandle.get_peer_info(m_peersInfo);
+    m_peersInfo = peersInfo;
     endResetModel();
 }
 
