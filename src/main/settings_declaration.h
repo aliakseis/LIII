@@ -62,4 +62,7 @@ const bool ShowSysTrayNotificationOnHide_Default = true;
 const char DeleteToRecycleBin[] = "DeleteToRecycleBin";
 const bool DeleteToRecycleBin_Default = true;
 
+const char TorrentDetailsAutoRefreshPeers[] = "TorrentDetailsAutoRefreshPeers";
+const bool TorrentDetailsAutoRefreshPeers_Default = true;
+
 } // namespace app_settings

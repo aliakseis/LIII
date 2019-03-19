@@ -9,11 +9,13 @@
 
 #include "peersinfomodel.h"
 #include "peersinfoform_proxy_model.h"
+#include "settings_declaration.h"
 
 #include <QMessageBox>
 #include <QDateTime>
 #include <QFileDialog>
 #include <QDebug>
+#include <QSettings>
 
 #include <QKeyEvent>
 #include "branding.hxx"
@@ -95,6 +97,12 @@ void TorrentDetailsForm::initPeersInfoTab()
     VERIFY(connect(ui->peersView->header(), SIGNAL(sectionDoubleClicked(int)), SLOT(adaptColumns(int))));
     ui->peersView->setSortingEnabled(true);
 
+    const bool autoRefresh = QSettings().value(
+        app_settings::TorrentDetailsAutoRefreshPeers,
+        app_settings::TorrentDetailsAutoRefreshPeers_Default).toBool();
+    ui->chbAutoRefresh->setChecked(autoRefresh);
+    m_refreshPeers = autoRefresh;
+
     connect(this, &TorrentDetailsForm::updatePeersInfo,
         m_PeersInfomodel, &PeersInfoModel::updatePeersInfo);
     connect(ui->chbAutoRefresh, &QCheckBox::clicked,
@@ -168,6 +176,7 @@ void TorrentDetailsForm::onItemExpanded(const QModelIndex& index)
 void TorrentDetailsForm::onRefreshPeersClicked(bool checked)
 {
     m_refreshPeers = checked;
+    QSettings().setValue(app_settings::TorrentDetailsAutoRefreshPeers, checked);
 }
 
 void TorrentDetailsForm::updateDiskSpaceLabel()

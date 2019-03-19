@@ -480,8 +480,10 @@ void DownloadCollectionTreeView::showTorrentDetailsDialog(TreeItem* item)
     {
         try
         {
-            auto dlg = std::make_shared<TorrentDetailsForm>(handle, utilities::getMainWindow());
-            const int id = item->getID();
+            std::shared_ptr<TorrentDetailsForm> dlg(
+                new TorrentDetailsForm(handle, utilities::getMainWindow()), 
+                std::mem_fn(&QObject::deleteLater));
+            const auto id = item->getID();
             auto progressConnection = connect(
                 &TorrentsListener::instance(),
                 &TorrentsListener::sizeCurrDownlChange,
