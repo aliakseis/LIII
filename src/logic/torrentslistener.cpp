@@ -163,7 +163,8 @@ void TorrentsListener::handler(libtorrent::stats_alert const& a)
 
         emit signalTryNewtask(); // TODO fine tune
     }
-    else if (status.state == libtorrent::torrent_status::seeding)
+    else if (status.state == libtorrent::torrent_status::seeding
+        || status.state == libtorrent::torrent_status::finished)
     {
         float uploadSpeed = status.upload_payload_rate / 1024.0;
         ItemDC item;
@@ -185,7 +186,8 @@ void TorrentsListener::handler(libtorrent::torrent_paused_alert const& a)
     TRACE_ALERT
     ItemDC item;
     item.setID(getItemID(a.handle));
-    ItemDC::eSTATUSDC newStatus = a.handle.is_seed() ? ItemDC::eFINISHED : ItemDC::ePAUSED;
+    const auto newStatus 
+        = (a.handle.is_seed() || a.handle.is_finished()) ? ItemDC::eFINISHED : ItemDC::ePAUSED;
     item.setStatus(newStatus);
     emit speedChange(item);
     emit uploadSpeedChange(item);
@@ -195,7 +197,7 @@ void TorrentsListener::handler(libtorrent::torrent_paused_alert const& a)
 void TorrentsListener::handler(libtorrent::torrent_resumed_alert const& a)
 {
     TRACE_ALERT
-    if (a.handle.is_seed())
+    if (a.handle.is_seed() || a.handle.is_finished())
     {
         ItemDC item;
         item.setStatus(ItemDC::eSEEDING);
