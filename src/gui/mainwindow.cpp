@@ -28,7 +28,6 @@
 
 #include "add_links.h"
 #include "preferences.h"
-#include "logindialog.h"
 #include "settings_declaration.h"
 #include "global_functions.h"
 #include "globals.h"
@@ -107,7 +106,6 @@ MainWindow::MainWindow()
 
     m_dlManager = new DownloadManager(this);
     VERIFY(connect(m_dlManager, SIGNAL(updateButtons()), SLOT(refreshButtons())));
-    VERIFY(connect(m_dlManager, SIGNAL(needLogin(utilities::ICredentialsRetriever*)), SLOT(needLogin(utilities::ICredentialsRetriever*))));
 
     ui->listUrls->setItemDelegate(new DownloadCollectionDelegate(this));
     ui->listUrls->setModel(m_pModel);
@@ -350,18 +348,6 @@ void MainWindow::addLinks(QStringList urls)
     }
 }
 
-
-void MainWindow::needLogin(utilities::ICredentialsRetriever* icr)
-{
-    LoginDialog dlg(this);
-    Credential cred;
-    if (dlg.exec() == QDialog::Accepted)
-    {
-        cred.login = dlg.login();
-        cred.password = dlg.password();
-    }
-    icr->SetCredentials(cred);
-}
 
 void MainWindow::on_buttonOptions_clicked()
 {

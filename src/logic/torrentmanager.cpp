@@ -19,7 +19,9 @@
 #include <QStringList>
 #include <QDebug>
 #include <QByteArray>
+#include <QDir>
 #include <QFile>
+#include <QMainWindow>
 #include <QMessageBox>
 
 #include "settings_declaration.h"
@@ -28,11 +30,14 @@
 #include "addtorrentform.h"
 #include "torrentslistener.h"
 #include "downloadtype.h"
+#include "downloadcollectionmodel.h"
 
-#include "mainwindow.h"
 #include "utilities/translation.h"
+#include "utilities/filesystem_utils.h"
 #include "version.hxx"
 #include "branding.hxx"
+
+#include "globals.h"
 
 #include "global_functions.h"
 
@@ -44,6 +49,20 @@ libtorrent::fingerprint getFingerprint()
     sscanf(PROJECT_VERSION, "%d.%d.%d.%d", version, version + 1, version + 2, version + 3);
     const char torrentClientId[] = "53";
     return { torrentClientId, version[0], version[1], version[2], version[3] };
+}
+
+void setProxySettings(libtorrent::session* sess)
+{
+    using namespace app_settings;
+    QSettings settings;
+    if (settings.value(UseProxy, UseProxy_Default).toBool())
+    {
+        libtorrent::proxy_settings s;
+        s.type = libtorrent::proxy_settings::socks5;
+        s.hostname = settings.value(ProxyAddress).toString().toStdString();
+        s.port = settings.value(ProxyPort).toUInt();
+        sess->set_proxy(s);
+    }
 }
 
 bool loadFastResumeData(const QString& hash, std::vector<char>& buf)
@@ -231,6 +250,7 @@ TorrentManager::TorrentManager()
         setListeningPort(6881, 6889);
     }
 
+    setProxySettings(m_session.get());
 
     // Speed control
     setUploadLimit(QSettings().value(IsTrafficUploadLimited, IsTrafficUploadLimited_Default).toBool()

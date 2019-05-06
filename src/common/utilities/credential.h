@@ -8,7 +8,7 @@ namespace utilities
 
 struct Credential
 {
-    QString host, login, password;
+    QString login, password;
     bool persistent = true;
 };
 

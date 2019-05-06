@@ -38,7 +38,6 @@ public Q_SLOTS:
 
 Q_SIGNALS:
     void updateButtons();
-    void needLogin(utilities::ICredentialsRetriever*);
 
 private Q_SLOTS:
     void onDownloadFinished(int ID);

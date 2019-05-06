@@ -66,7 +66,6 @@ Q_SIGNALS:
 public Q_SLOTS:
     void onChangePauseCancelState(bool canPause, bool canResume, bool canCancel, bool canStop);
     void refreshButtons();
-    void needLogin(utilities::ICredentialsRetriever* th);
     void on_buttonStart_clicked();
     void onActionCloseLinkClicked();
     void closeApp();

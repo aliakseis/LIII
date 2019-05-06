@@ -70,13 +70,17 @@ Preferences::Preferences(QWidget* parent, TAB tab)
     VERIFY(connect(ui->torrentStartAsSequel, SIGNAL(stateChanged(int)), SIGNAL(anyDataChanged())));
     VERIFY(connect(ui->torrentSpeedLimitedCheckbox, SIGNAL(stateChanged(int)), SIGNAL(anyDataChanged())));
 
+    VERIFY(connect(ui->chbUseProxy, SIGNAL(stateChanged(int)), this, SLOT(onProxyStateChanged(int))));
+
+    const auto Octet = QStringLiteral("(?:[0-1]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])");
+    ui->leProxyAddress->setValidator(new QRegExpValidator(QRegExp("^" + Octet + "\\." + Octet + "\\." + Octet + "\\." + Octet + "$"), this));
+    ui->leProxyPort->setValidator(new QIntValidator(1, 65535, this));
+
     ui->tabWidget->setCurrentIndex(tab);
 
     initMainSettings();
 
-
     fillLanguageComboBox();
-
 
 #ifdef Q_OS_WIN
     Tr::SetTr(ui->startLIIIOnStartingWindows, &QCheckBox::setText, START_LIII_ON_STARTING_WINDOWS_LABEL, PROJECT_NAME);
@@ -172,6 +176,9 @@ void Preferences::apply()
         }
 #endif
 
+        settings.setValue(UseProxy, ui->chbUseProxy->isChecked());
+        settings.setValue(ProxyAddress, ui->leProxyAddress->text());
+        settings.setValue(ProxyPort, ui->leProxyPort->text().toUShort());
     } // settings scope
 
     initMainSettings(); // to re-init fixed parameters
@@ -198,6 +205,28 @@ bool Preferences::checkData()
         QMessageBox::critical(this, ::Tr::Tr(PROJECT_FULLNAME_TRANSLATION), tr("The folder \"%1\" cannot be created. Please change.").arg(pathDir));
         ui->leFolder->setFocus();
         return false;
+    }
+
+    if (ui->chbUseProxy->isChecked())
+    {
+        int pos;
+        QString text = ui->leProxyAddress->text();
+        if (ui->leProxyAddress->validator()->validate(text, pos) != QValidator::Acceptable)
+        {
+            ui->tabWidget->setCurrentIndex(2);
+            QMessageBox::critical(this, Tr::Tr(PROJECT_FULLNAME_TRANSLATION), tr("Enter a valid proxy address."));
+            ui->leProxyAddress->setFocus();
+            return false;
+        }
+        pos = 0;
+        text = ui->leProxyPort->text();
+        if (ui->leProxyPort->validator()->validate(text, pos) != QValidator::Acceptable)
+        {
+            ui->tabWidget->setCurrentIndex(2);
+            QMessageBox::critical(this, Tr::Tr(PROJECT_FULLNAME_TRANSLATION), tr("Enter a valid proxy port."));
+            ui->leProxyPort->setFocus();
+            return false;
+        }
     }
 
     bool canProceed = false;
@@ -332,6 +361,16 @@ void Preferences::initMainSettings()
     ui->sbTrafficLimit->setValue(settings.value(TrafficLimitKbs, TrafficLimitKbs_Default).toInt());
 
     ui->cbHideAllTrayNotification->setChecked(!settings.value(ShowSysTrayNotifications, ShowSysTrayNotifications_Default).toBool());
+
+    ui->chbUseProxy->setChecked(settings.value(UseProxy, UseProxy_Default).toBool());
+    ui->leProxyAddress->setText(settings.value(ProxyAddress).toString());
+    ui->leProxyPort->setText(QString::number(settings.value(ProxyPort).toUInt()));
+
+    if (!ui->chbUseProxy->isChecked())
+    {
+        ui->leProxyAddress->setEnabled(false);
+        ui->leProxyPort->setEnabled(false);
+    }
 }
 
 void Preferences::on_torrentRandomPortButton_clicked()
@@ -412,6 +451,13 @@ void Preferences::on_torrentAssociateCheckBoxChanged(int state)
         ui->torrentAssociateCheckbox->setEnabled(false);
     }
 #endif
+}
+
+void Preferences::onProxyStateChanged(int state)
+{
+    bool is_enable = state != Qt::Unchecked;
+    ui->leProxyAddress->setEnabled(is_enable);
+    ui->leProxyPort->setEnabled(is_enable);
 }
 
 //#endif

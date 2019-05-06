@@ -215,7 +215,7 @@ int DownloadTask::priority_level() const
 
 void DownloadTask::onNeedLogin(utilities::ICredentialsRetriever* retriever)
 {
-    emit needLogin(retriever);
+    utilities::needLogin(retriever);
 }
 
 void DownloadTask::onReplyInvalidated()

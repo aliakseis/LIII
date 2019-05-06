@@ -59,6 +59,8 @@ private Q_SLOTS:
     void checkPortAvalible(const QString& textPort);
     bool checkPortOk(int targetPort, const char** reason = 0);
 
+    void onProxyStateChanged(int state);
+
 protected:
     virtual void keyPressEvent(QKeyEvent* event) override;
 };

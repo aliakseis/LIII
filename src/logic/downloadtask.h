@@ -77,5 +77,4 @@ Q_SIGNALS:
     void signalDownloadFinished(int ID);
     void signalTryNewtask();
     void readyToDownload(int id);
-    void needLogin(utilities::ICredentialsRetriever* retriever);
 };

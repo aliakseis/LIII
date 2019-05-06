@@ -5,6 +5,8 @@
 #include "utilities/logger.h"
 #include "utilities/utils.h"
 
+#include "configurableproxyfactory.h"
+
 #include "mainwindow.h"
 #include "LIIIstyle.h"
 #include "settings_declaration.h"
@@ -46,6 +48,8 @@ Q_COREAPP_STARTUP_FUNCTION(ApplicationDependentInitialization)
 int main(int argc, char* argv[])
 {
     utilities::InitializeProjectDescription();
+
+    QNetworkProxyFactory::setApplicationProxyFactory(new ConfigurableProxyFactory());
 
     // single app
     Application app(QString(PROJECT_NAME), argc, argv);
@@ -97,6 +101,8 @@ int main(int argc, char* argv[])
     int retcode = Application::exec();
 
     qDebug() << "End " PROJECT_NAME;
+
+    QNetworkProxyFactory::setApplicationProxyFactory(0);
 
     return retcode;
 }

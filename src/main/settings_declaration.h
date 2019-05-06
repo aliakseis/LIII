@@ -65,4 +65,10 @@ const bool DeleteToRecycleBin_Default = true;
 const char TorrentDetailsAutoRefreshPeers[] = "TorrentDetailsAutoRefreshPeers";
 const bool TorrentDetailsAutoRefreshPeers_Default = true;
 
+const char UseProxy[] = "UseProxy";
+const bool UseProxy_Default = false;
+
+const char ProxyAddress[] = "ProxyAddress";
+
+const char ProxyPort[] = "ProxyPort";
 } // namespace app_settings

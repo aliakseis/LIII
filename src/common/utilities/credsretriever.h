@@ -21,4 +21,6 @@ private:
     Credential m_cred;
 };
 
+void needLogin(utilities::ICredentialsRetriever* icr);
+
 } // namespace utilities

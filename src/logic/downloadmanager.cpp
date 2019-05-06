@@ -134,7 +134,6 @@ bool DownloadManager::createNewTask(ItemDC& a_item)
         VERIFY(connect(dlTask, SIGNAL(signalDownloadFinished(int)),                  SLOT(onDownloadFinished(int))));
         VERIFY(connect(dlTask, SIGNAL(signalTryNewtask()),                           SLOT(tryNewTask())));
         VERIFY(connect(dlTask, SIGNAL(readyToDownload(int)),                         SLOT(startTaskDownload(int))));
-        VERIFY(connect(dlTask, SIGNAL(needLogin(utilities::ICredentialsRetriever*)), SIGNAL(needLogin(utilities::ICredentialsRetriever*))));
 
         dlTask->start();
         m_prepareTasks[a_item.getID()] = dlTask;

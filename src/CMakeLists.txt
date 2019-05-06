@@ -146,21 +146,23 @@ source_group("gui\\forms" FILES
 ##############
 
 set(HEADERS_TOMOC_LOGIC
+	logic/downloadtype.h
 	logic/downloadmanager.h
 	logic/downloadtask.h
 	logic/downloadcollectionmodel.h
 	logic/downloadcollectiontreeview.h
 	logic/treeitem.h
-	logic/downloadtype.h
 )
 
 set(HEADERS_LOGIC
 	logic/commandlineparser.h
+	logic/configurableproxyfactory.h
 )
 
 set(SOURCES_LOGIC
-	logic/downloadtype.cpp
 	logic/commandlineparser.cpp
+	logic/configurableproxyfactory.cpp
+	logic/downloadtype.cpp
 	logic/downloadmanager.cpp
 	logic/downloadtask.cpp
 	logic/downloadcollectionmodel.cpp
