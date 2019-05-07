@@ -25,6 +25,7 @@
 #include "utilities/translation.h"
 #include "utilities/associate_app.h"
 
+#include "torrentmanager.h"
 
 #include "add_links.h"
 #include "preferences.h"
@@ -355,7 +356,9 @@ void MainWindow::on_buttonOptions_clicked()
     activateWindow();
 
     Preferences prefDlg(this, Preferences::GENERAL);
-    VERIFY(connect(&prefDlg, SIGNAL(newPreferencesApply()), m_dlManager, SLOT(siftDownloads())));
+    connect(&prefDlg, &Preferences::newPreferencesApply, m_dlManager, &DownloadManager::siftDownloads);
+    connect(&prefDlg, &Preferences::onProxySettingsChanged, 
+        TorrentManager::Instance(), &TorrentManager::onProxySettingsChanged);
     if (prefDlg.exec() == QDialog::Accepted)
     {
 #ifdef ALLOW_TRAFFIC_CONTROL

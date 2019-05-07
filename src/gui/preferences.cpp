@@ -71,6 +71,8 @@ Preferences::Preferences(QWidget* parent, TAB tab)
     VERIFY(connect(ui->torrentSpeedLimitedCheckbox, SIGNAL(stateChanged(int)), SIGNAL(anyDataChanged())));
 
     VERIFY(connect(ui->chbUseProxy, SIGNAL(stateChanged(int)), this, SLOT(onProxyStateChanged(int))));
+    VERIFY(connect(ui->leProxyAddress, SIGNAL(textChanged(QString)), SIGNAL(anyDataChanged())));
+    VERIFY(connect(ui->leProxyPort, SIGNAL(textChanged(QString)), SIGNAL(anyDataChanged())));
 
     const auto Octet = QStringLiteral("(?:[0-1]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])");
     ui->leProxyAddress->setValidator(new QRegExpValidator(QRegExp("^" + Octet + "\\." + Octet + "\\." + Octet + "\\." + Octet + "$"), this));
@@ -108,6 +110,8 @@ Preferences::~Preferences()
 
 void Preferences::apply()
 {
+    bool proxySettingsChanged = false;
+
     {
         QSettings settings;
         settings.setValue(IsTrafficLimited, ui->cbTrafficLimit->isChecked());
@@ -176,9 +180,20 @@ void Preferences::apply()
         }
 #endif
 
-        settings.setValue(UseProxy, ui->chbUseProxy->isChecked());
-        settings.setValue(ProxyAddress, ui->leProxyAddress->text());
-        settings.setValue(ProxyPort, ui->leProxyPort->text().toUShort());
+        const auto isUseProxy = ui->chbUseProxy->isChecked();
+        const auto proxyAddress = ui->leProxyAddress->text();
+        const auto proxyPort = ui->leProxyPort->text().toUShort();
+
+        if (isUseProxy != settings.value(UseProxy, UseProxy_Default).toBool()
+            || isUseProxy && (proxyAddress != settings.value(ProxyAddress).toString() 
+                || proxyPort != settings.value(ProxyPort).toUInt()))
+        {
+            proxySettingsChanged = true;
+        }
+
+        settings.setValue(UseProxy, isUseProxy);
+        settings.setValue(ProxyAddress, proxyAddress);
+        settings.setValue(ProxyPort, proxyPort);
     } // settings scope
 
     initMainSettings(); // to re-init fixed parameters
@@ -186,6 +201,10 @@ void Preferences::apply()
     dataChanged(false); // reset changed flag
 
     emit newPreferencesApply();
+    if (proxySettingsChanged)
+    {
+        emit onProxySettingsChanged();
+    }
 }
 
 bool Preferences::checkData()
@@ -458,6 +477,6 @@ void Preferences::onProxyStateChanged(int state)
     bool is_enable = state != Qt::Unchecked;
     ui->leProxyAddress->setEnabled(is_enable);
     ui->leProxyPort->setEnabled(is_enable);
-}
 
-//#endif
+    dataChanged();
+}

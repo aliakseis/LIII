@@ -589,3 +589,8 @@ void TorrentManager::setDownloadLimit(int limit)
     settings.download_rate_limit = limit;
     m_session->set_settings(settings);
 }
+
+void TorrentManager::onProxySettingsChanged()
+{
+    setProxySettings(m_session.get());
+}

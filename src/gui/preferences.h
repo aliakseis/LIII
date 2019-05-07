@@ -42,6 +42,7 @@ private:
 Q_SIGNALS:
     void anyDataChanged();
     void newPreferencesApply();
+    void onProxySettingsChanged();
 
 private Q_SLOTS:
     void accept();

@@ -50,6 +50,7 @@ public:
 public Q_SLOTS:
     void on_deleteTaskWithID(int a_id, DownloadType::Type type, int deleteWithFiles);
     void on_pauseTaskWithID(int a_id, DownloadType::Type type);
+    void onProxySettingsChanged();
 
 private Q_SLOTS:
     int cacheResumeTorrentsData(bool fully_data_save = false);

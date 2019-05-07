@@ -1103,7 +1103,7 @@
                <item>
                 <widget class="QCheckBox" name="chbUseProxy">
                  <property name="text">
-                  <string>Use Proxy Server</string>
+                  <string>Use SOCKS 5 Proxy Server</string>
                  </property>
                 </widget>
                </item>
