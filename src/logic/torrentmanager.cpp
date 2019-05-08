@@ -54,15 +54,15 @@ libtorrent::fingerprint getFingerprint()
 void setProxySettings(libtorrent::session* sess)
 {
     using namespace app_settings;
+    libtorrent::proxy_settings s;
     QSettings settings;
     if (settings.value(UseProxy, UseProxy_Default).toBool())
     {
-        libtorrent::proxy_settings s;
         s.type = libtorrent::proxy_settings::socks5;
         s.hostname = settings.value(ProxyAddress).toString().toStdString();
         s.port = settings.value(ProxyPort).toUInt();
-        sess->set_proxy(s);
     }
+    sess->set_proxy(s);
 }
 
 bool loadFastResumeData(const QString& hash, std::vector<char>& buf)
