@@ -29,7 +29,8 @@ namespace {
 class AddTorrentFormHelper : public NotifyHelper
 {
 public:
-    AddTorrentFormHelper(TorrentsListener* listener, const libtorrent::torrent_handle& handle)
+    explicit AddTorrentFormHelper(
+        TorrentsListener* listener, const libtorrent::torrent_handle& handle)
         : m_listener(listener), m_handle(handle)
     {
         moveToThread(QApplication::instance()->thread());
