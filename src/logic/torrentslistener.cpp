@@ -290,7 +290,8 @@ void TorrentsListener::handler(libtorrent::state_changed_alert const& a)
         break;
     case libtorrent::torrent_status::finished:
         {
-            item.setStatus(ItemDC::eFINISHED);
+            item.setStatus(a.handle.status(0x0).paused
+                ? ItemDC::eFINISHED : ItemDC::eSEEDING);
             item.setSpeed(0);
             libtorrent::torrent_status status = a.handle.status(libtorrent::torrent_handle::query_accurate_download_counters);
             item.setSize(status.total_wanted);
