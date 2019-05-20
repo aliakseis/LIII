@@ -5,5 +5,5 @@
 class ConfigurableProxyFactory : public QNetworkProxyFactory
 {
 public:
-	virtual QList<QNetworkProxy> queryProxy(const QNetworkProxyQuery& query) override;
+    QList<QNetworkProxy> queryProxy(const QNetworkProxyQuery& query) override;
 };

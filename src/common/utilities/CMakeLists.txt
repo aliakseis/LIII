@@ -49,7 +49,6 @@ set(HEADERS
 set(SOURCES
 	authentication_helper.cpp
 	autorun_utils.cpp
-	credsretriever.cpp
 	errorcode.cpp
 	logger.cpp
 	translation.cpp
