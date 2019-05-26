@@ -33,7 +33,7 @@ set(CMAKE_MODULE_PATH
 	"${CMAKE_CURRENT_SOURCE_DIR}/cmake"
 )
 
-project(${PROJECT_NAME} VERSION 0.1.0.7)
+project(${PROJECT_NAME} VERSION 0.1.0.8)
 message("Building ${PROJECT_NAME} version ${PROJECT_VERSION}")
 
 ###################################################
@@ -232,9 +232,9 @@ endif()
 ################
 
 if(WIN32)
-	set(RESOURCE_OS		"${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}/winres.rc"			)
-	set(ICON_FILE		"${CMAKE_SOURCE_DIR}/resources/${PROJECT_NAME}/images/icon.ico"	)
-	set(RESOURCE_OS_IN	"${CMAKE_CURRENT_SOURCE_DIR}/resources/winres.rc.in"			)
+	set(RESOURCE_OS		"${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}/winres.rc")
+	set(ICON_FILE		"${CMAKE_SOURCE_DIR}/resources/${PROJECT_NAME}/images/icon.ico")
+	set(RESOURCE_OS_IN	"${CMAKE_CURRENT_SOURCE_DIR}/resources/winres.rc.in")
 elseif(APPLE)
 	set(MACOSX_BUNDLE_ICON_FILE 
 		appicon.icns
@@ -259,11 +259,11 @@ elseif(APPLE)
 	)
 	
 	set(RESOURCE_OS		"${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}/LIII.desktop")
-	set(RESOURCE_OS_IN	"${CMAKE_CURRENT_SOURCE_DIR}/resources/LIII.desktop.in"	)
-	set(ICON_FILE		"${MACOSX_APPICON}"											)
+	set(RESOURCE_OS_IN	"${CMAKE_CURRENT_SOURCE_DIR}/resources/LIII.desktop.in")
+	set(ICON_FILE		"${MACOSX_APPICON}")
 elseif(UNIX)
 	set(RESOURCE_OS		"${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}/LIII.desktop")
-	set(RESOURCE_OS_IN	"${CMAKE_CURRENT_SOURCE_DIR}/resources/LIII.desktop.in"	)
+	set(RESOURCE_OS_IN	"${CMAKE_CURRENT_SOURCE_DIR}/resources/LIII.desktop.in")
 endif()
 
 ##########
