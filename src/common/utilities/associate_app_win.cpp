@@ -29,7 +29,7 @@ void setClassesToSelf(QSettings& settingRoot)
     settingRoot.endGroup();
 }
 
-void associateApp(QString const& ext, WId parent = NULL)
+void associateApp(QString const& ext, const wchar_t* arg, WId parent)
 {
     const bool isChangeNeeded =
         QSettings("HKEY_CLASSES_ROOT\\" + torrentClassName, QSettings::NativeFormat).value(".") != PROJECT_FULLNAME ||
@@ -59,7 +59,7 @@ void associateApp(QString const& ext, WId parent = NULL)
         }
         else
         {
-            utilities::runWithPrivileges(L"--set_as_default_torrent_app", parent);
+            utilities::runWithPrivileges(arg, parent);
         }
     }
     else
@@ -68,12 +68,27 @@ void associateApp(QString const& ext, WId parent = NULL)
     }
 }
 
+void unsetRegKey(QSettings& key)
+{
+    QVariant restoreVal = key.value(torrentClassName + "_backup");
+    if (!restoreVal.isNull())
+    {
+        key.setValue(".", restoreVal);
+        key.remove(torrentClassName + "_backup");
+    }
+    else
+    {
+        key.setValue(".", QVariant());
+        key.remove("");
+    }
+
+}
+
 } // namespace
 
 bool utilities::isDefaultTorrentApp()
 {
     const bool isSelf =
-        QSettings("HKEY_CLASSES_ROOT\\Magnet", QSettings::NativeFormat).value(".") == torrentClassName &&
         QSettings("HKEY_CLASSES_ROOT\\.torrent", QSettings::NativeFormat).value(".") == torrentClassName &&
         QSettings("HKEY_CLASSES_ROOT\\" + torrentClassName + "\\shell\\open\\command", QSettings::NativeFormat).value(".") == QString("\"%1\" \"%2\"").arg(QDir::toNativeSeparators(QCoreApplication::applicationFilePath()), "%1") &&
         QSettings("HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\FileExts\\.torrent\\UserChoice", QSettings::NativeFormat).value("ProgId") == torrentClassName;
@@ -85,13 +100,9 @@ void utilities::setDefaultTorrentApp(WId parent)
 {
     qDebug() << Q_FUNC_INFO;
 
-    associateApp(".torrent", parent);
-    associateApp("Magnet", parent);
-    QSettings("HKEY_CLASSES_ROOT\\Magnet", QSettings::NativeFormat).setValue("URL Protocol", QString()); // to recognize "magnet:" as an uri protocol
+    associateApp(".torrent", L"--set_as_default_torrent_app", parent);
 
-    setClassesToSelf(QSettings("HKEY_CURRENT_USER\\Software\\Classes\\Magnet", QSettings::NativeFormat));
     setClassesToSelf(QSettings("HKEY_CURRENT_USER\\Software\\Classes\\.torrent", QSettings::NativeFormat));
-
 
     QSettings torrentExt("HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\FileExts\\.torrent", QSettings::NativeFormat);
 
@@ -111,33 +122,13 @@ void utilities::setDefaultTorrentApp(WId parent)
     torrentExt.endGroup();
 }
 
-void unsetRegKey(QSettings& key)
-{
-    QVariant restoreVal = key.value(torrentClassName + "_backup");
-    if (!restoreVal.isNull())
-    {
-        key.setValue(".", restoreVal);
-        key.remove(torrentClassName + "_backup");
-    }
-    else
-    {
-        key.setValue(".", QVariant());
-        key.remove("");
-    }
-
-}
 
 void utilities::unsetDefaultTorrentApp()
 {
     qDebug() << Q_FUNC_INFO;
 
-    // TODO: set to previous default app
-
-    // for now, delete settings
-
     if (isAdminRights())
     {
-        unsetRegKey(QSettings("HKEY_CLASSES_ROOT\\Magnet", QSettings::NativeFormat));
         unsetRegKey(QSettings("HKEY_CLASSES_ROOT\\.torrent", QSettings::NativeFormat));
     }
     else if (isDefaultTorrentApp())
@@ -145,8 +136,42 @@ void utilities::unsetDefaultTorrentApp()
         runWithPrivileges(L"--unset_as_default_torrent_app");
     }
 
-    unsetRegKey(QSettings("HKEY_CURRENT_USER\\Software\\Classes\\Magnet", QSettings::NativeFormat));
     unsetRegKey(QSettings("HKEY_CURRENT_USER\\Software\\Classes\\.torrent", QSettings::NativeFormat));
 
     unsetRegKey(QSettings("HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\FileExts\\.torrent", QSettings::NativeFormat));
+}
+
+bool utilities::isDefaultMagnetApp()
+{
+    const bool isSelf =
+        QSettings("HKEY_CLASSES_ROOT\\Magnet", QSettings::NativeFormat).value(".") == torrentClassName &&
+        QSettings("HKEY_CLASSES_ROOT\\" + torrentClassName + "\\shell\\open\\command", QSettings::NativeFormat).value(".") == QString("\"%1\" \"%2\"").arg(QDir::toNativeSeparators(QCoreApplication::applicationFilePath()), "%1");
+
+    return isSelf;
+}
+
+void utilities::setDefaultMagnetApp(WId parent)
+{
+    qDebug() << Q_FUNC_INFO;
+
+    associateApp("Magnet", L"--set_as_default_magnet_app", parent);
+    QSettings("HKEY_CLASSES_ROOT\\Magnet", QSettings::NativeFormat).setValue("URL Protocol", QString()); // to recognize "magnet:" as an uri protocol
+
+    setClassesToSelf(QSettings("HKEY_CURRENT_USER\\Software\\Classes\\Magnet", QSettings::NativeFormat));
+}
+
+void utilities::unsetDefaultMagnetApp()
+{
+    qDebug() << Q_FUNC_INFO;
+
+    if (isAdminRights())
+    {
+        unsetRegKey(QSettings("HKEY_CLASSES_ROOT\\Magnet", QSettings::NativeFormat));
+    }
+    else if (isDefaultTorrentApp())
+    {
+        runWithPrivileges(L"--unset_as_default_magnet_app");
+    }
+
+    unsetRegKey(QSettings("HKEY_CURRENT_USER\\Software\\Classes\\Magnet", QSettings::NativeFormat));
 }

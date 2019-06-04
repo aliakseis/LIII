@@ -17,6 +17,21 @@ void utilities::unsetDefaultTorrentApp()
 
 }
 
+bool utilities::isDefaultMagnetApp()
+{
+    return false;
+}
+
+void utilities::setDefaultMagnetApp(WId parent)
+{
+
+}
+
+void utilities::unsetDefaultMagnetApp()
+{
+
+}
+
 void runWithPrivileges()
 {
 }

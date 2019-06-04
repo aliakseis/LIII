@@ -65,6 +65,10 @@ Preferences::Preferences(QWidget* parent, TAB tab)
 
     VERIFY(connect(ui->torrentAssociateCheckbox, SIGNAL(stateChanged(int)), SLOT(on_torrentAssociateCheckBoxChanged(int))));
     VERIFY(connect(ui->torrentAssociateCheckbox, SIGNAL(stateChanged(int)), SIGNAL(anyDataChanged())));
+
+    VERIFY(connect(ui->magnetAssociateCheckbox, SIGNAL(stateChanged(int)), SLOT(on_magnetAssociateCheckBoxChanged(int))));
+    VERIFY(connect(ui->magnetAssociateCheckbox, SIGNAL(stateChanged(int)), SIGNAL(anyDataChanged())));
+
     VERIFY(connect(ui->torrentPortSettingEdit, SIGNAL(textChanged(QString)), SIGNAL(anyDataChanged())));
     VERIFY(connect(ui->torrentSpeedUploadLimitSpin, SIGNAL(valueChanged(QString)), SIGNAL(anyDataChanged())));
     VERIFY(connect(ui->torrentStartAsSequel, SIGNAL(stateChanged(int)), SIGNAL(anyDataChanged())));
@@ -141,7 +145,7 @@ void Preferences::apply()
         TorrentManager::Instance()->setDownloadLimit(ui->cbTrafficLimit->isChecked() ? ui->sbTrafficLimit->value() * 1024 : 0);
         TorrentManager::Instance()->setUploadLimit(ui->torrentSpeedLimitedCheckbox->isChecked() ? ui->torrentSpeedUploadLimitSpin->value() * 1024 : 0);
 
-        bool shouldBeDefaultTorrentApp = ui->torrentAssociateCheckbox->isChecked();
+        const bool shouldBeDefaultTorrentApp = ui->torrentAssociateCheckbox->isChecked();
         if (shouldBeDefaultTorrentApp != utilities::isDefaultTorrentApp())
         {
             if (shouldBeDefaultTorrentApp)
@@ -151,6 +155,19 @@ void Preferences::apply()
             else
             {
                 utilities::unsetDefaultTorrentApp();
+            }
+        }
+
+        const bool shouldBeDefaultMagnetApp = ui->magnetAssociateCheckbox->isChecked();
+        if (shouldBeDefaultMagnetApp != utilities::isDefaultMagnetApp())
+        {
+            if (shouldBeDefaultMagnetApp)
+            {
+                utilities::setDefaultMagnetApp(winId());
+            }
+            else
+            {
+                utilities::unsetDefaultMagnetApp();
             }
         }
 
@@ -369,6 +386,7 @@ void Preferences::initMainSettings()
 
     ui->torrentStartAsSequel->setChecked(settings.value(TorrentsSequentialDownload, TorrentsSequentialDownload_Default).toBool());
     ui->torrentAssociateCheckbox->setChecked(utilities::isDefaultTorrentApp());
+    ui->magnetAssociateCheckbox->setChecked(utilities::isDefaultMagnetApp());
 
     ui->torrentSpeedLimitedCheckbox->setChecked(settings.value(IsTrafficUploadLimited, IsTrafficUploadLimited_Default).toBool());
     ui->torrentSpeedUploadLimitSpin->setValue(settings.value(TrafficUploadLimitKbs, TrafficUploadLimitKbs_Default).toInt());
@@ -468,6 +486,16 @@ void Preferences::on_torrentAssociateCheckBoxChanged(int state)
     if (Qt::Checked == state)
     {
         ui->torrentAssociateCheckbox->setEnabled(false);
+    }
+#endif
+}
+
+void Preferences::on_magnetAssociateCheckBoxChanged(int state)
+{
+#ifndef DEVELOPER_FEATURES
+    if (Qt::Checked == state)
+    {
+        ui->magnetAssociateCheckbox->setEnabled(false);
     }
 #endif
 }

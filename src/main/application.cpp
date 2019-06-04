@@ -96,6 +96,16 @@ void Application::checkSpecialCmdLine()
             utilities::unsetDefaultTorrentApp();
             missionDone = true;
         }
+        else if (args[1] == "--set_as_default_magnet_app")
+        {
+            utilities::setDefaultMagnetApp();
+            missionDone = true;
+        }
+        else if (args[1] == "--unset_as_default_magnet_app")
+        {
+            utilities::unsetDefaultMagnetApp();
+            missionDone = true;
+        }
 
         if (args[1] == "--windows_firewall_apply" || (args.size() == 3 && args[2] == "--windows_firewall_apply"))
         {

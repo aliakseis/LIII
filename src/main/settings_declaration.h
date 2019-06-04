@@ -56,6 +56,9 @@ const bool ShowExitWarning_Default = true;
 const char ShowAssociateTorrentDialog[] = "ShowAssociateTorrentDialog";
 const bool ShowAssociateTorrentDialog_Default = true;
 
+const char ShowAssociateMagnetDialog[] = "ShowAssociateMagnetDialog";
+const bool ShowAssociateMagnetDialog_Default = true;
+
 const char ShowSysTrayNotificationOnHide[] = "ShowSysTrayNotificationOnHide";
 const bool ShowSysTrayNotificationOnHide_Default = true;
 

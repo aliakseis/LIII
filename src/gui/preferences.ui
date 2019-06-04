@@ -759,7 +759,14 @@
             <item>
              <widget class="QCheckBox" name="torrentAssociateCheckbox">
               <property name="text">
-               <string>Associate Torrent files with LIII (.torrent files and magnet URLs)</string>
+               <string>Associate .torrent files with LIII</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QCheckBox" name="magnetAssociateCheckbox">
+              <property name="text">
+               <string>Associate Magnet URLs with LIII</string>
               </property>
              </widget>
             </item>

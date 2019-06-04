@@ -39,6 +39,7 @@ Tr::Translation MINIMIZE_TEXT = Tr::translate("MainWindow",
 Tr::Translation EXIT_TEXT                            = Tr::translate("MainWindow", 
     "<span style=\"margin-bottom:14px;\">Are you sure you wish to exit %1?</span><br/>Download and seeding will be stopped when <br style=\"font-size:20px\"/>closing this window.");
 Tr::Translation ASSOCIATE_TORRENT_TEXT               = Tr::translate("MainWindow", "Would you like to make %1 the default torrent application?");
+Tr::Translation ASSOCIATE_MAGNET_TEXT                = Tr::translate("MainWindow", "Would you like to make %1 the default magnet application?");
 Tr::Translation DUPLICATE_TORRENT_HEADER             = Tr::translate("MainWindow", "Torrent is already in the list");
 Tr::Translation DUPLICATE_TORRENT_TEXT               = Tr::translate("MainWindow", "The Torrent you are trying to add is already in the list of Torrents.\nDo you want to load the trackers from it?");
 

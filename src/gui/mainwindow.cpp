@@ -191,8 +191,8 @@ void MainWindow::showMainWindowAndPerformChecks()
 
 void MainWindow::checkDefaultTorrentApplication()
 {
-    const bool initiallyShowDialog = ShowAssociateTorrentDialog_Default && !utilities::IsPortableMode();
-    if (QSettings().value(ShowAssociateTorrentDialog, initiallyShowDialog).toBool()
+    const bool initiallyShowTorrentDialog = ShowAssociateTorrentDialog_Default && !utilities::IsPortableMode();
+    if (QSettings().value(ShowAssociateTorrentDialog, initiallyShowTorrentDialog).toBool()
         && !utilities::isDefaultTorrentApp())
     {
         QMessageBox msgBox(
@@ -211,6 +211,29 @@ void MainWindow::checkDefaultTorrentApplication()
         if (result)
         {
             utilities::setDefaultTorrentApp(winId());
+        }
+    }
+
+    const bool initiallyShowMagnetDialog = ShowAssociateMagnetDialog_Default && !utilities::IsPortableMode();
+    if (QSettings().value(ShowAssociateMagnetDialog, initiallyShowMagnetDialog).toBool()
+        && !utilities::isDefaultMagnetApp())
+    {
+        QMessageBox msgBox(
+            QMessageBox::NoIcon,
+            ::Tr::Tr(PROJECT_FULLNAME_TRANSLATION),
+            ::Tr::Tr(ASSOCIATE_MAGNET_TEXT).arg(PROJECT_NAME),
+            QMessageBox::Yes | QMessageBox::No,
+            this);
+        msgBox.setDefaultButton(QMessageBox::Yes);
+        msgBox.setCheckBox(new QCheckBox(::Tr::Tr(DONT_SHOW_THIS_AGAIN)));
+
+        const bool result = msgBox.exec() == QMessageBox::Yes;
+
+        const bool isDontShowMeChecked = msgBox.checkBox()->isChecked();
+        QSettings().setValue(ShowAssociateMagnetDialog, !isDontShowMeChecked);
+        if (result)
+        {
+            utilities::setDefaultMagnetApp(winId());
         }
     }
 }
