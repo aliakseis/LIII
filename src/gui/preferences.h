@@ -49,8 +49,6 @@ private Q_SLOTS:
     void apply();
     void on_btnResetWarnings_clicked();
     void on_pbBrowse_clicked();
-    void on_torrentAssociateCheckBoxChanged(int);
-    void on_magnetAssociateCheckBoxChanged(int);
 
     void on_radioTorrentPortAuto_toggled(bool);
     void on_torrentRandomPortButton_clicked();

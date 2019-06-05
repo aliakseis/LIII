@@ -123,7 +123,7 @@ void utilities::setDefaultTorrentApp(WId parent)
 }
 
 
-void utilities::unsetDefaultTorrentApp()
+void utilities::unsetDefaultTorrentApp(WId parent)
 {
     qDebug() << Q_FUNC_INFO;
 
@@ -133,7 +133,7 @@ void utilities::unsetDefaultTorrentApp()
     }
     else if (isDefaultTorrentApp())
     {
-        runWithPrivileges(L"--unset_as_default_torrent_app");
+        runWithPrivileges(L"--unset_as_default_torrent_app", parent);
     }
 
     unsetRegKey(QSettings("HKEY_CURRENT_USER\\Software\\Classes\\.torrent", QSettings::NativeFormat));
@@ -160,7 +160,7 @@ void utilities::setDefaultMagnetApp(WId parent)
     setClassesToSelf(QSettings("HKEY_CURRENT_USER\\Software\\Classes\\Magnet", QSettings::NativeFormat));
 }
 
-void utilities::unsetDefaultMagnetApp()
+void utilities::unsetDefaultMagnetApp(WId parent)
 {
     qDebug() << Q_FUNC_INFO;
 
@@ -170,7 +170,7 @@ void utilities::unsetDefaultMagnetApp()
     }
     else if (isDefaultTorrentApp())
     {
-        runWithPrivileges(L"--unset_as_default_magnet_app");
+        runWithPrivileges(L"--unset_as_default_magnet_app", parent);
     }
 
     unsetRegKey(QSettings("HKEY_CURRENT_USER\\Software\\Classes\\Magnet", QSettings::NativeFormat));

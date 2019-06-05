@@ -386,7 +386,7 @@ libtorrent::torrent_handle TorrentManager::addTorrent(
     torrentParams.storage_mode = libtorrent::storage_mode_allocate;
 
     const bool enable_file_dialog = interactive 
-        && QSettings().value(ShowAddTorrentDialog, ShowAddTorrentDialog_Default).toBool();
+        && QSettings().value(ShowAddTorrentDialog, true).toBool();
     // TODO: may be two different functions
     const bool is_adding_from_file = DownloadType::determineType(torrOrMagnet) != DownloadType::MagnetLink;
     if (!is_adding_from_file)

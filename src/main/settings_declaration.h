@@ -27,9 +27,6 @@ const bool IsTrafficLimited_Default = false;
 const char TrafficLimitKbs[] = "TrafficLimitKbs";
 const int TrafficLimitKbs_Default = 1000;
 
-const char ShowAddTorrentDialog[] = "ShowAddTorrentDialog";
-const bool ShowAddTorrentDialog_Default = true;
-
 const char TorrentsSequentialDownload[] = "TorrentsSequentialDownload";
 const bool TorrentsSequentialDownload_Default = true;
 
@@ -41,26 +38,21 @@ const bool UnlimitedLabel_Default = false;
 const char MaximumNumberLoads[] = "MaximumNumberLoads";
 const int MaximumNumberLoads_Default = 5;
 
+const char ShowAddTorrentDialog[] = "ShowAddTorrentDialog";
+
 const char ShowSysTrayNotifications[] = "ShowSysTrayNotifications";
-const bool ShowSysTrayNotifications_Default = true;
 
 const char ShowCancelWarning[] = "ShowCancelWarning";
-const bool ShowCancelWarning_Default = true;
 
 const char ShowCleanupWarning[] = "ShowCleanupWarning";
-const bool ShowCleanupWarning_Default = true;
 
 const char ShowExitWarning[] = "ShowExitWarning";
-const bool ShowExitWarning_Default = true;
 
 const char ShowAssociateTorrentDialog[] = "ShowAssociateTorrentDialog";
-const bool ShowAssociateTorrentDialog_Default = true;
 
 const char ShowAssociateMagnetDialog[] = "ShowAssociateMagnetDialog";
-const bool ShowAssociateMagnetDialog_Default = true;
 
 const char ShowSysTrayNotificationOnHide[] = "ShowSysTrayNotificationOnHide";
-const bool ShowSysTrayNotificationOnHide_Default = true;
 
 const char DeleteToRecycleBin[] = "DeleteToRecycleBin";
 const bool DeleteToRecycleBin_Default = true;

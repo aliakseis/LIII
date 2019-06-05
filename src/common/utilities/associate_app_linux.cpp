@@ -7,12 +7,12 @@ bool utilities::isDefaultTorrentApp()
 	return false;
 }
 
-void utilities::setDefaultTorrentApp(WId parent)
+void utilities::setDefaultTorrentApp(WId)
 {
 
 }
 
-void utilities::unsetDefaultTorrentApp()
+void utilities::unsetDefaultTorrentApp(WId)
 {
 
 }
@@ -22,12 +22,12 @@ bool utilities::isDefaultMagnetApp()
     return false;
 }
 
-void utilities::setDefaultMagnetApp(WId parent)
+void utilities::setDefaultMagnetApp(WId)
 {
 
 }
 
-void utilities::unsetDefaultMagnetApp()
+void utilities::unsetDefaultMagnetApp(WId)
 {
 
 }

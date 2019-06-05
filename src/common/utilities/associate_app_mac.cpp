@@ -10,12 +10,12 @@ bool utilities::isDefaultTorrentApp()
 	return Darwin::isDefaultForExtension(QString("torrent"));
 }
 
-void utilities::setDefaultTorrentApp(WId parent)
+void utilities::setDefaultTorrentApp(WId)
 {
 	Darwin::setAsDefaultForExtension(QString("torrent"));
 }
 
-void utilities::unsetDefaultTorrentApp()
+void utilities::unsetDefaultTorrentApp(WId)
 {
 
 }
@@ -25,12 +25,12 @@ bool utilities::isDefaultMagnetApp()
     return Darwin::isDefaultForURI(QString("magnet"));
 }
 
-void utilities::setDefaultMagnetApp(WId parent)
+void utilities::setDefaultMagnetApp(WId)
 {
     Darwin::setAsDefaultForURI(QString("magnet"));
 }
 
-void utilities::unsetDefaultMagnetApp()
+void utilities::unsetDefaultMagnetApp(WId)
 {
 
 }

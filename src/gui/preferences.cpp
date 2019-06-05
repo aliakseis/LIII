@@ -17,6 +17,7 @@
 #include "utilities/utils.h"
 #include "utilities/translatable.h"
 #include "utilities/autorun_utils.h"
+#include "utilities/filesystem_utils.h"
 
 #include "settings_declaration.h"
 #include "global_functions.h"
@@ -63,10 +64,8 @@ Preferences::Preferences(QWidget* parent, TAB tab)
 
     VERIFY(connect(this, SIGNAL(anyDataChanged()), SLOT(dataChanged())));
 
-    VERIFY(connect(ui->torrentAssociateCheckbox, SIGNAL(stateChanged(int)), SLOT(on_torrentAssociateCheckBoxChanged(int))));
     VERIFY(connect(ui->torrentAssociateCheckbox, SIGNAL(stateChanged(int)), SIGNAL(anyDataChanged())));
 
-    VERIFY(connect(ui->magnetAssociateCheckbox, SIGNAL(stateChanged(int)), SLOT(on_magnetAssociateCheckBoxChanged(int))));
     VERIFY(connect(ui->magnetAssociateCheckbox, SIGNAL(stateChanged(int)), SIGNAL(anyDataChanged())));
 
     VERIFY(connect(ui->torrentPortSettingEdit, SIGNAL(textChanged(QString)), SIGNAL(anyDataChanged())));
@@ -154,7 +153,7 @@ void Preferences::apply()
             }
             else
             {
-                utilities::unsetDefaultTorrentApp();
+                utilities::unsetDefaultTorrentApp(winId());
             }
         }
 
@@ -167,7 +166,7 @@ void Preferences::apply()
             }
             else
             {
-                utilities::unsetDefaultMagnetApp();
+                utilities::unsetDefaultMagnetApp(winId());
             }
         }
 
@@ -339,7 +338,11 @@ void Preferences::on_btnResetWarnings_clicked()
         settings.setValue(ShowSysTrayNotifications, true);
         settings.setValue(ShowSysTrayNotificationOnHide, true);
         settings.setValue(ShowAddTorrentDialog, true);
-        settings.setValue(ShowAssociateTorrentDialog, true);
+        if (!utilities::IsPortableMode())
+        {
+            settings.setValue(ShowAssociateTorrentDialog, true);
+            settings.setValue(ShowAssociateMagnetDialog, true);
+        }
     }
 }
 
@@ -397,7 +400,7 @@ void Preferences::initMainSettings()
     ui->cbTrafficLimit->setChecked(settings.value(IsTrafficLimited, IsTrafficLimited_Default).toBool());
     ui->sbTrafficLimit->setValue(settings.value(TrafficLimitKbs, TrafficLimitKbs_Default).toInt());
 
-    ui->cbHideAllTrayNotification->setChecked(!settings.value(ShowSysTrayNotifications, ShowSysTrayNotifications_Default).toBool());
+    ui->cbHideAllTrayNotification->setChecked(!settings.value(ShowSysTrayNotifications, true).toBool());
 
     ui->chbUseProxy->setChecked(settings.value(UseProxy, UseProxy_Default).toBool());
     ui->leProxyAddress->setText(settings.value(ProxyAddress).toString());
@@ -478,26 +481,6 @@ void Preferences::keyPressEvent(QKeyEvent* event)
     }
 #endif
     QDialog::keyPressEvent(event);
-}
-
-void Preferences::on_torrentAssociateCheckBoxChanged(int state)
-{
-#ifndef DEVELOPER_FEATURES
-    if (Qt::Checked == state)
-    {
-        ui->torrentAssociateCheckbox->setEnabled(false);
-    }
-#endif
-}
-
-void Preferences::on_magnetAssociateCheckBoxChanged(int state)
-{
-#ifndef DEVELOPER_FEATURES
-    if (Qt::Checked == state)
-    {
-        ui->magnetAssociateCheckbox->setEnabled(false);
-    }
-#endif
 }
 
 void Preferences::onProxyStateChanged(int state)

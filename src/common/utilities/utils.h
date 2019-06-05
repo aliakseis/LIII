@@ -107,7 +107,7 @@ bool CheckPortAvailable(int targetPort, const char** reason);
 
 #ifdef Q_OS_WIN
 bool isAdminRights();
-void runWithPrivileges(const wchar_t* arg, WId parent = NULL);
+void runWithPrivileges(const wchar_t* arg, WId parent);
 #endif
 
 QMainWindow* getMainWindow();

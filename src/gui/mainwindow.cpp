@@ -24,6 +24,7 @@
 #include "utilities/utils.h"
 #include "utilities/translation.h"
 #include "utilities/associate_app.h"
+#include "utilities/filesystem_utils.h"
 
 #include "torrentmanager.h"
 
@@ -191,8 +192,7 @@ void MainWindow::showMainWindowAndPerformChecks()
 
 void MainWindow::checkDefaultTorrentApplication()
 {
-    const bool initiallyShowTorrentDialog = ShowAssociateTorrentDialog_Default && !utilities::IsPortableMode();
-    if (QSettings().value(ShowAssociateTorrentDialog, initiallyShowTorrentDialog).toBool()
+    if (QSettings().value(ShowAssociateTorrentDialog, !utilities::IsPortableMode()).toBool()
         && !utilities::isDefaultTorrentApp())
     {
         QMessageBox msgBox(
@@ -204,18 +204,15 @@ void MainWindow::checkDefaultTorrentApplication()
         msgBox.setDefaultButton(QMessageBox::Yes);
         msgBox.setCheckBox(new QCheckBox(::Tr::Tr(DONT_SHOW_THIS_AGAIN)));
 
-        const bool result = msgBox.exec() == QMessageBox::Yes;
-
-        const bool isDontShowMeChecked = msgBox.checkBox()->isChecked();
-        QSettings().setValue(ShowAssociateTorrentDialog, !isDontShowMeChecked);
-        if (result)
+        if (msgBox.exec() == QMessageBox::Yes)
         {
             utilities::setDefaultTorrentApp(winId());
         }
+
+        QSettings().setValue(ShowAssociateTorrentDialog, !msgBox.checkBox()->isChecked());
     }
 
-    const bool initiallyShowMagnetDialog = ShowAssociateMagnetDialog_Default && !utilities::IsPortableMode();
-    if (QSettings().value(ShowAssociateMagnetDialog, initiallyShowMagnetDialog).toBool()
+    if (QSettings().value(ShowAssociateMagnetDialog, !utilities::IsPortableMode()).toBool()
         && !utilities::isDefaultMagnetApp())
     {
         QMessageBox msgBox(
@@ -227,14 +224,12 @@ void MainWindow::checkDefaultTorrentApplication()
         msgBox.setDefaultButton(QMessageBox::Yes);
         msgBox.setCheckBox(new QCheckBox(::Tr::Tr(DONT_SHOW_THIS_AGAIN)));
 
-        const bool result = msgBox.exec() == QMessageBox::Yes;
-
-        const bool isDontShowMeChecked = msgBox.checkBox()->isChecked();
-        QSettings().setValue(ShowAssociateMagnetDialog, !isDontShowMeChecked);
-        if (result)
+        if (msgBox.exec() == QMessageBox::Yes)
         {
             utilities::setDefaultMagnetApp(winId());
         }
+
+        QSettings().setValue(ShowAssociateMagnetDialog, !msgBox.checkBox()->isChecked());
     }
 }
 
@@ -289,7 +284,7 @@ void MainWindow::closeApp()
     {
         isrunning = true;
         if (m_dlManager->isWorking() 
-            && QSettings().value(ShowExitWarning, ShowExitWarning_Default).toBool())
+            && QSettings().value(ShowExitWarning, true).toBool())
         {
             QMessageBox msgBox(
                 QMessageBox::NoIcon,
@@ -425,7 +420,7 @@ void MainWindow::on_buttonPaste_clicked()
 
 void MainWindow::on_clearButton_clicked()
 {
-    if (QSettings().value(ShowCleanupWarning, ShowCleanupWarning_Default).toBool())
+    if (QSettings().value(ShowCleanupWarning, true).toBool())
     {
         QMessageBox msgBox(
             QMessageBox::NoIcon,
@@ -584,8 +579,8 @@ void MainWindow::dropEvent(QDropEvent* event)
 
 void MainWindow::showHideNotify()
 {
-    if (QSettings().value(ShowSysTrayNotifications, ShowSysTrayNotifications_Default).toBool()
-        && QSettings().value(ShowSysTrayNotificationOnHide, ShowSysTrayNotificationOnHide_Default).toBool())
+    if (QSettings().value(ShowSysTrayNotifications, true).toBool()
+        && QSettings().value(ShowSysTrayNotificationOnHide, true).toBool())
     {
         QSettings().setValue(ShowSysTrayNotificationOnHide, false);
         showTrayMessage(::Tr::Tr(MINIMIZE_TEXT).arg(PROJECT_NAME));
@@ -595,7 +590,7 @@ void MainWindow::showHideNotify()
 void MainWindow::showTrayNotifDwnldFinish(const QString& str)
 {
 
-    if (QSettings().value(ShowSysTrayNotifications, ShowSysTrayNotifications_Default).toBool())
+    if (QSettings().value(ShowSysTrayNotifications, true).toBool())
     {
 #ifdef Q_OS_WIN
         showTrayMessage(tr("File \"%1\" was downloaded").arg(str));

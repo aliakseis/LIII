@@ -422,7 +422,7 @@ bool DownloadCollectionTreeView::cancelDownloadingQuestion(bool totally)
 
     bool result = true;
 
-    if (QSettings().value(ShowCancelWarning, ShowCancelWarning_Default).toBool() && !totally)
+    if (QSettings().value(ShowCancelWarning, true).toBool() && !totally)
     {
         QModelIndexList selectedRows = selectionModel()->selectedRows();
 
