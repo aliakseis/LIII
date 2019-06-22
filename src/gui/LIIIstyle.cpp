@@ -10,9 +10,13 @@ enum { ROUND_RADIUS = 3, FONT_SIZE = 8 };
 enum { ROUND_RADIUS = 7, FONT_SIZE = 10 };
 #endif //Q_OS_WIN
 
+namespace {
+
 #ifdef Q_OS_WIN32
 QRect windowsClassicBug;
 #endif
+
+} // namespace
 
 void LIIIStyle::drawControl(ControlElement element, const QStyleOption* option, QPainter* painter, const QWidget* widget) const
 {
