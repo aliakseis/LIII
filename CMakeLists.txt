@@ -33,7 +33,7 @@ set(CMAKE_MODULE_PATH
 	"${CMAKE_CURRENT_SOURCE_DIR}/cmake"
 )
 
-project(${PROJECT_NAME} VERSION 0.1.0.9)
+project(${PROJECT_NAME} VERSION 0.1.0.10)
 message("Building ${PROJECT_NAME} version ${PROJECT_VERSION}")
 
 ###################################################
@@ -292,6 +292,7 @@ endif (APPLE)
 
 set(TS_FILES
 	${CMAKE_SOURCE_DIR}/translations/translations_en.ts
+	${CMAKE_SOURCE_DIR}/translations/translations_pt-br.ts
 )
 
 set(FILES_TO_TRANSLATE

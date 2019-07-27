@@ -269,7 +269,7 @@ TorrentManager::TorrentManager()
         "dht.aelitis.com"
     })
     {
-        m_session->add_dht_router(std::make_pair(std::string(node), 6881));
+        m_session->add_dht_router({ node, 6881 });
     }
 
     // Regular saving of fastresume data
@@ -354,7 +354,7 @@ int TorrentManager::cacheResumeTorrentsData(bool fully_data_save /* = false */)
 void TorrentManager::setListeningPort(int firstPort, int lastPort)
 {
     libtorrent::error_code ec;
-    m_session->listen_on(std::make_pair(firstPort, lastPort), ec);
+    m_session->listen_on({ firstPort, lastPort }, ec);
     if (ec)
     {
         qWarning() << QString("failed to open listen socket: %1").arg(QString::fromStdString(ec.message()));

@@ -56,6 +56,11 @@ QString languageString(const utilities::Tr::Translation& translation, const QStr
         langStr = QString("%1 (%2)").arg(loc.nativeLanguageName(), QLocale::languageToString(loc.language()));
     }
 
+    if (!langStr.isEmpty())
+    {
+        langStr[0] = langStr[0].toUpper();
+    }
+
     return langStr;
 }
 
@@ -63,8 +68,8 @@ QString locationString(const QString& fileName)
 {
     QString locName;
 
-    // parse location from filenames like LIII_en.qm ONLY
-    QRegExp rx("^.+_(\\S{2})\\.qm$", Qt::CaseInsensitive);
+    // parse location from filenames like LIII_en(-us)?.qm ONLY
+    QRegExp rx("^.+_(\\S{2}(?:-\\S{2})?)\\.qm$", Qt::CaseInsensitive);
     if (rx.exactMatch(fileName))
     {
         locName = rx.cap(1).toLower();
@@ -118,14 +123,15 @@ std::map<QString, QString> Translatable::availableLanguages()
 
             if (!langStr.isEmpty())
             {
-                result.insert(std::make_pair(locName, langStr));
+                result.insert({ locName, langStr });
             }
         }
     }
 
-    if (result.empty())
+    const char enKey[] = "en";
+    if (result.find(enKey) == result.end())
     {
-        result.insert(std::make_pair("en", LANGUAGE_NAME.key));
+        result.insert({ enKey, LANGUAGE_NAME.key });
     }
 
     return result;
