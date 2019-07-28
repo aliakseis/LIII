@@ -62,6 +62,6 @@ private Q_SLOTS:
     void onProxyStateChanged(int state);
 
 protected:
-    virtual void keyPressEvent(QKeyEvent* event) override;
+    void keyPressEvent(QKeyEvent* event) override;
 };
 

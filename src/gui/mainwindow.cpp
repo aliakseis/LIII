@@ -48,8 +48,6 @@
 
 namespace Tr = utilities::Tr;
 
-using utilities::Credential;
-
 using namespace app_settings;
 
 namespace {

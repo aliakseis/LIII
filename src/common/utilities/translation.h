@@ -96,7 +96,7 @@ public:
     }
     bool equals(const IQStringSetterDelegate* other) const override
     {
-        const QStringSetterDelegateImpl<T>* otherImpl = dynamic_cast<const QStringSetterDelegateImpl<T>*>(other);
+        auto otherImpl = dynamic_cast<const QStringSetterDelegateImpl<T>*>(other);
         return otherImpl != 0 && m_method == otherImpl->m_method;
     }
     size_t hash() const override

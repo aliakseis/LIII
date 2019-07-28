@@ -31,7 +31,7 @@ public:
 
     libtorrent::torrent_handle torrentHandle() const { return m_torrentHandle; }
 
-    int exec();
+    int exec() override;
 private Q_SLOTS:
     void updateDiskSpaceLabel();
     void checkAcceptAvailable();

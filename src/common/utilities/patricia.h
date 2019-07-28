@@ -207,7 +207,7 @@ public:
             while (cur->branch_bit < first_bit_diff);
         }
 
-        TrieNode* t = new TrieNode(std::move(szKey), &v, first_bit_diff);
+        auto t = new TrieNode(std::move(szKey), &v, first_bit_diff);
 
         // Key_Block was saved from above, this avoids some costly recomputation. 
         if (is_bit_set(*key_block, first_bit_diff & BIT_MASK))

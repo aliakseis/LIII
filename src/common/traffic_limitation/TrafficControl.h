@@ -10,18 +10,11 @@ namespace traffic_limitation
 
 struct ISocketReadInterceptor
 {
-    ISocketReadInterceptor()
-        : isInterceptorSet(false)
-    {
-    }
-
-    virtual ~ISocketReadInterceptor()
-    {
-    }
+    virtual ~ISocketReadInterceptor() = default;
 
     virtual bool intercept(QSocketNotifier* notifier, QEvent* event) = 0;
 
-    bool isInterceptorSet;
+    bool isInterceptorSet = false;
 };
 
 

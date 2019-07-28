@@ -139,7 +139,8 @@ bool DownloadManager::createNewTask(ItemDC& a_item)
         m_prepareTasks[a_item.getID()] = dlTask;
         return true;
     }
-    else if (DownloadType::isTorrentDownload(dlType))
+
+    if (DownloadType::isTorrentDownload(dlType))
     {
         if (TorrentManager::Instance()->resumeTorrent(a_item.getID()))
         {

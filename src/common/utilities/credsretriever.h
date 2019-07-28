@@ -14,7 +14,7 @@ public:
 class CredentialsRetriever : public ICredentialsRetriever
 {
 public:
-    virtual void SetCredentials(const Credential& cred) { m_cred = cred; }
+    void SetCredentials(const Credential& cred) override { m_cred = cred; }
     Credential& cred() { return m_cred; }
 
 private:

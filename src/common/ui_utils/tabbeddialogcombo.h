@@ -11,8 +11,8 @@ class TabbedDialogCombo : public QComboBox
 public:
     explicit TabbedDialogCombo(QWidget* parent = 0);
 
-    virtual bool eventFilter(QObject* receiver, QEvent* event) override;
-    virtual void showPopup();
+    bool eventFilter(QObject* receiver, QEvent* event) override;
+    void showPopup() override;
 
 private:
     QTabWidget* getTabParent();
