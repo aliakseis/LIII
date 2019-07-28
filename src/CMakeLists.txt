@@ -356,7 +356,6 @@ if(APPLE)
 endif(APPLE)
 
 set(PROJECT_LIBRARIES
-#	Settings
 	Utilities
 	QtSingleApplication
 	Download

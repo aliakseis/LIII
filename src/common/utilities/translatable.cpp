@@ -21,7 +21,8 @@ QString getTranslationsFolder()
     {
         return trPath.absoluteFilePath("translations");
     }
-    return QDir(QApplication::applicationDirPath()).absoluteFilePath("translations");
+    const auto translations = QDir(QApplication::applicationDirPath()).absoluteFilePath("translations");
+    return QFileInfo::exists(translations)? translations : QApplication::applicationDirPath();
 #elif defined(Q_OS_MAC)
     QStringList binPathList = QApplication::applicationDirPath().split(QDir::separator(), QString::SkipEmptyParts);
     binPathList.removeLast();
