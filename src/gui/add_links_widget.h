@@ -8,5 +8,4 @@ class AddLinksWidget
     Q_OBJECT
 public:
     explicit AddLinksWidget(QWidget* parent = 0);
-    typedef QTreeWidget baseClass;
 };

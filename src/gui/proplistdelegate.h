@@ -3,9 +3,6 @@
 #include <QStyledItemDelegate>
 #include "torrentcontentmodelitem.h"
 
-// Defines for properties list columns
-typedef TorrentContentModelItem::TreeItemColumns PropColumn;
-
 
 class PropListDelegate: public QStyledItemDelegate
 {

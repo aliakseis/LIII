@@ -21,7 +21,6 @@
 #include <knownfolders.h>
 #include <ShTypes.h>
 #include <objbase.h>
-typedef HRESULT(STDAPICALLTYPE* GetPathFunc)(REFKNOWNFOLDERID, DWORD, HANDLE, PWSTR*);
 #endif
 
 namespace {

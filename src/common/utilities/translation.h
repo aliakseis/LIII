@@ -34,8 +34,6 @@ struct Translation
     int n;
 };
 
-typedef QVector<QString> QStringVector;
-
 
 struct ITranslationRule
 {
@@ -56,7 +54,7 @@ public:
 
 private:
     Translation translateArgs_;
-    QStringVector expand_;
+    QVector<QString> expand_;
 };
 
 class TextTranslationRule : public ITranslationRule
