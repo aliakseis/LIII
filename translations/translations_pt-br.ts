@@ -48,18 +48,17 @@
     </message>
     <message>
         <location filename="../src/main/globals.h" line="47"/>
-        <extracomment>No links in clipboard error message text</extracomment>
-<source>No valid links were found in clipboard.&lt;br/&gt;Copy links and click &apos;Paste Link&apos; again.</source>
+        <source>No valid links were found in clipboard.&lt;br/&gt;Copy links and click &apos;Paste Link&apos; again.</source>
         <comment>No links in clipboard error message text</comment>
         <translation>Nenhum link válido foi encontrado na área de transferência.&lt;br/&gt;Copie os links e clique em &quot;Colar link&quot; novamente.</translation>
     </message>
     <message>
-        <location filename="../src/main/globals.h" line="82"/>
+        <location filename="../src/main/globals.h" line="81"/>
         <source>High Priority</source>
         <translation>Alta prioridade</translation>
     </message>
     <message>
-        <location filename="../src/main/globals.h" line="83"/>
+        <location filename="../src/main/globals.h" line="82"/>
         <source>Low Priority</source>
         <translation>Prioridade baixa</translation>
     </message>
@@ -127,81 +126,163 @@
         <translation>Não mostrar novamente</translation>
     </message>
     <message>
-        <location filename="../src/gui/addtorrentform.cpp" line="176"/>
+        <location filename="../src/gui/addtorrentform.cpp" line="178"/>
         <source>Download torrent to...</source>
         <translation>Baixar torrent em...</translation>
     </message>
 </context>
 <context>
-    <name>QLineEdit</name>
+    <name>Application</name>
     <message>
-        <location filename="../src/common/utilities/qttranslation.h" line="34"/>
-        <source>Select All</source>
-        <translation>Selecionar todos</translation>
+        <location filename="../src/main/application.cpp" line="58"/>
+        <source>Allow %1 on Firewall</source>
+        <translation>Permitir %1 no firewall</translation>
     </message>
     <message>
-        <location filename="../src/common/utilities/qttranslation.h" line="35"/>
-        <source>&amp;Undo</source>
-        <translation>&amp;Desfazer</translation>
+        <location filename="../src/main/application.cpp" line="66"/>
+        <source>%1 failed to apply firewall rules. Please&lt;br&gt;setup your firewall manually.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/common/utilities/qttranslation.h" line="36"/>
-        <source>&amp;Redo</source>
-        <translation>&amp;Refazer</translation>
+        <location filename="../src/main/application.cpp" line="73"/>
+        <source>Click &quot;Yes&quot; on the User Account Control notification in your taskbar to continue using %1.</source>
+        <translation>Clique em &quot;Sim&quot; na notificação do Controle de Conta de Usuário na barra de tarefas para continuar usando %1.</translation>
+    </message>
+</context>
+<context>
+    <name>DownloadCollectionModel</name>
+    <message>
+        <location filename="../src/logic/downloadcollectionmodel.cpp" line="202"/>
+        <location filename="../src/logic/downloadcollectionmodel.cpp" line="241"/>
+        <source>Error: </source>
+        <translation>Erro: </translation>
     </message>
     <message>
-        <location filename="../src/common/utilities/qttranslation.h" line="37"/>
-        <source>Cu&amp;t</source>
-        <translation>Cor&amp;tar</translation>
+        <location filename="../src/logic/downloadcollectionmodel.cpp" line="980"/>
+        <source>Error</source>
+        <translation>Erro</translation>
     </message>
     <message>
-        <location filename="../src/common/utilities/qttranslation.h" line="38"/>
-        <source>&amp;Copy</source>
-        <translation>&amp;Copiar</translation>
+        <location filename="../src/logic/downloadcollectionmodel.cpp" line="980"/>
+        <source>Not enough space on disk &apos;%1:&apos;
+Cannot save data!</source>
+        <translation>Não há espaço suficiente no disco &apos;%1:&apos;
+
+Não é possível salvar os dados!</translation>
+    </message>
+</context>
+<context>
+    <name>ErrorMsg</name>
+    <message>
+        <location filename="../src/common/utilities/errorcode.cpp" line="9"/>
+        <source>Unknown error</source>
+        <translation>Erro desconhecido</translation>
     </message>
     <message>
-        <location filename="../src/common/utilities/qttranslation.h" line="39"/>
-        <source>&amp;Paste</source>
-        <translation>Co&amp;lar</translation>
+        <location filename="../src/common/utilities/errorcode.cpp" line="10"/>
+        <source>Can&apos;t open file for writing</source>
+        <translation>Não foi possível abrir o arquivo para escrever</translation>
     </message>
     <message>
-        <location filename="../src/common/utilities/qttranslation.h" line="40"/>
-        <source>Delete</source>
-        <translation>Excluir</translation>
+        <location filename="../src/common/utilities/errorcode.cpp" line="11"/>
+        <source>Downloader network error</source>
+        <translation>Erro de rede do downloader</translation>
+    </message>
+    <message>
+        <location filename="../src/common/utilities/errorcode.cpp" line="12"/>
+        <source>HTTP status &gt; 400</source>
+        <translation>Status HTTP &gt; 400</translation>
+    </message>
+    <message>
+        <location filename="../src/common/utilities/errorcode.cpp" line="13"/>
+        <source>Invalid content</source>
+        <translation>Conteúdo inválido</translation>
+    </message>
+    <message>
+        <location filename="../src/common/utilities/errorcode.cpp" line="14"/>
+        <source>Endless redirect loop</source>
+        <translation>Loop de redirecionamento infinito</translation>
+    </message>
+    <message>
+        <location filename="../src/common/utilities/errorcode.cpp" line="15"/>
+        <source>Unknown file error</source>
+        <translation>Erro de arquivo desconhecido</translation>
+    </message>
+    <message>
+        <location filename="../src/common/utilities/errorcode.h" line="35"/>
+        <source>Network error: %1</source>
+        <translation>Erro de rede: %1</translation>
+    </message>
+    <message>
+        <location filename="../src/common/utilities/errorcode.h" line="36"/>
+        <source>HTTP status: %1</source>
+        <translation>Status HTTP: %1</translation>
+    </message>
+</context>
+<context>
+    <name>LoginDialog</name>
+    <message>
+        <location filename="../build/src/ui_logindialog.h" line="128"/>
+        <source>Authentication required</source>
+        <translation>Autentificação necessária</translation>
+    </message>
+    <message>
+        <location filename="../build/src/ui_logindialog.h" line="129"/>
+        <source>This network resource requires authentication.
+Please, enter login and password.</source>
+        <translation>Este recurso de rede requer autenticação.
+
+Por favor, insira o login e senha.</translation>
+    </message>
+    <message>
+        <location filename="../build/src/ui_logindialog.h" line="131"/>
+        <source>Login</source>
+        <translation>Login</translation>
+    </message>
+    <message>
+        <location filename="../build/src/ui_logindialog.h" line="132"/>
+        <source>Password</source>
+        <translation>Senha</translation>
     </message>
 </context>
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../build/src/ui_mainwindow.h" line="572"/>
-        <location filename="../build/src/ui_mainwindow.h" line="583"/>
-        <location filename="../src/main/globals.h" line="85"/>
+        <location filename="../build/src/ui_mainwindow.h" line="573"/>
+        <location filename="../build/src/ui_mainwindow.h" line="584"/>
+        <location filename="../src/main/globals.h" line="84"/>
         <source>Cancel</source>
         <translation>Cancelar</translation>
     </message>
     <message>
-        <location filename="../src/main/globals.h" line="90"/>
+        <location filename="../src/main/globals.h" line="89"/>
         <source>Don&apos;t show this again</source>
         <translation>Não mostrar novamente</translation>
     </message>
     <message>
-        <location filename="../build/src/ui_mainwindow.h" line="565"/>
+        <location filename="../build/src/ui_mainwindow.h" line="566"/>
         <source>Close</source>
         <translation>Fechar</translation>
     </message>
     <message>
-        <location filename="../build/src/ui_mainwindow.h" line="566"/>
-        <location filename="../src/common/ui_utils/mainwindowwithtray.cpp" line="16"/>
+        <location filename="../build/src/ui_mainwindow.h" line="567"/>
+        <location filename="../src/common/ui_utils/mainwindowwithtray.cpp" line="17"/>
         <source>Exit</source>
         <translation>Sair</translation>
     </message>
     <message>
-        <location filename="../build/src/ui_mainwindow.h" line="569"/>
+        <location filename="../build/src/ui_mainwindow.h" line="570"/>
         <source>Pause selected</source>
         <translation>Pausar selecionado</translation>
     </message>
     <message>
-        <location filename="../build/src/ui_mainwindow.h" line="598"/>
+        <location filename="../build/src/ui_mainwindow.h" line="577"/>
+        <location filename="../build/src/ui_mainwindow.h" line="581"/>
+        <source>Start</source>
+        <translation type="unfinished">Iniciar</translation>
+    </message>
+    <message>
+        <location filename="../build/src/ui_mainwindow.h" line="599"/>
         <source>Paste your links here</source>
         <translation>Cole seus links aqui</translation>
     </message>
@@ -212,133 +293,139 @@
         <translation>Pausar</translation>
     </message>
     <message>
-        <location filename="../build/src/ui_mainwindow.h" line="586"/>
+        <location filename="../build/src/ui_mainwindow.h" line="587"/>
         <source>Open downloaded files&apos; folder</source>
         <translation>Abrir pasta de downloads</translation>
     </message>
     <message>
-        <location filename="../build/src/ui_mainwindow.h" line="588"/>
+        <location filename="../build/src/ui_mainwindow.h" line="589"/>
         <source>My Downloads</source>
         <translation>Meus downloads</translation>
     </message>
     <message>
-        <location filename="../build/src/ui_mainwindow.h" line="602"/>
+        <location filename="../build/src/ui_mainwindow.h" line="603"/>
         <source>Paste links here ...</source>
         <translation>Cole os links aqui...</translation>
     </message>
     <message>
-        <location filename="../build/src/ui_mainwindow.h" line="567"/>
-        <location filename="../build/src/ui_mainwindow.h" line="600"/>
+        <location filename="../build/src/ui_mainwindow.h" line="568"/>
+        <location filename="../build/src/ui_mainwindow.h" line="601"/>
         <source>Paste link</source>
         <translation>Colar link</translation>
     </message>
     <message>
-        <location filename="../build/src/ui_mainwindow.h" line="568"/>
-        <location filename="../build/src/ui_mainwindow.h" line="584"/>
+        <location filename="../build/src/ui_mainwindow.h" line="569"/>
+        <location filename="../build/src/ui_mainwindow.h" line="585"/>
         <source>Remove completed</source>
         <translation>Remover concluídos</translation>
     </message>
     <message>
-        <location filename="../build/src/ui_mainwindow.h" line="570"/>
+        <location filename="../build/src/ui_mainwindow.h" line="571"/>
         <source>Open Settings</source>
         <translation>Abrir configurações</translation>
     </message>
     <message>
-        <location filename="../build/src/ui_mainwindow.h" line="573"/>
+        <location filename="../build/src/ui_mainwindow.h" line="572"/>
+        <location filename="../build/src/ui_mainwindow.h" line="582"/>
+        <source>Pause</source>
+        <translation type="unfinished">Pausar</translation>
+    </message>
+    <message>
+        <location filename="../build/src/ui_mainwindow.h" line="574"/>
         <source>Pause All Downloads</source>
         <translation>Pausar todos downloads</translation>
     </message>
     <message>
-        <location filename="../build/src/ui_mainwindow.h" line="574"/>
+        <location filename="../build/src/ui_mainwindow.h" line="575"/>
         <source>Start All Downloads</source>
         <translation>Iniciar todos downloads</translation>
     </message>
     <message>
-        <location filename="../build/src/ui_mainwindow.h" line="575"/>
+        <location filename="../build/src/ui_mainwindow.h" line="576"/>
         <source>Stop All Downloads</source>
         <translation>Parar todos downloads</translation>
     </message>
     <message>
-        <location filename="../src/main/globals.h" line="54"/>
+        <location filename="../src/main/globals.h" line="55"/>
         <source>Start</source>
         <comment>Start label</comment>
         <translation>Iniciar</translation>
     </message>
     <message>
-        <location filename="../build/src/ui_mainwindow.h" line="577"/>
-        <location filename="../build/src/ui_mainwindow.h" line="582"/>
+        <location filename="../build/src/ui_mainwindow.h" line="578"/>
+        <location filename="../build/src/ui_mainwindow.h" line="583"/>
         <source>Stop</source>
         <translation>Parar</translation>
     </message>
     <message>
-        <location filename="../build/src/ui_mainwindow.h" line="578"/>
+        <location filename="../build/src/ui_mainwindow.h" line="579"/>
         <source>Open</source>
         <translation>Abrir</translation>
     </message>
     <message>
-        <location filename="../build/src/ui_mainwindow.h" line="579"/>
+        <location filename="../build/src/ui_mainwindow.h" line="580"/>
         <source>Ctrl+O</source>
         <translation>Ctrl+O</translation>
     </message>
     <message>
-        <location filename="../build/src/ui_mainwindow.h" line="590"/>
+        <location filename="../build/src/ui_mainwindow.h" line="591"/>
         <source>Open settings page</source>
         <translation>Abrir página de configurações</translation>
     </message>
     <message>
-        <location filename="../build/src/ui_mainwindow.h" line="594"/>
+        <location filename="../build/src/ui_mainwindow.h" line="595"/>
         <source>Add Torrent</source>
         <translation>Adicionar torrent</translation>
     </message>
     <message>
-        <location filename="../build/src/ui_mainwindow.h" line="604"/>
+        <location filename="../build/src/ui_mainwindow.h" line="605"/>
         <source>Download</source>
         <translation>Download</translation>
     </message>
     <message>
-        <location filename="../build/src/ui_mainwindow.h" line="608"/>
+        <location filename="../build/src/ui_mainwindow.h" line="609"/>
         <source>File</source>
         <translation>Arquivo</translation>
     </message>
     <message>
-        <location filename="../build/src/ui_mainwindow.h" line="609"/>
+        <location filename="../build/src/ui_mainwindow.h" line="610"/>
         <source>Edit</source>
         <translation>Editar</translation>
     </message>
     <message>
-        <location filename="../build/src/ui_mainwindow.h" line="610"/>
+        <location filename="../build/src/ui_mainwindow.h" line="611"/>
         <source>Help</source>
         <translation>Ajuda</translation>
     </message>
     <message>
-        <location filename="../build/src/ui_mainwindow.h" line="611"/>
+        <location filename="../build/src/ui_mainwindow.h" line="612"/>
         <source>Tools</source>
         <translation>Ferramentas</translation>
     </message>
     <message>
-        <location filename="../src/main/globals.h" line="37"/>
+        <location filename="../src/main/globals.h" line="33"/>
         <source>Are you sure you want to remove completed downloads?</source>
         <translation>Você tem certeza de que deseja remover os downloads concluídos?</translation>
     </message>
     <message>
-        <location filename="../src/main/globals.h" line="39"/>
+        <location filename="../src/main/globals.h" line="35"/>
         <source>Are you sure you wish to delete this download?&lt;br/&gt;Deleting will stop the download and remove the&lt;br style=&quot;font-size:20px&quot;/&gt;item from the disk.</source>
         <translation>Você tem certeza de que deseja excluir este download?&lt;br/&gt;Ao prosseguir com a exclusão, o download irá parar e o &lt;br style=&quot;font-size:20px&quot;/&gt;arquivo será apagado do disco.</translation>
     </message>
     <message>
-        <location filename="../src/main/globals.h" line="40"/>
+        <location filename="../src/main/globals.h" line="36"/>
         <source>Are you sure you wish to cancel this download?&lt;br/&gt;Canceling will stop the download and remove the&lt;br style=&quot;font-size:20px&quot;/&gt;item from the list.</source>
         <translation>Você tem certeza de que deseja cancelar este download?&lt;br/&gt;&lt;br/&gt;Ao prosseguir com o cancelamento, o download irá parar e o&lt;br style=&quot;font-size:20px&quot;/&gt;item será removido da lista.</translation>
     </message>
     <message>
         <location filename="../src/main/globals.h" line="41"/>
-        <source>&lt;span style=&quot;margin-bottom:14px;&quot;&gt;Are you sure you wish to exit %1?&lt;/span&gt;&lt;br/&gt;Video playback and download will be stopped when &lt;br style=&quot;font-size:20px&quot;/&gt;closing this window.</source>
-        <translation>&lt;span style=&quot;margin-bottom:14px;&quot;&gt;Você tem certeza de que deseja sair do %1?&lt;/span&gt;&lt;br/&gt;A reprodução do vídeo e o download será parado ao &lt;br style=&quot;font-size:20px&quot;/&gt;fechar esta janela.</translation>
+        <source>Would you like to make %1 the default torrent application?</source>
+        <translation>Você gostaria de tornar %1 o programa de torrent padrão?</translation>
     </message>
     <message>
         <location filename="../src/main/globals.h" line="42"/>
-        <source>Would you like to make %1 the default torrent application?</source>
-        <translation>Você gostaria de tornar %1 o programa de torrent padrão?</translation>
+        <source>Would you like to make %1 the default magnet application?</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/main/globals.h" line="43"/>
@@ -346,332 +433,486 @@
         <translation>O torrent já está na lista</translation>
     </message>
     <message>
-    <source>The Torrent you are trying to add is already in the list of Torrents.
+        <location filename="../src/main/globals.h" line="44"/>
+        <source>The Torrent you are trying to add is already in the list of Torrents.
 Do you want to load the trackers from it?</source>
         <translation>O torrent que você está tentando adicionar já esta na lista de torrents.
 
 Você deseja carregar a lista de rastreadores a partir dele?</translation>
     </message>
     <message>
-        <location filename="../src/main/globals.h" line="55"/>
+        <location filename="../src/main/globals.h" line="56"/>
         <source>Torrent details</source>
         <translation>Detalhes do torrent</translation>
     </message>
     <message>
-        <location filename="../src/main/globals.h" line="57"/>
+        <location filename="../src/main/globals.h" line="58"/>
         <source>Paste links here to start downloading them (Ctrl+V)</source>
         <translation>Cole os links aqui para começar a baixá-los (Ctrl + V)</translation>
     </message>
     <message>
-        <location filename="../src/main/globals.h" line="58"/>
+        <location filename="../src/main/globals.h" line="59"/>
         <source>Unknown</source>
         <translation>Desconhecido</translation>
     </message>
     <message>
-        <location filename="../src/main/globals.h" line="59"/>
+        <location filename="../src/main/globals.h" line="60"/>
         <source>Downloading</source>
         <translation>Baixando</translation>
     </message>
     <message>
-        <location filename="../src/main/globals.h" line="60"/>
+        <location filename="../src/main/globals.h" line="61"/>
         <source>Connecting...</source>
         <translation>Conectando...</translation>
     </message>
     <message>
-        <location filename="../src/main/globals.h" line="61"/>
+        <location filename="../src/main/globals.h" line="62"/>
         <source>Queued</source>
         <translation>Na fila</translation>
     </message>
     <message>
-        <location filename="../src/main/globals.h" line="62"/>
-        <source>Waiting...</source>
-        <translation>Aguardando...</translation>
-    </message>
-    <message>
         <location filename="../src/main/globals.h" line="63"/>
-        <source>Waiting (%1 sec.)</source>
-        <translation>Aguardando (%1 seg.)</translation>
-    </message>
-    <message>
-        <location filename="../src/main/globals.h" line="64"/>
         <source>Paused</source>
         <translation>Pausado</translation>
     </message>
     <message>
-        <location filename="../src/main/globals.h" line="65"/>
+        <location filename="../src/main/globals.h" line="64"/>
         <source>Stopped</source>
         <translation>Parado</translation>
     </message>
     <message>
-        <location filename="../src/main/globals.h" line="66"/>
+        <location filename="../src/main/globals.h" line="65"/>
         <source>Failed</source>
         <translation>Falhou</translation>
     </message>
     <message>
-        <location filename="../src/main/globals.h" line="67"/>
+        <location filename="../src/main/globals.h" line="66"/>
         <source>Complete</source>
         <translation>Concluído</translation>
     </message>
     <message>
-        <location filename="../src/main/globals.h" line="69"/>
+        <location filename="../src/main/globals.h" line="68"/>
         <source>Stalled</source>
         <translation>Estagnado</translation>
     </message>
     <message>
-        <location filename="../src/main/globals.h" line="71"/>
+        <location filename="../src/main/globals.h" line="70"/>
         <source>Seeding</source>
         <translation>Enviando</translation>
     </message>
     <message>
-        <location filename="../src/main/globals.h" line="72"/>
+        <location filename="../src/main/globals.h" line="71"/>
         <source>Starting</source>
         <translation>Iniciando</translation>
     </message>
     <message>
-        <location filename="../src/main/globals.h" line="74"/>
+        <location filename="../src/main/globals.h" line="73"/>
         <source>Name</source>
         <translation>Nome</translation>
     </message>
     <message>
-        <location filename="../src/main/globals.h" line="76"/>
+        <location filename="../src/main/globals.h" line="75"/>
         <source>Speed down</source>
         <translation>Vel. down</translation>
     </message>
     <message>
-        <location filename="../src/main/globals.h" line="77"/>
+        <location filename="../src/main/globals.h" line="76"/>
         <source>Speed up</source>
         <translation>Vel. up</translation>
     </message>
     <message>
-        <location filename="../src/main/globals.h" line="84"/>
+        <location filename="../src/main/globals.h" line="83"/>
         <source>Open in folder</source>
         <translation>Abrir na pasta</translation>
     </message>
     <message>
-        <location filename="../src/main/globals.h" line="75"/>
+        <location filename="../src/main/globals.h" line="74"/>
         <source>Status</source>
         <translation>Status</translation>
     </message>
     <message>
-        <location filename="../src/main/globals.h" line="78"/>
+        <location filename="../src/main/globals.h" line="37"/>
+        <source>Application %1 is still running!
+Application %1 will continue to run so that download and seeding won&apos;t be stopped.
+To completely exit %1, righ-click the tray icon then click Exit.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/main/globals.h" line="39"/>
+        <source>&lt;span style=&quot;margin-bottom:14px;&quot;&gt;Are you sure you wish to exit %1?&lt;/span&gt;&lt;br/&gt;Download and seeding will be stopped when &lt;br style=&quot;font-size:20px&quot;/&gt;closing this window.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/main/globals.h" line="77"/>
         <source>Progress</source>
         <translation>Progresso</translation>
     </message>
     <message>
-        <location filename="../src/main/globals.h" line="79"/>
+        <location filename="../src/main/globals.h" line="78"/>
         <source>Size</source>
         <translation>Tamanho</translation>
     </message>
     <message>
-        <location filename="../src/main/globals.h" line="80"/>
+        <location filename="../src/main/globals.h" line="79"/>
         <source>Source</source>
         <translation>Fonte</translation>
     </message>
     <message>
-        <location filename="../src/main/globals.h" line="88"/>
+        <location filename="../src/main/globals.h" line="87"/>
         <source>About %1</source>
         <translation>Sobre %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="432"/>
-        <location filename="../src/main/globals.h" line="86"/>
+        <location filename="../src/gui/mainwindow.cpp" line="430"/>
+        <location filename="../src/main/globals.h" line="85"/>
         <source>Remove</source>
         <translation>Remover</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="600"/>
-        <source>%1 continues running. Click this button to open it</source>
-        <translation>%1 continua em execução. Clique neste botão para abrir</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/mainwindow.cpp" line="610"/>
-        <location filename="../src/gui/mainwindow.cpp" line="612"/>
+        <location filename="../src/gui/mainwindow.cpp" line="594"/>
+        <location filename="../src/gui/mainwindow.cpp" line="596"/>
         <source>File &quot;%1&quot; was downloaded</source>
         <translation>O arquivo &quot;%1&quot; foi baixado</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="612"/>
+        <location filename="../src/gui/mainwindow.cpp" line="596"/>
         <source>File downloaded</source>
         <translation>Arquivo baixado</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="622"/>
+        <location filename="../src/gui/mainwindow.cpp" line="606"/>
         <source>Select a Torrent to open</source>
         <translation>Selecione o torrent para abrir</translation>
     </message>
     <message>
-        <location filename="../src/common/ui_utils/mainwindowwithtray.cpp" line="17"/>
+        <location filename="../src/common/ui_utils/mainwindowwithtray.cpp" line="18"/>
         <source>Show %1</source>
         <translation>Mostrar %1</translation>
     </message>
 </context>
 <context>
+    <name>PeersInfoModel</name>
+    <message>
+        <location filename="../src/logic/peersinfomodel.cpp" line="85"/>
+        <source>Speed down</source>
+        <translation>Vel. down</translation>
+    </message>
+    <message>
+        <location filename="../src/logic/peersinfomodel.cpp" line="83"/>
+        <source>Speed up</source>
+        <translation>Vel. up</translation>
+    </message>
+    <message>
+        <location filename="../src/logic/peersinfomodel.cpp" line="52"/>
+        <source>%1 KB/s</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/logic/peersinfomodel.cpp" line="81"/>
+        <source>Progress</source>
+        <translation>Progresso</translation>
+    </message>
+    <message>
+        <location filename="../src/logic/peersinfomodel.cpp" line="75"/>
+        <source>Client name</source>
+        <translation>Nome do cliente:</translation>
+    </message>
+    <message>
+        <location filename="../src/logic/peersinfomodel.cpp" line="77"/>
+        <source>Country</source>
+        <translation>País</translation>
+    </message>
+    <message>
+        <location filename="../src/logic/peersinfomodel.cpp" line="79"/>
+        <source>IP address</source>
+        <translation>Endereço de IP</translation>
+    </message>
+</context>
+<context>
     <name>Preferences</name>
     <message>
-        <location filename="../build/src/ui_preferences.h" line="673"/>
+        <location filename="../build/src/ui_preferences.h" line="793"/>
         <source>Cancel</source>
         <translation>Cancelar</translation>
     </message>
     <message>
-        <location filename="../build/src/ui_preferences.h" line="646"/>
+        <location filename="../build/src/ui_preferences.h" line="760"/>
         <source>Download folder:</source>
         <translation>Pasta de download:</translation>
     </message>
     <message>
-        <location filename="../build/src/ui_preferences.h" line="645"/>
+        <location filename="../build/src/ui_preferences.h" line="759"/>
         <source>Settings</source>
         <translation>Configurações</translation>
     </message>
     <message>
-        <location filename="../build/src/ui_preferences.h" line="647"/>
+        <location filename="../build/src/ui_preferences.h" line="761"/>
         <source>Change</source>
         <translation>Alterar</translation>
     </message>
     <message>
-        <location filename="../build/src/ui_preferences.h" line="659"/>
+        <location filename="../build/src/ui_preferences.h" line="772"/>
+        <source>Associate .torrent files with LIII</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../build/src/ui_preferences.h" line="773"/>
+        <source>Associate Magnet URLs with LIII</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../build/src/ui_preferences.h" line="774"/>
         <source>Playback settings</source>
         <translation>Configurações de reprodução</translation>
     </message>
     <message>
-        <location filename="../build/src/ui_preferences.h" line="654"/>
+        <location filename="../build/src/ui_preferences.h" line="768"/>
         <source>Download limitations</source>
         <translation>Limitações de transferências</translation>
     </message>
     <message>
-        <location filename="../build/src/ui_preferences.h" line="655"/>
+        <location filename="../build/src/ui_preferences.h" line="769"/>
         <source>Maximum simultaneous downloads</source>
         <translation>Máximo de downloads simultâneos</translation>
     </message>
     <message>
-        <location filename="../build/src/ui_preferences.h" line="656"/>
-        <location filename="../build/src/ui_preferences.h" line="668"/>
+        <location filename="../build/src/ui_preferences.h" line="770"/>
+        <location filename="../build/src/ui_preferences.h" line="783"/>
         <source>Maximum bandwidth (kB/s)</source>
         <translation>Largura de banda máxima (kB/s)</translation>
     </message>
     <message>
-        <location filename="../build/src/ui_preferences.h" line="653"/>
+        <location filename="../build/src/ui_preferences.h" line="767"/>
         <source>Application settings</source>
         <translation>Configurações do programa</translation>
     </message>
     <message>
-        <location filename="../build/src/ui_preferences.h" line="648"/>
+        <location filename="../build/src/ui_preferences.h" line="762"/>
         <source>Start LIII when Windows starts up</source>
         <translation>Iniciar LIII ao iniciar o Windows</translation>
     </message>
     <message>
-        <location filename="../build/src/ui_preferences.h" line="649"/>
+        <location filename="../build/src/ui_preferences.h" line="763"/>
         <source>Hide All tray notification</source>
         <translation>Ocultar notificações da bandeja do sistema</translation>
     </message>
     <message>
-        <location filename="../build/src/ui_preferences.h" line="650"/>
+        <location filename="../build/src/ui_preferences.h" line="764"/>
         <source>Reset all warnings dialogs</source>
         <translation>Redefinir todas as janelas de avisos</translation>
     </message>
     <message>
-        <location filename="../build/src/ui_preferences.h" line="651"/>
+        <location filename="../build/src/ui_preferences.h" line="765"/>
         <source>Reset</source>
         <translation>Redefinir</translation>
     </message>
     <message>
-        <location filename="../build/src/ui_preferences.h" line="652"/>
+        <location filename="../build/src/ui_preferences.h" line="766"/>
         <source>Program language</source>
         <translation>Idioma do programa</translation>
     </message>
     <message>
-        <location filename="../build/src/ui_preferences.h" line="657"/>
+        <location filename="../build/src/ui_preferences.h" line="771"/>
         <source>General</source>
         <translation>Geral</translation>
     </message>
     <message>
-        <location filename="../build/src/ui_preferences.h" line="658"/>
-        <source>Associate Torrent files with LIII (.torrent files and magnet URLs)</source>
-        <translation>Associar os arquivos de torrent com o LIII (arquivos .torrent e URLs magnet)</translation>
-    </message>
-    <message>
-        <location filename="../build/src/ui_preferences.h" line="660"/>
+        <location filename="../build/src/ui_preferences.h" line="775"/>
         <source>Start downloading from the beginning to provide better streaming</source>
         <translation>Comece a baixar pelo começo para fornecer um fluxo melhor</translation>
     </message>
     <message>
-        <location filename="../build/src/ui_preferences.h" line="661"/>
+        <location filename="../build/src/ui_preferences.h" line="776"/>
         <source>Listening port</source>
         <translation>Porta de escuta</translation>
     </message>
     <message>
-        <location filename="../build/src/ui_preferences.h" line="662"/>
+        <location filename="../build/src/ui_preferences.h" line="777"/>
         <source>Set port automatically</source>
         <translation>Definir porta automaticamente</translation>
     </message>
     <message>
-        <location filename="../build/src/ui_preferences.h" line="663"/>
+        <location filename="../build/src/ui_preferences.h" line="778"/>
         <source>Set port manually</source>
         <translation>Definir porta manualmente</translation>
     </message>
     <message>
-        <location filename="../build/src/ui_preferences.h" line="665"/>
+        <location filename="../build/src/ui_preferences.h" line="779"/>
+        <source>00000</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../build/src/ui_preferences.h" line="780"/>
         <source>Random port</source>
         <translation>Porta aleatória</translation>
     </message>
     <message>
-        <location filename="../build/src/ui_preferences.h" line="666"/>
+        <location filename="../build/src/ui_preferences.h" line="781"/>
         <source>The port number is not valid. Please enter new or Set port automatically.</source>
         <translation>O número da porta não é válido. Por favor, digite uma nova ou defina a porta automaticamente.</translation>
     </message>
     <message>
-        <location filename="../build/src/ui_preferences.h" line="667"/>
+        <location filename="../build/src/ui_preferences.h" line="782"/>
         <source>Upload (seeding) limitations</source>
         <translation>Limitações de upload (seeding)</translation>
     </message>
     <message>
-        <location filename="../build/src/ui_preferences.h" line="670"/>
+        <location filename="../build/src/ui_preferences.h" line="785"/>
         <source>Torrent</source>
         <translation>Torrent</translation>
     </message>
     <message>
-        <location filename="../build/src/ui_preferences.h" line="671"/>
+        <location filename="../build/src/ui_preferences.h" line="786"/>
+        <source>Configure your proxy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../build/src/ui_preferences.h" line="787"/>
+        <source>Use SOCKS 5 Proxy Server</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../build/src/ui_preferences.h" line="788"/>
+        <source>Proxy Address:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../build/src/ui_preferences.h" line="789"/>
+        <source>Proxy Port:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../build/src/ui_preferences.h" line="790"/>
+        <source>Proxy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../build/src/ui_preferences.h" line="791"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../build/src/ui_preferences.h" line="672"/>
+        <location filename="../build/src/ui_preferences.h" line="792"/>
         <source>Apply</source>
         <translation>Aplicar</translation>
     </message>
     <message>
         <location filename="../src/main/globals.h" line="46"/>
-        <extracomment>Download to dialog header</extracomment>
-<source>Download to:</source>
+        <source>Download to:</source>
         <comment>Download to dialog header</comment>
         <translation>Baixar em:</translation>
     </message>
     <message>
-    <source>All warning dialogs you&apos;ve once hidden will now appear again.
+        <location filename="../src/main/globals.h" line="49"/>
+        <source>All warning dialogs you&apos;ve once hidden will now appear again.
 After returning them you will still be able to hide them back.
 Are you sure you wish to continue?</source>
-        <extracomment>Reset warnings dialog text</extracomment>
-        <translation>Todas as janelas de aviso irá aparecer novamente.
+        <comment>Reset warnings dialog text</comment>
+        <translation type="unfinished">Todas as janelas de aviso irá aparecer novamente.
 
 Depois de retornar os avisos, você ainda poderá ocultá-los.
 
 Você tem certeza que deseja continuar?</translation>
     </message>
     <message>
-        <location filename="../src/main/globals.h" line="51"/>
-        <extracomment>start LIII on starting Windows label</extracomment>
-<source>Start %1 when Windows starts up</source>
+        <location filename="../src/main/globals.h" line="52"/>
+        <source>Start %1 when Windows starts up</source>
         <comment>start LIII on starting Windows label</comment>
         <translation>Iniciar %1 ao iniciar o Windows</translation>
     </message>
     <message>
-        <location filename="../src/gui/preferences.cpp" line="198"/>
+        <location filename="../src/gui/preferences.cpp" line="240"/>
         <source>The folder &quot;%1&quot; cannot be created. Please change.</source>
         <translation>A pasta &quot;%1&quot; não pode ser criada. Por favor, altere.</translation>
     </message>
     <message>
-        <location filename="../src/gui/preferences.cpp" line="230"/>
+        <location filename="../src/gui/preferences.cpp" line="252"/>
+        <source>Enter a valid proxy address.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/preferences.cpp" line="261"/>
+        <source>Enter a valid proxy port.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/preferences.cpp" line="294"/>
         <source>The folder &quot;%1&quot; cannot be used, as there is no write access for %2. Please choose another one.</source>
         <translation>A pasta &quot;%1&quot; não pode ser usada, pois não há acesso de gravação para %2. Por favor, escolha outra pasta.</translation>
+    </message>
+</context>
+<context>
+    <name>PropListDelegate</name>
+    <message>
+        <location filename="../src/gui/proplistdelegate.cpp" line="146"/>
+        <source>Mixed</source>
+        <comment>Mixed (priority)</comment>
+        <translation>Mista</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/proplistdelegate.cpp" line="141"/>
+        <source>Skip</source>
+        <comment>Skip (priority)</comment>
+        <translation>Pular</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/proplistdelegate.cpp" line="72"/>
+        <source>Mixed</source>
+        <comment>Mixed (priorities</comment>
+        <translation type="unfinished">Mista</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/proplistdelegate.cpp" line="75"/>
+        <source>Skip</source>
+        <translation type="unfinished">Pular</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/proplistdelegate.cpp" line="78"/>
+        <location filename="../src/gui/proplistdelegate.cpp" line="140"/>
+        <source>Low</source>
+        <comment>Low (priority)</comment>
+        <translation>Baixa</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/proplistdelegate.cpp" line="81"/>
+        <location filename="../src/gui/proplistdelegate.cpp" line="138"/>
+        <source>High</source>
+        <comment>High (priority)</comment>
+        <translation>Alta</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/proplistdelegate.cpp" line="86"/>
+        <location filename="../src/gui/proplistdelegate.cpp" line="139"/>
+        <source>Normal</source>
+        <comment>Normal (priority)</comment>
+        <translation>Normal</translation>
+    </message>
+</context>
+<context>
+    <name>QAbstractSpinBox</name>
+    <message>
+        <location filename="../src/common/utilities/qttranslation.h" line="42"/>
+        <source>&amp;Step up</source>
+        <translation>&amp;Aumentar</translation>
+    </message>
+    <message>
+        <location filename="../src/common/utilities/qttranslation.h" line="43"/>
+        <source>Step &amp;down</source>
+        <translation>&amp;Diminuir</translation>
+    </message>
+    <message>
+        <location filename="../src/common/utilities/qttranslation.h" line="44"/>
+        <source>&amp;Select All</source>
+        <translation>&amp;Selecionar todos</translation>
+    </message>
+</context>
+<context>
+    <name>QApplication</name>
+    <message>
+        <location filename="../src/common/utilities/qttranslation.h" line="7"/>
+        <source>QT_LAYOUT_DIRECTION</source>
+        <extracomment>Translate this string to the string &apos;LTR&apos; in left-to-right languages or to &apos;RTL&apos; in right-to-left languages (such as Hebrew and Arabic) to get proper widget layout.</extracomment>
+        <translation>left-to-right</translation>
     </message>
 </context>
 <context>
@@ -907,14 +1148,16 @@ Você tem certeza que deseja continuar?</translation>
         <translation>Diretório:</translation>
     </message>
     <message>
-    <source>%1 already exists.
+        <location filename="../src/common/utilities/qttranslation.h" line="66"/>
+        <source>%1 already exists.
 Do you want to replace it?</source>
         <translation>%1 já existe.
 
 Você deseja substituir?</translation>
     </message>
     <message>
-    <source>%1
+        <location filename="../src/common/utilities/qttranslation.h" line="67"/>
+        <source>%1
 File not found.
 Please verify the correct file name was given.</source>
         <translation>%1
@@ -939,7 +1182,8 @@ Por favor, verifique se o nome do arquivo está correto.</translation>
         <translation>Arquivos do tipo:</translation>
     </message>
     <message>
-    <source>%1
+        <location filename="../src/common/utilities/qttranslation.h" line="71"/>
+        <source>%1
 Directory not found.
 Please verify the correct directory name was given.</source>
         <translation>%1
@@ -949,7 +1193,8 @@ Diretório não encontrado.
 Por favor, verifique se o nome do diretório está correto.</translation>
     </message>
     <message>
-    <source>&apos;%1&apos; is write protected.
+        <location filename="../src/common/utilities/qttranslation.h" line="72"/>
+        <source>&apos;%1&apos; is write protected.
 Do you want to delete it anyway?</source>
         <translation>&apos;%1&apos; está protegido contra gravação.
 Você deseja excluir mesmo assim?</translation>
@@ -1056,233 +1301,6 @@ Você deseja excluir mesmo assim?</translation>
     </message>
 </context>
 <context>
-    <name>TorrentDetailsForm</name>
-    <message>
-        <location filename="../build/src/ui_torrentdetailsform.h" line="255"/>
-        <source>...</source>
-        <translation>...</translation>
-    </message>
-    <message>
-        <location filename="../build/src/ui_torrentdetailsform.h" line="257"/>
-        <source>Comment:</source>
-        <translation>Comentário:</translation>
-    </message>
-    <message>
-        <location filename="../build/src/ui_torrentdetailsform.h" line="256"/>
-        <source>Date:</source>
-        <translation>Data:</translation>
-    </message>
-    <message>
-        <location filename="../build/src/ui_torrentdetailsform.h" line="253"/>
-        <source>Size:</source>
-        <translation>Tamanho:</translation>
-    </message>
-    <message>
-        <location filename="../build/src/ui_torrentdetailsform.h" line="258"/>
-        <source>Name:</source>
-        <translation>Nome:</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/torrentdetailsform.cpp" line="257"/>
-        <source>Download torrent to...</source>
-        <translation>Baixando torrent em...</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/torrentdetailsform.cpp" line="224"/>
-        <source>Error</source>
-        <translation>Erros</translation>
-    </message>
-    <message>
-        <location filename="../build/src/ui_torrentdetailsform.h" line="252"/>
-        <source>Torrent Details</source>
-        <translation>Detalhes do torrent</translation>
-    </message>
-    <message>
-        <location filename="../build/src/ui_torrentdetailsform.h" line="254"/>
-        <source>Saved To:</source>
-        <translation>Salvar em:</translation>
-    </message>
-    <message>
-        <location filename="../build/src/ui_torrentdetailsform.h" line="259"/>
-        <source>xx GB (xx GB available)</source>
-        <translation>xx GB (xx GB disponível)</translation>
-    </message>
-    <message>
-        <location filename="../build/src/ui_torrentdetailsform.h" line="260"/>
-        <source>Files</source>
-        <translation>Arquivos</translation>
-    </message>
-    <message>
-        <location filename="../build/src/ui_torrentdetailsform.h" line="261"/>
-        <source>Auto-refresh</source>
-        <translation>Atualização automática</translation>
-    </message>
-    <message>
-        <location filename="../build/src/ui_torrentdetailsform.h" line="262"/>
-        <source>Peers</source>
-        <translation>Peers</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/torrentdetailsform.cpp" line="224"/>
-        <source>Cannot create folder: %1</source>
-        <translation>Não foi possível criar a pasta: %1</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/torrentdetailsform.cpp" line="245"/>
-        <source>You cannot skip all files in torrent.</source>
-        <translation>Você não pode pular todos os arquivos do torrent</translation>
-    </message>
-    <message>
-    <source>If you don&apos;t want to download it please
-remove or pause the downloading.</source>
-        <translation>Se você não quiser baixá-lo, 
-
-remova ou pause o download</translation>
-    </message>
-</context>
-<context>
-    <name>Application</name>
-    <message>
-        <location filename="../src/main/application.cpp" line="58"/>
-        <source>Allow %1 on Firewall</source>
-        <translation>Permitir %1 no firewall</translation>
-    </message>
-    <message>
-        <location filename="../src/main/application.cpp" line="66"/>
-        <source>%1 failed to apply firewall rules. Please&lt;br&gt;setup your firewall manually or &lt;a href=&apos;http://www.</source>
-        <translation>%1 falhou ao aplicar as regras de firewall. Por favor,&lt;br&gt;configure manualmente ou &lt;a href=&apos;http://www.</translation>
-    </message>
-    <message>
-        <location filename="../src/main/application.cpp" line="75"/>
-        <source>Click &quot;Yes&quot; on the User Account Control notification in your taskbar to continue using %1.</source>
-        <translation>Clique em &quot;Sim&quot; na notificação do Controle de Conta de Usuário na barra de tarefas para continuar usando %1.</translation>
-    </message>
-</context>
-<context>
-    <name>DownloadCollectionModel</name>
-    <message>
-        <location filename="../src/logic/downloadcollectionmodel.cpp" line="202"/>
-        <location filename="../src/logic/downloadcollectionmodel.cpp" line="241"/>
-        <source>Error: </source>
-        <translation>Erro: </translation>
-    </message>
-    <message>
-        <location filename="../src/logic/downloadcollectionmodel.cpp" line="983"/>
-        <source>Error</source>
-        <translation>Erro</translation>
-    </message>
-    <message>
-    <source>Not enough space on disk &apos;%1:&apos;
-Cannot save data!</source>
-        <translation>Não há espaço suficiente no disco &apos;%1:&apos;
-
-Não é possível salvar os dados!</translation>
-    </message>
-</context>
-<context>
-    <name>ErrorMsg</name>
-    <message>
-        <location filename="../src/common/utilities/errorcode.cpp" line="9"/>
-        <source>Unknown error</source>
-        <translation>Erro desconhecido</translation>
-    </message>
-    <message>
-        <location filename="../src/common/utilities/errorcode.cpp" line="10"/>
-        <source>Script error</source>
-        <translation>Erro de script</translation>
-    </message>
-    <message>
-        <location filename="../src/common/utilities/errorcode.cpp" line="11"/>
-        <source>Strategy network error</source>
-        <translation>Erro de estratégia na rede</translation>
-    </message>
-    <message>
-        <location filename="../src/common/utilities/errorcode.cpp" line="12"/>
-        <source>HTML Loading error</source>
-        <translation>Erro de carregamento de HTML</translation>
-    </message>
-    <message>
-        <location filename="../src/common/utilities/errorcode.cpp" line="13"/>
-        <source>Manually closed</source>
-        <translation>Fechado manualmente</translation>
-    </message>
-    <message>
-        <location filename="../src/common/utilities/errorcode.cpp" line="14"/>
-        <source>Hanged, waiting too much... enough!</source>
-        <translation>Suspenso, esperando demais ... o suficiente!</translation>
-    </message>
-    <message>
-        <location filename="../src/common/utilities/errorcode.cpp" line="15"/>
-        <source>Can&apos;t open file for writing</source>
-        <translation>Não foi possível abrir o arquivo para escrever</translation>
-    </message>
-    <message>
-        <location filename="../src/common/utilities/errorcode.cpp" line="16"/>
-        <source>Downloader network error</source>
-        <translation>Erro de rede do downloader</translation>
-    </message>
-    <message>
-        <location filename="../src/common/utilities/errorcode.cpp" line="17"/>
-        <source>HTTP status &gt; 400</source>
-        <translation>Status HTTP &gt; 400</translation>
-    </message>
-    <message>
-        <location filename="../src/common/utilities/errorcode.cpp" line="18"/>
-        <source>Invalid content</source>
-        <translation>Conteúdo inválido</translation>
-    </message>
-    <message>
-        <location filename="../src/common/utilities/errorcode.cpp" line="19"/>
-        <source>Endless redirect loop</source>
-        <translation>Loop de redirecionamento infinito</translation>
-    </message>
-    <message>
-        <location filename="../src/common/utilities/errorcode.cpp" line="20"/>
-        <source>Unknown file error</source>
-        <translation>Erro de arquivo desconhecido</translation>
-    </message>
-    <message>
-        <location filename="../src/common/utilities/errorcode.h" line="40"/>
-        <source>Network error: %1</source>
-        <translation>Erro de rede: %1</translation>
-    </message>
-    <message>
-        <location filename="../src/common/utilities/errorcode.h" line="41"/>
-        <source>Download file size mismatch</source>
-        <translation>Tamanho do arquivo de download incompatível.</translation>
-    </message>
-    <message>
-        <location filename="../src/common/utilities/errorcode.h" line="42"/>
-        <source>HTTP status: %1</source>
-        <translation>Status HTTP: %1</translation>
-    </message>
-</context>
-<context>
-    <name>LoginDialog</name>
-    <message>
-        <location filename="../build/src/ui_logindialog.h" line="128"/>
-        <source>Authentication required</source>
-        <translation>Autentificação necessária</translation>
-    </message>
-    <message>
-    <source>This network resource requires authentication.
-Please, enter login and password.</source>
-        <translation>Este recurso de rede requer autenticação.
-
-Por favor, insira o login e senha.</translation>
-    </message>
-    <message>
-        <location filename="../build/src/ui_logindialog.h" line="131"/>
-        <source>Login</source>
-        <translation>Login</translation>
-    </message>
-    <message>
-        <location filename="../build/src/ui_logindialog.h" line="132"/>
-        <source>Password</source>
-        <translation>Senha</translation>
-    </message>
-</context>
-<context>
     <name>QFileSystemModel</name>
     <message>
         <location filename="../src/common/utilities/qttranslation.h" line="99"/>
@@ -1356,149 +1374,168 @@ Por favor, insira o login e senha.</translation>
     </message>
 </context>
 <context>
+    <name>QLineEdit</name>
+    <message>
+        <location filename="../src/common/utilities/qttranslation.h" line="34"/>
+        <source>Select All</source>
+        <translation>Selecionar todos</translation>
+    </message>
+    <message>
+        <location filename="../src/common/utilities/qttranslation.h" line="35"/>
+        <source>&amp;Undo</source>
+        <translation>&amp;Desfazer</translation>
+    </message>
+    <message>
+        <location filename="../src/common/utilities/qttranslation.h" line="36"/>
+        <source>&amp;Redo</source>
+        <translation>&amp;Refazer</translation>
+    </message>
+    <message>
+        <location filename="../src/common/utilities/qttranslation.h" line="37"/>
+        <source>Cu&amp;t</source>
+        <translation>Cor&amp;tar</translation>
+    </message>
+    <message>
+        <location filename="../src/common/utilities/qttranslation.h" line="38"/>
+        <source>&amp;Copy</source>
+        <translation>&amp;Copiar</translation>
+    </message>
+    <message>
+        <location filename="../src/common/utilities/qttranslation.h" line="39"/>
+        <source>&amp;Paste</source>
+        <translation>Co&amp;lar</translation>
+    </message>
+    <message>
+        <location filename="../src/common/utilities/qttranslation.h" line="40"/>
+        <source>Delete</source>
+        <translation>Excluir</translation>
+    </message>
+</context>
+<context>
     <name>TorrentContentModel</name>
     <message>
-        <location filename="../src/logic/torrentcontentmodel.cpp" line="11"/>
+        <location filename="../src/logic/torrentcontentmodel.cpp" line="20"/>
         <source>Name</source>
         <translation>Nome</translation>
     </message>
     <message>
-        <location filename="../src/logic/torrentcontentmodel.cpp" line="11"/>
+        <location filename="../src/logic/torrentcontentmodel.cpp" line="20"/>
         <source>Status</source>
         <translation>Status</translation>
     </message>
     <message>
-        <location filename="../src/logic/torrentcontentmodel.cpp" line="11"/>
+        <location filename="../src/logic/torrentcontentmodel.cpp" line="20"/>
         <source>Progress</source>
         <translation>Progresso</translation>
     </message>
     <message>
-        <location filename="../src/logic/torrentcontentmodel.cpp" line="11"/>
+        <location filename="../src/logic/torrentcontentmodel.cpp" line="20"/>
         <source>Size</source>
         <translation>Tamanho</translation>
     </message>
     <message>
-        <location filename="../src/logic/torrentcontentmodel.cpp" line="11"/>
+        <location filename="../src/logic/torrentcontentmodel.cpp" line="20"/>
         <source>Priority</source>
         <translation>Prioridade</translation>
     </message>
 </context>
 <context>
-    <name>PeersInfoModel</name>
-    <message>
-        <location filename="../src/logic/peersinfomodel.cpp" line="85"/>
-        <source>Speed down</source>
-        <translation>Vel. down</translation>
-    </message>
-    <message>
-        <location filename="../src/logic/peersinfomodel.cpp" line="83"/>
-        <source>Speed up</source>
-        <translation>Vel. up</translation>
-    </message>
-    <message>
-        <location filename="../src/logic/peersinfomodel.cpp" line="81"/>
-        <source>Progress</source>
-        <translation>Progresso</translation>
-    </message>
-    <message>
-        <location filename="../src/logic/peersinfomodel.cpp" line="52"/>
-        <source>%1KB/s</source>
-        <translation>%1KB/s</translation>
-    </message>
-    <message>
-        <location filename="../src/logic/peersinfomodel.cpp" line="75"/>
-        <source>Client name</source>
-        <translation>Nome do cliente:</translation>
-    </message>
-    <message>
-        <location filename="../src/logic/peersinfomodel.cpp" line="77"/>
-        <source>Country</source>
-        <translation>País</translation>
-    </message>
-    <message>
-        <location filename="../src/logic/peersinfomodel.cpp" line="79"/>
-        <source>IP address</source>
-        <translation>Endereço de IP</translation>
-    </message>
-</context>
-<context>
     <name>TorrentDetailsContentView</name>
     <message>
-        <location filename="../src/logic/torrentdetailscontentview.cpp" line="36"/>
+        <location filename="../src/logic/torrentdetailscontentview.cpp" line="40"/>
         <source>Open in folder</source>
         <translation>Abrir na pasta</translation>
     </message>
     <message>
-        <location filename="../src/logic/torrentdetailscontentview.cpp" line="37"/>
+        <location filename="../src/logic/torrentdetailscontentview.cpp" line="41"/>
         <source>Open File</source>
         <translation>Abrir arquivo</translation>
     </message>
 </context>
 <context>
-    <name>PropListDelegate</name>
+    <name>TorrentDetailsForm</name>
     <message>
-        <location filename="../src/gui/proplistdelegate.cpp" line="153"/>
-        <extracomment>Mixed (priorities</extracomment>
-<source>Mixed</source>
-        <comment>Mixed (priority)</comment>
-        <translation>Mista</translation>
+        <location filename="../build/src/ui_torrentdetailsform.h" line="255"/>
+        <source>...</source>
+        <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/gui/proplistdelegate.cpp" line="148"/>
-        <source>Skip</source>
-        <comment>Skip (priority)</comment>
-        <translation>Pular</translation>
+        <location filename="../build/src/ui_torrentdetailsform.h" line="257"/>
+        <source>Comment:</source>
+        <translation>Comentário:</translation>
     </message>
     <message>
-        <location filename="../src/gui/proplistdelegate.cpp" line="85"/>
-        <location filename="../src/gui/proplistdelegate.cpp" line="147"/>
-        <extracomment>Low (priority)</extracomment>
-<source>Low</source>
-        <comment>Low (priority)</comment>
-        <translation>Baixa</translation>
+        <location filename="../build/src/ui_torrentdetailsform.h" line="256"/>
+        <source>Date:</source>
+        <translation>Data:</translation>
     </message>
     <message>
-        <location filename="../src/gui/proplistdelegate.cpp" line="88"/>
-        <location filename="../src/gui/proplistdelegate.cpp" line="145"/>
-        <extracomment>High (priority)</extracomment>
-<source>High</source>
-        <comment>High (priority)</comment>
-        <translation>Alta</translation>
+        <location filename="../build/src/ui_torrentdetailsform.h" line="253"/>
+        <source>Size:</source>
+        <translation>Tamanho:</translation>
     </message>
     <message>
-        <location filename="../src/gui/proplistdelegate.cpp" line="93"/>
-        <location filename="../src/gui/proplistdelegate.cpp" line="146"/>
-        <extracomment>Normal (priority)</extracomment>
-<source>Normal</source>
-        <comment>Normal (priority)</comment>
-        <translation>Normal</translation>
-    </message>
-</context>
-<context>
-    <name>QAbstractSpinBox</name>
-    <message>
-        <location filename="../src/common/utilities/qttranslation.h" line="42"/>
-        <source>&amp;Step up</source>
-        <translation>&amp;Aumentar</translation>
+        <location filename="../build/src/ui_torrentdetailsform.h" line="258"/>
+        <source>Name:</source>
+        <translation>Nome:</translation>
     </message>
     <message>
-        <location filename="../src/common/utilities/qttranslation.h" line="43"/>
-        <source>Step &amp;down</source>
-        <translation>&amp;Diminuir</translation>
+        <location filename="../src/gui/torrentdetailsform.cpp" line="282"/>
+        <source>Download torrent to...</source>
+        <translation>Baixando torrent em...</translation>
     </message>
     <message>
-        <location filename="../src/common/utilities/qttranslation.h" line="44"/>
-        <source>&amp;Select All</source>
-        <translation>&amp;Selecionar todos</translation>
+        <location filename="../src/gui/torrentdetailsform.cpp" line="249"/>
+        <source>Error</source>
+        <translation>Erros</translation>
     </message>
-</context>
-<context>
-    <name>QApplication</name>
     <message>
-        <location filename="../src/common/utilities/qttranslation.h" line="7"/>
-        <source>QT_LAYOUT_DIRECTION</source>
-        <extracomment>Translate this string to the string &apos;LTR&apos; in left-to-right languages or to &apos;RTL&apos; in right-to-left languages (such as Hebrew and Arabic) to get proper widget layout.</extracomment>
-        <translation>left-to-right</translation>
+        <location filename="../build/src/ui_torrentdetailsform.h" line="252"/>
+        <source>Torrent Details</source>
+        <translation>Detalhes do torrent</translation>
+    </message>
+    <message>
+        <location filename="../build/src/ui_torrentdetailsform.h" line="254"/>
+        <source>Saved To:</source>
+        <translation>Salvar em:</translation>
+    </message>
+    <message>
+        <location filename="../build/src/ui_torrentdetailsform.h" line="259"/>
+        <source>xx GB (xx GB available)</source>
+        <translation>xx GB (xx GB disponível)</translation>
+    </message>
+    <message>
+        <location filename="../build/src/ui_torrentdetailsform.h" line="260"/>
+        <source>Files</source>
+        <translation>Arquivos</translation>
+    </message>
+    <message>
+        <location filename="../build/src/ui_torrentdetailsform.h" line="261"/>
+        <source>Auto-refresh</source>
+        <translation>Atualização automática</translation>
+    </message>
+    <message>
+        <location filename="../build/src/ui_torrentdetailsform.h" line="262"/>
+        <source>Peers</source>
+        <translation>Peers</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/torrentdetailsform.cpp" line="249"/>
+        <source>Cannot create folder: %1</source>
+        <translation>Não foi possível criar a pasta: %1</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/torrentdetailsform.cpp" line="270"/>
+        <source>You cannot skip all files in torrent.</source>
+        <translation>Você não pode pular todos os arquivos do torrent</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/torrentdetailsform.cpp" line="273"/>
+        <source>If you don&apos;t want to download it please
+remove or pause the downloading.</source>
+        <translation>Se você não quiser baixá-lo, 
+
+remova ou pause o download</translation>
     </message>
 </context>
 </TS>
