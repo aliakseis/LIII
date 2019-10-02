@@ -24,6 +24,76 @@
 #include "addtorrentform.h"
 #include "treeitem.h"
 
+namespace {
+
+template <bool isUp> struct rowPred
+{
+    bool operator()(const QModelIndex& a, const QModelIndex& b) {return a.row() < b.row();}
+};
+template <> struct rowPred<false>
+{
+    bool operator()(const QModelIndex& a, const QModelIndex& b)
+    {
+        return a.row() > b.row();
+    }
+};
+inline bool isRowEqual(const QModelIndex& x, const QModelIndex& y) {return x.row() == y.row();}
+
+template<bool isUp>
+QModelIndexList moveItems_helper(
+    DownloadCollectionModel* model,
+    QModelIndexList&& selectedInds, int step)
+{
+    QModelIndexList result;
+    result.reserve(selectedInds.size());
+    /// sort rows to move according moving direction: if moving down, the last row should be moved first
+    qSort(selectedInds.begin(), selectedInds.end(), rowPred<isUp>());
+
+    /// move items and find their new indices (in the same order they was sorted, so new indices are also sorted)
+    int minInd = 0;
+    int maxInd = model->getRootItem()->childCount() - 1;
+    for (const auto& ind : qAsConst(selectedInds))
+    {
+        int preNewInd = ind.row() + step;
+        if (isUp && preNewInd < minInd)   //==isUp
+        {
+            preNewInd = minInd;
+            ++minInd;
+        }
+        else if (! isUp && preNewInd > maxInd)
+        {
+            preNewInd = maxInd;
+            --maxInd;
+        }
+
+        result.push_back(model->moveItem(ind, preNewInd - ind.row()));
+    }
+
+    // find all rows that change their position and need to update priority value
+    QModelIndexList touchedRows;
+    touchedRows.reserve(selectedInds.size() * 2);
+    // merge old and new indices and exclude duplicated
+    std::merge(selectedInds.constBegin(), selectedInds.constEnd(), 
+        result.constBegin(), result.constEnd(), 
+        std::back_inserter(touchedRows), rowPred<isUp>());
+    touchedRows.erase(
+        std::unique(touchedRows.begin(), touchedRows.end(), isRowEqual),
+        touchedRows.end()
+    );
+    // update priorities
+    for (const auto& x : qAsConst(touchedRows))
+        model->getRootItem()->child(x.row())->setPriority(x.row());
+
+    if (!isUp)
+    {
+        std::reverse(result.begin(), result.end());
+    }
+
+    return result;
+}
+
+} // namespace
+
 namespace Tr = utilities::Tr;
 
 DownloadCollectionModel::DownloadCollectionModel()
@@ -700,72 +770,6 @@ QModelIndex DownloadCollectionModel::moveItem(const QModelIndex& a_index, int nu
     return index(itm, 0);
 }
 
-template <bool isUp> struct rowPred
-{
-    bool operator()(const QModelIndex& a, const QModelIndex& b) {return a.row() < b.row();}
-};
-template <> struct rowPred<false>
-{
-    bool operator()(const QModelIndex& a, const QModelIndex& b)
-    {
-        return a.row() > b.row();
-    }
-};
-inline bool isRowEqual(const QModelIndex& x, const QModelIndex& y) {return x.row() == y.row();}
-
-template<bool isUp>
-QModelIndexList DownloadCollectionModel::moveItems_helper(QModelIndexList&& selectedInds, int step)
-{
-    QModelIndexList result;
-    result.reserve(selectedInds.size());
-    /// sort rows to move according moving direction: if moving down, the last row should be moved first
-    qSort(selectedInds.begin(), selectedInds.end(), rowPred<isUp>());
-
-    /// move items and find their new indices (in the same order they was sorted, so new indices are also sorted)
-    int minInd = 0;
-    int maxInd = getRootItem()->childCount() - 1;
-    for (const auto& ind : qAsConst(selectedInds))
-    {
-        int preNewInd = ind.row() + step;
-        if (isUp && preNewInd < minInd)   //==isUp
-        {
-            preNewInd = minInd;
-            ++minInd;
-        }
-        else if (! isUp && preNewInd > maxInd)
-        {
-            preNewInd = maxInd;
-            --maxInd;
-        }
-
-        result.push_back(moveItem(ind, preNewInd - ind.row()));
-    }
-
-    // find all rows that change their position and need to update priority value
-    QModelIndexList touchedRows;
-    touchedRows.reserve(selectedInds.size() * 2);
-    // merge old and new indices and exclude duplicated
-    std::merge(selectedInds.constBegin(), selectedInds.constEnd(), 
-        result.constBegin(), result.constEnd(), 
-        std::back_inserter(touchedRows), rowPred<isUp>());
-    touchedRows.erase(
-        std::unique(touchedRows.begin(), touchedRows.end(), isRowEqual),
-        touchedRows.end()
-    );
-    // update priorities
-    for (const auto& x : qAsConst(touchedRows))
-        rootItem->child(x.row())->setPriority(x.row());
-
-    if (!isUp)
-    {
-        std::reverse(result.begin(), result.end());
-    }
-
-    emit signalModelUpdated();
-
-    return result;
-}
-
 
 QModelIndexList DownloadCollectionModel::moveItems(QModelIndexList&& selectedInds, int step)
 {
@@ -774,17 +778,11 @@ QModelIndexList DownloadCollectionModel::moveItems(QModelIndexList&& selectedInd
         return selectedInds;
     }
 
-    QModelIndexList result;
+    QModelIndexList result = (step < 0)
+        ? moveItems_helper<true >(this, std::move(selectedInds), step)
+        : moveItems_helper<false>(this, std::move(selectedInds), step);
 
-    if (step < 0)
-    {
-        result = moveItems_helper<true >(std::move(selectedInds), step);
-    }
-    else
-    {
-        result = moveItems_helper<false>(std::move(selectedInds), step);
-    }
-
+    emit signalModelUpdated();
     emit onItemsReordered();
 
     return result;

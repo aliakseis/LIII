@@ -133,9 +133,6 @@ protected:
 
     void copyItemInRow(const QModelIndex& indexFrom, int rowTo);
 
-    template<bool isUp>
-    QModelIndexList moveItems_helper(QModelIndexList&& selectedInds, int step);
-
 signals:
     void signalDeleteURLFromModel(int a_ID, DownloadType::Type type, int deleteWithFiles = 0);
     void signalPauseDownloadItemWithID(int a_ID, DownloadType::Type type);

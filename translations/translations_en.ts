@@ -152,18 +152,18 @@
 <context>
     <name>DownloadCollectionModel</name>
     <message>
-        <location filename="../src/logic/downloadcollectionmodel.cpp" line="202"/>
-        <location filename="../src/logic/downloadcollectionmodel.cpp" line="241"/>
+        <location filename="../src/logic/downloadcollectionmodel.cpp" line="272"/>
+        <location filename="../src/logic/downloadcollectionmodel.cpp" line="311"/>
         <source>Error: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/logic/downloadcollectionmodel.cpp" line="980"/>
+        <location filename="../src/logic/downloadcollectionmodel.cpp" line="978"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/logic/downloadcollectionmodel.cpp" line="980"/>
+        <location filename="../src/logic/downloadcollectionmodel.cpp" line="978"/>
         <source>Not enough space on disk &apos;%1:&apos;
 Cannot save data!</source>
         <translation type="unfinished"></translation>
