@@ -14,6 +14,7 @@
 #include <QFile>
 #include <QMessageBox>
 #include <QCheckBox>
+#include <QInputDialog>
 
 #include "utilities/utils.h"
 
@@ -462,6 +463,37 @@ bool DownloadCollectionTreeView::cancelDownloadingQuestion(bool totally)
     return result;
 }
 
+void DownloadCollectionTreeView::findItems()
+{
+    QInputDialog dialog(utilities::getMainWindow());
+    dialog.setWindowTitle(tr("Find Items"));
+    dialog.setLabelText(tr("Substring to select:"));
+    auto onTextValueChanged = [this, &dialog](const QString &text) {
+        int count = 0;
+        model()->forAll([&count, text](TreeItem & ti)
+        {
+            QString title = ti.getTitle();
+            if (title.indexOf(text, 0, Qt::CaseInsensitive) != -1)
+                ++count;
+        });
+        dialog.setLabelText(tr("Substring to select (%1 items found):").arg(count));
+    };
+    connect(&dialog, &QInputDialog::textValueChanged, onTextValueChanged);
+    if (dialog.exec() == QDialog::Accepted)
+    {
+        QString text = dialog.textValue();
+        selectionModel()->select(QItemSelection(), QItemSelectionModel::Clear);
+        model()->forAll([this, text](TreeItem & ti)
+        {
+            QString title = ti.getTitle();
+            if (title.indexOf(text, 0, Qt::CaseInsensitive) != -1)
+            {
+                const auto idx = model()->index(&ti, 0);
+                selectionModel()->select(idx, QItemSelectionModel::Select | QItemSelectionModel::Rows);
+            }
+        });
+    }
+}
 
 void DownloadCollectionTreeView::on_showTorrentDetails()
 {

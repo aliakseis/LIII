@@ -153,22 +153,40 @@
     <name>DownloadCollectionModel</name>
     <message>
         <location filename="../src/logic/downloadcollectionmodel.cpp" line="272"/>
-        <location filename="../src/logic/downloadcollectionmodel.cpp" line="311"/>
+        <location filename="../src/logic/downloadcollectionmodel.cpp" line="308"/>
         <source>Error: </source>
         <translation>Erro: </translation>
     </message>
     <message>
-        <location filename="../src/logic/downloadcollectionmodel.cpp" line="978"/>
+        <location filename="../src/logic/downloadcollectionmodel.cpp" line="975"/>
         <source>Error</source>
         <translation>Erro</translation>
     </message>
     <message>
-        <location filename="../src/logic/downloadcollectionmodel.cpp" line="978"/>
+        <location filename="../src/logic/downloadcollectionmodel.cpp" line="975"/>
         <source>Not enough space on disk &apos;%1:&apos;
 Cannot save data!</source>
         <translation>Não há espaço suficiente no disco &apos;%1:&apos;
 
 Não é possível salvar os dados!</translation>
+    </message>
+</context>
+<context>
+    <name>DownloadCollectionTreeView</name>
+    <message>
+        <location filename="../src/logic/downloadcollectiontreeview.cpp" line="469"/>
+        <source>Find Items</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/logic/downloadcollectiontreeview.cpp" line="470"/>
+        <source>Substring to select:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/logic/downloadcollectiontreeview.cpp" line="479"/>
+        <source>Substring to select (%1 items found):</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -248,8 +266,8 @@ Por favor, insira o login e senha.</translation>
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../build/src/ui_mainwindow.h" line="573"/>
-        <location filename="../build/src/ui_mainwindow.h" line="584"/>
+        <location filename="../build/src/ui_mainwindow.h" line="578"/>
+        <location filename="../build/src/ui_mainwindow.h" line="591"/>
         <location filename="../src/main/globals.h" line="84"/>
         <source>Cancel</source>
         <translation>Cancelar</translation>
@@ -260,29 +278,29 @@ Por favor, insira o login e senha.</translation>
         <translation>Não mostrar novamente</translation>
     </message>
     <message>
-        <location filename="../build/src/ui_mainwindow.h" line="566"/>
+        <location filename="../build/src/ui_mainwindow.h" line="571"/>
         <source>Close</source>
         <translation>Fechar</translation>
     </message>
     <message>
-        <location filename="../build/src/ui_mainwindow.h" line="567"/>
+        <location filename="../build/src/ui_mainwindow.h" line="572"/>
         <location filename="../src/common/ui_utils/mainwindowwithtray.cpp" line="17"/>
         <source>Exit</source>
         <translation>Sair</translation>
     </message>
     <message>
-        <location filename="../build/src/ui_mainwindow.h" line="570"/>
+        <location filename="../build/src/ui_mainwindow.h" line="575"/>
         <source>Pause selected</source>
         <translation>Pausar selecionado</translation>
     </message>
     <message>
-        <location filename="../build/src/ui_mainwindow.h" line="577"/>
-        <location filename="../build/src/ui_mainwindow.h" line="581"/>
+        <location filename="../build/src/ui_mainwindow.h" line="582"/>
+        <location filename="../build/src/ui_mainwindow.h" line="588"/>
         <source>Start</source>
         <translation type="unfinished">Iniciar</translation>
     </message>
     <message>
-        <location filename="../build/src/ui_mainwindow.h" line="599"/>
+        <location filename="../build/src/ui_mainwindow.h" line="606"/>
         <source>Paste your links here</source>
         <translation>Cole seus links aqui</translation>
     </message>
@@ -293,55 +311,55 @@ Por favor, insira o login e senha.</translation>
         <translation>Pausar</translation>
     </message>
     <message>
-        <location filename="../build/src/ui_mainwindow.h" line="587"/>
+        <location filename="../build/src/ui_mainwindow.h" line="594"/>
         <source>Open downloaded files&apos; folder</source>
         <translation>Abrir pasta de downloads</translation>
     </message>
     <message>
-        <location filename="../build/src/ui_mainwindow.h" line="589"/>
+        <location filename="../build/src/ui_mainwindow.h" line="596"/>
         <source>My Downloads</source>
         <translation>Meus downloads</translation>
     </message>
     <message>
-        <location filename="../build/src/ui_mainwindow.h" line="603"/>
+        <location filename="../build/src/ui_mainwindow.h" line="610"/>
         <source>Paste links here ...</source>
         <translation>Cole os links aqui...</translation>
     </message>
     <message>
-        <location filename="../build/src/ui_mainwindow.h" line="568"/>
-        <location filename="../build/src/ui_mainwindow.h" line="601"/>
+        <location filename="../build/src/ui_mainwindow.h" line="573"/>
+        <location filename="../build/src/ui_mainwindow.h" line="608"/>
         <source>Paste link</source>
         <translation>Colar link</translation>
     </message>
     <message>
-        <location filename="../build/src/ui_mainwindow.h" line="569"/>
-        <location filename="../build/src/ui_mainwindow.h" line="585"/>
+        <location filename="../build/src/ui_mainwindow.h" line="574"/>
+        <location filename="../build/src/ui_mainwindow.h" line="592"/>
         <source>Remove completed</source>
         <translation>Remover concluídos</translation>
     </message>
     <message>
-        <location filename="../build/src/ui_mainwindow.h" line="571"/>
+        <location filename="../build/src/ui_mainwindow.h" line="576"/>
         <source>Open Settings</source>
         <translation>Abrir configurações</translation>
     </message>
     <message>
-        <location filename="../build/src/ui_mainwindow.h" line="572"/>
-        <location filename="../build/src/ui_mainwindow.h" line="582"/>
+        <location filename="../build/src/ui_mainwindow.h" line="577"/>
+        <location filename="../build/src/ui_mainwindow.h" line="589"/>
         <source>Pause</source>
         <translation type="unfinished">Pausar</translation>
     </message>
     <message>
-        <location filename="../build/src/ui_mainwindow.h" line="574"/>
+        <location filename="../build/src/ui_mainwindow.h" line="579"/>
         <source>Pause All Downloads</source>
         <translation>Pausar todos downloads</translation>
     </message>
     <message>
-        <location filename="../build/src/ui_mainwindow.h" line="575"/>
+        <location filename="../build/src/ui_mainwindow.h" line="580"/>
         <source>Start All Downloads</source>
         <translation>Iniciar todos downloads</translation>
     </message>
     <message>
-        <location filename="../build/src/ui_mainwindow.h" line="576"/>
+        <location filename="../build/src/ui_mainwindow.h" line="581"/>
         <source>Stop All Downloads</source>
         <translation>Parar todos downloads</translation>
     </message>
@@ -352,53 +370,63 @@ Por favor, insira o login e senha.</translation>
         <translation>Iniciar</translation>
     </message>
     <message>
-        <location filename="../build/src/ui_mainwindow.h" line="578"/>
         <location filename="../build/src/ui_mainwindow.h" line="583"/>
+        <location filename="../build/src/ui_mainwindow.h" line="590"/>
         <source>Stop</source>
         <translation>Parar</translation>
     </message>
     <message>
-        <location filename="../build/src/ui_mainwindow.h" line="579"/>
+        <location filename="../build/src/ui_mainwindow.h" line="584"/>
         <source>Open</source>
         <translation>Abrir</translation>
     </message>
     <message>
-        <location filename="../build/src/ui_mainwindow.h" line="580"/>
+        <location filename="../build/src/ui_mainwindow.h" line="585"/>
         <source>Ctrl+O</source>
         <translation>Ctrl+O</translation>
     </message>
     <message>
-        <location filename="../build/src/ui_mainwindow.h" line="591"/>
+        <location filename="../build/src/ui_mainwindow.h" line="586"/>
+        <source>Find</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../build/src/ui_mainwindow.h" line="587"/>
+        <source>Ctrl+F</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../build/src/ui_mainwindow.h" line="598"/>
         <source>Open settings page</source>
         <translation>Abrir página de configurações</translation>
     </message>
     <message>
-        <location filename="../build/src/ui_mainwindow.h" line="595"/>
+        <location filename="../build/src/ui_mainwindow.h" line="602"/>
         <source>Add Torrent</source>
         <translation>Adicionar torrent</translation>
     </message>
     <message>
-        <location filename="../build/src/ui_mainwindow.h" line="605"/>
+        <location filename="../build/src/ui_mainwindow.h" line="612"/>
         <source>Download</source>
         <translation>Download</translation>
     </message>
     <message>
-        <location filename="../build/src/ui_mainwindow.h" line="609"/>
+        <location filename="../build/src/ui_mainwindow.h" line="616"/>
         <source>File</source>
         <translation>Arquivo</translation>
     </message>
     <message>
-        <location filename="../build/src/ui_mainwindow.h" line="610"/>
+        <location filename="../build/src/ui_mainwindow.h" line="617"/>
         <source>Edit</source>
         <translation>Editar</translation>
     </message>
     <message>
-        <location filename="../build/src/ui_mainwindow.h" line="611"/>
+        <location filename="../build/src/ui_mainwindow.h" line="618"/>
         <source>Help</source>
         <translation>Ajuda</translation>
     </message>
     <message>
-        <location filename="../build/src/ui_mainwindow.h" line="612"/>
+        <location filename="../build/src/ui_mainwindow.h" line="619"/>
         <source>Tools</source>
         <translation>Ferramentas</translation>
     </message>
@@ -563,24 +591,24 @@ To completely exit %1, righ-click the tray icon then click Exit.</source>
         <translation>Sobre %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="430"/>
+        <location filename="../src/gui/mainwindow.cpp" line="437"/>
         <location filename="../src/main/globals.h" line="85"/>
         <source>Remove</source>
         <translation>Remover</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="594"/>
-        <location filename="../src/gui/mainwindow.cpp" line="596"/>
+        <location filename="../src/gui/mainwindow.cpp" line="601"/>
+        <location filename="../src/gui/mainwindow.cpp" line="603"/>
         <source>File &quot;%1&quot; was downloaded</source>
         <translation>O arquivo &quot;%1&quot; foi baixado</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="596"/>
+        <location filename="../src/gui/mainwindow.cpp" line="603"/>
         <source>File downloaded</source>
         <translation>Arquivo baixado</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="606"/>
+        <location filename="../src/gui/mainwindow.cpp" line="613"/>
         <source>Select a Torrent to open</source>
         <translation>Selecione o torrent para abrir</translation>
     </message>

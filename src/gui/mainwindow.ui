@@ -966,7 +966,7 @@
      <x>0</x>
      <y>0</y>
      <width>927</width>
-     <height>22</height>
+     <height>21</height>
     </rect>
    </property>
    <property name="sizePolicy">
@@ -1013,6 +1013,8 @@
     <addaction name="actionStart"/>
     <addaction name="actionPause_selected"/>
     <addaction name="actionCancel_selected"/>
+    <addaction name="separator"/>
+    <addaction name="actionFind"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -1166,6 +1168,14 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+O</string>
+   </property>
+  </action>
+  <action name="actionFind">
+   <property name="text">
+    <string>Find</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+F</string>
    </property>
   </action>
  </widget>

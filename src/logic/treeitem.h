@@ -100,6 +100,8 @@ public:
             st == ItemDC::eERROR;
     }
 
+    QString getTitle() const;
+
 private:
     void setStatusEx(int val);
 

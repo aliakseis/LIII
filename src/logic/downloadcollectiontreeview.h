@@ -22,6 +22,9 @@ public:
 
     void copyURLToClipboard();
     bool cancelDownloadingQuestion(bool totally);
+
+    void findItems();
+
 protected:
     void keyPressEvent(QKeyEvent* event);
     void HeaderResize();

@@ -134,6 +134,8 @@ MainWindow::MainWindow()
     //    VERIFY(connect(ui->actionStopAllDownloads, SIGNAL(triggered()), ui->listUrls, SLOT(stopAllItems())));
     VERIFY(connect(ui->buttonOpenFolder, SIGNAL(clicked()), SLOT(onButtonOpenFolderClicked())));
 
+    VERIFY(connect(ui->actionFind, SIGNAL(triggered()), SLOT(onFind())));
+
 #ifdef Q_OS_MAC
     VERIFY(connect(&DarwinSingleton::Instance(), SIGNAL(showPreferences()), SLOT(on_buttonOptions_clicked())));
     VERIFY(connect(&DarwinSingleton::Instance(), SIGNAL(showAbout()), SLOT(onAboutClicked())));
@@ -383,6 +385,11 @@ void MainWindow::on_buttonOptions_clicked()
         m_dlManager->startLoad();
         refreshButtons();
     }
+}
+
+void MainWindow::onFind()
+{
+    ui->listUrls->findItems();
 }
 
 void MainWindow::onButtonOpenFolderClicked(const QString& filename)

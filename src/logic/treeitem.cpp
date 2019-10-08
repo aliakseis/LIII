@@ -7,6 +7,7 @@
 
 #include "utilities/utils.h"
 #include "utilities/instantiator.h"
+#include "utilities/filesystem_utils.h"
 
 #include "global_functions.h"
 #include "downloadtype.h"
@@ -48,6 +49,12 @@ void ItemDC::setStatusEx(int val)
     {
         m_eStatus = eQUEUED;
     }
+}
+
+QString ItemDC::getTitle() const
+{
+    return  utilities::GetFileName(
+        downloadedFileName().isEmpty() ? initialURL() : downloadedFileName());
 }
 
 

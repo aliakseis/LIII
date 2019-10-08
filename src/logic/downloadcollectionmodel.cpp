@@ -292,10 +292,7 @@ QVariant DownloadCollectionModel::data(const QModelIndex& index, int role /* = Q
     case eDC_ID:
         return item->getID();
     case eDC_url:
-        {
-            QString title = item->downloadedFileName();
-            return utilities::GetFileName(title.isEmpty() ? item->initialURL() : title);
-        }
+        return item->getTitle();
 #ifdef DEVELOPER_FEATURES
     case eDC_priority:
         return item->priority();
