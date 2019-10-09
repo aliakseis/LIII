@@ -483,13 +483,19 @@ void DownloadCollectionTreeView::findItems()
     {
         QString text = dialog.textValue();
         selectionModel()->select(QItemSelection(), QItemSelectionModel::Clear);
-        model()->forAll([this, text](TreeItem & ti)
+        bool first = true;
+        model()->forAll([this, text, &first](TreeItem & ti)
         {
             QString title = ti.getTitle();
             if (title.indexOf(text, 0, Qt::CaseInsensitive) != -1)
             {
                 const auto idx = model()->index(&ti, 0);
                 selectionModel()->select(idx, QItemSelectionModel::Select | QItemSelectionModel::Rows);
+                if (first)
+                {
+                    first = false;
+                    scrollTo(idx);
+                }
             }
         });
     }
