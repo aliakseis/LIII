@@ -248,7 +248,7 @@ bool Preferences::checkData()
         QString text = ui->leProxyAddress->text();
         if (ui->leProxyAddress->validator()->validate(text, pos) != QValidator::Acceptable)
         {
-            ui->tabWidget->setCurrentIndex(2);
+            ui->tabWidget->setCurrentWidget(ui->proxy);
             QMessageBox::critical(this, Tr::Tr(PROJECT_FULLNAME_TRANSLATION), tr("Enter a valid proxy address."));
             ui->leProxyAddress->setFocus();
             return false;
@@ -257,7 +257,7 @@ bool Preferences::checkData()
         text = ui->leProxyPort->text();
         if (ui->leProxyPort->validator()->validate(text, pos) != QValidator::Acceptable)
         {
-            ui->tabWidget->setCurrentIndex(2);
+            ui->tabWidget->setCurrentWidget(ui->proxy);
             QMessageBox::critical(this, Tr::Tr(PROJECT_FULLNAME_TRANSLATION), tr("Enter a valid proxy port."));
             ui->leProxyPort->setFocus();
             return false;

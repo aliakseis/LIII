@@ -1049,7 +1049,7 @@
          </item>
         </layout>
        </widget>
-       <widget class="QWidget" name="tab_3">
+       <widget class="QWidget" name="proxy">
         <attribute name="title">
          <string>Proxy</string>
         </attribute>

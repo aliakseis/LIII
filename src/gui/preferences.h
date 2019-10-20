@@ -19,7 +19,7 @@ class Preferences
     Q_OBJECT
 
 public:
-    enum TAB {GENERAL = 0, TORRENT};
+    enum TAB {GENERAL = 0, TORRENT, PROXY};
     Preferences(QWidget* parent = 0, TAB tab = GENERAL);
     ~Preferences();
 
