@@ -185,11 +185,11 @@ void DownloadTask::onProgress(qint64 downloadedSize)
     }
 }
 
-void DownloadTask::onSpeed(qint64 bytesPerSeconds)
+void DownloadTask::onSpeed(qint64 bytesPerSecond)
 {
     ItemDC it;
     it.setID(task_id_);
-    it.setSpeed(bytesPerSeconds / 1000.);
+    it.setSpeed(bytesPerSecond / 1000.);
     DownloadCollectionModel::instance().on_speedChange(it);
 }
 
