@@ -591,24 +591,24 @@ To completely exit %1, righ-click the tray icon then click Exit.</source>
         <translation>Sobre %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="437"/>
+        <location filename="../src/gui/mainwindow.cpp" line="438"/>
         <location filename="../src/main/globals.h" line="85"/>
         <source>Remove</source>
         <translation>Remover</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="601"/>
-        <location filename="../src/gui/mainwindow.cpp" line="603"/>
+        <location filename="../src/gui/mainwindow.cpp" line="602"/>
+        <location filename="../src/gui/mainwindow.cpp" line="604"/>
         <source>File &quot;%1&quot; was downloaded</source>
         <translation>O arquivo &quot;%1&quot; foi baixado</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="603"/>
+        <location filename="../src/gui/mainwindow.cpp" line="604"/>
         <source>File downloaded</source>
         <translation>Arquivo baixado</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="613"/>
+        <location filename="../src/gui/mainwindow.cpp" line="614"/>
         <source>Select a Torrent to open</source>
         <translation>Selecione o torrent para abrir</translation>
     </message>

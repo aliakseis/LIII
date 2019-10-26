@@ -19,6 +19,7 @@
 #include <QClipboard>
 #include <QDesktopWidget>
 #include <QCheckBox>
+#include <QScrollBar>
 
 #include "utilities/credential.h"
 #include "utilities/utils.h"
@@ -98,17 +99,17 @@ MainWindow::MainWindow()
     auto* horizSpacer1 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
     horizontalLayout->addItem(horizSpacer1);
 
-    DownloadCollectionModel* m_pModel = &DownloadCollectionModel::instance();
+    DownloadCollectionModel* pModel = &DownloadCollectionModel::instance();
 
-    VERIFY(connect(m_pModel, SIGNAL(signalDeleteURLFromModel(int,DownloadType::Type,int)), SLOT(refreshButtons())));
-    VERIFY(connect(m_pModel, SIGNAL(overallProgress(int)), SLOT(onOverallProgress(int))));
-    VERIFY(connect(m_pModel, SIGNAL(activeDownloadsNumberChanged(int)), SLOT(onActiveDownloadsNumberChanged(int))));
+    VERIFY(connect(pModel, SIGNAL(signalDeleteURLFromModel(int,DownloadType::Type,int)), SLOT(refreshButtons())));
+    VERIFY(connect(pModel, SIGNAL(overallProgress(int)), SLOT(onOverallProgress(int))));
+    VERIFY(connect(pModel, SIGNAL(activeDownloadsNumberChanged(int)), SLOT(onActiveDownloadsNumberChanged(int))));
 
     m_dlManager = new DownloadManager(this);
     VERIFY(connect(m_dlManager, SIGNAL(updateButtons()), SLOT(refreshButtons())));
 
     ui->listUrls->setItemDelegate(new DownloadCollectionDelegate(this));
-    ui->listUrls->setModel(m_pModel);
+    ui->listUrls->setModel(pModel);
 
     ui->actionPaste_Links->setShortcut(QKeySequence::Paste);
 
@@ -711,6 +712,9 @@ const char MAINWINDOW_MAXIMIZED[] = "maximized";
 const char MAINWINDOW_POS[] = "pos";
 const char MAINWINDOW_SIZE[] = "size";
 
+const char MAINWINDOW_SCROLL_X[] = "scrollX";
+const char MAINWINDOW_SCROLL_Y[] = "scrollY";
+
 // https://stackoverflow.com/questions/74690/how-do-i-store-the-window-size-between-sessions-in-qt
 void MainWindow::writePositionSettings()
 {
@@ -724,6 +728,15 @@ void MainWindow::writePositionSettings()
     if (!isMaximized()) {
         qsettings.setValue(MAINWINDOW_POS, pos());
         qsettings.setValue(MAINWINDOW_SIZE, size());
+    }
+
+    if (auto s = ui->listUrls->horizontalScrollBar())
+    {
+        qsettings.setValue(MAINWINDOW_SCROLL_X, s->value());
+    }
+    if (auto s = ui->listUrls->verticalScrollBar())
+    {
+        qsettings.setValue(MAINWINDOW_SCROLL_Y, s->value());
     }
 
     qsettings.endGroup();
@@ -742,6 +755,15 @@ void MainWindow::readPositionSettings()
     resize(qsettings.value(MAINWINDOW_SIZE, size()).toSize());
     if (qsettings.value(MAINWINDOW_MAXIMIZED, isMaximized()).toBool())
         showMaximized();
+
+    if (auto s = ui->listUrls->horizontalScrollBar())
+    {
+        s->setValue(qsettings.value(MAINWINDOW_SCROLL_X, 0).toInt());
+    }
+    if (auto s = ui->listUrls->verticalScrollBar())
+    {
+        s->setValue(qsettings.value(MAINWINDOW_SCROLL_Y, 0).toInt());
+    }
 
     qsettings.endGroup();
 }
