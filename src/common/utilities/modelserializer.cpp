@@ -95,6 +95,12 @@ QString primitiveTypeToString<std::nullptr_t>(QVariant&, StringCache&)
 }
 
 template<>
+QString primitiveTypeToString<QCborSimpleType>(QVariant&, StringCache&)
+{
+    return QString();
+}
+
+template<>
 QString primitiveTypeToString<bool>(QVariant& v, StringCache&)
 {
     static const QString values[2] = { "0", "1" };

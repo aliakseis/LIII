@@ -58,6 +58,8 @@ POSSIBILITY OF SUCH DAMAGE.
 #undef Protocol
 #endif
 
+#include "libtorrent/io_service_fwd.hpp"
+
 namespace libtorrent
 {
 #if defined TORRENT_BUILD_SIMULATOR
