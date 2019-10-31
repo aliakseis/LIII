@@ -110,6 +110,12 @@ inline QVariant parsePrimitiveType<std::nullptr_t>(const QStringRef&, bool&)
     return QVariant();
 }
 
+template<>
+inline QVariant parsePrimitiveType<QCborSimpleType>(const QStringRef&, bool&)
+{
+    return QVariant();
+}
+
 // Returns true if the variant has type String or ByteArray and its lower-case content is not empty, "0" or "false";
 // otherwise returns false.
 template<>

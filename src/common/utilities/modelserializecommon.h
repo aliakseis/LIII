@@ -5,6 +5,8 @@
 #include <QMetaProperty>
 #include <QStringList>
 
+enum class QCborSimpleType : quint8;
+
 typedef QMap<QString, QObject*> QObjectMap;
 
 // for serializing

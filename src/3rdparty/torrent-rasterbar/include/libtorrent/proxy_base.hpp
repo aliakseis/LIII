@@ -42,6 +42,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "libtorrent/aux_/disable_warnings_push.hpp"
 #include <boost/function/function1.hpp>
 #include <boost/shared_ptr.hpp>
+#include <boost/core/noncopyable.hpp>
 #include "libtorrent/aux_/disable_warnings_pop.hpp"
 
 namespace libtorrent {
@@ -249,7 +250,7 @@ public:
 
 	io_service& get_io_service()
 	{
-		return m_sock.get_io_service();
+        return lt::get_io_service(m_sock);
 	}
 
 	lowest_layer_type& lowest_layer()

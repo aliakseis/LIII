@@ -44,6 +44,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #include <boost/function/function1.hpp>
 #include <boost/shared_ptr.hpp>
 #include <boost/shared_ptr.hpp>
+#include <boost/core/noncopyable.hpp>
 
 #include "libtorrent/aux_/disable_warnings_pop.hpp"
 
