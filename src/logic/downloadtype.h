@@ -7,8 +7,8 @@
 class DownloadType
     : public QObject
 {
-    Q_OBJECT;
-    Q_ENUMS(Type);
+    Q_OBJECT
+    Q_ENUMS(Type)
 public:
     enum Type
     {
