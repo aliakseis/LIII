@@ -4,6 +4,7 @@
 #include <functional>
 #include <numeric>
 #include <iterator>
+#include <utility>
 
 #include <QCoreApplication>
 #include <QMetaType>
@@ -60,8 +61,8 @@ private:
 class TextTranslationRule : public ITranslationRule
 {
 public:
-    explicit TextTranslationRule(const QString& text = QString())
-        : text_(text)
+    explicit TextTranslationRule(QString  text = QString())
+        : text_(std::move(text))
     {}
 
     QString GetText() const override { return text_; }

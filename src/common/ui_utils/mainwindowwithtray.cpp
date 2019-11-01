@@ -21,7 +21,7 @@ utilities::Tr::Translation appShowTr = utilities::Tr::translate("MainWindow", "S
 namespace ui_utils
 {
 
-MainWindowWithTray::MainWindowWithTray(QWidget* parent, QIcon const& icon, utilities::Tr::Translation const& projFullNameTr)
+MainWindowWithTray::MainWindowWithTray(QWidget*  /*parent*/, QIcon const& icon, utilities::Tr::Translation const& projFullNameTr)
     : m_tray(nullptr)
     , m_isExiting(false)
 {

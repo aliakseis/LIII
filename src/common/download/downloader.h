@@ -486,7 +486,7 @@ private:
     // error check of reply header
     bool CheckHeader()
     {
-        if (!header_checked_ && current_download_->rawHeaderList().size())
+        if (!header_checked_ && !current_download_->rawHeaderList().empty())
         {
             qDebug() << __FUNCTION__;
             header_checked_ = true;

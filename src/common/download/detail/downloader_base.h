@@ -62,7 +62,7 @@ private:
     {
     public:
         SocketReadInterceptorImpl() : speed_limit_(0) {}
-        virtual bool intercept(QSocketNotifier* notifier, QEvent* event) override
+        bool intercept(QSocketNotifier* notifier, QEvent* event) override
         {
             const int speed_limit = speed_limit_;
             if (speed_limit <= 0)

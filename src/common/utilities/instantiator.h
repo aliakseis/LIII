@@ -6,6 +6,7 @@
 #include <QString>
 #include <QVector>
 #include <algorithm>
+#include <utility>
 
 #include "singleton.h"
 #include "iparentadvice.h"
@@ -13,7 +14,7 @@
 
 struct FactoryInterface
 {
-    explicit FactoryInterface(const QString& className) : m_className(className) {}
+    explicit FactoryInterface(QString  className) : m_className(std::move(className)) {}
     virtual ~FactoryInterface() {}
     virtual QObject* make(QObject* adviceParent) const = 0;
 

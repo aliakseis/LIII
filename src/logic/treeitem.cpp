@@ -144,7 +144,7 @@ bool TreeItem::removeChildItem(TreeItem* a_item)
 }
 
 
-bool TreeItem::insertChildren(int position, int count, int columns)
+bool TreeItem::insertChildren(int position, int count, int  /*columns*/)
 {
     if (position < 0 || position > childItems.size())
     {

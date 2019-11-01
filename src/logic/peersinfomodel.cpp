@@ -8,12 +8,12 @@ PeersInfoModel::PeersInfoModel(libtorrent::torrent_handle torrentHandle, QObject
     m_torrentHandle.get_peer_info(m_peersInfo);
 }
 
-int PeersInfoModel::rowCount(const QModelIndex& parent) const
+int PeersInfoModel::rowCount(const QModelIndex&  /*parent*/) const
 {
     return m_peersInfo.size();
 }
 
-int PeersInfoModel::columnCount(const QModelIndex& parent) const
+int PeersInfoModel::columnCount(const QModelIndex&  /*parent*/) const
 {
     return static_cast<int>(ColumnsCount);
 }

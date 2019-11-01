@@ -16,7 +16,7 @@ const ItemID nullItemID = -1;
 class CopyableQObject : public QObject
 {
 public:
-    CopyableQObject() : QObject() {}
+    CopyableQObject() = default;
     CopyableQObject(const CopyableQObject&) {}
     CopyableQObject& operator =(const CopyableQObject&) { return *this; }
 };
@@ -240,4 +240,4 @@ TreeItem* TreeItem::findItem(Pr pr)
 }
 
 
-QString itemDCStatusToString(const ItemDC::eSTATUSDC status);
+QString itemDCStatusToString(ItemDC::eSTATUSDC status);

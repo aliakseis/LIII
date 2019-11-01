@@ -45,8 +45,8 @@ void ComboboxDelegate::paint(QPainter* painter,
     }
 }
 
-QWidget* ComboboxDelegate::createEditor(QWidget* parent, const QStyleOptionViewItem& option,
-                                        const QModelIndex& index) const
+QWidget* ComboboxDelegate::createEditor(QWidget* parent, const QStyleOptionViewItem&  /*option*/,
+                                        const QModelIndex&  /*index*/) const
 {
     auto* box = new QComboBox(parent);
     box->addItems(QStringList()  << defaultPriority << "Medium" << "Low");
@@ -135,7 +135,7 @@ void AddLinks::on_selectNoneButton_clicked()
     selectAll(false);
 }
 
-void AddLinks::on_listWidget_itemClicked(QTreeWidgetItem* item)
+void AddLinks::on_listWidget_itemClicked(QTreeWidgetItem*  /*item*/)
 {
     updateSelectButtons();
 }
