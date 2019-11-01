@@ -21,6 +21,8 @@ class CatcherSource
 {
 public:
     explicit CatcherSource(CatcheeType* source) : source_(source) {}
+    CatcherSource(const CatcherSource&) = delete;
+    CatcherSource& operator =(const CatcherSource&) = delete;
 
     void setSource(CatcheeType* source) { source_ = source; }
     CatcheeType* source() const { return source_; }
