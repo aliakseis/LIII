@@ -25,10 +25,6 @@
 #include "download/downloader_traits.h"
 #include "utilities/errorcode.h"
 
-namespace
-{
-char const DOWNLOAD_DEFAULT_FILENAME[] = "download.avi";
-}
 
 // Holds states for download items
 struct Downloadable
@@ -96,7 +92,8 @@ public:
         : state_(kQueued), paused_download_size_(0), expected_size_(0), current_download_(nullptr),
           current_header_(nullptr), redirect_count_(0), header_checked_(false), size_checked_(false), total_file_size_(0),
           download_from_url_(false), current_header_catcher_(nullptr), current_download_catcher_(nullptr), observer_(nullptr),
-          download_name_policy_(kGenerateNewName), network_manager_(nullptr), default_filename_(DOWNLOAD_DEFAULT_FILENAME),
+          download_name_policy_(kGenerateNewName), network_manager_(nullptr),
+          default_filename_(QStringLiteral("download.avi")),
           network_manager_catcher_(new detail::NetworkAccessManagerCatcher(network_manager_)),
           authentication_helper_(new utilities::AuthenticationHelper(1, 1, parent)),
           authentication_helper_catcher_(new detail::AuthenticationHelperCatcher(authentication_helper_.data()))
