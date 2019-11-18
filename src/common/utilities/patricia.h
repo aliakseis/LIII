@@ -36,6 +36,10 @@ private:
         BIT_MASK = WORD_BITS - 1,    // WORD SHIFT low-order bits enabled 
     };
 
+    // Returns true if bit is set.
+    template <typename C>
+    static bool is_bit_set(C block, int shift) { return (block & ((1 << HI_WORD) >> shift)) != 0; }
+
     // Root for the entire Patricia tree, (actually a dummy header!). 
     mutable TrieNode* root;
 
@@ -244,8 +248,4 @@ public:
             root = 0;
         }
     }
-
-    // Returns true if bit is set. 
-    template <typename C>
-    static bool is_bit_set(C block, int shift) { return (block & ((1 << HI_WORD) >> shift)) != 0; }
 };
