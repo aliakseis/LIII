@@ -88,7 +88,7 @@ Preferences::Preferences(QWidget* parent, TAB tab)
     fillLanguageComboBox();
 
 #ifdef Q_OS_WIN
-    Tr::SetTr(ui->startLIIIOnStartingWindows, &QCheckBox::setText, START_LIII_ON_STARTING_WINDOWS_LABEL, PROJECT_NAME);
+    ::Tr::SetTr(ui->startLIIIOnStartingWindows, &QCheckBox::setText, START_LIII_ON_STARTING_WINDOWS_LABEL, PROJECT_NAME);
     ui->startLIIIOnStartingWindows->setChecked(m_startLIIIOnStartingWindows);
     VERIFY(connect(ui->startLIIIOnStartingWindows, SIGNAL(stateChanged(int)), SIGNAL(anyDataChanged())));
 #else
@@ -249,7 +249,7 @@ bool Preferences::checkData()
         if (ui->leProxyAddress->validator()->validate(text, pos) != QValidator::Acceptable)
         {
             ui->tabWidget->setCurrentWidget(ui->proxy);
-            QMessageBox::critical(this, Tr::Tr(PROJECT_FULLNAME_TRANSLATION), tr("Enter a valid proxy address."));
+            QMessageBox::critical(this, ::Tr::Tr(PROJECT_FULLNAME_TRANSLATION), tr("Enter a valid proxy address."));
             ui->leProxyAddress->setFocus();
             return false;
         }
@@ -258,7 +258,7 @@ bool Preferences::checkData()
         if (ui->leProxyPort->validator()->validate(text, pos) != QValidator::Acceptable)
         {
             ui->tabWidget->setCurrentWidget(ui->proxy);
-            QMessageBox::critical(this, Tr::Tr(PROJECT_FULLNAME_TRANSLATION), tr("Enter a valid proxy port."));
+            QMessageBox::critical(this, ::Tr::Tr(PROJECT_FULLNAME_TRANSLATION), tr("Enter a valid proxy port."));
             ui->leProxyPort->setFocus();
             return false;
         }
@@ -455,7 +455,7 @@ void Preferences::checkPortAvalible(const QString& textPort)
 
 #ifdef DEVELOPER_FEATURES
     utilities::Tr::Translation msgText = {"Preferences", reason};
-    Tr::SetTr(ui->label_portNumberInvalid, &QLabel::setText, msgText);
+    ::Tr::SetTr(ui->label_portNumberInvalid, &QLabel::setText, msgText);
 #endif
 }
 
