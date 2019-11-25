@@ -13,7 +13,7 @@ QString translationFilePrefix = "translations_";
 
 QString getTranslationsFolder()
 {
-#ifdef Q_OS_WIN32
+#ifdef Q_OS_WIN
     return QDir(QApplication::applicationDirPath()).absoluteFilePath("Translations");
 #elif defined(Q_OS_LINUX)
     QDir trPath = QDir(QString("/usr/share/") + PROJECT_NAME);

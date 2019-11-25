@@ -12,7 +12,7 @@ enum { ROUND_RADIUS = 7, FONT_SIZE = 10 };
 
 namespace {
 
-#ifdef Q_OS_WIN32
+#ifdef Q_OS_WIN
 QRect windowsClassicBug;
 #endif
 
@@ -32,7 +32,7 @@ void LIIIStyle::drawControl(ControlElement element, const QStyleOption* option, 
         // calculate progress width
 
         QRect rectPrBar = progressOptions->rect;
-#ifdef Q_OS_WIN32
+#ifdef Q_OS_WIN
         rectPrBar = windowsClassicBug;
 #endif
         const int totalWidth = rectPrBar.width();
@@ -78,7 +78,7 @@ void LIIIStyle::drawControl(ControlElement element, const QStyleOption* option, 
     {
         painter->save();
         QRect rctGroove = option->rect;
-#ifdef Q_OS_WIN32
+#ifdef Q_OS_WIN
         windowsClassicBug = rctGroove;
 #endif
         QColor color = (option->state & QStyle::State_Selected) 

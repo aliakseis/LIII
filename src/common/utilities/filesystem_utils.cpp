@@ -13,7 +13,7 @@
 #include <QString>
 #include <QStandardPaths>
 
-#ifdef Q_OS_WIN32
+#ifdef Q_OS_WIN
 #include <windows.h>
 #include <winsock2.h>
 #include <winnt.h>
@@ -28,16 +28,18 @@ namespace {
 const char PORTABLE_MODE_FILE[]        =    "portable";
 const char DOWNLOADS_FOLDER_NAME[]     =    "downloads";
 
-#ifdef Q_OS_WIN32
+#ifdef Q_OS_WIN
 const char EXPLORER_LABEL[]            =    "explorer";
 #elif defined(Q_OS_MAC)
 const char EXPLORER_LABEL[]            =    "open";
 const char APPLESCRIPT_BIN[]           =    "osascript";
 #elif defined(Q_OS_LINUX)
 const char EXPLORER_LABEL[]            =    "xdg-open";
+#else
+const char EXPLORER_LABEL[]            =    "open";
 #endif
 
-#ifdef Q_OS_WIN32
+#ifdef Q_OS_WIN
 
 bool MoveToTrashImpl(const QString& file)
 {
@@ -57,10 +59,8 @@ bool MoveToTrashImpl(const QString& file)
 
     return true;
 }
-#endif //Q_OS_WIN32
 
-
-#ifdef Q_OS_LINUX
+#elif defined (Q_OS_LINUX)
 
 bool TrashInitialized = false;
 QString TrashPath;
@@ -147,15 +147,23 @@ bool MoveToTrashImpl(const QString& file)
 
     return true;
 }
-#endif //Q_OS_LINUX
 
-#ifdef Q_OS_MAC
+#elif defined (Q_OS_MAC)
+
 bool MoveToTrashImpl(const QString& file)
 {
     QString moveToTrashCmdLine = "tell application \"Finder\" to delete file POSIX file \"" + file + "\"";
     return 0 == system(moveToTrashCmdLine.toUtf8().constData());
 }
-#endif //Q_OS_MAC
+
+#else
+
+bool MoveToTrashImpl(const QString&)
+{
+    // TODO
+}
+
+#endif
 
 QString StringOrEmpty(const QStringList& list)
 {

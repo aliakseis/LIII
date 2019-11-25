@@ -66,7 +66,7 @@ void MainWindowWithTray::closeApp()
 
 void MainWindowWithTray::setVisible(bool visible)
 {
-#ifdef  Q_OS_WIN32
+#ifdef  Q_OS_WIN
     if (visible)
     {
         ShowWindow((HWND)internalWinId(), SW_SHOW);

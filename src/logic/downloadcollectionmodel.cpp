@@ -965,7 +965,7 @@ void DownloadCollectionModel::saveToFile()
     qDebug() << __FUNCTION__;
     const QString filePath = utilities::PrepareCacheFolder() + MODEL_STATE_FILE_NAME;
 
-#ifdef Q_OS_WIN32
+#ifdef Q_OS_WIN
     QString folder = utilities::PrepareCacheFolder();
     const wchar_t* ch = qUtf16Printable(folder);
     ULARGE_INTEGER freeBytesAvailable;

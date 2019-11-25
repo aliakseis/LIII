@@ -19,7 +19,7 @@ const char PROJECT_ICON[]           =    ":/icon.ico";
 
 const char MODEL_STATE_FILE_NAME[]  =    "modelState.xml";
 
-#ifdef Q_OS_WIN32
+#ifdef Q_OS_WIN
 const char EXPLORER_LABEL[]         = "explorer";
 #else
 const char EXPLORER_LABEL[]         = "open";
