@@ -47,11 +47,9 @@ source_group(".generated" FILES
 
 
 add_library(Download STATIC
-#	${HEADERS_TOMOC_DETAIL}
 	${HEADERS_DETAIL}
 	${HEADERS}
 	${SOURCES}
-#	${MOC_FILES} 
 )	
 
 add_dependencies(Download
@@ -59,4 +57,4 @@ add_dependencies(Download
 	Utilities
 )
 
-#set_property(TARGET ${PROJECT_NAME} PROPERTY FOLDER "common")
+set_property(TARGET ${PROJECT_NAME} PROPERTY FOLDER "common")
