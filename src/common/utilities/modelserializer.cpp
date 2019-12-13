@@ -220,7 +220,7 @@ case QMetaType::TypeName: strValue = primitiveTypeToString<RealType>(value, m_ca
             const int userType = value.userType();
             if (qMetaTypeId<QObjectMap>() == userType)
             {
-                const QObjectMap& qObjectList = *reinterpret_cast<const QObjectMap*>(value.constData());
+                const QObjectMap& qObjectList = *static_cast<const QObjectMap*>(value.constData());
                 for (auto it(qObjectList.begin()), itEnd(qObjectList.end()); it != itEnd; ++it)
                 {
                     const QString& key = it.key();
@@ -229,7 +229,7 @@ case QMetaType::TypeName: strValue = primitiveTypeToString<RealType>(value, m_ca
             }
             else if (qMetaTypeId<QObjectList>() == userType)
             {
-                const QObjectList& qObjectList = *reinterpret_cast<const QObjectList*>(value.constData());
+                const QObjectList& qObjectList = *static_cast<const QObjectList*>(value.constData());
                 for (QObject* item : qObjectList)
                 {
                     serializeObjectInternal(item, propName);
@@ -237,12 +237,12 @@ case QMetaType::TypeName: strValue = primitiveTypeToString<RealType>(value, m_ca
             }
             else if (qMetaTypeId<QObject*>() == userType)
             {
-                QObject* const qObject = *reinterpret_cast<QObject* const*>(value.constData());
+                QObject* const qObject = *static_cast<QObject* const*>(value.constData());
                 serializeObjectInternal(qObject, propName);
             }
             else if (QVariant::ByteArray == userType)
             {
-                const QByteArray& qByteArray = *reinterpret_cast<const QByteArray*>(value.constData());
+                const QByteArray& qByteArray = *static_cast<const QByteArray*>(value.constData());
                 m_stream.writeStartElement(propName);
                 m_stream.writeCDATA(qByteArray);
                 m_stream.writeEndElement();
