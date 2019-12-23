@@ -89,7 +89,7 @@ void DownloadManager::onDownloadFinished(int a_id)
         {
             DownloadTask* task = it.value();
 
-            if (task->is_torrent_file())//DownloadType::TorrentFile == DownloadType::determineType(task->fileName()))
+            if (task->is_torrent_file())
             {
                 addItemsToModel(QStringList() << task->fileName(), DownloadType::TorrentFile);
             }
@@ -412,7 +412,7 @@ void DownloadManager::onItemsReordered()
     const int maxDl = GetMaximumNumberLoadsActual();
 
     int activeTasks(0);
-    DownloadCollectionModel::instance().forAll([this, &activeTasks, maxDl](TreeItem & ti)
+    DownloadCollectionModel::instance().forAll([&activeTasks, maxDl](TreeItem & ti)
     {
         if (ItemDC::eDOWNLOADING == ti.getStatus())
         {

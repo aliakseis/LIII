@@ -158,7 +158,7 @@ QVariant TorrentContentModel::data(const QModelIndex& index, int role) const
                 return Qt::PartiallyChecked;
             default:
                 return Qt::Checked;
-            };
+            }
         }
         break;
     case Qt::DisplayRole:
