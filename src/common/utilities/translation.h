@@ -74,7 +74,7 @@ private:
 
 struct IQStringSetterDelegate
 {
-    virtual ~IQStringSetterDelegate() {};
+    virtual ~IQStringSetterDelegate() {}
     virtual void execute(const QString&) = 0;
     virtual bool equals(const IQStringSetterDelegate* other) const = 0;
     virtual size_t hash() const = 0;

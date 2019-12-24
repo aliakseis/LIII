@@ -148,7 +148,7 @@ QAction* MainWindowWithTray::addTrayMenuItem(TrayMenu::ItemType itemType)
         break;
     default:
         Q_ASSERT(false && "not implemented item type");
-    };
+    }
 #endif
 
     return action;

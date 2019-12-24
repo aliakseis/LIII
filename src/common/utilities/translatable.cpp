@@ -9,7 +9,7 @@
 
 namespace {
 
-QString translationFilePrefix = "translations_";
+const auto translationFilePrefix = QStringLiteral("translations_");
 
 QString getTranslationsFolder()
 {

@@ -171,7 +171,8 @@ public:
                 *cur_block == *key_block;
                 first_bit_diff += WORD_BITS)
         {
-            cur_block++, key_block++;
+            cur_block++;
+            key_block++;
         }
 
         // Now, find location of that Bit, xor does us a favor here. 
