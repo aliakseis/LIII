@@ -21,7 +21,7 @@ private Q_SLOTS:
 	void test_restore();
 	void test_restore_states();
 	void test_restore_states_from_closed();
-	void test_traymenu();;
+	void test_traymenu();
 
 	void cleanupTestCase();
 private:

@@ -63,7 +63,7 @@ option(DEVELOPER_TORRENTS_LOGS "enable torrents logging" OFF)
 # Using pre-defined macros for this project
 include(cmake/projecthelper.cmake)
 include(cmake/testing.cmake)
-include(cmake/doxigenHelper.cmake)
+include(cmake/doxygenHelper.cmake)
 include(cmake/machelper.cmake)
 include(cmake/additionalOptions.cmake)
 include(cmake/VersionConf.cmake)
