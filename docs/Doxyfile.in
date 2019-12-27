@@ -1,17 +1,20 @@
 PROJECT_NAME           = "@CMAKE_PROJECT_NAME@"
 PROJECT_NUMBER         = @PROJECT_VERSION@
 FULL_PATH_NAMES        = NO
-INPUT                  = README.md \
+INPUT                  = @PROJECT_SOURCE_DIR@/README.md \
                          @PROJECT_SOURCE_DIR@ \
                          @PROJECT_BINARY_DIR@
 FILE_PATTERNS          = *.h
 RECURSIVE              = YES
-USE_MDFILE_AS_MAINPAGE = README.md
-EXTRACT_STATIC            = YES
+USE_MDFILE_AS_MAINPAGE = @PROJECT_SOURCE_DIR@/README.md
+EXTRACT_STATIC         = YES
 OUTPUT_DIRECTORY       = doc
 OPTIMIZE_OUTPUT_FOR_C  = YES
 INLINE_SIMPLE_STRUCTS  = YES
+EXCLUDE_PATTERNS       = */imports/* \
+                         */3rdparty/*
 
-SHOW_NAMESPACES        = NO
-CLASS_GRAPH            = NO
+
+SHOW_NAMESPACES        = YES
+CLASS_GRAPH            = YES
 INCLUDE_GRAPH          = NO
