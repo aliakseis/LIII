@@ -17,7 +17,7 @@ public:
     virtual ~DownloadCollectionTreeView();
 
     void setModel(DownloadCollectionModel* a_model);
-    void paintEvent(QPaintEvent*);
+    void paintEvent(QPaintEvent*) override;
     void deleteSelectedRows(bool totally = false);
 
     void copyURLToClipboard();
@@ -26,7 +26,7 @@ public:
     void findItems();
 
 protected:
-    void keyPressEvent(QKeyEvent* event);
+    void keyPressEvent(QKeyEvent* event) override;
     void HeaderResize();
     void mouseReleaseEvent(QMouseEvent*) override;
 

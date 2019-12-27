@@ -35,7 +35,7 @@ private:
     void initMainSettings();
 
 
-    inline bool isDataChanged()const {return m_dataChanged;};
+    inline bool isDataChanged()const {return m_dataChanged;}
 
     bool checkData();
 
@@ -45,7 +45,7 @@ Q_SIGNALS:
     void onProxySettingsChanged();
 
 private Q_SLOTS:
-    void accept();
+    void accept() override;
     void apply();
     void on_btnResetWarnings_clicked();
     void on_pbBrowse_clicked();

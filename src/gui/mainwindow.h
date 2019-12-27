@@ -35,7 +35,7 @@ public:
     ~MainWindow();
     void addLinks(QStringList urls);
 
-    void setAutorunMode() {isAutorun = true;}; // start in tray only in case of autorun.
+    void setAutorunMode() {isAutorun = true;} // start in tray only in case of autorun.
     void showMainWindowAndPerformChecks();
 
 private:
@@ -68,7 +68,7 @@ public Q_SLOTS:
     void refreshButtons();
     void on_buttonStart_clicked();
     void onActionCloseLinkClicked();
-    void closeApp();
+    void closeApp() override;
     void onAboutClicked();
     void on_openTorrent_clicked();
     void onlblClearTextClicked();

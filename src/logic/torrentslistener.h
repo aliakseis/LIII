@@ -29,7 +29,7 @@ inline ItemDC::eSTATUSDC torrentStatus2ItemDCStatus(libtorrent::torrent_status::
         return ItemDC::eDOWNLOADING;
     default:
         return ItemDC::eUNKNOWN;
-    };
+    }
 }
 
 
