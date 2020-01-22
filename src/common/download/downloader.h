@@ -69,9 +69,9 @@ struct DownloaderObserverInterface
 /// \class    Downloader
 ///
 /// \brief    Downloader.
-///         Implements downloading mechanism as a couple of source (URL) and destination (file).
-///    \param  SpeedControl set to speed_limitable_tag to support speed limitation
-///    \param  delete_file_if_error set to true if you don't want to redownload file on each error (for instance network failure)
+///           Implements downloading mechanism as a couple of source (URL) and destination (file).
+/// \tparam   SpeedControl set to speed_limitable_tag to support speed limitation
+/// \tparam   delete_file_if_error set to true if you don't want to redownload file on each error (for instance network failure)
 ///
 
 template <class SpeedControl = speed_readable_tag, bool delete_file_if_error = true>
@@ -88,7 +88,7 @@ public:
     enum DuplicateDownloadNamePolicy {kGenerateNewName, kReplaceFile};
     enum { DOWNLOAD_MAX_REDIRECTS_ALLOWED = 10 };
 
-    explicit Downloader(QObject* parent = 0)
+    explicit Downloader(QObject* parent = nullptr)
         : state_(kQueued), paused_download_size_(0), expected_size_(0), current_download_(nullptr),
           current_header_(nullptr), redirect_count_(0), header_checked_(false), size_checked_(false), total_file_size_(0),
           download_from_url_(false), current_header_catcher_(nullptr), current_download_catcher_(nullptr), observer_(nullptr),
