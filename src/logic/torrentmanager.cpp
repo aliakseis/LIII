@@ -400,7 +400,7 @@ libtorrent::torrent_handle TorrentManager::addTorrent(
         torrentParams.ti = boost::make_shared<libtorrent::torrent_info>(torrOrMagnet.toUtf8().constData(), err);
         if (!torrentParams.ti->is_valid() || err)
         {
-            qDebug() << QString("Unable to decode torrent file: '%1', ERROR:%2").arg(torrOrMagnet).arg(err.message().c_str());
+            qDebug() << QString("Unable to decode torrent file: '%1', ERROR:%2").arg(torrOrMagnet, err.message().c_str());
             // TODO: handle error according to http://www.rasterbar.com/products/libtorrent/manual.html#error-code
             return {};
         }
