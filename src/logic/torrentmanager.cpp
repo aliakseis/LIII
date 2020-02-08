@@ -307,7 +307,7 @@ void TorrentManager::close()
     // Pause session
     m_session->pause();
 
-    cacheResumeTorrentsData(true);
+    cacheResumeTorrentsData(false);
 }
 
 int TorrentManager::cacheResumeTorrentsData(bool fully_data_save /* = false */)

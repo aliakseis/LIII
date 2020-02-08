@@ -257,14 +257,18 @@ void TorrentsListener::handler(libtorrent::save_resume_data_alert const& a)
     try
     {
         std::vector<char> out;
+        out.reserve(32 * 1024);
         libtorrent::bencode(std::back_inserter(out), *a.resume_data);
-        const QString filepath = toQString(a.handle.info_hash()) + ".fastresume";
-        QFile resume_file(utilities::PrepareCacheFolder(TORRENTS_SUB_FOLDER) + filepath);
-        if (!out.empty() && resume_file.open(QIODevice::WriteOnly))
+        if (!out.empty())
         {
-            resume_file.write(&out[0], out.size());
-            resume_file.close();
-            qDebug() << "Fast resume data successfully saved";
+            const QString filepath = toQString(a.handle.info_hash()) + ".fastresume";
+            QFile resume_file(utilities::PrepareCacheFolder(TORRENTS_SUB_FOLDER) + filepath);
+            if (resume_file.open(QIODevice::WriteOnly))
+            {
+                resume_file.write(&out[0], out.size());
+                resume_file.close();
+                qDebug() << "Fast resume data successfully saved:" << a.torrent_name();
+            }
         }
     }
     catch (libtorrent::libtorrent_exception const& e)
