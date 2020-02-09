@@ -6,6 +6,7 @@
 #include <QObject>
 #include <QMap>
 #include <QTimer>
+#include <QDateTime>
 
 #include <memory>
 
@@ -68,4 +69,6 @@ private:
     bool m_closed;
 
     std::unique_ptr<libtorrent::session> m_session;
+
+    QDateTime m_fastresumeLastSaved;
 };

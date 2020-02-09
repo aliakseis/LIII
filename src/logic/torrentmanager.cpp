@@ -177,6 +177,14 @@ bool mergeTrackers()
     return msgBox.exec() == QMessageBox::Yes;
 }
 
+ItemDC getItemByTorrentHandle(const libtorrent::torrent_handle& handle)
+{
+    const auto itemID = TorrentsListener::instance().getItemID(handle);
+    if (itemID == nullItemID)
+        return{};
+    return DownloadCollectionModel::instance().getItemByID(itemID);
+}
+
 }  // namespace
 
 QString toQString(const libtorrent::sha1_hash& hash)
@@ -213,6 +221,7 @@ bool TorrentManager::isSessionExists()
 TorrentManager::TorrentManager()
     : m_closed(false)
     , m_session(std::make_unique<libtorrent::session>(getFingerprint()))
+    , m_fastresumeLastSaved(QDateTime::currentDateTimeUtc())
 {
     m_session->set_settings(libtorrent::session_settings(PROJECT_NAME " " PROJECT_VERSION
 #if defined(Q_OS_DARWIN)
@@ -312,6 +321,8 @@ void TorrentManager::close()
 
 int TorrentManager::cacheResumeTorrentsData(bool fully_data_save /* = false */)
 {
+    const auto now = QDateTime::currentDateTimeUtc();
+
     int cached = 0;
 
     for (const auto& torrent : m_session->get_torrents())
@@ -337,6 +348,15 @@ int TorrentManager::cacheResumeTorrentsData(bool fully_data_save /* = false */)
                 continue;
             }
 
+            if (const auto itemDC = getItemByTorrentHandle(torrent))
+            {
+                if ((itemDC.getStatus() == ItemDC::eFINISHED || itemDC.getStatus() == ItemDC::ePAUSED)
+                    && itemDC.statusLastChanged() < m_fastresumeLastSaved)
+                {
+                    continue;
+                }
+            }
+
             qDebug() << "Saving fastresume data for " << QString::fromStdString(torrent.name());
             torrent.save_resume_data();
 
@@ -347,6 +367,8 @@ int TorrentManager::cacheResumeTorrentsData(bool fully_data_save /* = false */)
             qWarning() << Q_FUNC_INFO << "caught exception:" << e.what();
         }
     }
+
+    m_fastresumeLastSaved = now;
 
     return cached;
 }
