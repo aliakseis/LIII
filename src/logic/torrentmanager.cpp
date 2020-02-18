@@ -329,15 +329,19 @@ int TorrentManager::cacheResumeTorrentsData(bool fully_data_save /* = false */)
     {
         try
         {
-            const libtorrent::torrent_status status = torrent.status();
+            if (!torrent.is_valid())
+            {
+                continue;
+            }
 
-            if (!torrent.is_valid() || !status.has_metadata)
+            const libtorrent::torrent_status status = torrent.status();
+            if (!status.has_metadata)
             {
                 continue;
             }
 
             // Skipping datasave only in party-saving mode
-            if (!fully_data_save && !torrent.need_save_resume_data())
+            if (!fully_data_save && !status.need_save_resume)
             {
                 continue;
             }
