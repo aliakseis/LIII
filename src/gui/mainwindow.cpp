@@ -424,35 +424,6 @@ void MainWindow::on_buttonPaste_clicked()
     }
 }
 
-/*
-void MainWindow::on_clearButton_clicked()
-{
-    if (QSettings().value(ShowCleanupWarning, true).toBool())
-    {
-        QMessageBox msgBox(
-            QMessageBox::NoIcon,
-            ::Tr::Tr(PROJECT_FULLNAME_TRANSLATION),
-            ::Tr::Tr(CLEANUP_TEXT),
-            nullptr,
-            this);
-        msgBox.setCheckBox(new QCheckBox(::Tr::Tr(DONT_SHOW_THIS_AGAIN)));
-        QPushButton* removeButton = msgBox.addButton(tr("Remove"), QMessageBox::ActionRole);
-        QPushButton* cancelButton = msgBox.addButton(QMessageBox::Cancel);
-
-        msgBox.exec();
-        if (msgBox.clickedButton() != removeButton)
-        {
-            return;
-        }
-        const bool isDontShowMeChecked = msgBox.checkBox()->isChecked();
-        QSettings().setValue(ShowCleanupWarning, !isDontShowMeChecked);
-    }
-
-    DownloadCollectionModel::instance().deleteALLFinished();
-    refreshButtons();
-}
-*/
-
 void MainWindow::on_startButton_clicked()
 {
     ui->listUrls->startDownloadItem();
@@ -476,11 +447,7 @@ void MainWindow::on_cancelButton_clicked()
 
 void MainWindow::refreshButtons()
 {
-    const bool isCompletedItems 
-        = DownloadCollectionModel::instance().findItem(std::mem_fn(&TreeItem::isCompleted)) != nullptr;
     ui->lblClearText->setVisible(!ui->linkEdit->text().isEmpty());
-    //ui->clearButton->setEnabled(isCompletedItems);
-    //ui->actionCleanup->setEnabled(isCompletedItems);
     ui->listUrls->getUpdateItem();
 }
 

@@ -30,7 +30,7 @@ const char APPLESCRIPT_BIN[]        = "osascript";
 
 namespace Tr = utilities::Tr;
 
-Tr::Translation CLEANUP_TEXT                         = Tr::translate("MainWindow", "Are you sure you want to remove completed downloads?");
+
 
 Tr::Translation DELETE_DOWNLOAD_TEXT                 = Tr::translate("MainWindow", "Are you sure you wish to delete this download?<br/>Deleting will stop the download and remove the<br style=\"font-size:20px\"/>item from the disk.");
 Tr::Translation CANCEL_DOWNLOAD_TEXT                 = Tr::translate("MainWindow", "Are you sure you wish to cancel this download?<br/>Canceling will stop the download and remove the<br style=\"font-size:20px\"/>item from the list.");

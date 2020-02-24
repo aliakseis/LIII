@@ -492,22 +492,6 @@ bool DownloadCollectionModel::deleteURLFromModel(ItemID a_ID, int deleteWithFile
 }
 
 
-void DownloadCollectionModel::deleteALLFinished()
-{
-    for (int i = getRootItem()->childCount(); --i >= 0; )
-    {
-        TreeItem* item = getRootItem()->child(i);
-        if (item->isCompleted())
-        {
-            int l_ID = item->getID();
-            deleteURLFromModel(l_ID);
-        }
-    }
-
-    queueSaveToFile();
-}
-
-
 void DownloadCollectionModel::on_statusChange(const ItemDC& a_item)
 {
     TreeItem* item = getRootItem()->findItemByID(a_item.getID());

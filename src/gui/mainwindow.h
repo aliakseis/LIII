@@ -79,7 +79,6 @@ private Q_SLOTS:
     void on_pauseButton_clicked();
     //    void on_stopButton_clicked();
     void on_cancelButton_clicked();
-    //void on_clearButton_clicked();
     void on_buttonPaste_clicked();
     void onButtonOpenFolderClicked(const QString& filename = QString());
     void on_buttonOptions_clicked();

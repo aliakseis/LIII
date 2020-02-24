@@ -64,7 +64,6 @@ public:
     TreeItem* getItem(const QModelIndex& index) const;
 
     bool deleteURLFromModel(ItemID a_ID, int deleteWithFiles = 0); // deleteWithFiles onlyFor torrents for now
-    void deleteALLFinished();
 
     Q_PROPERTY(QObject* rootItem READ getRootItem WRITE setRootItem)
     TreeItem* getRootItem() const { return rootItem; }
