@@ -25,6 +25,9 @@ public:
 
     void findItems();
 
+    void selectCompleted();
+    void invertSelection();
+
 protected:
     void keyPressEvent(QKeyEvent* event) override;
     void HeaderResize();

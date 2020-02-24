@@ -136,6 +136,8 @@ MainWindow::MainWindow()
     VERIFY(connect(ui->buttonOpenFolder, SIGNAL(clicked()), SLOT(onButtonOpenFolderClicked())));
 
     VERIFY(connect(ui->actionFind, SIGNAL(triggered()), SLOT(onFind())));
+    VERIFY(connect(ui->actionSelect_Completed, SIGNAL(triggered()), SLOT(onSelectCompleted())));
+    VERIFY(connect(ui->actionInvert_Selection, SIGNAL(triggered()), SLOT(onInvertSelection())));
 
 #ifdef Q_OS_MAC
     VERIFY(connect(&DarwinSingleton::Instance(), SIGNAL(showPreferences()), SLOT(on_buttonOptions_clicked())));
@@ -391,6 +393,16 @@ void MainWindow::on_buttonOptions_clicked()
 void MainWindow::onFind()
 {
     ui->listUrls->findItems();
+}
+
+void MainWindow::onSelectCompleted()
+{
+    ui->listUrls->selectCompleted();
+}
+
+void MainWindow::onInvertSelection()
+{
+    ui->listUrls->invertSelection();
 }
 
 void MainWindow::onButtonOpenFolderClicked(const QString& filename)

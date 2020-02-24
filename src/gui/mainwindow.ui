@@ -887,6 +887,8 @@
     <addaction name="actionCancel_selected"/>
     <addaction name="separator"/>
     <addaction name="actionFind"/>
+    <addaction name="actionSelect_Completed"/>
+    <addaction name="actionInvert_Selection"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -1038,6 +1040,16 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+F</string>
+   </property>
+  </action>
+  <action name="actionSelect_Completed">
+   <property name="text">
+    <string>Select Completed</string>
+   </property>
+  </action>
+  <action name="actionInvert_Selection">
+   <property name="text">
+    <string>Invert Selection</string>
    </property>
   </action>
  </widget>

@@ -83,6 +83,8 @@ private Q_SLOTS:
     void onButtonOpenFolderClicked(const QString& filename = QString());
     void on_buttonOptions_clicked();
     void onFind();
+    void onSelectCompleted();
+    void onInvertSelection();
     void openTorrentDownloadFolder(const QString& filename, const QString& downloadDirectory);
     void onOverallProgress(int progress);
     void onActiveDownloadsNumberChanged(int number);
