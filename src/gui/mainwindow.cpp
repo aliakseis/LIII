@@ -127,7 +127,7 @@ MainWindow::MainWindow()
     VERIFY(connect(ui->actionStart, SIGNAL(triggered()), SLOT(on_startButton_clicked())));
     //    VERIFY(connect(ui->actionStop, SIGNAL(triggered()), SLOT(on_stopButton_clicked())));
 
-    VERIFY(connect(ui->actionCleanup, SIGNAL(triggered()), SLOT(on_clearButton_clicked())));
+    //VERIFY(connect(ui->actionCleanup, SIGNAL(triggered()), SLOT(on_clearButton_clicked())));
     VERIFY(connect(ui->actionAbout_LIII, SIGNAL(triggered()), SLOT(onAboutClicked())));
 
     VERIFY(connect(ui->actionStartAllDownloads, SIGNAL(triggered()), ui->listUrls, SLOT(resumeAllItems())));
@@ -424,6 +424,7 @@ void MainWindow::on_buttonPaste_clicked()
     }
 }
 
+/*
 void MainWindow::on_clearButton_clicked()
 {
     if (QSettings().value(ShowCleanupWarning, true).toBool())
@@ -450,6 +451,7 @@ void MainWindow::on_clearButton_clicked()
     DownloadCollectionModel::instance().deleteALLFinished();
     refreshButtons();
 }
+*/
 
 void MainWindow::on_startButton_clicked()
 {
@@ -477,8 +479,8 @@ void MainWindow::refreshButtons()
     const bool isCompletedItems 
         = DownloadCollectionModel::instance().findItem(std::mem_fn(&TreeItem::isCompleted)) != nullptr;
     ui->lblClearText->setVisible(!ui->linkEdit->text().isEmpty());
-    ui->clearButton->setEnabled(isCompletedItems);
-    ui->actionCleanup->setEnabled(isCompletedItems);
+    //ui->clearButton->setEnabled(isCompletedItems);
+    //ui->actionCleanup->setEnabled(isCompletedItems);
     ui->listUrls->getUpdateItem();
 }
 
