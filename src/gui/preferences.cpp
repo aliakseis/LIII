@@ -333,7 +333,6 @@ void Preferences::on_btnResetWarnings_clicked()
     {
         QSettings settings;
         settings.setValue(ShowCancelWarning, true);
-        settings.setValue(ShowCleanupWarning, true);
         settings.setValue(ShowExitWarning, true);
         settings.setValue(ShowSysTrayNotifications, true);
         settings.setValue(ShowSysTrayNotificationOnHide, true);
