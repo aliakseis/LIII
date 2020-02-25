@@ -128,19 +128,19 @@
       <property name="minimumSize">
        <size>
         <width>0</width>
-        <height>42</height>
+        <height>40</height>
        </size>
       </property>
       <property name="maximumSize">
        <size>
         <width>16777215</width>
-        <height>42</height>
+        <height>40</height>
        </size>
       </property>
       <property name="styleSheet">
        <string notr="true"/>
       </property>
-      <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,0,0,0,0,0,1,0,0">
+      <layout class="QHBoxLayout" name="horizontalLayout">
        <property name="spacing">
         <number>5</number>
        </property>
@@ -160,18 +160,21 @@
         <widget class="QToolButton" name="startButton">
          <property name="minimumSize">
           <size>
-           <width>75</width>
+           <width>28</width>
            <height>28</height>
           </size>
          </property>
          <property name="maximumSize">
           <size>
-           <width>75</width>
+           <width>28</width>
            <height>28</height>
           </size>
          </property>
-         <property name="text">
+         <property name="toolTip">
           <string>Start</string>
+         </property>
+         <property name="text">
+          <string/>
          </property>
          <property name="icon">
           <iconset resource="../../resources/LIII/resources-LIII.qrc">
@@ -185,7 +188,7 @@
           </size>
          </property>
          <property name="toolButtonStyle">
-          <enum>Qt::ToolButtonTextBesideIcon</enum>
+          <enum>Qt::ToolButtonIconOnly</enum>
          </property>
         </widget>
        </item>
@@ -202,13 +205,13 @@
          </property>
          <property name="minimumSize">
           <size>
-           <width>75</width>
+           <width>28</width>
            <height>28</height>
           </size>
          </property>
          <property name="maximumSize">
           <size>
-           <width>75</width>
+           <width>28</width>
            <height>28</height>
           </size>
          </property>
@@ -223,8 +226,11 @@
            <family>Segoe UI</family>
           </font>
          </property>
-         <property name="text">
+         <property name="toolTip">
           <string>Pause</string>
+         </property>
+         <property name="text">
+          <string/>
          </property>
          <property name="icon">
           <iconset resource="../../resources/LIII/resources-LIII.qrc">
@@ -239,7 +245,7 @@
           </size>
          </property>
          <property name="toolButtonStyle">
-          <enum>Qt::ToolButtonTextBesideIcon</enum>
+          <enum>Qt::ToolButtonIconOnly</enum>
          </property>
          <property name="autoRaise">
           <bool>false</bool>
@@ -250,18 +256,21 @@
         <widget class="QToolButton" name="stopButton">
          <property name="minimumSize">
           <size>
-           <width>75</width>
+           <width>28</width>
            <height>28</height>
           </size>
          </property>
          <property name="maximumSize">
           <size>
-           <width>75</width>
+           <width>28</width>
            <height>28</height>
           </size>
          </property>
-         <property name="text">
+         <property name="toolTip">
           <string>Stop</string>
+         </property>
+         <property name="text">
+          <string/>
          </property>
          <property name="icon">
           <iconset resource="../../resources/LIII/resources-LIII.qrc">
@@ -275,7 +284,7 @@
           </size>
          </property>
          <property name="toolButtonStyle">
-          <enum>Qt::ToolButtonTextBesideIcon</enum>
+          <enum>Qt::ToolButtonIconOnly</enum>
          </property>
         </widget>
        </item>
@@ -289,20 +298,14 @@
          </property>
          <property name="minimumSize">
           <size>
-           <width>75</width>
+           <width>28</width>
            <height>28</height>
           </size>
          </property>
          <property name="maximumSize">
           <size>
-           <width>16777215</width>
+           <width>28</width>
            <height>28</height>
-          </size>
-         </property>
-         <property name="baseSize">
-          <size>
-           <width>75</width>
-           <height>0</height>
           </size>
          </property>
          <property name="font">
@@ -310,8 +313,11 @@
            <family>Segoe UI</family>
           </font>
          </property>
-         <property name="text">
+         <property name="toolTip">
           <string>Cancel</string>
+         </property>
+         <property name="text">
+          <string/>
          </property>
          <property name="icon">
           <iconset resource="../../resources/LIII/resources-LIII.qrc">
@@ -331,7 +337,7 @@
           </size>
          </property>
          <property name="toolButtonStyle">
-          <enum>Qt::ToolButtonTextBesideIcon</enum>
+          <enum>Qt::ToolButtonIconOnly</enum>
          </property>
          <property name="autoRaise">
           <bool>false</bool>
@@ -339,29 +345,80 @@
         </widget>
        </item>
        <item>
-        <widget class="Line" name="line_2">
+        <spacer name="horizontalSpacer">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Fixed</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>3</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="QPushButton" name="openTorrent">
+         <property name="enabled">
+          <bool>true</bool>
+         </property>
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
          <property name="minimumSize">
           <size>
-           <width>2</width>
+           <width>28</width>
            <height>28</height>
           </size>
          </property>
          <property name="maximumSize">
           <size>
-           <width>16777215</width>
+           <width>28</width>
            <height>28</height>
           </size>
          </property>
-         <property name="frameShadow">
-          <enum>QFrame::Sunken</enum>
+         <property name="font">
+          <font>
+           <family>Segoe UI</family>
+          </font>
          </property>
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
+         <property name="cursor">
+          <cursorShape>ArrowCursor</cursorShape>
+         </property>
+         <property name="toolTip">
+          <string>Add Torrent</string>
+         </property>
+         <property name="styleSheet">
+          <string notr="true"/>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="../../resources/LIII/resources-LIII.qrc">
+           <normaloff>:/add_torrent_normal.png</normaloff>
+           <normalon>:/add_torrent_press.png</normalon>
+           <disabledoff>:/add_torrent_disabled.png</disabledoff>
+           <disabledon>:/add_torrent_disabled.png</disabledon>
+           <activeoff>:/add_torrent_hover.png</activeoff>
+           <activeon>:/add_torrent_hover.png</activeon>:/add_torrent_normal.png</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>28</width>
+           <height>28</height>
+          </size>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QToolButton" name="clearButton">
+        <widget class="QToolButton" name="buttonPaste">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -376,7 +433,7 @@
          </property>
          <property name="maximumSize">
           <size>
-           <width>190</width>
+           <width>16777215</width>
            <height>28</height>
           </size>
          </property>
@@ -394,19 +451,14 @@
          <property name="cursor">
           <cursorShape>ArrowCursor</cursorShape>
          </property>
+         <property name="toolTip">
+          <string>Paste your links here</string>
+         </property>
          <property name="styleSheet">
           <string notr="true"/>
          </property>
          <property name="text">
-          <string>Remove completed</string>
-         </property>
-         <property name="icon">
-          <iconset resource="../../resources/LIII/resources-LIII.qrc">
-           <normaloff>:/cleanup.png</normaloff>
-           <disabledoff>:/cleanup_disabled.png</disabledoff>
-           <disabledon>:/cleanup.png</disabledon>
-           <activeoff>:/cleanup_hover.png</activeoff>
-           <activeon>:/cleanup_hover.png</activeon>:/cleanup.png</iconset>
+          <string>Paste link</string>
          </property>
          <property name="iconSize">
           <size>
@@ -423,13 +475,97 @@
         </widget>
        </item>
        <item>
-        <spacer name="horizontalSpacer_14">
+        <layout class="QHBoxLayout" name="horizontalLayout_4">
+         <property name="spacing">
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="LineEditEx" name="linkEdit">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>27</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>27</height>
+            </size>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="placeholderText">
+            <string>Paste links here ...</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="ButtonLabel" name="lblClearText">
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="buttonStart">
+           <property name="enabled">
+            <bool>true</bool>
+           </property>
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>80</width>
+             <height>28</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>166667</width>
+             <height>28</height>
+            </size>
+           </property>
+           <property name="font">
+            <font>
+             <family>Segoe UI</family>
+            </font>
+           </property>
+           <property name="cursor">
+            <cursorShape>ArrowCursor</cursorShape>
+           </property>
+           <property name="styleSheet">
+            <string notr="true"/>
+           </property>
+           <property name="text">
+            <string>Download</string>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>28</width>
+             <height>28</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <spacer name="horizontalSpacer_2">
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
          </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Fixed</enum>
+         </property>
          <property name="sizeHint" stdset="0">
           <size>
-           <width>200</width>
+           <width>3</width>
            <height>20</height>
           </size>
          </property>
@@ -578,7 +714,7 @@
         <number>6</number>
        </property>
        <property name="topMargin">
-        <number>0</number>
+        <number>8</number>
        </property>
        <property name="rightMargin">
         <number>6</number>
@@ -616,237 +752,6 @@
           <property name="bottomMargin">
            <number>0</number>
           </property>
-          <item>
-           <widget class="QFrame" name="downloadAddLayout">
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>45</height>
-             </size>
-            </property>
-            <property name="maximumSize">
-             <size>
-              <width>16777215</width>
-              <height>45</height>
-             </size>
-            </property>
-            <property name="styleSheet">
-             <string notr="true"/>
-            </property>
-            <property name="frameShape">
-             <enum>QFrame::NoFrame</enum>
-            </property>
-            <layout class="QHBoxLayout" name="horizontalLayout_9">
-             <property name="leftMargin">
-              <number>0</number>
-             </property>
-             <property name="topMargin">
-              <number>0</number>
-             </property>
-             <property name="rightMargin">
-              <number>0</number>
-             </property>
-             <property name="bottomMargin">
-              <number>0</number>
-             </property>
-             <item>
-              <widget class="QPushButton" name="openTorrent">
-               <property name="enabled">
-                <bool>true</bool>
-               </property>
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="minimumSize">
-                <size>
-                 <width>30</width>
-                 <height>30</height>
-                </size>
-               </property>
-               <property name="maximumSize">
-                <size>
-                 <width>30</width>
-                 <height>30</height>
-                </size>
-               </property>
-               <property name="font">
-                <font>
-                 <family>Segoe UI</family>
-                </font>
-               </property>
-               <property name="cursor">
-                <cursorShape>ArrowCursor</cursorShape>
-               </property>
-               <property name="toolTip">
-                <string>Add Torrent</string>
-               </property>
-               <property name="styleSheet">
-                <string notr="true"/>
-               </property>
-               <property name="text">
-                <string/>
-               </property>
-               <property name="icon">
-                <iconset resource="../../resources/LIII/resources-LIII.qrc">
-                 <normaloff>:/add_torrent_normal.png</normaloff>
-                 <normalon>:/add_torrent_press.png</normalon>
-                 <disabledoff>:/add_torrent_disabled.png</disabledoff>
-                 <disabledon>:/add_torrent_disabled.png</disabledon>
-                 <activeoff>:/add_torrent_hover.png</activeoff>
-                 <activeon>:/add_torrent_hover.png</activeon>:/add_torrent_normal.png</iconset>
-               </property>
-               <property name="iconSize">
-                <size>
-                 <width>28</width>
-                 <height>28</height>
-                </size>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QToolButton" name="buttonPaste">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="minimumSize">
-                <size>
-                 <width>75</width>
-                 <height>30</height>
-                </size>
-               </property>
-               <property name="maximumSize">
-                <size>
-                 <width>16777215</width>
-                 <height>30</height>
-                </size>
-               </property>
-               <property name="baseSize">
-                <size>
-                 <width>75</width>
-                 <height>0</height>
-                </size>
-               </property>
-               <property name="font">
-                <font>
-                 <family>Segoe UI</family>
-                </font>
-               </property>
-               <property name="cursor">
-                <cursorShape>ArrowCursor</cursorShape>
-               </property>
-               <property name="toolTip">
-                <string>Paste your links here</string>
-               </property>
-               <property name="styleSheet">
-                <string notr="true"/>
-               </property>
-               <property name="text">
-                <string>Paste link</string>
-               </property>
-               <property name="iconSize">
-                <size>
-                 <width>20</width>
-                 <height>18</height>
-                </size>
-               </property>
-               <property name="toolButtonStyle">
-                <enum>Qt::ToolButtonTextBesideIcon</enum>
-               </property>
-               <property name="autoRaise">
-                <bool>false</bool>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <layout class="QHBoxLayout" name="horizontalLayout_4">
-               <property name="spacing">
-                <number>0</number>
-               </property>
-               <item>
-                <widget class="LineEditEx" name="linkEdit">
-                 <property name="minimumSize">
-                  <size>
-                   <width>0</width>
-                   <height>29</height>
-                  </size>
-                 </property>
-                 <property name="maximumSize">
-                  <size>
-                   <width>16777215</width>
-                   <height>29</height>
-                  </size>
-                 </property>
-                 <property name="text">
-                  <string/>
-                 </property>
-                 <property name="placeholderText">
-                  <string>Paste links here ...</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="ButtonLabel" name="lblClearText">
-                 <property name="text">
-                  <string/>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QPushButton" name="buttonStart">
-                 <property name="enabled">
-                  <bool>true</bool>
-                 </property>
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="minimumSize">
-                  <size>
-                   <width>100</width>
-                   <height>30</height>
-                  </size>
-                 </property>
-                 <property name="maximumSize">
-                  <size>
-                   <width>166667</width>
-                   <height>30</height>
-                  </size>
-                 </property>
-                 <property name="font">
-                  <font>
-                   <family>Segoe UI</family>
-                  </font>
-                 </property>
-                 <property name="cursor">
-                  <cursorShape>ArrowCursor</cursorShape>
-                 </property>
-                 <property name="styleSheet">
-                  <string notr="true"/>
-                 </property>
-                 <property name="text">
-                  <string>Download</string>
-                 </property>
-                 <property name="iconSize">
-                  <size>
-                   <width>28</width>
-                   <height>28</height>
-                  </size>
-                 </property>
-                </widget>
-               </item>
-              </layout>
-             </item>
-            </layout>
-           </widget>
-          </item>
           <item>
            <widget class="QStackedWidget" name="stackedCentalWidget">
             <widget class="QWidget" name="page">
@@ -1009,12 +914,13 @@
     </property>
     <addaction name="actionPaste_Links"/>
     <addaction name="separator"/>
-    <addaction name="actionCleanup"/>
     <addaction name="actionStart"/>
     <addaction name="actionPause_selected"/>
     <addaction name="actionCancel_selected"/>
     <addaction name="separator"/>
     <addaction name="actionFind"/>
+    <addaction name="actionSelect_Completed"/>
+    <addaction name="actionInvert_Selection"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -1058,16 +964,6 @@
    </property>
    <property name="shortcut">
     <string notr="true">Ctrl+V</string>
-   </property>
-  </action>
-  <action name="actionCleanup">
-   <property name="icon">
-    <iconset>
-     <normalon>:/cleanup.png</normalon>
-    </iconset>
-   </property>
-   <property name="text">
-    <string>Remove completed</string>
    </property>
   </action>
   <action name="actionPause_unpause_selected">
@@ -1178,6 +1074,16 @@
     <string>Ctrl+F</string>
    </property>
   </action>
+  <action name="actionSelect_Completed">
+   <property name="text">
+    <string>Select Completed</string>
+   </property>
+  </action>
+  <action name="actionInvert_Selection">
+   <property name="text">
+    <string>Invert Selection</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
@@ -1198,6 +1104,7 @@
   </customwidget>
  </customwidgets>
  <resources>
+  <include location="../../resources/LIII/resources-LIII.qrc"/>
   <include location="../../resources/LIII/resources-LIII.qrc"/>
  </resources>
  <connections/>

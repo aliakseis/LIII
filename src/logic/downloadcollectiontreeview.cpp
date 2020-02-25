@@ -251,7 +251,7 @@ void DownloadCollectionTreeView::getUpdateItem()
         std::get<2>(prc),
         std::get<3>(prc));
 }
-void DownloadCollectionTreeView::on_ItemSelectChanged(const QItemSelection& current, const QItemSelection& previous)
+void DownloadCollectionTreeView::on_ItemSelectChanged(const QItemSelection&, const QItemSelection&)
 {
     getUpdateItem();
 }
@@ -407,7 +407,7 @@ void DownloadCollectionTreeView::on_MoveDown()
     moveImpl(1);
 }
 
-void DownloadCollectionTreeView::on_clicked(const QModelIndex& a_index)
+void DownloadCollectionTreeView::on_clicked(const QModelIndex&)
 {
     // Action?
 }
@@ -500,6 +500,27 @@ void DownloadCollectionTreeView::findItems()
         });
     }
 }
+
+
+void DownloadCollectionTreeView::selectCompleted()
+{
+    selectionModel()->select(QItemSelection(), QItemSelectionModel::Clear);
+    model()->forAll([this](TreeItem & ti)
+    {
+        if (ti.isCompleted())
+        {
+            const auto idx = model()->index(&ti, 0);
+            selectionModel()->select(idx, QItemSelectionModel::Select | QItemSelectionModel::Rows);
+        }
+    });
+}
+
+void DownloadCollectionTreeView::invertSelection()
+{
+    for (int i = 0; i < model()->rowCount(); ++i)
+        selectionModel()->select(model()->index(i, 0), QItemSelectionModel::Toggle | QItemSelectionModel::Rows);
+}
+
 
 void DownloadCollectionTreeView::on_showTorrentDetails()
 {

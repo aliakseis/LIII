@@ -127,7 +127,7 @@ MainWindow::MainWindow()
     VERIFY(connect(ui->actionStart, SIGNAL(triggered()), SLOT(on_startButton_clicked())));
     //    VERIFY(connect(ui->actionStop, SIGNAL(triggered()), SLOT(on_stopButton_clicked())));
 
-    VERIFY(connect(ui->actionCleanup, SIGNAL(triggered()), SLOT(on_clearButton_clicked())));
+    //VERIFY(connect(ui->actionCleanup, SIGNAL(triggered()), SLOT(on_clearButton_clicked())));
     VERIFY(connect(ui->actionAbout_LIII, SIGNAL(triggered()), SLOT(onAboutClicked())));
 
     VERIFY(connect(ui->actionStartAllDownloads, SIGNAL(triggered()), ui->listUrls, SLOT(resumeAllItems())));
@@ -136,6 +136,8 @@ MainWindow::MainWindow()
     VERIFY(connect(ui->buttonOpenFolder, SIGNAL(clicked()), SLOT(onButtonOpenFolderClicked())));
 
     VERIFY(connect(ui->actionFind, SIGNAL(triggered()), SLOT(onFind())));
+    VERIFY(connect(ui->actionSelect_Completed, SIGNAL(triggered()), SLOT(onSelectCompleted())));
+    VERIFY(connect(ui->actionInvert_Selection, SIGNAL(triggered()), SLOT(onInvertSelection())));
 
 #ifdef Q_OS_MAC
     VERIFY(connect(&DarwinSingleton::Instance(), SIGNAL(showPreferences()), SLOT(on_buttonOptions_clicked())));
@@ -393,6 +395,16 @@ void MainWindow::onFind()
     ui->listUrls->findItems();
 }
 
+void MainWindow::onSelectCompleted()
+{
+    ui->listUrls->selectCompleted();
+}
+
+void MainWindow::onInvertSelection()
+{
+    ui->listUrls->invertSelection();
+}
+
 void MainWindow::onButtonOpenFolderClicked(const QString& filename)
 {
     utilities::SelectFile(filename, global_functions::GetVideoFolder());
@@ -424,33 +436,6 @@ void MainWindow::on_buttonPaste_clicked()
     }
 }
 
-void MainWindow::on_clearButton_clicked()
-{
-    if (QSettings().value(ShowCleanupWarning, true).toBool())
-    {
-        QMessageBox msgBox(
-            QMessageBox::NoIcon,
-            ::Tr::Tr(PROJECT_FULLNAME_TRANSLATION),
-            ::Tr::Tr(CLEANUP_TEXT),
-            nullptr,
-            this);
-        msgBox.setCheckBox(new QCheckBox(::Tr::Tr(DONT_SHOW_THIS_AGAIN)));
-        QPushButton* removeButton = msgBox.addButton(tr("Remove"), QMessageBox::ActionRole);
-        QPushButton* cancelButton = msgBox.addButton(QMessageBox::Cancel);
-
-        msgBox.exec();
-        if (msgBox.clickedButton() != removeButton)
-        {
-            return;
-        }
-        const bool isDontShowMeChecked = msgBox.checkBox()->isChecked();
-        QSettings().setValue(ShowCleanupWarning, !isDontShowMeChecked);
-    }
-
-    DownloadCollectionModel::instance().deleteALLFinished();
-    refreshButtons();
-}
-
 void MainWindow::on_startButton_clicked()
 {
     ui->listUrls->startDownloadItem();
@@ -474,11 +459,7 @@ void MainWindow::on_cancelButton_clicked()
 
 void MainWindow::refreshButtons()
 {
-    const bool isCompletedItems 
-        = DownloadCollectionModel::instance().findItem(std::mem_fn(&TreeItem::isCompleted)) != nullptr;
     ui->lblClearText->setVisible(!ui->linkEdit->text().isEmpty());
-    ui->clearButton->setEnabled(isCompletedItems);
-    ui->actionCleanup->setEnabled(isCompletedItems);
     ui->listUrls->getUpdateItem();
 }
 

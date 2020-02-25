@@ -44,8 +44,6 @@ const char ShowSysTrayNotifications[] = "ShowSysTrayNotifications";
 
 const char ShowCancelWarning[] = "ShowCancelWarning";
 
-const char ShowCleanupWarning[] = "ShowCleanupWarning";
-
 const char ShowExitWarning[] = "ShowExitWarning";
 
 const char ShowAssociateTorrentDialog[] = "ShowAssociateTorrentDialog";
