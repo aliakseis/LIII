@@ -127,7 +127,6 @@ MainWindow::MainWindow()
     VERIFY(connect(ui->actionStart, SIGNAL(triggered()), SLOT(on_startButton_clicked())));
     //    VERIFY(connect(ui->actionStop, SIGNAL(triggered()), SLOT(on_stopButton_clicked())));
 
-    //VERIFY(connect(ui->actionCleanup, SIGNAL(triggered()), SLOT(on_clearButton_clicked())));
     VERIFY(connect(ui->actionAbout_LIII, SIGNAL(triggered()), SLOT(onAboutClicked())));
 
     VERIFY(connect(ui->actionStartAllDownloads, SIGNAL(triggered()), ui->listUrls, SLOT(resumeAllItems())));
