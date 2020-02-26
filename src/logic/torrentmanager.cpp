@@ -334,6 +334,15 @@ int TorrentManager::cacheResumeTorrentsData(bool fully_data_save /* = false */)
                 continue;
             }
 
+            if (const auto itemDC = getItemByTorrentHandle(torrent))
+            {
+                if ((itemDC.getStatus() == ItemDC::eFINISHED || itemDC.getStatus() == ItemDC::ePAUSED)
+                    && itemDC.statusLastChanged() < m_fastresumeLastSaved)
+                {
+                    continue;
+                }
+            }
+
             const libtorrent::torrent_status status = torrent.status();
             if (!status.has_metadata)
             {
@@ -350,15 +359,6 @@ int TorrentManager::cacheResumeTorrentsData(bool fully_data_save /* = false */)
             if (state == libtorrent::torrent_status::checking_files || state == libtorrent::torrent_status::queued_for_checking)
             {
                 continue;
-            }
-
-            if (const auto itemDC = getItemByTorrentHandle(torrent))
-            {
-                if ((itemDC.getStatus() == ItemDC::eFINISHED || itemDC.getStatus() == ItemDC::ePAUSED)
-                    && itemDC.statusLastChanged() < m_fastresumeLastSaved)
-                {
-                    continue;
-                }
             }
 
             qDebug() << "Saving fastresume data for " << QString::fromStdString(torrent.name());

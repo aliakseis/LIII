@@ -589,18 +589,18 @@ To completely exit %1, righ-click the tray icon then click Exit.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="583"/>
-        <location filename="../src/gui/mainwindow.cpp" line="585"/>
+        <location filename="../src/gui/mainwindow.cpp" line="582"/>
+        <location filename="../src/gui/mainwindow.cpp" line="584"/>
         <source>File &quot;%1&quot; was downloaded</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="585"/>
+        <location filename="../src/gui/mainwindow.cpp" line="584"/>
         <source>File downloaded</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="595"/>
+        <location filename="../src/gui/mainwindow.cpp" line="594"/>
         <source>Select a Torrent to open</source>
         <translation type="unfinished"></translation>
     </message>
