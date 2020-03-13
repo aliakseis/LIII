@@ -44,7 +44,6 @@ if(APPLE)
 endif(APPLE)
 
 add_subdirectory(common/utilities)
-# add_subdirectory(common/settings)
 add_subdirectory(common/download)
 add_subdirectory(common/ui_utils)
 
