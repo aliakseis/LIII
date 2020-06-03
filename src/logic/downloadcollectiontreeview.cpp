@@ -223,7 +223,7 @@ void DownloadCollectionTreeView::safelyDeleteVideoFile(QString const& file)
 
 void DownloadCollectionTreeView::downloadingFinished(const ItemDC& a_item)
 {
-    if (a_item.getStatus() == ItemDC::eFINISHED)
+    if (a_item.getStatus() == ItemDC::eFINISHED || a_item.getStatus() == ItemDC::eSEEDING)
     {
         QString fileName;
         if (DownloadType::isTorrentDownload(a_item.downloadType()))
