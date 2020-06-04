@@ -41,11 +41,17 @@ TorrentContentModelItem::TorrentContentModelItem(
 TorrentContentModelItem::TorrentContentModelItem(const QString& name, TorrentContentModelItem* parent)
     : m_parentItem(parent), m_type(FOLDER), m_totalDone(0)
 {
+    m_path = name;
+    if (parent != nullptr && parent->isFolder())
+    {
+        m_path = parent->getPath() + '/' + m_path;
+    }
+
     init(name, 0);
 }
 
 TorrentContentModelItem::TorrentContentModelItem(const QList<QVariant>& data)
-    : m_parentItem(0), m_type(ROOT), m_itemData(data), m_totalDone(0)
+    : m_parentItem(nullptr), m_type(ROOT), m_itemData(data), m_totalDone(0)
 {
     Q_ASSERT(data.size() == NB_COL);
 }
