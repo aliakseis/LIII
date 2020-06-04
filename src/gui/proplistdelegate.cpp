@@ -10,6 +10,8 @@
 #include "utilities/utils.h"
 #include "torrentcontentfiltermodel.h"
 
+#include <algorithm>
+
 PropListDelegate::PropListDelegate(QObject* parent /*= 0*/) : QStyledItemDelegate(parent)
 {
 }
@@ -50,7 +52,7 @@ void PropListDelegate::paint(QPainter* painter, const QStyleOptionViewItem& opti
 
             const qreal progress = index.data().toDouble() * 100.;
 
-            progressBarOption.progress = static_cast<int>(progress);
+            progressBarOption.progress = std::min(100, static_cast<int>(progress));
             progressBarOption.text = utilities::ProgressString(progress);
             QApplication::style()->drawControl(QStyle::CE_ProgressBar, &progressBarOption, painter);
         }

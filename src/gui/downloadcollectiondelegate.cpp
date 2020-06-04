@@ -6,6 +6,8 @@
 
 #include "utilities/utils.h"
 
+#include <algorithm>
+
 DownloadCollectionDelegate::DownloadCollectionDelegate(QWidget* parent/* = 0*/) : QStyledItemDelegate(parent)
 {
 }
@@ -43,7 +45,7 @@ void DownloadCollectionDelegate::paint(QPainter* painter, const QStyleOptionView
         // Set the progress and text values of the style option.
         const double progress = index.data(Qt::DisplayRole).toDouble();
 
-        progressBarOption.progress = static_cast<int>(progress);
+        progressBarOption.progress = std::min(100, static_cast<int>(progress));
         progressBarOption.text = utilities::ProgressString(progress);
 
         // Draw the progress bar onto the view.
