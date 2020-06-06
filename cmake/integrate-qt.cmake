@@ -268,6 +268,20 @@ macro(INSTALL_QT5PLUGINS TARGET_NAME)
 		ADD_TO_INSTALL_FILES(${TARGET_NAME} "platforms")
 		#########################
 		
+		####### STYLES #######
+		set(DLIBS_TO_COPY_RELEASE "")
+		set(DLIBS_TO_COPY_DEBUG "")
+
+		if(WIN32)
+			set(stylePlugin_release "${qtPluginsPath}/styles/qwindowsvistastyle.${dllExtension}")
+		else(WIN32)
+			set(stylePlugin_release "${qtPluginsPath}/styles/qmacstyle.${dllExtension}")
+		endif(WIN32)
+		QT_ADD_POSTBUILD_STEP(${TARGET_NAME} ${stylePlugin_release} "/styles/")
+
+		ADD_TO_INSTALL_FILES(${TARGET_NAME} "styles")
+		#########################
+		
 		####### accessible #######
 		set(DLIBS_TO_COPY_RELEASE "")
 		set(DLIBS_TO_COPY_DEBUG "")
