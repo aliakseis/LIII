@@ -33,15 +33,21 @@ TorrentContentFilterModel* TorrentDetailsContentView::model()
 void TorrentDetailsContentView::on_showTreeTorentContextMenu(const QPoint& pos)
 {
     QModelIndex index = indexAt(pos);
-    if (index.isValid())
+    if (!index.isValid())
     {
-        QMenu menu;
-        menu.setObjectName(QStringLiteral("TorrentDetailsContextMenu"));
-        menu.addAction(QIcon(), tr("Open in folder"), this, SLOT(on_ItemOpenFolder()));
-        menu.addAction(QIcon(), tr("Open File"), this, SLOT(on_ItemOpenFile()));
-
-        menu.exec(QCursor::pos());
+        return;
     }
+
+    TorrentContentModelItem* torrentItem = model()->getTorrentContentModelItem(index);
+    QMenu menu;
+    menu.setObjectName(QStringLiteral("TorrentDetailsContextMenu"));
+    menu.addAction(QIcon(), tr("Open in folder"), this, SLOT(on_ItemOpenFolder()));
+    if (!torrentItem->isFolder())
+    {
+        menu.addAction(QIcon(), tr("Open File"), this, SLOT(on_ItemOpenFile()));
+    }
+
+    menu.exec(QCursor::pos());
 }
 
 void TorrentDetailsContentView::on_ItemOpenFolder()
