@@ -158,6 +158,9 @@
        </property>
        <item>
         <widget class="QToolButton" name="startButton">
+         <property name="cursor">
+          <cursorShape>ArrowCursor</cursorShape>
+         </property>
          <property name="minimumSize">
           <size>
            <width>28</width>
@@ -194,6 +197,9 @@
        </item>
        <item>
         <widget class="QToolButton" name="pauseButton">
+         <property name="cursor">
+          <cursorShape>ArrowCursor</cursorShape>
+         </property>
          <property name="enabled">
           <bool>true</bool>
          </property>
@@ -254,6 +260,9 @@
        </item>
        <item>
         <widget class="QToolButton" name="stopButton">
+         <property name="cursor">
+          <cursorShape>ArrowCursor</cursorShape>
+         </property>
          <property name="minimumSize">
           <size>
            <width>28</width>
@@ -290,6 +299,9 @@
        </item>
        <item>
         <widget class="QToolButton" name="cancelButton">
+         <property name="cursor">
+          <cursorShape>ArrowCursor</cursorShape>
+         </property>
          <property name="sizePolicy">
           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
