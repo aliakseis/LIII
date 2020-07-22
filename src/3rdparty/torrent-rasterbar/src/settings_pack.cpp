@@ -323,7 +323,7 @@ namespace libtorrent
 		SET(utp_connect_timeout, 3000, 0),
 		SET(utp_delayed_ack, 0, 0),
 		SET(utp_loss_multiplier, 50, 0),
-		SET(mixed_mode_algorithm, settings_pack::peer_proportional, 0),
+        SET(mixed_mode_algorithm, settings_pack::prefer_tcp, 0),
 		SET(listen_queue_size, 5, 0),
 		SET(torrent_connect_boost, 10, 0),
 		SET(alert_queue_size, 1000, &session_impl::update_alert_queue_size),

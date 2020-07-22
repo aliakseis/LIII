@@ -3164,8 +3164,8 @@ retry:
 		switch (m_settings.get_int(settings_pack::mixed_mode_algorithm))
 		{
 			case settings_pack::prefer_tcp:
-				set_upload_rate_limit(m_tcp_peer_class, 0);
-				set_download_rate_limit(m_tcp_peer_class, 0);
+                //set_upload_rate_limit(m_tcp_peer_class, 0);
+                //set_download_rate_limit(m_tcp_peer_class, 0);
 				break;
 			case settings_pack::peer_proportional:
 				{

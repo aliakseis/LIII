@@ -5513,6 +5513,13 @@ namespace libtorrent
 			c += m_ses.copy_pertinent_channels(*t, channel
 				, channels + c, max_channels - c);
 		}
+        if (c == 0)
+        {
+            peer_class_set pcs;
+            m_ses.set_peer_classes(&pcs, m_remote.address(), type());
+            c += m_ses.copy_pertinent_channels(pcs, channel
+                , channels + c, max_channels - c);
+        }
 
 #ifdef TORRENT_DEBUG
 		// make sure we don't have duplicates

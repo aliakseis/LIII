@@ -603,17 +603,13 @@ int TorrentManager::port() const
 void TorrentManager::setUploadLimit(int limit)
 {
     Q_ASSERT(limit >= 0);
-    libtorrent::session_settings settings = m_session->settings();
-    settings.upload_rate_limit = limit;
-    m_session->set_settings(settings);
+    m_session->set_upload_rate_limit(limit);
 }
 
 void TorrentManager::setDownloadLimit(int limit)
 {
     Q_ASSERT(limit >= 0);
-    libtorrent::session_settings settings = m_session->settings();
-    settings.download_rate_limit = limit;
-    m_session->set_settings(settings);
+    m_session->set_download_rate_limit(limit);
 }
 
 void TorrentManager::onProxySettingsChanged()
