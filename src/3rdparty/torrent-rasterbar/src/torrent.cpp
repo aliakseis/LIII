@@ -1370,7 +1370,7 @@ namespace libtorrent
 		if (m_picker) return;
 
 		TORRENT_ASSERT(valid_metadata());
-		TORRENT_ASSERT(m_connections_initialized);
+        //TORRENT_ASSERT(m_connections_initialized);
 
 		INVARIANT_CHECK;
 
@@ -4758,7 +4758,7 @@ namespace {
 	{
 		if (has_picker())
 		{
-			TORRENT_ASSERT(bits.size() == torrent_file().num_pieces());
+            //TORRENT_ASSERT(bits.size() == torrent_file().num_pieces());
 			torrent_peer* pp = peer->peer_info_struct();
 			m_picker->inc_refcount(bits, pp);
 			refresh_suggest_pieces();
