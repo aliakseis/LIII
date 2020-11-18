@@ -106,7 +106,7 @@
           <item row="3" column="2">
            <widget class="QLabel" name="lblDate">
             <property name="text">
-             <string notr="true">02/03/2012 20:30</string>
+             <string notr="true">n/a</string>
             </property>
            </widget>
           </item>

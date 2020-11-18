@@ -23,6 +23,7 @@
 #include <QFile>
 #include <QMainWindow>
 #include <QMessageBox>
+#include <QThread>
 
 #include "settings_declaration.h"
 #include "application.h"
@@ -269,6 +270,9 @@ TorrentManager::TorrentManager()
         ? QSettings().value(TrafficLimitKbs, TrafficLimitKbs_Default).toInt() * 1024 : 0);
 
     // enable dht by default for magnets
+#ifdef QT_DEBUG
+    QThread::yieldCurrentThread(); // try to avoid assert failure
+#endif //QT_DEBUG
     Q_ASSERT(m_session->is_dht_running());
 
     for (auto node : {
