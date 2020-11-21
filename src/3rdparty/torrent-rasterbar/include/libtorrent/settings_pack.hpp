@@ -95,7 +95,7 @@ namespace libtorrent
 	{
 		friend TORRENT_EXTRA_EXPORT void apply_pack(settings_pack const* pack, aux::session_settings& sett, aux::session_impl* ses);
 
-		void set_str(int name, std::string val);
+		void set_str(int name, const std::string& val);
 		void set_int(int name, int val);
 		void set_bool(int name, bool val);
 		bool has_val(int name) const;

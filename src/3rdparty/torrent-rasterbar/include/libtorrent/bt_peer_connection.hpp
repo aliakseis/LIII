@@ -100,8 +100,8 @@ namespace libtorrent
 		bool rc4_encrypted() const
 		{ return m_rc4_encrypted; }
 
-		void switch_send_crypto(boost::shared_ptr<crypto_plugin> crypto);
-		void switch_recv_crypto(boost::shared_ptr<crypto_plugin> crypto);
+		void switch_send_crypto(const boost::shared_ptr<crypto_plugin>& crypto);
+		void switch_recv_crypto(const boost::shared_ptr<crypto_plugin>& crypto);
 #endif
 
 		virtual int type() const TORRENT_OVERRIDE

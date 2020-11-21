@@ -42,7 +42,7 @@ namespace libtorrent
 {
 
 #ifndef TORRENT_DISABLE_MUTABLE_TORRENTS
-resolve_links::resolve_links(boost::shared_ptr<torrent_info> ti)
+resolve_links::resolve_links(const boost::shared_ptr<torrent_info>& ti)
 	: m_torrent_file(ti)
 {
 	TORRENT_ASSERT(ti);

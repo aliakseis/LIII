@@ -35,6 +35,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #include "libtorrent/aux_/disable_warnings_push.hpp"
 
+#include <utility>
 #include <vector>
 #include <boost/limits.hpp>
 #include <boost/bind.hpp>
@@ -157,13 +158,13 @@ namespace libtorrent
 	}
 
 #if !defined(TORRENT_DISABLE_ENCRYPTION) && !defined(TORRENT_DISABLE_EXTENSIONS)
-	void bt_peer_connection::switch_send_crypto(boost::shared_ptr<crypto_plugin> crypto)
+	void bt_peer_connection::switch_send_crypto(const boost::shared_ptr<crypto_plugin>& crypto)
 	{
 		if (m_enc_handler.switch_send_crypto(crypto, send_buffer_size() - get_send_barrier()))
 			set_send_barrier(send_buffer_size());
 	}
 
-	void bt_peer_connection::switch_recv_crypto(boost::shared_ptr<crypto_plugin> crypto)
+	void bt_peer_connection::switch_recv_crypto(const boost::shared_ptr<crypto_plugin>& crypto)
 	{
 		m_enc_handler.switch_recv_crypto(crypto, m_recv_buffer);
 	}
@@ -566,7 +567,7 @@ namespace libtorrent
 
 		write_pe_vc_cryptofield(ptr, encrypt_size, crypto_provide, pad_size);
 		std::vector<boost::asio::mutable_buffer> vec;
-		vec.push_back(boost::asio::mutable_buffer(ptr, encrypt_size));
+		vec.emplace_back(ptr, encrypt_size);
 		m_rc4->encrypt(vec);
 		send_buffer(msg, sizeof(msg) - 512 + pad_size);
 	}
@@ -588,7 +589,7 @@ namespace libtorrent
 		write_pe_vc_cryptofield(msg, sizeof(msg), crypto_select, pad_size);
 
 		std::vector<boost::asio::mutable_buffer> vec;
-		vec.push_back(boost::asio::mutable_buffer(msg, buf_size));
+		vec.emplace_back(msg, buf_size);
 		m_rc4->encrypt(vec);
 		send_buffer(msg, buf_size);
 
@@ -733,7 +734,7 @@ namespace libtorrent
 	void bt_peer_connection::rc4_decrypt(char* pos, int len)
 	{
 		std::vector<boost::asio::mutable_buffer> vec;
-		vec.push_back(boost::asio::mutable_buffer(pos, len));
+		vec.emplace_back(pos, len);
 		int consume = 0;
 		int produce = len;
 		int packet_size = 0;
@@ -2555,7 +2556,7 @@ namespace libtorrent
 		}
 		buffer.release();
 
-		m_payloads.push_back(range(send_buffer_size() - r.length, r.length));
+		m_payloads.emplace_back(send_buffer_size() - r.length, r.length);
 		setup_send();
 
 		stats_counters().inc_stats_counter(counters::num_outgoing_piece);
@@ -2712,7 +2713,7 @@ namespace libtorrent
 				return;
 			}
 
-			if (!m_sync_hash.get())
+			if (!m_sync_hash)
 			{
 				TORRENT_ASSERT(m_sync_bytes_read == 0);
 				hasher h;
@@ -2811,7 +2812,7 @@ namespace libtorrent
 #endif
 			}
 
-			if (!m_rc4.get())
+			if (!m_rc4)
 			{
 				disconnect(errors::invalid_info_hash, op_bittorrent, 1);
 				return;

@@ -495,7 +495,7 @@ node_entry* routing_table::find_node(udp::endpoint const& ep
 }
 
 void routing_table::remove_node(node_entry* n
-	, routing_table::table_t::iterator bucket)
+	, const routing_table::table_t::iterator& bucket)
 {
 	INVARIANT_CHECK;
 
@@ -1151,7 +1151,7 @@ void routing_table::node_failed(node_id const& nid, udp::endpoint const& ep)
 	rb.erase(j);
 }
 
-void routing_table::add_router_node(udp::endpoint router)
+void routing_table::add_router_node(const udp::endpoint& router)
 {
 	m_router_nodes.insert(router);
 }
@@ -1169,7 +1169,7 @@ void routing_table::heard_about(node_id const& id, udp::endpoint const& ep)
 // top of its bucket. the return value indicates if the table needs a refresh.
 // if true, the node should refresh the table (i.e. do a find_node on its own
 // id)
-bool routing_table::node_seen(node_id const& id, udp::endpoint ep, int rtt)
+bool routing_table::node_seen(node_id const& id, const udp::endpoint& ep, int rtt)
 {
 	if (!verify_node_address(m_settings, id, ep.address())) return false;
 	return add_node(node_entry(id, ep, rtt, true));

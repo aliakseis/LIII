@@ -52,7 +52,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "libtorrent/aux_/escape_string.hpp"
 
 #include <boost/asio/ip/host_name.hpp>
-
+#include <utility> 
 //#define NATPMP_LOG
 
 #ifdef NATPMP_LOG
@@ -66,9 +66,9 @@ POSSIBILITY OF SUCH DAMAGE.
 using namespace libtorrent;
 
 natpmp::natpmp(io_service& ios
-	, portmap_callback_t const& cb, log_callback_t const& lcb)
-	: m_callback(cb)
-	, m_log_callback(lcb)
+	, portmap_callback_t  cb, log_callback_t  lcb)
+	: m_callback(std::move(cb))
+	, m_log_callback(std::move(lcb))
 	, m_currently_mapping(-1)
 	, m_retry_count(0)
 	, m_socket(ios)
@@ -226,7 +226,7 @@ int natpmp::add_mapping(protocol_type p, int external_port, int local_port)
 		, m_mappings.end(), boost::bind(&mapping_t::protocol, _1) == int(none));
 	if (i == m_mappings.end())
 	{
-		m_mappings.push_back(mapping_t());
+		m_mappings.emplace_back();
 		i = m_mappings.end() - 1;
 	}
 	i->protocol = p;

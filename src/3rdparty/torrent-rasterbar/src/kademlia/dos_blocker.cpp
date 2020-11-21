@@ -50,7 +50,7 @@ namespace libtorrent { namespace dht
 		}
 	}
 
-	bool dos_blocker::incoming(address addr, time_point now, dht_logger* logger)
+	bool dos_blocker::incoming(const address& addr, time_point now, dht_logger* logger)
 	{
 		TORRENT_UNUSED(logger);
 

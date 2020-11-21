@@ -81,7 +81,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "libtorrent/stat_cache.hpp"
 
 #include <cstdio>
-
+#include <utility> 
 //#define TORRENT_PARTIAL_HASH_LOG
 
 // for convert_to_wstring and convert_to_native
@@ -1737,11 +1737,11 @@ namespace libtorrent
 
 	piece_manager::piece_manager(
 		storage_interface* storage_impl
-		, boost::shared_ptr<void> const& torrent
+		, boost::shared_ptr<void>  torrent
 		, file_storage* files)
 		: m_files(*files)
 		, m_storage(storage_impl)
-		, m_torrent(torrent)
+		, m_torrent(std::move(torrent))
 	{
 	}
 

@@ -60,8 +60,8 @@ typedef boost::function<void(char const*)> log_callback_t;
 class natpmp : public boost::enable_shared_from_this<natpmp>
 {
 public:
-	natpmp(io_service& ios, portmap_callback_t const& cb
-		, log_callback_t const& lcb);
+	natpmp(io_service& ios, portmap_callback_t  cb
+		, log_callback_t  lcb);
 
 	void start();
 

@@ -39,6 +39,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #include <algorithm>
 #include <set>
 #include <map>
+#include <utility>
 #include <vector>
 #include <cctype>
 #include <numeric>
@@ -345,7 +346,7 @@ namespace libtorrent
 		for (std::vector<std::string>::const_iterator i = p.url_seeds.begin()
 			, end(p.url_seeds.end()); i != end; ++i)
 		{
-			m_web_seeds.push_back(web_seed_t(*i, web_seed_entry::url_seed));
+			m_web_seeds.emplace_back(*i, web_seed_entry::url_seed);
 		}
 
 		m_trackers = m_torrent_file->trackers();
@@ -796,7 +797,7 @@ namespace libtorrent
 #ifndef TORRENT_NO_DEPRECATE
 		if (p.tracker_url && std::strlen(p.tracker_url) > 0)
 		{
-			m_trackers.push_back(announce_entry(p.tracker_url));
+			m_trackers.emplace_back(p.tracker_url);
 			m_trackers.back().fail_limit = 0;
 			m_trackers.back().source = announce_entry::source_magnet_link;
 			m_torrent_file->add_tracker(p.tracker_url);
@@ -807,7 +808,7 @@ namespace libtorrent
 		for (std::vector<std::string>::const_iterator i = p.trackers.begin()
 			, end(p.trackers.end()); i != end; ++i)
 		{
-			m_trackers.push_back(announce_entry(*i));
+			m_trackers.emplace_back(*i);
 			m_trackers.back().fail_limit = 0;
 			m_trackers.back().source = announce_entry::source_magnet_link;
 			m_trackers.back().tier = tier++;
@@ -923,7 +924,7 @@ namespace libtorrent
 
 	void torrent::set_ip_filter(boost::shared_ptr<const ip_filter> ipf)
 	{
-		m_ip_filter = ipf;
+		m_ip_filter = std::move(ipf);
 		if (!m_apply_ip_filter) return;
 		ip_filter_updated();
 	}
@@ -1318,7 +1319,7 @@ namespace libtorrent
 	}
 
 	void torrent::on_disk_read_complete(disk_io_job const* j, peer_request r
-		, boost::shared_ptr<read_piece_struct> rp)
+		, const boost::shared_ptr<read_piece_struct>& rp)
 	{
 		// hold a reference until this function returns
 		torrent_ref_holder h(this, "read_piece");
@@ -1561,12 +1562,12 @@ namespace libtorrent
 
 #ifndef TORRENT_DISABLE_EXTENSIONS
 
-	void torrent::add_extension(boost::shared_ptr<torrent_plugin> ext)
+	void torrent::add_extension(const boost::shared_ptr<torrent_plugin>& ext)
 	{
 		m_extensions.push_back(ext);
 	}
 
-	void torrent::remove_extension(boost::shared_ptr<torrent_plugin> ext)
+	void torrent::remove_extension(const boost::shared_ptr<torrent_plugin>& ext)
 	{
 		extension_list_t::iterator i = std::find(m_extensions.begin(), m_extensions.end(), ext);
 		if (i == m_extensions.end()) return;
@@ -2957,7 +2958,7 @@ namespace {
 	}
 
 #ifndef TORRENT_NO_DEPRECATE
-	void torrent::use_interface(std::string net_interfaces)
+	void torrent::use_interface(const std::string& net_interfaces)
 	{
 		boost::shared_ptr<settings_pack> p = boost::make_shared<settings_pack>();
 		p->set_str(settings_pack::outgoing_interfaces, net_interfaces);
@@ -2965,7 +2966,7 @@ namespace {
 	}
 #endif
 
-	void torrent::on_tracker_announce_disp(boost::weak_ptr<torrent> p
+	void torrent::on_tracker_announce_disp(const boost::weak_ptr<torrent>& p
 		, error_code const& e)
 	{
 #if defined TORRENT_ASIO_DEBUGGING
@@ -3100,7 +3101,7 @@ namespace {
 			, boost::bind(&torrent::on_dht_announce_response_disp, self, _1));
 	}
 
-	void torrent::on_dht_announce_response_disp(boost::weak_ptr<libtorrent::torrent> t
+	void torrent::on_dht_announce_response_disp(const boost::weak_ptr<libtorrent::torrent>& t
 		, std::vector<tcp::endpoint> const& peers)
 	{
 		boost::shared_ptr<libtorrent::torrent> tor = t.lock();
@@ -4805,7 +4806,7 @@ namespace {
 
 	void torrent::peer_lost(int index, peer_connection const* peer)
 	{
-		if (m_picker.get())
+		if (m_picker)
 		{
 			torrent_peer* pp = peer->peer_info_struct();
 			m_picker->dec_refcount(index, pp);
@@ -5008,7 +5009,7 @@ namespace {
 
 		// post a message to the main thread to destruct
 		// the torrent object from there
-		if (m_storage.get())
+		if (m_storage)
 		{
 			m_ses.disk_thread().async_stop_torrent(m_storage.get()
 				, boost::bind(&torrent::on_torrent_aborted, shared_from_this()));
@@ -6260,7 +6261,7 @@ namespace {
 		update_want_tick();
 	}
 
-	void torrent::remove_web_seed(std::list<web_seed_t>::iterator web)
+	void torrent::remove_web_seed(const std::list<web_seed_t>::iterator& web)
 	{
 		if (web->resolving)
 		{
@@ -6290,7 +6291,7 @@ namespace {
 		update_want_tick();
 	}
 
-	void torrent::connect_to_url_seed(std::list<web_seed_t>::iterator web)
+	void torrent::connect_to_url_seed(const std::list<web_seed_t>::iterator& web)
 	{
 		TORRENT_ASSERT(is_single_thread());
 		INVARIANT_CHECK;
@@ -6439,7 +6440,7 @@ namespace {
 
 	void torrent::on_proxy_name_lookup(error_code const& e
 		, std::vector<address> const& addrs
-		, std::list<web_seed_t>::iterator web, int port)
+		, const std::list<web_seed_t>::iterator& web, int port)
 	{
 		TORRENT_ASSERT(is_single_thread());
 
@@ -6522,7 +6523,7 @@ namespace {
 	void torrent::on_name_lookup(error_code const& e
 		, std::vector<address> const& addrs
 		, int port
-		, std::list<web_seed_t>::iterator web)
+		, const std::list<web_seed_t>::iterator& web)
 	{
 		TORRENT_ASSERT(is_single_thread());
 
@@ -6562,7 +6563,7 @@ namespace {
 			, end(addrs.end()); i != end; ++i)
 		{
 			// fill in the peer struct's address field
-			web->endpoints.push_back(tcp::endpoint(*i, port));
+			web->endpoints.emplace_back(*i, port);
 
 #ifndef TORRENT_DISABLE_LOGGING
 			debug_log("  -> %s", print_endpoint(tcp::endpoint(*i, port)).c_str());
@@ -6576,7 +6577,7 @@ namespace {
 		connect_web_seed(web, web->endpoints.front());
 	}
 
-	void torrent::connect_web_seed(std::list<web_seed_t>::iterator web, tcp::endpoint a)
+	void torrent::connect_web_seed(const std::list<web_seed_t>::iterator& web, tcp::endpoint a)
 	{
 		INVARIANT_CHECK;
 
@@ -6706,7 +6707,7 @@ namespace {
 			, end(m_extensions.end()); i != end; ++i)
 		{
 			boost::shared_ptr<peer_plugin>
-				pp((*i)->new_connection(peer_connection_handle(c.get()->self())));
+				pp((*i)->new_connection(peer_connection_handle(c->self())));
 			if (pp) c->add_extension(pp);
 		}
 #endif
@@ -6815,7 +6816,7 @@ namespace {
 
 	void torrent::on_country_lookup(error_code const& error
 		, std::vector<address> const& host_list
-		, boost::shared_ptr<peer_connection> p) const
+		, const boost::shared_ptr<peer_connection>& p) const
 	{
 		TORRENT_ASSERT(is_single_thread());
 
@@ -7618,7 +7619,7 @@ namespace {
 			// not be included in this list
 			if (peer->associated_torrent().expired()) continue;
 
-			v.push_back(peer_info());
+			v.emplace_back();
 			peer_info& p = v.back();
 
 			peer->get_peer_info(p);
@@ -7886,7 +7887,7 @@ namespace {
 			{
 				TORRENT_TRY {
 					boost::shared_ptr<peer_plugin> pp((*i)->new_connection(
-						peer_connection_handle(c.get()->self())));
+						peer_connection_handle(c->self())));
 					if (pp) c->add_extension(pp);
 				} TORRENT_CATCH (std::exception&) {}
 			}
@@ -8924,7 +8925,7 @@ namespace {
 		TORRENT_ASSERT(index < m_torrent_file->num_files());
 
 		// storage may be NULL during shutdown
-		if (!m_storage.get())
+		if (!m_storage)
 		{
 			if (alerts().should_post<file_rename_failed_alert>())
 				alerts().emplace_alert<file_rename_failed_alert>(get_handle()
@@ -8967,7 +8968,7 @@ namespace {
 		}
 
 		// storage may be NULL during shutdown
-		if (m_storage.get())
+		if (m_storage)
 		{
 #if TORRENT_USE_UNC_PATHS
 			std::string path = canonicalize_path(save_path);
@@ -9469,7 +9470,7 @@ namespace {
 		stop_announcing();
 
 		// storage may be NULL during shutdown
-		if (m_storage.get())
+		if (m_storage)
 		{
 			TORRENT_ASSERT(m_storage);
 			inc_refcount("delete_files");
@@ -11029,8 +11030,7 @@ namespace {
 		// then insert them into the interesting_blocks vector
 		for (int k = 0; k < busy_count; ++k)
 		{
-			interesting_blocks.push_back(
-				piece_block(piece, busy_blocks[k].index));
+			interesting_blocks.emplace_back(piece, busy_blocks[k].index);
 		}
 	}
 

@@ -56,7 +56,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "libtorrent/aux_/disable_warnings_pop.hpp"
 
 #include <cstdlib>
-
+#include <utility> 
 namespace libtorrent {
 
 namespace upnp_errors
@@ -103,12 +103,12 @@ upnp::rootdevice& upnp::rootdevice::operator=(rootdevice const&) = default;
 #endif
 
 upnp::upnp(io_service& ios
-	, address const& listen_interface, std::string const& user_agent
-	, portmap_callback_t const& cb, log_callback_t const& lcb
+	, address const& listen_interface, std::string  user_agent
+	, portmap_callback_t const& cb, log_callback_t  lcb
 	, bool ignore_nonrouters)
-	: m_user_agent(user_agent)
+	: m_user_agent(std::move(user_agent))
 	, m_callback(cb)
-	, m_log_callback(lcb)
+	, m_log_callback(std::move(lcb))
 	, m_retry_count(0)
 	, m_io_service(ios)
 	, m_resolver(ios)
@@ -199,7 +199,7 @@ void upnp::discover_device_impl(mutex::scoped_lock& l)
 }
 
 // returns a reference to a mapping or -1 on failure
-int upnp::add_mapping(upnp::protocol_type p, int external_port, tcp::endpoint local_ep)
+int upnp::add_mapping(upnp::protocol_type p, int external_port, const tcp::endpoint& local_ep)
 {
 	// external port 0 means _every_ port
 	TORRENT_ASSERT(external_port != 0);
@@ -219,7 +219,7 @@ int upnp::add_mapping(upnp::protocol_type p, int external_port, tcp::endpoint lo
 
 	if (mapping_it == m_mappings.end())
 	{
-		m_mappings.push_back(global_mapping_t());
+		m_mappings.emplace_back();
 		mapping_it = m_mappings.end() - 1;
 	}
 
@@ -1330,7 +1330,7 @@ void upnp::on_upnp_map_response(error_code const& e
 		return;
 	}
 
-	std::string ct = p.header("content-type");
+	const std::string& ct = p.header("content-type");
 	if (!ct.empty()
 		&& ct.find_first_of("text/xml") == std::string::npos
 		&& ct.find_first_of("text/soap+xml") == std::string::npos

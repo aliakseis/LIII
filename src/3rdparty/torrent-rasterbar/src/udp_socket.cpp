@@ -164,7 +164,7 @@ void udp_socket::send_hostname(char const* hostname, int port
 
 	if (m_queue.size() > 1000 || (flags & dont_queue)) return;
 
-	m_queue.push_back(queued_packet());
+	m_queue.emplace_back();
 	queued_packet& qp = m_queue.back();
 	qp.ep.port(port);
 
@@ -208,7 +208,7 @@ void udp_socket::send(udp::endpoint const& ep, char const* p, int len
 		{
 			if (m_queue.size() > 1000 || (flags & dont_queue)) return;
 
-			m_queue.push_back(queued_packet());
+			m_queue.emplace_back();
 			queued_packet& qp = m_queue.back();
 			qp.ep = ep;
 			qp.hostname = 0;
@@ -906,7 +906,7 @@ void udp_socket::close_impl()
 	}
 }
 
-void udp_socket::on_name_lookup(error_code const& e, tcp::resolver::iterator i)
+void udp_socket::on_name_lookup(error_code const& e, const tcp::resolver::iterator& i)
 {
 #if defined TORRENT_ASIO_DEBUGGING
 	complete_async("udp_socket::on_name_lookup");

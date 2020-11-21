@@ -205,7 +205,7 @@ namespace libtorrent
 	private:
 		friend struct aux::session_impl;
 		friend struct feed;
-		feed_handle(boost::weak_ptr<feed> const& p);
+		feed_handle(boost::weak_ptr<feed>  p);
 		boost::weak_ptr<feed> m_feed_ptr;
 	};
 
@@ -223,7 +223,7 @@ namespace libtorrent
 		friend void parse_feed(feed_state& f, int token, char const* name, int len
 			, char const* val, int val_len);
 
-		feed(aux::session_impl& ses, feed_settings const& feed);
+		feed(aux::session_impl& ses, feed_settings  feed);
 
 		void on_feed(error_code const& ec, http_parser const& parser
 			, char const* data, int size);

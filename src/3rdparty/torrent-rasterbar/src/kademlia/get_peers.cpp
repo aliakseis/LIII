@@ -35,7 +35,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #include <libtorrent/kademlia/dht_observer.hpp>
 #include <libtorrent/socket_io.hpp>
 #include <libtorrent/performance_counters.hpp>
-
+#include <utility> 
 namespace libtorrent { namespace dht
 {
 
@@ -121,11 +121,11 @@ void get_peers::got_peers(std::vector<tcp::endpoint> const& peers)
 get_peers::get_peers(
 	node& dht_node
 	, node_id target
-	, data_callback const& dcallback
+	, data_callback  dcallback
 	, nodes_callback const& ncallback
 	, bool noseeds)
 	: find_data(dht_node, target, ncallback)
-	, m_data_callback(dcallback)
+	, m_data_callback(std::move(dcallback))
 	, m_noseeds(noseeds)
 {
 }

@@ -116,7 +116,7 @@ namespace libtorrent
 	{
 		// internal
 		peer_alert(aux::stack_allocator& alloc, torrent_handle const& h,
-			tcp::endpoint const& i, peer_id const& pi);
+			tcp::endpoint  i, peer_id const& pi);
 
 		static const int alert_type = 1;
 		static const int static_category = alert::peer_notification;
@@ -250,7 +250,7 @@ namespace libtorrent
 		// internal
 		read_piece_alert(aux::stack_allocator& alloc, torrent_handle const& h
 			, int p, boost::shared_array<char> d, int s);
-		read_piece_alert(aux::stack_allocator& alloc, torrent_handle h, int p, error_code e);
+		read_piece_alert(aux::stack_allocator& alloc, const torrent_handle& h, int p, error_code e);
 
 		TORRENT_DEFINE_ALERT_PRIO(read_piece_alert, 5)
 
@@ -652,7 +652,7 @@ namespace libtorrent
 	struct TORRENT_EXPORT peer_ban_alert TORRENT_FINAL : peer_alert
 	{
 		// internal
-		peer_ban_alert(aux::stack_allocator& alloc, torrent_handle h
+		peer_ban_alert(aux::stack_allocator& alloc, const torrent_handle& h
 			, tcp::endpoint const& ep, peer_id const& peer_id);
 
 		TORRENT_DEFINE_ALERT(peer_ban_alert, 19)
@@ -665,7 +665,7 @@ namespace libtorrent
 	struct TORRENT_EXPORT peer_unsnubbed_alert TORRENT_FINAL : peer_alert
 	{
 		// internal
-		peer_unsnubbed_alert(aux::stack_allocator& alloc, torrent_handle h
+		peer_unsnubbed_alert(aux::stack_allocator& alloc, const torrent_handle& h
 			, tcp::endpoint const& ep, peer_id const& peer_id);
 
 		TORRENT_DEFINE_ALERT(peer_unsnubbed_alert, 20)
@@ -678,7 +678,7 @@ namespace libtorrent
 	struct TORRENT_EXPORT peer_snubbed_alert TORRENT_FINAL : peer_alert
 	{
 		// internal
-		peer_snubbed_alert(aux::stack_allocator& alloc, torrent_handle h
+		peer_snubbed_alert(aux::stack_allocator& alloc, const torrent_handle& h
 			, tcp::endpoint const& ep, peer_id const& peer_id);
 
 		TORRENT_DEFINE_ALERT(peer_snubbed_alert, 21)
@@ -716,7 +716,7 @@ namespace libtorrent
 	struct TORRENT_EXPORT peer_connect_alert TORRENT_FINAL : peer_alert
 	{
 		// internal
-		peer_connect_alert(aux::stack_allocator& alloc, torrent_handle h
+		peer_connect_alert(aux::stack_allocator& alloc, const torrent_handle& h
 			, tcp::endpoint const& ep, peer_id const& peer_id, int type);
 
 		TORRENT_DEFINE_ALERT(peer_connect_alert, 23)
@@ -797,7 +797,7 @@ namespace libtorrent
 	{
 		// internal
 		torrent_finished_alert(aux::stack_allocator& alloc,
-			torrent_handle h);
+			const torrent_handle& h);
 
 		TORRENT_DEFINE_ALERT(torrent_finished_alert, 26)
 
@@ -827,7 +827,7 @@ namespace libtorrent
 	struct TORRENT_EXPORT request_dropped_alert TORRENT_FINAL : peer_alert
 	{
 		// internal
-		request_dropped_alert(aux::stack_allocator& alloc, torrent_handle h
+		request_dropped_alert(aux::stack_allocator& alloc, const torrent_handle& h
 			, tcp::endpoint const& ep, peer_id const& peer_id, int block_num
 			, int piece_num);
 
@@ -845,7 +845,7 @@ namespace libtorrent
 	struct TORRENT_EXPORT block_timeout_alert TORRENT_FINAL : peer_alert
 	{
 		// internal
-		block_timeout_alert(aux::stack_allocator& alloc, torrent_handle h
+		block_timeout_alert(aux::stack_allocator& alloc, const torrent_handle& h
 			, tcp::endpoint const& ep, peer_id const& peer_id, int block_num
 			, int piece_num);
 
@@ -863,7 +863,7 @@ namespace libtorrent
 	struct TORRENT_EXPORT block_finished_alert TORRENT_FINAL : peer_alert
 	{
 		// internal
-		block_finished_alert(aux::stack_allocator& alloc, torrent_handle h
+		block_finished_alert(aux::stack_allocator& alloc, const torrent_handle& h
 			, tcp::endpoint const& ep, peer_id const& peer_id, int block_num
 			, int piece_num);
 
@@ -880,7 +880,7 @@ namespace libtorrent
 	struct TORRENT_EXPORT block_downloading_alert TORRENT_FINAL : peer_alert
 	{
 		// internal
-		block_downloading_alert(aux::stack_allocator& alloc, torrent_handle h
+		block_downloading_alert(aux::stack_allocator& alloc, const torrent_handle& h
 			, tcp::endpoint const& ep
 			, peer_id const& peer_id, int block_num, int piece_num);
 
@@ -901,7 +901,7 @@ namespace libtorrent
 	struct TORRENT_EXPORT unwanted_block_alert TORRENT_FINAL : peer_alert
 	{
 		// internal
-		unwanted_block_alert(aux::stack_allocator& alloc, torrent_handle h
+		unwanted_block_alert(aux::stack_allocator& alloc, const torrent_handle& h
 			, tcp::endpoint const& ep
 			, peer_id const& peer_id, int block_num, int piece_num);
 
@@ -1028,7 +1028,7 @@ namespace libtorrent
 	{
 		// internal
 		save_resume_data_alert(aux::stack_allocator& alloc
-			, boost::shared_ptr<entry> const& rd
+			, boost::shared_ptr<entry>  rd
 			, torrent_handle const& h);
 
 		TORRENT_DEFINE_ALERT_PRIO(save_resume_data_alert, 37)
@@ -1241,7 +1241,7 @@ namespace libtorrent
 		// internal
 		udp_error_alert(
 			aux::stack_allocator& alloc
-			, udp::endpoint const& ep
+			, udp::endpoint  ep
 			, error_code const& ec);
 
 		TORRENT_DEFINE_ALERT(udp_error_alert, 46)
@@ -1263,7 +1263,7 @@ namespace libtorrent
 	struct TORRENT_EXPORT external_ip_alert TORRENT_FINAL : alert
 	{
 		// internal
-		external_ip_alert(aux::stack_allocator& alloc, address const& ip);
+		external_ip_alert(aux::stack_allocator& alloc, address  ip);
 
 		TORRENT_DEFINE_ALERT(external_ip_alert, 47)
 
@@ -1334,7 +1334,7 @@ namespace libtorrent
 		enum socket_type_t { tcp, tcp_ssl, udp, i2p, socks5, utp_ssl };
 
 		// internal
-		listen_succeeded_alert(aux::stack_allocator& alloc, tcp::endpoint const& ep
+		listen_succeeded_alert(aux::stack_allocator& alloc, tcp::endpoint  ep
 			, socket_type_t t);
 
 		TORRENT_DEFINE_ALERT_PRIO(listen_succeeded_alert, 49)
@@ -1504,7 +1504,7 @@ namespace libtorrent
 	{
 		// internal
 		peer_blocked_alert(aux::stack_allocator& alloc, torrent_handle const& h
-			, address const& i, int r);
+			, address  i, int r);
 
 		TORRENT_DEFINE_ALERT(peer_blocked_alert, 54)
 
@@ -1533,7 +1533,7 @@ namespace libtorrent
 	struct TORRENT_EXPORT dht_announce_alert TORRENT_FINAL : alert
 	{
 		// internal
-		dht_announce_alert(aux::stack_allocator& alloc, address const& i, int p
+		dht_announce_alert(aux::stack_allocator& alloc, address  i, int p
 			, sha1_hash const& ih);
 
 		TORRENT_DEFINE_ALERT(dht_announce_alert, 55)
@@ -1636,7 +1636,7 @@ namespace libtorrent
 	{
 		// internal
 		anonymous_mode_alert(aux::stack_allocator& alloc, torrent_handle const& h
-			, int k, std::string const& s);
+			, int k, std::string  s);
 
 		TORRENT_DEFINE_ALERT(anonymous_mode_alert, 59)
 
@@ -1719,7 +1719,7 @@ namespace libtorrent
 	{
 		// internal
 		rss_alert(aux::stack_allocator& alloc, feed_handle h
-			, std::string const& u, int s, error_code const& ec);
+			, std::string  u, int s, error_code const& ec);
 
 		TORRENT_DEFINE_ALERT(rss_alert, 63)
 
@@ -1812,7 +1812,7 @@ namespace libtorrent
 	{
 		// internal
 		incoming_connection_alert(aux::stack_allocator& alloc, int t
-			, tcp::endpoint const& i);
+			, tcp::endpoint  i);
 
 		TORRENT_DEFINE_ALERT(incoming_connection_alert, 66)
 
@@ -1846,8 +1846,8 @@ namespace libtorrent
 	struct TORRENT_EXPORT add_torrent_alert TORRENT_FINAL : torrent_alert
 	{
 		// internal
-		add_torrent_alert(aux::stack_allocator& alloc, torrent_handle h
-			, add_torrent_params const& p, error_code ec);
+		add_torrent_alert(aux::stack_allocator& alloc, const torrent_handle& h
+			, add_torrent_params  p, error_code ec);
 
 		TORRENT_DEFINE_ALERT_PRIO(add_torrent_alert, 67)
 
@@ -1934,7 +1934,7 @@ namespace libtorrent
 	struct TORRENT_EXPORT torrent_update_alert TORRENT_FINAL : torrent_alert
 	{
 		// internal
-		torrent_update_alert(aux::stack_allocator& alloc, torrent_handle h
+		torrent_update_alert(aux::stack_allocator& alloc, const torrent_handle& h
 			, sha1_hash const& old_hash, sha1_hash const& new_hash);
 
 		TORRENT_DEFINE_ALERT_PRIO(torrent_update_alert, 71)
@@ -2023,7 +2023,7 @@ namespace libtorrent
 			, boost::array<char, 32> k
 			, boost::array<char, 64> sig
 			, boost::uint64_t sequence
-			, std::string const& s
+			, std::string  s
 			, entry const& i
 			, bool a);
 
@@ -2296,8 +2296,8 @@ namespace libtorrent
 	{
 		// internal
 		dht_stats_alert(aux::stack_allocator& alloc
-			, std::vector<dht_routing_bucket> const& table
-			, std::vector<dht_lookup> const& requests);
+			, std::vector<dht_routing_bucket>  table
+			, std::vector<dht_lookup>  requests);
 
 		TORRENT_DEFINE_ALERT(dht_stats_alert, 83)
 
@@ -2320,7 +2320,7 @@ namespace libtorrent
 	{
 		// internal
 		incoming_request_alert(aux::stack_allocator& alloc
-			, peer_request r, torrent_handle h
+			, peer_request r, const torrent_handle& h
 			, tcp::endpoint const& ep, peer_id const& peer_id);
 
 		static const int static_category = alert::incoming_request_notification;
@@ -2430,11 +2430,11 @@ namespace libtorrent
 	struct TORRENT_EXPORT dht_direct_response_alert TORRENT_FINAL : alert
 	{
 		dht_direct_response_alert(aux::stack_allocator& alloc, void* userdata
-			, udp::endpoint const& addr, bdecode_node const& response);
+			, udp::endpoint  addr, bdecode_node const& response);
 
 		// for when there was a timeout so we don't have a response
 		dht_direct_response_alert(aux::stack_allocator& alloc, void* userdata
-			, udp::endpoint const& addr);
+			, udp::endpoint  addr);
 
 		TORRENT_DEFINE_ALERT(dht_direct_response_alert, 88)
 

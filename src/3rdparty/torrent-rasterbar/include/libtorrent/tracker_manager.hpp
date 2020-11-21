@@ -315,7 +315,7 @@ namespace libtorrent
 		: timeout_handler
 	{
 		tracker_connection(tracker_manager& man
-			, tracker_request const& req
+			, tracker_request  req
 			, io_service& ios
 			, boost::weak_ptr<request_callback> r);
 
@@ -351,7 +351,7 @@ namespace libtorrent
 
 	protected:
 
-		void fail_impl(error_code const& ec, int code = -1, std::string msg = std::string()
+		void fail_impl(error_code const& ec, int code = -1, const std::string& msg = std::string()
 			, int interval = 0, int min_interval = 0);
 
 		boost::weak_ptr<request_callback> m_requester;
@@ -398,7 +398,7 @@ namespace libtorrent
 			, char const* buf, int size) TORRENT_OVERRIDE;
 
 		void update_transaction_id(
-			boost::shared_ptr<udp_tracker_connection> c
+			const boost::shared_ptr<udp_tracker_connection>& c
 			, boost::uint64_t tid);
 
 		aux::session_settings const& settings() const { return m_settings; }

@@ -237,7 +237,7 @@ namespace
 			sha1_hash digest;
 		};
 
-		void on_read_failed_block(piece_block b, address a, disk_io_job const* j)
+		void on_read_failed_block(piece_block b, const address& a, disk_io_job const* j)
 		{
 			TORRENT_ASSERT(m_torrent.session().is_single_thread());
 
@@ -318,7 +318,7 @@ namespace
 #endif
 		}
 
-		void on_read_ok_block(std::pair<piece_block, block_entry> b, address a, disk_io_job const* j)
+		void on_read_ok_block(std::pair<piece_block, block_entry> b, const address& a, disk_io_job const* j)
 		{
 			TORRENT_ASSERT(m_torrent.session().is_single_thread());
 

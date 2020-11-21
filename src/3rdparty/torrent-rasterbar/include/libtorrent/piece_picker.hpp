@@ -726,7 +726,7 @@ namespace libtorrent
 
 		typedef std::vector<downloading_piece>::iterator dlpiece_iter;
 		dlpiece_iter add_download_piece(int index);
-		void erase_download_piece(dlpiece_iter i);
+		void erase_download_piece(const dlpiece_iter& i);
 
 		std::vector<downloading_piece>::const_iterator find_dl_piece(int queue, int index) const;
 		std::vector<downloading_piece>::iterator find_dl_piece(int queue, int index);

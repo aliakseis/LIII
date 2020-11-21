@@ -66,6 +66,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #include <algorithm>
 #include <set>
 #include <ctime>
+#include <utility>
 
 #if !defined TORRENT_NO_DEPRECATE && TORRENT_USE_IOSTREAM
 #include <iostream>
@@ -558,12 +559,12 @@ namespace libtorrent
 
 	} // anonymous namespace
 
-	web_seed_entry::web_seed_entry(std::string const& url_, type_t type_
-		, std::string const& auth_
-		, headers_t const& extra_headers_)
-		: url(url_)
-		, auth(auth_)
-		, extra_headers(extra_headers_)
+	web_seed_entry::web_seed_entry(std::string  url_, type_t type_
+		, std::string  auth_
+		, headers_t  extra_headers_)
+		: url(std::move(url_))
+		, auth(std::move(auth_))
+		, extra_headers(std::move(extra_headers_))
 		, type(type_)
 	{
 	}
@@ -1308,8 +1309,8 @@ namespace libtorrent
 
 				if (str.type() != bdecode_node::string_t) continue;
 
-				m_collections.push_back(std::make_pair(str.string_ptr()
-					+ info_ptr_diff, str.string_length()));
+				m_collections.emplace_back(str.string_ptr()
+					+ info_ptr_diff, str.string_length());
 			}
 		}
 #endif // TORRENT_DISABLE_MUTABLE_TORRENTS
@@ -1443,7 +1444,7 @@ namespace libtorrent
 				m_info_hash = p.info_hash;
 				for (std::vector<std::string>::iterator i = p.trackers.begin()
 					, end(p.trackers.end()); i != end; ++i)
-					m_urls.push_back(*i);
+					m_urls.emplace_back(*i);
 
 				return true;
 			}
@@ -1466,8 +1467,7 @@ namespace libtorrent
 				if (similar.list_at(i).string_length() != 20)
 					continue;
 
-				m_owned_similar_torrents.push_back(
-					sha1_hash(similar.list_at(i).string_ptr()));
+				m_owned_similar_torrents.emplace_back(similar.list_at(i).string_ptr());
 			}
 		}
 
@@ -1480,8 +1480,8 @@ namespace libtorrent
 
 				if (str.type() != bdecode_node::string_t) continue;
 
-				m_owned_collections.push_back(std::string(str.string_ptr()
-					, str.string_length()));
+				m_owned_collections.emplace_back(str.string_ptr()
+					, str.string_length());
 			}
 		}
 #endif // TORRENT_DISABLE_MUTABLE_TORRENTS
@@ -1598,8 +1598,8 @@ namespace libtorrent
 		if (http_seeds && http_seeds.type() == bdecode_node::string_t
 			&& http_seeds.string_length() > 0)
 		{
-			m_web_seeds.push_back(web_seed_entry(maybe_url_encode(http_seeds.string_value())
-				, web_seed_entry::http_seed));
+			m_web_seeds.emplace_back(maybe_url_encode(http_seeds.string_value())
+				, web_seed_entry::http_seed);
 		}
 		else if (http_seeds && http_seeds.type() == bdecode_node::list_t)
 		{
@@ -1612,7 +1612,7 @@ namespace libtorrent
 				std::string u = maybe_url_encode(url.string_value());
 				if (unique.count(u)) continue;
 				unique.insert(u);
-				m_web_seeds.push_back(web_seed_entry(u, web_seed_entry::http_seed));
+				m_web_seeds.emplace_back(u, web_seed_entry::http_seed);
 			}
 		}
 
@@ -1691,21 +1691,21 @@ namespace libtorrent
 		, std::string const& ext_auth
 		, web_seed_entry::headers_t const& ext_headers)
 	{
-		m_web_seeds.push_back(web_seed_entry(url, web_seed_entry::url_seed
-			, ext_auth, ext_headers));
+		m_web_seeds.emplace_back(url, web_seed_entry::url_seed
+			, ext_auth, ext_headers);
 	}
 
 	void torrent_info::add_http_seed(std::string const& url
 		, std::string const& auth
 		, web_seed_entry::headers_t const& extra_headers)
 	{
-		m_web_seeds.push_back(web_seed_entry(url, web_seed_entry::http_seed
-			, auth, extra_headers));
+		m_web_seeds.emplace_back(url, web_seed_entry::http_seed
+			, auth, extra_headers);
 	}
 
 	void torrent_info::set_web_seeds(std::vector<web_seed_entry> seeds)
 	{
-		m_web_seeds = seeds;
+		m_web_seeds = std::move(seeds);
 	}
 
 	std::vector<sha1_hash> torrent_info::similar_torrents() const
@@ -1715,7 +1715,7 @@ namespace libtorrent
 		ret.reserve(m_similar_torrents.size() + m_owned_similar_torrents.size());
 
 		for (int i = 0; i < m_similar_torrents.size(); ++i)
-			ret.push_back(sha1_hash(m_similar_torrents[i]));
+			ret.emplace_back(m_similar_torrents[i]);
 
 		for (int i = 0; i < m_owned_similar_torrents.size(); ++i)
 			ret.push_back(m_owned_similar_torrents[i]);
@@ -1731,7 +1731,7 @@ namespace libtorrent
 		ret.reserve(m_collections.size() + m_owned_collections.size());
 
 		for (int i = 0; i < m_collections.size(); ++i)
-			ret.push_back(std::string(m_collections[i].first, m_collections[i].second));
+			ret.emplace_back(m_collections[i].first, m_collections[i].second);
 
 		for (int i = 0; i < m_owned_collections.size(); ++i)
 			ret.push_back(m_owned_collections[i]);

@@ -309,7 +309,7 @@ namespace libtorrent
 		// Fills in the cache_status struct with information about the given torrent.
 		// If ``flags`` is ``session::disk_cache_no_pieces`` the ``cache_status::pieces`` field
 		// will not be set. This may significantly reduce the cost of this call.
-		void get_cache_info(cache_status* ret, torrent_handle h = torrent_handle(), int flags = 0) const;
+		void get_cache_info(cache_status* ret, const torrent_handle& h = torrent_handle(), int flags = 0) const;
 
 #ifndef TORRENT_NO_DEPRECATE
 		// This adds an RSS feed to the session. The feed will be refreshed
@@ -408,7 +408,7 @@ namespace libtorrent
 		// the returned hash is the key that is to be used to look the item
 		// up again. It's just the SHA-1 hash of the bencoded form of the
 		// structure.
-		sha1_hash dht_put_item(entry data);
+		sha1_hash dht_put_item(const entry& data);
 
 		// store a mutable item. The ``key`` is the public key the blob is
 		// to be stored under. The optional ``salt`` argument is a string that

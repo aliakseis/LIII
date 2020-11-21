@@ -141,7 +141,7 @@ namespace libtorrent
 				// ones with the fewest votes
 				m_external_addresses.erase(m_external_addresses.end() - 1);
 			}
-			m_external_addresses.push_back(external_ip_t());
+			m_external_addresses.emplace_back();
 			i = m_external_addresses.end() - 1;
 			i->addr = ip;
 		}

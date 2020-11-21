@@ -30,6 +30,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 */
 
+#include <utility>
 #include "libtorrent/utp_stream.hpp"
 #include "libtorrent/udp_socket.hpp"
 #include "libtorrent/utp_socket_manager.hpp"
@@ -52,7 +53,7 @@ namespace libtorrent
 		, void* ssl_context
 		, incoming_utp_callback_t cb)
 		: m_sock(s)
-		, m_cb(cb)
+		, m_cb(std::move(cb))
 		, m_last_socket(0)
 		, m_new_connection(-1)
 		, m_sett(sett)

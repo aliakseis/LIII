@@ -30,6 +30,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 */
 
+#include <utility>
 #include "libtorrent/session_handle.hpp"
 #include "libtorrent/aux_/session_impl.hpp"
 #include "libtorrent/aux_/session_call.hpp"
@@ -177,7 +178,7 @@ namespace libtorrent
 #ifndef TORRENT_NO_DEPRECATE
 		if (params.tracker_url)
 		{
-			p->trackers.push_back(params.tracker_url);
+			p->trackers.emplace_back(params.tracker_url);
 			p->tracker_url = NULL;
 		}
 #endif
@@ -196,7 +197,7 @@ namespace libtorrent
 		, storage_constructor_type sc)
 	{
 		boost::shared_ptr<torrent_info> tip(boost::make_shared<torrent_info>(ti));
-		add_torrent_params p(sc);
+		add_torrent_params p(std::move(sc));
 		p.ti = tip;
 		p.save_path = save_path;
 		if (resume_data.type() != entry::undefined_t)
@@ -219,7 +220,7 @@ namespace libtorrent
 		, storage_constructor_type sc
 		, void* userdata)
 	{
-		add_torrent_params p(sc);
+		add_torrent_params p(std::move(sc));
 		p.tracker_url = tracker_url;
 		p.info_hash = info_hash;
 		p.save_path = save_path;
@@ -279,7 +280,7 @@ namespace libtorrent
 #endif
 
 	void session_handle::get_cache_info(cache_status* ret
-		, torrent_handle h, int flags) const
+		, const torrent_handle& h, int flags) const
 	{
 		piece_manager* st = 0;
 		boost::shared_ptr<torrent> t = h.m_torrent.lock();
@@ -403,7 +404,7 @@ namespace libtorrent
 #endif
 	}
 
-	sha1_hash session_handle::dht_put_item(entry data)
+	sha1_hash session_handle::dht_put_item(const entry& data)
 	{
 		std::vector<char> buf;
 		bencode(std::back_inserter(buf), data);

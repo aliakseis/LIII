@@ -32,6 +32,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #include "libtorrent/aux_/disable_warnings_push.hpp"
 
+#include <utility>
 #include <vector>
 #include <boost/limits.hpp>
 #include <boost/bind.hpp>
@@ -538,7 +539,7 @@ namespace libtorrent
 #endif
 
 #ifndef TORRENT_DISABLE_EXTENSIONS
-	void peer_connection::add_extension(boost::shared_ptr<peer_plugin> ext)
+	void peer_connection::add_extension(const boost::shared_ptr<peer_plugin>& ext)
 	{
 		TORRENT_ASSERT(is_single_thread());
 		m_extensions.push_back(ext);
@@ -2586,8 +2587,8 @@ namespace libtorrent
 #if TORRENT_USE_INVARIANT_CHECKS
 	struct check_postcondition
 	{
-		check_postcondition(boost::shared_ptr<torrent> const& t_
-			, bool init_check = true): t(t_) { if (init_check) check(); }
+		check_postcondition(boost::shared_ptr<torrent>  t_
+			, bool init_check = true): t(std::move(t_)) { if (init_check) check(); }
 
 		~check_postcondition() { check(); }
 
@@ -2991,7 +2992,7 @@ namespace libtorrent
 	}
 
 	void peer_connection::on_disk_write_complete(disk_io_job const* j
-		, peer_request p, boost::shared_ptr<torrent> t)
+		, peer_request p, const boost::shared_ptr<torrent>& t)
 	{
 		TORRENT_ASSERT(is_single_thread());
 		torrent_ref_holder h(t.get(), "async_write");

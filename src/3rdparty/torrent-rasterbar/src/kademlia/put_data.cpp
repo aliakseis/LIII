@@ -34,13 +34,13 @@ POSSIBILITY OF SUCH DAMAGE.
 #include <libtorrent/kademlia/dht_observer.hpp>
 #include <libtorrent/kademlia/node.hpp>
 #include <libtorrent/io.hpp>
-
+#include <utility> 
 namespace libtorrent { namespace dht
 {
 
-put_data::put_data(node& dht_node, put_callback const& callback)
+put_data::put_data(node& dht_node, put_callback  callback)
 	: traversal_algorithm(dht_node, (node_id::min)())
-	, m_put_callback(callback)
+	, m_put_callback(std::move(callback))
 	, m_done(false)
 {
 }

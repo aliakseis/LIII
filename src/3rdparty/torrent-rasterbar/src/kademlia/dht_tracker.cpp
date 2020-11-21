@@ -92,7 +92,7 @@ namespace libtorrent { namespace dht
 		, rate_limited_udp_socket& sock
 		, dht_settings const& settings
 		, counters& cnt
-		, dht_storage_constructor_type storage_constructor
+		, const dht_storage_constructor_type& storage_constructor
 		, entry const& state)
 		: m_counters(cnt)
 		, m_dht(this, settings, extract_node_id(state), observer, cnt, storage_constructor)
@@ -222,13 +222,13 @@ namespace libtorrent { namespace dht
 */
 
 	void dht_tracker::get_peers(sha1_hash const& ih
-		, boost::function<void(std::vector<tcp::endpoint> const&)> f)
+		, const boost::function<void(std::vector<tcp::endpoint> const&)>& f)
 	{
 		m_dht.get_peers(ih, f, NULL, false);
 	}
 
 	void dht_tracker::announce(sha1_hash const& ih, int listen_port, int flags
-		, boost::function<void(std::vector<tcp::endpoint> const&)> f)
+		, const boost::function<void(std::vector<tcp::endpoint> const&)>& f)
 	{
 		m_dht.announce(ih, listen_port, flags, f);
 	}
@@ -236,14 +236,14 @@ namespace libtorrent { namespace dht
 	void dht_tracker::get_item(sha1_hash const& target
 		, boost::function<void(item const&)> cb)
 	{
-		m_dht.get_item(target, cb);
+		m_dht.get_item(target, std::move(cb));
 	}
 
 	// key is a 32-byte binary string, the public key to look up.
 	// the salt is optional
 	void dht_tracker::get_item(char const* key
-		, boost::function<void(item const&, bool)> cb
-		, std::string salt)
+		, const boost::function<void(item const&, bool)>& cb
+		, const std::string& salt)
 	{
 		m_dht.get_item(key, salt, cb);
 	}
@@ -256,20 +256,20 @@ namespace libtorrent { namespace dht
 		sha1_hash target = item_target_id(
 			std::pair<char const*, int>(flat_data.c_str(), flat_data.size()));
 
-		m_dht.put_item(target, data, cb);
+		m_dht.put_item(target, data, std::move(cb));
 	}
 
 	void dht_tracker::put_item(char const* key
-		, boost::function<void(item const&, int)> cb
-		, boost::function<void(item&)> data_cb, std::string salt)
+		, const boost::function<void(item const&, int)>& cb
+		, boost::function<void(item&)> data_cb, const std::string& salt)
 	{
-		m_dht.put_item(key, salt, cb, data_cb);
+		m_dht.put_item(key, salt, cb, std::move(data_cb));
 	}
 
-	void dht_tracker::direct_request(udp::endpoint ep, entry& e
+	void dht_tracker::direct_request(const udp::endpoint& ep, entry& e
 		, boost::function<void(msg const&)> f)
 	{
-		m_dht.direct_request(ep, e, f);
+		m_dht.direct_request(ep, e, std::move(f));
 	}
 
 	// translate bittorrent kademlia message into the generice kademlia message
@@ -384,7 +384,7 @@ namespace libtorrent { namespace dht
 		return ret;
 	}
 
-	void dht_tracker::add_node(udp::endpoint node)
+	void dht_tracker::add_node(const udp::endpoint& node)
 	{
 		m_dht.add_node(node);
 	}

@@ -273,7 +273,7 @@ namespace libtorrent
 		return downloading_iter;
 	}
 
-	void piece_picker::erase_download_piece(std::vector<downloading_piece>::iterator i)
+	void piece_picker::erase_download_piece(const std::vector<downloading_piece>::iterator& i)
 	{
 #if TORRENT_USE_INVARIANT_CHECKS
 		check_piece_state();
@@ -2309,7 +2309,7 @@ namespace libtorrent
 						{
 							pc.inc_stats_counter(counters::piece_picker_rand_loops);
 							TORRENT_ASSERT(is_piece_free(k, pieces));
-							interesting_blocks.push_back(piece_block(k, j));
+							interesting_blocks.emplace_back(k, j);
 							--num_blocks;
 							--prefer_contiguous_blocks;
 							if (prefer_contiguous_blocks <= 0
@@ -2466,7 +2466,7 @@ get_out:
 				if (info.state != block_info::state_requested
 					|| info.peer == peer)
 					continue;
-				temp.push_back(piece_block(dp->index, j));
+				temp.emplace_back(dp->index, j);
 			}
 			// are we done?
 			if (!temp.empty())
@@ -2716,7 +2716,7 @@ get_out:
 				num_blocks_in_piece = num_blocks;
 			TORRENT_ASSERT(is_piece_free(piece, pieces));
 			for (int j = 0; j < num_blocks_in_piece; ++j)
-				interesting_blocks.push_back(piece_block(piece, j));
+				interesting_blocks.emplace_back(piece, j);
 			num_blocks -= num_blocks_in_piece;
 		}
 		else
@@ -2731,7 +2731,7 @@ get_out:
 				TORRENT_ASSERT(is_piece_free(k, pieces));
 				for (int j = 0; j < num_blocks_in_piece; ++j)
 				{
-					interesting_blocks.push_back(piece_block(k, j));
+					interesting_blocks.emplace_back(k, j);
 					--num_blocks;
 					--prefer_contiguous_blocks;
 					if (prefer_contiguous_blocks == 0
@@ -2803,7 +2803,7 @@ get_out:
 				block_info const& info = binfo[block_idx];
 				TORRENT_ASSERT(info.piece_index == dp.index);
 				if (info.state != block_info::state_none) continue;
-				backup_blocks2.push_back(piece_block(dp.index, block_idx));
+				backup_blocks2.emplace_back(dp.index, block_idx);
 			}
 			return num_blocks;
 		}
@@ -2817,7 +2817,7 @@ get_out:
 			if (info.state != block_info::state_none) continue;
 
 			// this block is interesting (we don't have it yet).
-			interesting_blocks.push_back(piece_block(dp.index, block_idx));
+			interesting_blocks.emplace_back(dp.index, block_idx);
 			// we have found a block that's free to download
 			--num_blocks;
 			// if we prefer contiguous blocks, continue picking from this

@@ -36,7 +36,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 namespace libtorrent
 {
-	void ip_filter::add_rule(address first, address last, boost::uint32_t flags)
+	void ip_filter::add_rule(const address& first, const address& last, boost::uint32_t flags)
 	{
 		if (first.is_v4())
 		{

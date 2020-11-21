@@ -94,8 +94,8 @@ public:
 	bool incoming(msg const&, node_id* id);
 	time_duration tick();
 
-	bool invoke(entry& e, udp::endpoint target
-		, observer_ptr o);
+	bool invoke(entry& e, const udp::endpoint& target
+		, const observer_ptr& o);
 
 	void add_our_id(entry& e);
 

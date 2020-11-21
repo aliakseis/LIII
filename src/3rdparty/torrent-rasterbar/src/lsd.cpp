@@ -50,7 +50,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #include <cstdlib>
 #include <boost/config.hpp>
 #include <cstdarg>
-
+#include <utility> 
 #include "libtorrent/aux_/disable_warnings_pop.hpp"
 
 namespace libtorrent
@@ -73,12 +73,12 @@ int render_lsd_packet(char* dst, int const len, int const listen_port
 
 static error_code dummy;
 
-lsd::lsd(io_service& ios, peer_callback_t const& cb
+lsd::lsd(io_service& ios, peer_callback_t  cb
 #ifndef TORRENT_DISABLE_LOGGING
 	, log_callback_t const& log
 #endif
 	)
-	: m_callback(cb)
+	: m_callback(std::move(cb))
 	, m_socket(udp::endpoint(address_v4::from_string("239.192.152.143", dummy), 6771))
 #if TORRENT_USE_IPV6
 	, m_socket6(udp::endpoint(address_v6::from_string("ff15::efc0:988f", dummy), 6771))

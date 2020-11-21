@@ -160,8 +160,8 @@ class TORRENT_EXTRA_EXPORT upnp : public boost::enable_shared_from_this<upnp>
 {
 public:
 	upnp(io_service& ios
-		, address const& listen_interface, std::string const& user_agent
-		, portmap_callback_t const& cb, log_callback_t const& lcb
+		, address const& listen_interface, std::string  user_agent
+		, portmap_callback_t const& cb, log_callback_t  lcb
 		, bool ignore_nonrouters);
 	~upnp();
 
@@ -188,7 +188,7 @@ public:
 	// portmap_alert_ respectively. If The mapping fails immediately, the return value
 	// is -1, which means failure. There will not be any error alert notification for
 	// mappings that fail with a -1 return value.
-	int add_mapping(protocol_type p, int external_port, tcp::endpoint local_ep);
+	int add_mapping(protocol_type p, int external_port, const tcp::endpoint& local_ep);
 
 	// This function removes a port mapping. ``mapping_index`` is the index that refers
 	// to the mapping you want to remove, which was returned from add_mapping().

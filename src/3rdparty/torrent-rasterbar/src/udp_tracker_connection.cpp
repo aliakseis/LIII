@@ -32,6 +32,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #include "libtorrent/aux_/disable_warnings_push.hpp"
 
+#include <utility>
 #include <vector>
 #include <cctype>
 
@@ -69,7 +70,7 @@ namespace libtorrent
 		, tracker_manager& man
 		, tracker_request const& req
 		, boost::weak_ptr<request_callback> c)
-		: tracker_connection(man, req, ios, c)
+		: tracker_connection(man, req, ios, std::move(c))
 		, m_transaction_id(0)
 		, m_attempts(0)
 		, m_state(action_error)
@@ -205,7 +206,7 @@ namespace libtorrent
 
 		for (std::vector<address>::const_iterator i = addresses.begin()
 			, end(addresses.end()); i != end; ++i)
-			m_endpoints.push_back(tcp::endpoint(*i, port));
+			m_endpoints.emplace_back(*i, port);
 
 		if (tracker_req().filter)
 		{

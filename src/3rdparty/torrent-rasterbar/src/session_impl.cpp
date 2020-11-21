@@ -52,7 +52,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #include <boost/function_equal.hpp>
 #include <boost/make_shared.hpp>
 #include <boost/asio/ip/v6_only.hpp>
-
+#include <utility> 
 #ifdef TORRENT_USE_VALGRIND
 #include <valgrind/memcheck.h>
 #endif
@@ -297,7 +297,7 @@ namespace aux {
 	// extension is used to know which torrent the incoming connection is
 	// trying to connect to. The 40 first bytes in the name is expected to
 	// be the hex encoded info-hash
-	int servername_callback(SSL* s, int* ad, void* arg)
+    int servername_callback(SSL* s, int* ad, void* arg)
 	{
 		TORRENT_UNUSED(ad);
 
@@ -918,14 +918,14 @@ namespace aux {
 
 	struct session_plugin_wrapper : plugin
 	{
-		session_plugin_wrapper(ext_function_t const& f) : m_f(f) {}
+		session_plugin_wrapper(ext_function_t  f) : m_f(std::move(f)) {}
 
 		virtual boost::shared_ptr<torrent_plugin> new_torrent(torrent_handle const& t, void* user)
 		{ return m_f(t, user); }
 		ext_function_t m_f;
 	};
 
-	void session_impl::add_extension(ext_function_t ext)
+	void session_impl::add_extension(const ext_function_t& ext)
 	{
 		TORRENT_ASSERT(is_single_thread());
 		TORRENT_ASSERT_VAL(ext, ext);
@@ -936,7 +936,7 @@ namespace aux {
 		m_session_extension_features |= p->implemented_features();
 	}
 
-	void session_impl::add_ses_extension(boost::shared_ptr<plugin> ext)
+	void session_impl::add_ses_extension(const boost::shared_ptr<plugin>& ext)
 	{
 		TORRENT_ASSERT(is_single_thread());
 		TORRENT_ASSERT_VAL(ext, ext);
@@ -986,7 +986,7 @@ namespace aux {
 		return feed_handle(f);
 	}
 
-	void session_impl::remove_feed(feed_handle h)
+	void session_impl::remove_feed(const feed_handle& h)
 	{
 		TORRENT_ASSERT(is_single_thread());
 
@@ -2432,7 +2432,7 @@ retry:
 	}
 
 	void session_impl::on_accept_connection(shared_ptr<socket_type> const& s
-		, weak_ptr<tcp::acceptor> listen_socket, error_code const& e, bool ssl)
+		, const weak_ptr<tcp::acceptor>& listen_socket, error_code const& e, bool ssl)
 	{
 #if defined TORRENT_ASIO_DEBUGGING
 		complete_async("session_impl::on_accept_connection");
@@ -2558,7 +2558,7 @@ retry:
 	//   -CAfile <torrent-cert>.pem  -debug -connect 127.0.0.1:4433 -tls1
 	//   -servername <hex-encoded-info-hash>
 
-	void session_impl::ssl_handshake(error_code const& ec, boost::shared_ptr<socket_type> s)
+	void session_impl::ssl_handshake(error_code const& ec, const boost::shared_ptr<socket_type>& s)
 	{
 #if defined TORRENT_ASIO_DEBUGGING
 		complete_async("session_impl::ssl_handshake");
@@ -3543,7 +3543,7 @@ retry:
 
 	void session_impl::prioritize_connections(boost::weak_ptr<torrent> t)
 	{
-		m_prio_torrents.push_back(std::make_pair(t, 10));
+		m_prio_torrents.emplace_back(t, 10);
 	}
 
 #ifndef TORRENT_DISABLE_DHT
@@ -3949,7 +3949,7 @@ retry:
 			for (std::vector<torrent_peer*>::iterator i = opt_unchoke.begin()
 				, end(opt_unchoke.end()); i != end; ++i)
 			{
-				peers.push_back(peer_connection_handle(static_cast<peer_connection*>((*i)->connection)->self()));
+				peers.emplace_back(static_cast<peer_connection*>((*i)->connection)->self());
 			}
 			for (ses_extension_list_t::iterator i = m_ses_extensions.begin()
 				, end(m_ses_extensions.end()); i != end; ++i)
@@ -4619,7 +4619,7 @@ retry:
 		{
 			torrent* t = *i;
 			TORRENT_ASSERT(t->m_links[aux::session_impl::torrent_state_updates].in_list());
-			status.push_back(torrent_status());
+			status.emplace_back();
 			// querying accurate download counters may require
 			// the torrent to be loaded. Loading a torrent, and evicting another
 			// one will lead to calling state_updated(), which screws with
@@ -5523,7 +5523,7 @@ retry:
 			m_lsd->announce(ih, port, broadcast);
 	}
 
-	void session_impl::on_lsd_peer(tcp::endpoint peer, sha1_hash const& ih)
+	void session_impl::on_lsd_peer(const tcp::endpoint& peer, sha1_hash const& ih)
 	{
 		m_stats_counters.inc_stats_counter(counters::on_lsd_peer_counter);
 		TORRENT_ASSERT(is_single_thread());
@@ -5804,7 +5804,7 @@ retry:
 
 	void session_impl::set_dht_storage(dht::dht_storage_constructor_type sc)
 	{
-		m_dht_storage_constructor = sc;
+		m_dht_storage_constructor = std::move(sc);
 	}
 
 #ifndef TORRENT_NO_DEPRECATE
@@ -5922,7 +5922,7 @@ retry:
 	// key is a 32-byte binary string, the public key to look up.
 	// the salt is optional
 	void session_impl::dht_get_mutable_item(boost::array<char, 32> key
-		, std::string salt)
+		, const std::string& salt)
 	{
 		if (!m_dht) return;
 		m_dht->get_item(key.data(), boost::bind(&session_impl::get_mutable_callback
@@ -5949,8 +5949,8 @@ retry:
 		}
 
 		void put_mutable_callback(dht::item& i
-			, boost::function<void(entry&, boost::array<char,64>&
-				, boost::uint64_t&, std::string const&)> cb)
+			, const boost::function<void(entry&, boost::array<char,64>&
+				, boost::uint64_t&, std::string const&)>& cb)
 		{
 			entry value = i.value();
 			boost::array<char, 64> sig = i.sig();
@@ -5987,12 +5987,12 @@ retry:
 	void session_impl::dht_put_mutable_item(boost::array<char, 32> key
 		, boost::function<void(entry&, boost::array<char,64>&
 		, boost::uint64_t&, std::string const&)> cb
-		, std::string salt)
+		, const std::string& salt)
 	{
 		if (!m_dht) return;
 		m_dht->put_item(key.data(),
 			boost::bind(&on_dht_put_mutable_item, boost::ref(m_alerts), _1, _2),
-			boost::bind(&put_mutable_callback, _1, cb), salt);
+			boost::bind(&put_mutable_callback, _1, std::move(cb)), salt);
 	}
 
 	void session_impl::dht_get_peers(sha1_hash const& info_hash)
@@ -6007,7 +6007,7 @@ retry:
 		m_dht->announce(info_hash, port, flags, boost::bind(&on_dht_get_peers, boost::ref(m_alerts), info_hash, _1));
 	}
 
-	void session_impl::dht_direct_request(udp::endpoint ep, entry& e, void* userdata)
+	void session_impl::dht_direct_request(const udp::endpoint& ep, entry& e, void* userdata)
 	{
 		if (!m_dht) return;
 		m_dht->direct_request(ep, e, boost::bind(&on_direct_response, boost::ref(m_alerts), userdata, _1));

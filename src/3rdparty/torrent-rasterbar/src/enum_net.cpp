@@ -1155,7 +1155,7 @@ namespace libtorrent
 
 	// returns the device name whose local address is ``addr``. If
 	// no such device is found, an empty string is returned.
-	std::string device_for_address(address addr, io_service& ios, error_code& ec)
+	std::string device_for_address(const address& addr, io_service& ios, error_code& ec)
 	{
 		std::vector<ip_interface> ifs = enum_net_interfaces(ios, ec);
 		if (ec) return std::string();

@@ -34,7 +34,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #include <libtorrent/kademlia/item.hpp>
 #include <libtorrent/bencode.hpp>
 #include <libtorrent/ed25519.hpp>
-
+#include <utility> 
 #ifdef TORRENT_DEBUG
 #include "libtorrent/bdecode.hpp"
 #endif
@@ -150,8 +150,8 @@ void sign_mutable_item(
 	);
 }
 
-item::item(char const* pk, std::string const& salt)
-	: m_salt(salt)
+item::item(char const* pk, std::string  salt)
+	: m_salt(std::move(salt))
 	, m_seq(0)
 	, m_mutable(true)
 {
@@ -210,7 +210,7 @@ bool item::assign(bdecode_node const& v
 	return true;
 }
 
-void item::assign(entry const& v, std::string salt, boost::uint64_t seq
+void item::assign(entry const& v, const std::string& salt, boost::uint64_t seq
 	, char const* pk, char const* sig)
 {
 #if TORRENT_USE_ASSERTS

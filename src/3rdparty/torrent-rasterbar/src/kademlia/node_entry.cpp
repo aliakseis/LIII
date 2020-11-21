@@ -36,7 +36,7 @@ POSSIBILITY OF SUCH DAMAGE.
 namespace libtorrent { namespace dht
 {
 
-	node_entry::node_entry(node_id const& id_, udp::endpoint ep
+	node_entry::node_entry(node_id const& id_, const udp::endpoint& ep
 		, int roundtriptime
 		, bool pinged)
 		: last_queried(pinged ? aux::time_now() : min_time())
@@ -51,7 +51,7 @@ namespace libtorrent { namespace dht
 #endif
 	}
 
-	node_entry::node_entry(udp::endpoint ep)
+	node_entry::node_entry(const udp::endpoint& ep)
 		: last_queried(min_time())
 		, id(0)
 		, a(ep.address().to_v4().to_bytes())

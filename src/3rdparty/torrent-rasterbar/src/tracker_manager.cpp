@@ -32,6 +32,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #include "libtorrent/aux_/disable_warnings_push.hpp"
 
+#include <utility>
 #include <vector>
 #include <cctype>
 
@@ -153,12 +154,12 @@ namespace libtorrent
 
 	tracker_connection::tracker_connection(
 		tracker_manager& man
-		, tracker_request const& req
+		, tracker_request  req
 		, io_service& ios
 		, boost::weak_ptr<request_callback> r)
 		: timeout_handler(ios)
-		, m_req(req)
-		, m_requester(r)
+		, m_req(std::move(req))
+        , m_requester(std::move(r))
 		, m_man(man)
 	{}
 
@@ -176,10 +177,10 @@ namespace libtorrent
 	}
 
 	void tracker_connection::fail_impl(error_code const& ec, int code
-		, std::string msg, int interval, int min_interval)
+		, const std::string& msg, int interval, int min_interval)
 	{
 		boost::shared_ptr<request_callback> cb = requester();
-		if (cb) cb->tracker_request_error(m_req, code, ec, msg.c_str()
+		if (cb) cb->tracker_request_error(m_req, code, ec, msg
 			, interval == 0 ? min_interval : interval);
 		close();
 	}
@@ -263,7 +264,7 @@ namespace libtorrent
 	}
 
 	void tracker_manager::update_transaction_id(
-		boost::shared_ptr<udp_tracker_connection> c
+		const boost::shared_ptr<udp_tracker_connection>& c
 		, boost::uint64_t tid)
 	{
 		m_udp_conns.erase(c->transaction_id());

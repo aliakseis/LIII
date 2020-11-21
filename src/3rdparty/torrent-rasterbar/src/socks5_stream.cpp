@@ -84,8 +84,8 @@ namespace libtorrent
 	{ return socks_category(); }
 #endif
 
-	void socks5_stream::name_lookup(error_code const& e, tcp::resolver::iterator i
-		, boost::shared_ptr<handler_type> h)
+	void socks5_stream::name_lookup(error_code const& e, const tcp::resolver::iterator& i
+		, const boost::shared_ptr<handler_type>& h)
 	{
 #if defined TORRENT_ASIO_DEBUGGING
 		complete_async("socks5_stream::name_lookup");
@@ -108,7 +108,7 @@ namespace libtorrent
 			&socks5_stream::connected, this, _1, h));
 	}
 
-	void socks5_stream::connected(error_code const& e, boost::shared_ptr<handler_type> h)
+	void socks5_stream::connected(error_code const& e, const boost::shared_ptr<handler_type>& h)
 	{
 #if defined TORRENT_ASIO_DEBUGGING
 		complete_async("socks5_stream::connected");
@@ -149,7 +149,7 @@ namespace libtorrent
 		}
 	}
 
-	void socks5_stream::handshake1(error_code const& e, boost::shared_ptr<handler_type> h)
+	void socks5_stream::handshake1(error_code const& e, const boost::shared_ptr<handler_type>& h)
 	{
 #if defined TORRENT_ASIO_DEBUGGING
 		complete_async("socks5_stream::handshake1");
@@ -164,7 +164,7 @@ namespace libtorrent
 			, boost::bind(&socks5_stream::handshake2, this, _1, h));
 	}
 
-	void socks5_stream::handshake2(error_code const& e, boost::shared_ptr<handler_type> h)
+	void socks5_stream::handshake2(error_code const& e, const boost::shared_ptr<handler_type>& h)
 	{
 #if defined TORRENT_ASIO_DEBUGGING
 		complete_async("socks5_stream::handshake2");
@@ -218,7 +218,7 @@ namespace libtorrent
 	}
 
 	void socks5_stream::handshake3(error_code const& e
-		, boost::shared_ptr<handler_type> h)
+		, const boost::shared_ptr<handler_type>& h)
 	{
 #if defined TORRENT_ASIO_DEBUGGING
 		complete_async("socks5_stream::handshake3");
@@ -234,7 +234,7 @@ namespace libtorrent
 	}
 
 	void socks5_stream::handshake4(error_code const& e
-		, boost::shared_ptr<handler_type> h)
+		, const boost::shared_ptr<handler_type>& h)
 	{
 #if defined TORRENT_ASIO_DEBUGGING
 		complete_async("socks5_stream::handshake4");
@@ -263,7 +263,7 @@ namespace libtorrent
 		socks_connect(h);
 	}
 
-	void socks5_stream::socks_connect(boost::shared_ptr<handler_type> h)
+	void socks5_stream::socks_connect(const boost::shared_ptr<handler_type>& h)
 	{
 		using namespace libtorrent::detail;
 
@@ -326,7 +326,7 @@ namespace libtorrent
 			, boost::bind(&socks5_stream::connect1, this, _1, h));
 	}
 
-	void socks5_stream::connect1(error_code const& e, boost::shared_ptr<handler_type> h)
+	void socks5_stream::connect1(error_code const& e, const boost::shared_ptr<handler_type>& h)
 	{
 #if defined TORRENT_ASIO_DEBUGGING
 		complete_async("socks5_stream::connect1");
@@ -345,7 +345,7 @@ namespace libtorrent
 			, boost::bind(&socks5_stream::connect2, this, _1, h));
 	}
 
-	void socks5_stream::connect2(error_code const& e, boost::shared_ptr<handler_type> h)
+	void socks5_stream::connect2(error_code const& e, const boost::shared_ptr<handler_type>& h)
 	{
 #if defined TORRENT_ASIO_DEBUGGING
 		complete_async("socks5_stream::connect2");
@@ -443,7 +443,7 @@ namespace libtorrent
 		}
 	}
 
-	void socks5_stream::connect3(error_code const& e, boost::shared_ptr<handler_type> h)
+	void socks5_stream::connect3(error_code const& e, const boost::shared_ptr<handler_type>& h)
 	{
 #if defined TORRENT_ASIO_DEBUGGING
 		complete_async("socks5_stream::connect3");

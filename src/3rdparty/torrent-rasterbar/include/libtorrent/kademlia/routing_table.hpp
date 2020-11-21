@@ -115,7 +115,7 @@ public:
 
 	// adds an endpoint that will never be added to
 	// the routing table
-	void add_router_node(udp::endpoint router);
+	void add_router_node(const udp::endpoint& router);
 
 	// iterates over the router nodes added
 	typedef std::set<udp::endpoint>::const_iterator router_iterator;
@@ -135,7 +135,7 @@ public:
 	// a sign of a node being alive. This node will either
 	// be inserted in the k-buckets or be moved to the top
 	// of its bucket.
-	bool node_seen(node_id const& id, udp::endpoint ep, int rtt);
+	bool node_seen(node_id const& id, const udp::endpoint& ep, int rtt);
 
 	// this may add a node to the routing table and mark it as
 	// not pinged. If the bucket the node falls into is full,
@@ -159,7 +159,7 @@ public:
 	void find_node(node_id const& id, std::vector<node_entry>& l
 		, int options, int count = 0);
 	void remove_node(node_entry* n
-		, table_t::iterator bucket) ;
+		, const table_t::iterator& bucket) ;
 
 	int bucket_size(int bucket) const
 	{

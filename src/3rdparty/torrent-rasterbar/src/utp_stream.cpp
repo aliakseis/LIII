@@ -1003,7 +1003,7 @@ void utp_stream::add_read_buffer(void* buf, size_t len)
 	TORRENT_ASSERT(len < INT_MAX);
 	TORRENT_ASSERT(len > 0);
 	TORRENT_ASSERT(buf);
-	m_impl->m_read_buffer.push_back(utp_socket_impl::iovec_t(buf, len));
+	m_impl->m_read_buffer.emplace_back(buf, len);
 	m_impl->m_read_buffer_size += len;
 
 		UTP_LOGV("%8p: add_read_buffer %d bytes\n", static_cast<void*>(m_impl), int(len));
@@ -1029,7 +1029,7 @@ void utp_stream::add_write_buffer(void const* buf, size_t len)
 	TORRENT_ASSERT(m_impl->m_write_buffer_size == write_buffer_size);
 #endif
 
-	m_impl->m_write_buffer.push_back(utp_socket_impl::iovec_t(const_cast<void*>(buf), len));
+	m_impl->m_write_buffer.emplace_back(const_cast<void*>(buf), len);
 	m_impl->m_write_buffer_size += len;
 
 #ifdef TORRENT_DEBUG

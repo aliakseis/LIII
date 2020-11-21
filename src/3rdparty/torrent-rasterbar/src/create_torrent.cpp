@@ -46,7 +46,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #include <boost/next_prior.hpp>
 #include <boost/shared_ptr.hpp>
 #include <boost/make_shared.hpp>
-
+#include <utility> 
 #include <sys/types.h>
 #include <sys/stat.h>
 
@@ -115,7 +115,7 @@ namespace libtorrent
 		}
 
 		void add_files_impl(file_storage& fs, std::string const& p
-			, std::string const& l, boost::function<bool(std::string)> pred, boost::uint32_t flags)
+			, std::string const& l, const boost::function<bool(std::string)>& pred, boost::uint32_t flags)
 		{
 			std::string f = combine_path(p, l);
 			if (!pred(f)) return;
@@ -163,7 +163,7 @@ namespace libtorrent
 		}
 
 		void on_hash(disk_io_job const* j, create_torrent* t
-			, boost::shared_ptr<piece_manager> storage, disk_io_thread* iothread
+			, const boost::shared_ptr<piece_manager>& storage, disk_io_thread* iothread
 			, int* piece_counter, int* completed_piece
 			, boost::function<void(int)> const* f, error_code* ec)
 		{
@@ -198,7 +198,7 @@ namespace libtorrent
 #ifndef TORRENT_NO_DEPRECATE
 
 	void add_files(file_storage& fs, std::wstring const& wfile
-		, boost::function<bool(std::string)> p, boost::uint32_t flags)
+		, const boost::function<bool(std::string)>& p, boost::uint32_t flags)
 	{
 		std::string utf8;
 		wchar_utf8(wfile, utf8);
@@ -216,7 +216,7 @@ namespace libtorrent
 	}
 
 	void set_piece_hashes(create_torrent& t, std::wstring const& p
-		, boost::function<void(int)> f, error_code& ec)
+		, const boost::function<void(int)>& f, error_code& ec)
 	{
 		std::string utf8;
 		wchar_utf8(p, utf8);
@@ -224,7 +224,7 @@ namespace libtorrent
 	}
 
 	void set_piece_hashes_deprecated(create_torrent& t, std::wstring const& p
-		, boost::function<void(int)> f, error_code& ec)
+		, const boost::function<void(int)>& f, error_code& ec)
 	{
 		std::string utf8;
 		wchar_utf8(p, utf8);
@@ -234,7 +234,7 @@ namespace libtorrent
 #endif
 
 	void add_files(file_storage& fs, std::string const& file
-		, boost::function<bool(std::string)> p, boost::uint32_t flags)
+		, const boost::function<bool(std::string)>& p, boost::uint32_t flags)
 	{
 		add_files_impl(fs, parent_path(complete(file)), filename(file), p, flags);
 	}
@@ -711,7 +711,7 @@ namespace libtorrent
 
 	void create_torrent::add_tracker(std::string const& url, int tier)
 	{
-		m_urls.push_back(announce_entry(url, tier));
+		m_urls.emplace_back(url, tier);
 
 		std::sort(m_urls.begin(), m_urls.end()
 			, boost::bind(&announce_entry::second, _1) < boost::bind(&announce_entry::second, _2));
@@ -727,7 +727,7 @@ namespace libtorrent
 		m_similar.push_back(ih);
 	}
 
-	void create_torrent::add_collection(std::string c)
+	void create_torrent::add_collection(const std::string& c)
 	{
 		m_collections.push_back(c);
 	}

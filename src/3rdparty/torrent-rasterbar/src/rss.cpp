@@ -43,7 +43,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #include <set>
 #include <map>
 #include <algorithm>
-
+#include <utility> 
 #ifndef TORRENT_NO_DEPRECATE
 
 namespace libtorrent {
@@ -294,7 +294,7 @@ torrent_handle add_feed_item(session& s, feed_item const& fi
 //	p.source_feed_url = ???;
 	p.ti.reset();
 	p.info_hash.clear();
-	p.name = fi.title.c_str();
+	p.name = fi.title;
 	return s.add_torrent(p, ec);
 }
 
@@ -314,13 +314,13 @@ boost::shared_ptr<feed> new_feed(aux::session_impl& ses, feed_settings const& se
 	return boost::shared_ptr<feed>(new feed(ses, sett));
 }
 
-feed::feed(aux::session_impl& ses, feed_settings const& sett)
+feed::feed(aux::session_impl& ses, feed_settings  sett)
 	: m_last_attempt(0)
 	, m_last_update(0)
 	, m_ttl(-1)
 	, m_failures(0)
 	, m_updating(false)
-	, m_settings(sett)
+	, m_settings(std::move(sett))
 	, m_ses(ses)
 {
 }
@@ -444,7 +444,7 @@ void feed::load_state(bdecode_node const& rd)
 			bdecode_node entry = e.list_at(i);
 			if (entry.type() != bdecode_node::dict_t) continue;
 
-			m_items.push_back(feed_item());
+			m_items.emplace_back();
 			feed_item& item = m_items.back();
 			item.url = entry.dict_find_string_value("url");
 			item.uuid = entry.dict_find_string_value("uuid");
@@ -590,7 +590,7 @@ void feed::add_item(feed_item const& item)
 		p.source_feed_url = m_settings.url;
 		p.ti.reset();
 		p.info_hash.clear();
-		p.name = i.title.c_str();
+		p.name = i.title;
 
 		error_code e;
 		m_ses.add_torrent(p, e);
@@ -674,8 +674,8 @@ int feed::next_update(time_t now) const
 	boost::shared_ptr<feed> f = m_feed_ptr.lock(); \
 	if (f) aux::sync_call_handle(f, boost::bind(&feed:: x, f, a1));
 
-feed_handle::feed_handle(boost::weak_ptr<feed> const& p)
-	: m_feed_ptr(p) {}
+feed_handle::feed_handle(boost::weak_ptr<feed>  p)
+	: m_feed_ptr(std::move(p)) {}
 
 void feed_handle::update_feed()
 {

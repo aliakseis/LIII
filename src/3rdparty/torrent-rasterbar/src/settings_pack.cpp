@@ -709,7 +709,7 @@ namespace libtorrent
 		}
 	}
 
-	void settings_pack::set_str(int name, std::string val)
+	void settings_pack::set_str(int name, const std::string& val)
 	{
 		TORRENT_ASSERT((name & type_mask) == string_type_base);
 		if ((name & type_mask) != string_type_base) return;

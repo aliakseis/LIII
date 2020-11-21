@@ -30,6 +30,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 */
 
+#include <utility>
 #include "libtorrent/config.hpp"
 #include "libtorrent/announce_entry.hpp"
 #include "libtorrent/aux_/time.hpp"
@@ -46,8 +47,8 @@ namespace libtorrent
 		, tracker_retry_delay_max = 60 * 60
 	};
 
-	announce_entry::announce_entry(std::string const& u)
-		: url(u)
+	announce_entry::announce_entry(std::string  u)
+		: url(std::move(u))
 		, next_announce(min_time())
 		, min_announce(min_time())
 		, scrape_incomplete(-1)

@@ -47,7 +47,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #include <boost/bind.hpp>
 #include <boost/system/error_code.hpp>
 #include <boost/shared_ptr.hpp>
-
+#include <utility> 
 #if TORRENT_HAVE_MMAP
 #include <sys/mman.h>
 #endif
@@ -84,12 +84,12 @@ namespace libtorrent
 	} // anonymous namespace
 
 	disk_buffer_pool::disk_buffer_pool(int block_size, io_service& ios
-		, boost::function<void()> const& trigger_trim)
+		, boost::function<void()>  trigger_trim)
 		: m_block_size(block_size)
 		, m_in_use(0)
 		, m_max_use(64)
 		, m_low_watermark((std::max)(m_max_use - 32, 0))
-		, m_trigger_cache_trim(trigger_trim)
+		, m_trigger_cache_trim(std::move(trigger_trim))
 		, m_exceeded_max_size(false)
 		, m_ios(ios)
 		, m_cache_buffer_chunk_size(0)
@@ -218,14 +218,14 @@ namespace libtorrent
 	// that there's more room in the pool now. This caps the amount of over-
 	// allocation to one block per peer connection.
 	char* disk_buffer_pool::allocate_buffer(bool& exceeded
-		, boost::shared_ptr<disk_observer> o, char const* category)
+		, const boost::shared_ptr<disk_observer>& o, char const* category)
 	{
 		mutex::scoped_lock l(m_pool_mutex);
 		char* ret = allocate_buffer_impl(l, category);
 		if (m_exceeded_max_size)
 		{
 			exceeded = true;
-			if (o) m_observers.push_back(o);
+			if (o) m_observers.emplace_back(o);
 		}
 		return ret;
 	}

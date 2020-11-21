@@ -467,7 +467,7 @@ namespace libtorrent
 			refcount_pieces[i] = 1;
 			TORRENT_ASSERT_VAL(pe->cache_state <= cached_piece_entry::read_lru1 || pe->cache_state == cached_piece_entry::read_lru2, pe);
 #if TORRENT_USE_ASSERTS
-			pe->piece_log.push_back(piece_log_t(piece_log_t::flushing, -1));
+			pe->piece_log.emplace_back(piece_log_t::flushing, -1);
 #endif
 			++pe->piece_refcount;
 
@@ -742,7 +742,7 @@ namespace libtorrent
 
 		TORRENT_PIECE_ASSERT(pe->cache_state <= cached_piece_entry::read_lru1 || pe->cache_state == cached_piece_entry::read_lru2, pe);
 #if TORRENT_USE_ASSERTS
-		pe->piece_log.push_back(piece_log_t(piece_log_t::flush_range, -1));
+		pe->piece_log.emplace_back(piece_log_t::flush_range, -1);
 #endif
 		++pe->piece_refcount;
 
@@ -906,7 +906,7 @@ namespace libtorrent
 		{
 			cached_piece_entry* e = p.get();
 			if (e->num_dirty == 0) continue;
-			pieces.push_back(std::make_pair(e->storage, int(e->piece)));
+			pieces.emplace_back(e->storage, int(e->piece));
 		}
 
 		for (std::vector<std::pair<boost::shared_ptr<piece_manager>, int> >::iterator i = pieces.begin()
@@ -922,7 +922,7 @@ namespace libtorrent
 			if (pe->cache_state != cached_piece_entry::write_lru) continue;
 
 #if TORRENT_USE_ASSERTS
-			pe->piece_log.push_back(piece_log_t(piece_log_t::try_flush_write_blocks, -1));
+			pe->piece_log.emplace_back(piece_log_t::try_flush_write_blocks, -1);
 #endif
 			++pe->piece_refcount;
 			kick_hasher(pe, l);
@@ -956,7 +956,7 @@ namespace libtorrent
 			if (pe->num_dirty == 0 || pe->hashing) continue;
 
 #if TORRENT_USE_ASSERTS
-			pe->piece_log.push_back(piece_log_t(piece_log_t::try_flush_write_blocks2, -1));
+			pe->piece_log.emplace_back(piece_log_t::try_flush_write_blocks2, -1);
 #endif
 			++pe->piece_refcount;
 
@@ -997,7 +997,7 @@ namespace libtorrent
 
 			TORRENT_PIECE_ASSERT(e->cache_state <= cached_piece_entry::read_lru1 || e->cache_state == cached_piece_entry::read_lru2, e);
 #if TORRENT_USE_ASSERTS
-			e->piece_log.push_back(piece_log_t(piece_log_t::flush_expired, -1));
+			e->piece_log.emplace_back(piece_log_t::flush_expired, -1);
 #endif
 			++e->piece_refcount;
 			// We can rely on the piece entry not being removed by
@@ -1295,7 +1295,7 @@ namespace libtorrent
 			TORRENT_PIECE_ASSERT(pe->read_jobs.size() == 0, pe);
 			pe->outstanding_read = 0;
 #if TORRENT_USE_ASSERTS
-			pe->piece_log.push_back(piece_log_t(piece_log_t::clear_outstanding_jobs));
+			pe->piece_log.emplace_back(piece_log_t::clear_outstanding_jobs);
 #endif
 			m_disk_cache.maybe_free_piece(pe);
 			return ret;
@@ -1340,7 +1340,7 @@ namespace libtorrent
 			TORRENT_PIECE_ASSERT(pe->read_jobs.size() == 0, pe);
 			pe->outstanding_read = 0;
 #if TORRENT_USE_ASSERTS
-			pe->piece_log.push_back(piece_log_t(piece_log_t::clear_outstanding_jobs));
+			pe->piece_log.emplace_back(piece_log_t::clear_outstanding_jobs);
 #endif
 			m_disk_cache.maybe_free_piece(pe);
 			return;
@@ -1403,7 +1403,7 @@ namespace libtorrent
 			TORRENT_PIECE_ASSERT(pe->read_jobs.size() == 0, pe);
 			pe->outstanding_read = 0;
 #if TORRENT_USE_ASSERTS
-			pe->piece_log.push_back(piece_log_t(piece_log_t::clear_outstanding_jobs));
+			pe->piece_log.emplace_back(piece_log_t::clear_outstanding_jobs);
 #endif
 			m_disk_cache.maybe_free_piece(pe);
 		}
@@ -1614,7 +1614,7 @@ namespace libtorrent
 		}
 
 #if TORRENT_USE_ASSERTS
-		pe->piece_log.push_back(piece_log_t(piece_log_t::set_outstanding_jobs));
+		pe->piece_log.emplace_back(piece_log_t::set_outstanding_jobs);
 #endif
 		pe->outstanding_read = 1;
 
@@ -1834,7 +1834,7 @@ namespace libtorrent
 #endif
 			if (qj->action == disk_io_job::read)
 			{
-				pieces.push_back(std::make_pair(qj->storage.get(), int(qj->piece)));
+				pieces.emplace_back(qj->storage.get(), int(qj->piece));
 			}
 
 			if (qj->storage.get() == storage)
@@ -2871,7 +2871,7 @@ namespace libtorrent
 					if ((*i)->cache_state == cached_piece_entry::read_lru2_ghost
 						|| (*i)->cache_state == cached_piece_entry::read_lru1_ghost)
 						continue;
-					ret->pieces.push_back(cached_piece_info());
+					ret->pieces.emplace_back();
 					get_cache_info_impl(ret->pieces.back(), *i, block_size);
 				}
 			}
@@ -2887,7 +2887,7 @@ namespace libtorrent
 					if (i->cache_state == cached_piece_entry::read_lru2_ghost
 						|| i->cache_state == cached_piece_entry::read_lru1_ghost)
 						continue;
-					ret->pieces.push_back(cached_piece_info());
+					ret->pieces.emplace_back();
 					get_cache_info_impl(ret->pieces.back(), &*i, block_size);
 				}
 			}

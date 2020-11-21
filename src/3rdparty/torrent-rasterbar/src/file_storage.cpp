@@ -216,7 +216,7 @@ namespace libtorrent
 			// no, we don't. add it
 			int const ret = int(m_paths.size());
 			TORRENT_ASSERT(branch_len == 0 || branch_path[0] != TORRENT_SEPARATOR);
-			m_paths.push_back(std::string(branch_path, branch_len));
+			m_paths.emplace_back(branch_path, branch_len);
 			return ret;
 		}
 		else
@@ -923,7 +923,7 @@ namespace libtorrent
 		return fe.offset;
 	}
 
-	file_entry file_storage::at(file_storage::iterator i) const
+	file_entry file_storage::at(const file_storage::iterator& i) const
 	{ return at_deprecated(i - m_files.begin()); }
 #endif // TORRENT_NO_DEPRECATE
 
@@ -1070,7 +1070,7 @@ namespace libtorrent
 	{
 		int const cur_index = i - m_files.begin();
 		int const index = m_files.size();
-		m_files.push_back(internal_file_entry());
+		m_files.emplace_back();
 		++m_num_files;
 		internal_file_entry& e = m_files.back();
 		// i may have been invalidated, refresh it

@@ -30,6 +30,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 */
 
+#include <utility>
 #include "libtorrent/aux_/session_call.hpp"
 
 namespace libtorrent { namespace aux {
@@ -71,7 +72,7 @@ void dump_call_profile()
 #endif
 }
 
-void fun_wrap(bool& done, condition_variable& e, mutex& m, boost::function<void(void)> f)
+void fun_wrap(bool& done, condition_variable& e, mutex& m, const boost::function<void(void)>& f)
 {
 	f();
 	mutex::scoped_lock l(m);
@@ -96,7 +97,7 @@ void sync_call(aux::session_impl& ses, boost::function<void(void)> f)
 		, boost::ref(done)
 		, boost::ref(ses.cond)
 		, boost::ref(ses.mut)
-		, f));
+		, std::move(f)));
 	torrent_wait(done, ses);
 }
 

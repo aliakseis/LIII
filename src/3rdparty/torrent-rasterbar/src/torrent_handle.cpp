@@ -472,10 +472,10 @@ namespace libtorrent
 #ifndef TORRENT_NO_DEPRECATE
 // ============ start deprecation ===============
 
-	int torrent_handle::get_peer_upload_limit(tcp::endpoint) const { return -1; }
-	int torrent_handle::get_peer_download_limit(tcp::endpoint) const { return -1; }
-	void torrent_handle::set_peer_upload_limit(tcp::endpoint, int /* limit */) const {}
-	void torrent_handle::set_peer_download_limit(tcp::endpoint, int /* limit */) const {}
+	int torrent_handle::get_peer_upload_limit(const tcp::endpoint&) const { return -1; }
+	int torrent_handle::get_peer_download_limit(const tcp::endpoint&) const { return -1; }
+	void torrent_handle::set_peer_upload_limit(const tcp::endpoint&, int /* limit */) const {}
+	void torrent_handle::set_peer_download_limit(const tcp::endpoint&, int /* limit */) const {}
 	void torrent_handle::set_ratio(float) const {}
 	void torrent_handle::use_interface(const char* net_interface) const
 	{
@@ -707,7 +707,7 @@ namespace libtorrent
 
 #ifndef TORRENT_NO_DEPRECATE
 	void torrent_handle::force_reannounce(
-		boost::posix_time::time_duration duration) const
+		const boost::posix_time::time_duration& duration) const
 	{
 		TORRENT_ASYNC_CALL2(force_tracker_request, aux::time_now()
 			+ seconds(duration.total_seconds()), -1);

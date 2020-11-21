@@ -354,7 +354,7 @@ namespace libtorrent
 	void setup_ssl_hostname(socket_type& s, std::string const& hostname, error_code& ec);
 
 	// properly shuts down SSL sockets. holder keeps s alive
-	void async_shutdown(socket_type& s, boost::shared_ptr<void> holder);
+	void async_shutdown(socket_type& s, const boost::shared_ptr<void>& holder);
 }
 
 #endif

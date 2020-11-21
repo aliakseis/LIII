@@ -38,9 +38,10 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "libtorrent/torrent_status.hpp"
 #include "libtorrent/torrent_info.hpp"
 #include "libtorrent/announce_entry.hpp"
+#include "libtorrent/socket_io.hpp"
 
 #include <string>
-#include "libtorrent/socket_io.hpp"
+#include <utility>
 
 namespace libtorrent
 {
@@ -140,7 +141,7 @@ namespace libtorrent
 		, storage_constructor_type sc
 		, void* userdata)
 	{
-		add_torrent_params params(sc);
+		add_torrent_params params(std::move(sc));
 		params.storage_mode = storage_mode;
 		params.userdata = userdata;
 		params.save_path = save_path;
@@ -150,9 +151,9 @@ namespace libtorrent
 
 		error_code ec;
 		std::string display_name = url_has_argument(uri, "dn");
-		if (!display_name.empty()) params.name = unescape_string(display_name.c_str(), ec);
+		if (!display_name.empty()) params.name = unescape_string(display_name, ec);
 		std::string tracker_string = url_has_argument(uri, "tr");
-		if (!tracker_string.empty()) params.trackers.push_back(unescape_string(tracker_string.c_str(), ec));
+		if (!tracker_string.empty()) params.trackers.push_back(unescape_string(tracker_string, ec));
 
 		std::string btih = url_has_argument(uri, "xt");
 		if (btih.empty()) return torrent_handle();
@@ -184,7 +185,7 @@ namespace libtorrent
 		{
 			error_code e;
 			std::string display_name = url_has_argument(uri, "dn");
-			if (!display_name.empty()) name = unescape_string(display_name.c_str(), e);
+			if (!display_name.empty()) name = unescape_string(display_name, e);
 		}
 
 		// parse trackers out of the magnet link
@@ -238,7 +239,7 @@ namespace libtorrent
 			{
 				int port = atoi(node.c_str()+divider+1);
 				if (port != 0)
-					p.dht_nodes.push_back(std::make_pair(node.substr(0, divider), port));
+					p.dht_nodes.emplace_back(node.substr(0, divider), port);
 			}
 
 			node_pos = uri.find("&dht=", node_pos);

@@ -92,11 +92,11 @@ struct TORRENT_EXTRA_EXPORT http_connection
 {
 	http_connection(io_service& ios
 		, resolver_interface& resolver
-		, http_handler const& handler
+		, http_handler  handler
 		, bool bottled = true
 		, int max_bottled_buffer_size = default_max_bottled_buffer_size
-		, http_connect_handler const& ch = http_connect_handler()
-		, http_filter_handler const& fh = http_filter_handler()
+		, http_connect_handler  ch = http_connect_handler()
+		, http_filter_handler  fh = http_filter_handler()
 #ifdef TORRENT_USE_OPENSSL
 		, ssl::context* ssl_ctx = 0
 #endif
@@ -114,7 +114,7 @@ struct TORRENT_EXTRA_EXPORT http_connection
 	void get(std::string const& url, time_duration timeout = seconds(30)
 		, int prio = 0, aux::proxy_settings const* ps = NULL, int handle_redirects = 5
 		, std::string const& user_agent = std::string()
-		, boost::optional<address> bind_addr = boost::none
+		, const boost::optional<address>& bind_addr = boost::none
 		, int resolve_flags = 0, std::string const& auth_ = std::string()
 #if TORRENT_USE_I2P
 		, i2p_connection* i2p_conn = 0
@@ -124,7 +124,7 @@ struct TORRENT_EXTRA_EXPORT http_connection
 	void start(std::string const& hostname, int port
 		, time_duration timeout, int prio = 0, aux::proxy_settings const* ps = NULL
 		, bool ssl = false, int handle_redirect = 5
-		, boost::optional<address> bind_addr = boost::none
+		, const boost::optional<address>& bind_addr = boost::none
 		, int resolve_flags = 0
 #if TORRENT_USE_I2P
 		, i2p_connection* i2p_conn = 0
@@ -150,7 +150,7 @@ private:
 	void on_connect(error_code const& e);
 	void on_write(error_code const& e);
 	void on_read(error_code const& e, std::size_t bytes_transferred);
-	static void on_timeout(boost::weak_ptr<http_connection> p
+	static void on_timeout(const boost::weak_ptr<http_connection>& p
 		, error_code const& e);
 	void on_assign_bandwidth(error_code const& e);
 

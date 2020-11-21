@@ -65,7 +65,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "libtorrent/io.hpp"
 #include "libtorrent/assert.hpp"
 #include <boost/scoped_array.hpp>
-
+#include <utility> 
 #ifdef TORRENT_USE_VALGRIND
 #include <valgrind/memcheck.h>
 #endif
@@ -79,10 +79,10 @@ namespace
 
 namespace libtorrent
 {
-	part_file::part_file(std::string const& path, std::string const& name
+	part_file::part_file(std::string  path, std::string  name
 		, int num_pieces, int piece_size)
-		: m_path(path)
-		, m_name(name)
+		: m_path(std::move(path))
+		, m_name(std::move(name))
 		, m_num_allocated(0)
 		, m_max_pieces(num_pieces)
 		, m_piece_size(piece_size)

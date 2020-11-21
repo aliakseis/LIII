@@ -44,7 +44,7 @@ namespace libtorrent { namespace aux {
 void blocking_call();
 void dump_call_profile();
 
-void fun_wrap(bool& done, condition_variable& e, mutex& m, boost::function<void(void)> f);
+void fun_wrap(bool& done, condition_variable& e, mutex& m, const boost::function<void(void)>& f);
 
 template <class R>
 void fun_ret(R& ret, bool& done, condition_variable& e, mutex& m, boost::function<R(void)> f)

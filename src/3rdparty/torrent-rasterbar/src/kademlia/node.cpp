@@ -98,7 +98,7 @@ node::node(udp_socket_interface* sock
 	, dht_settings const& settings, node_id nid
 	, dht_observer* observer
 	, struct counters& cnt
-	, dht_storage_constructor_type storage_constructor)
+	, const dht_storage_constructor_type& storage_constructor)
 	: m_settings(settings)
 	, m_id(calculate_node_id(nid, observer))
 	, m_table(m_id, 8, settings, observer)
@@ -386,7 +386,7 @@ namespace
 	}
 }
 
-void node::add_router_node(udp::endpoint router)
+void node::add_router_node(const udp::endpoint& router)
 {
 #ifndef TORRENT_DISABLE_LOGGING
 	if (m_observer)
@@ -398,7 +398,7 @@ void node::add_router_node(udp::endpoint router)
 	m_table.add_router_node(router);
 }
 
-void node::add_node(udp::endpoint node)
+void node::add_node(const udp::endpoint& node)
 {
 	// ping the node, and if we get a reply, it
 	// will be added to the routing table
@@ -406,8 +406,8 @@ void node::add_node(udp::endpoint node)
 }
 
 void node::get_peers(sha1_hash const& info_hash
-	, boost::function<void(std::vector<tcp::endpoint> const&)> dcallback
-	, boost::function<void(std::vector<std::pair<node_entry, std::string> > const&)> ncallback
+	, const boost::function<void(std::vector<tcp::endpoint> const&)>& dcallback
+	, const boost::function<void(std::vector<std::pair<node_entry, std::string> > const&)>& ncallback
 	, bool noseeds)
 {
 	// search for nodes with ids close to id or with peers
@@ -427,7 +427,7 @@ void node::get_peers(sha1_hash const& info_hash
 }
 
 void node::announce(sha1_hash const& info_hash, int listen_port, int flags
-	, boost::function<void(std::vector<tcp::endpoint> const&)> f)
+	, const boost::function<void(std::vector<tcp::endpoint> const&)>& f)
 {
 #ifndef TORRENT_DISABLE_LOGGING
 	if (m_observer)
@@ -444,12 +444,12 @@ void node::announce(sha1_hash const& info_hash, int listen_port, int flags
 		, listen_port, info_hash, flags), flags & node::flag_seed);
 }
 
-void node::direct_request(udp::endpoint ep, entry& e
+void node::direct_request(const udp::endpoint& ep, entry& e
 	, boost::function<void(msg const&)> f)
 {
 	// not really a traversal
 	boost::intrusive_ptr<direct_traversal> algo(
-		new direct_traversal(*this, (node_id::min)(), f));
+		new direct_traversal(*this, (node_id::min)(), std::move(f)));
 
 	void* ptr = m_rpc.allocate_observer();
 	if (ptr == 0) return;
@@ -474,12 +474,12 @@ void node::get_item(sha1_hash const& target
 #endif
 
 	boost::intrusive_ptr<dht::get_item> ta;
-	ta.reset(new dht::get_item(*this, target, boost::bind(f, _1), find_data::nodes_callback()));
+	ta.reset(new dht::get_item(*this, target, boost::bind(std::move(f), _1), find_data::nodes_callback()));
 	ta->start();
 }
 
 void node::get_item(char const* pk, std::string const& salt
-	, boost::function<void(item const&, bool)> f)
+	, const boost::function<void(item const&, bool)>& f)
 {
 #ifndef TORRENT_DISABLE_LOGGING
 	if (m_observer)
@@ -498,15 +498,15 @@ void node::get_item(char const* pk, std::string const& salt
 namespace {
 
 void put(std::vector<std::pair<node_entry, std::string> > const& nodes
-	, boost::intrusive_ptr<dht::put_data> ta)
+	, const boost::intrusive_ptr<dht::put_data>& ta)
 {
 	ta->set_targets(nodes);
 	ta->start();
 }
 
 void put_data_cb(item i, bool auth
-	, boost::intrusive_ptr<put_data> ta
-	, boost::function<void(item&)> f)
+	, const boost::intrusive_ptr<put_data>& ta
+	, const boost::function<void(item&)>& f)
 {
 	// call data_callback only when we got authoritative data.
 	if (auth)
@@ -533,7 +533,7 @@ void node::put_item(sha1_hash const& target, entry const& data, boost::function<
 	item i;
 	i.assign(data);
 	boost::intrusive_ptr<dht::put_data> put_ta;
-	put_ta.reset(new dht::put_data(*this, boost::bind(f, _2)));
+	put_ta.reset(new dht::put_data(*this, boost::bind(std::move(f), _2)));
 	put_ta->set_data(i);
 
 	boost::intrusive_ptr<dht::get_item> ta;
@@ -543,7 +543,7 @@ void node::put_item(sha1_hash const& target, entry const& data, boost::function<
 }
 
 void node::put_item(char const* pk, std::string const& salt
-	, boost::function<void(item const&, int)> f
+	, const boost::function<void(item const&, int)>& f
 	, boost::function<void(item&)> data_cb)
 {
 	#ifndef TORRENT_DISABLE_LOGGING
@@ -560,7 +560,7 @@ void node::put_item(char const* pk, std::string const& salt
 
 	boost::intrusive_ptr<dht::get_item> ta;
 	ta.reset(new dht::get_item(*this, pk, salt
-		, boost::bind(&put_data_cb, _1, _2, put_ta, data_cb)
+		, boost::bind(&put_data_cb, _1, _2, put_ta, std::move(data_cb))
 		, boost::bind(&put, _1, put_ta)));
 	ta->start();
 }
@@ -711,7 +711,7 @@ void node::status(std::vector<dht_routing_bucket>& table
 	for (std::set<traversal_algorithm*>::iterator i = m_running_requests.begin()
 		, end(m_running_requests.end()); i != end; ++i)
 	{
-		requests.push_back(dht_lookup());
+		requests.emplace_back();
 		dht_lookup& lookup = requests.back();
 		(*i)->status(lookup);
 	}
@@ -748,7 +748,7 @@ void node::status(session_status& s)
 	for (std::set<traversal_algorithm*>::iterator i = m_running_requests.begin()
 		, end(m_running_requests.end()); i != end; ++i)
 	{
-		s.active_requests.push_back(dht_lookup());
+		s.active_requests.emplace_back();
 		dht_lookup& lookup = s.active_requests.back();
 		(*i)->status(lookup);
 	}

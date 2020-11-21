@@ -227,24 +227,24 @@ void receive_buffer::mutable_buffers(std::vector<boost::asio::mutable_buffer>& v
 	if (!m_disk_recv_buffer || regular_buf_size >= m_recv_pos)
 	{
 		// we just received into a regular disk buffer
-		vec.push_back(asio::mutable_buffer(&m_recv_buffer[0] + m_recv_start
-			+ last_recv_pos, bytes));
+		vec.emplace_back(&m_recv_buffer[0] + m_recv_start
+			+ last_recv_pos, bytes);
 	}
 	else if (last_recv_pos >= regular_buf_size)
 	{
 		// we only received into a disk buffer
-		vec.push_back(asio::mutable_buffer(m_disk_recv_buffer.get()
-			+ last_recv_pos - regular_buf_size, bytes));
+		vec.emplace_back(m_disk_recv_buffer.get()
+			+ last_recv_pos - regular_buf_size, bytes);
 	}
 	else
 	{
 		// we received into a regular and a disk buffer
 		TORRENT_ASSERT(last_recv_pos < regular_buf_size);
 		TORRENT_ASSERT(m_recv_pos > regular_buf_size);
-		vec.push_back(asio::mutable_buffer(&m_recv_buffer[0] + m_recv_start + last_recv_pos
-			, regular_buf_size - last_recv_pos));
-		vec.push_back(asio::mutable_buffer(m_disk_recv_buffer.get()
-			, m_recv_pos - regular_buf_size));
+		vec.emplace_back(&m_recv_buffer[0] + m_recv_start + last_recv_pos
+			, regular_buf_size - last_recv_pos);
+		vec.emplace_back(m_disk_recv_buffer.get()
+			, m_recv_pos - regular_buf_size);
 	}
 
 #if TORRENT_USE_ASSERTS

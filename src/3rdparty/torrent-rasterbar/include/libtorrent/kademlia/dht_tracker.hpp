@@ -73,7 +73,7 @@ namespace libtorrent { namespace dht
 	{
 		dht_tracker(dht_observer* observer, rate_limited_udp_socket& sock
 			, dht_settings const& settings, counters& cnt
-			, dht_storage_constructor_type storage_constructor
+			, const dht_storage_constructor_type& storage_constructor
 			, entry const& state);
 		virtual ~dht_tracker();
 
@@ -85,16 +85,16 @@ namespace libtorrent { namespace dht
 		// understanding of its external address (which may have changed)
 		void update_node_id();
 
-		void add_node(udp::endpoint node);
+		void add_node(const udp::endpoint& node);
 		void add_router_node(udp::endpoint const& node);
 
 		entry state() const;
 
 		enum flags_t { flag_seed = 1, flag_implied_port = 2 };
 		void get_peers(sha1_hash const& ih
-			, boost::function<void(std::vector<tcp::endpoint> const&)> f);
+			, const boost::function<void(std::vector<tcp::endpoint> const&)>& f);
 		void announce(sha1_hash const& ih, int listen_port, int flags
-			, boost::function<void(std::vector<tcp::endpoint> const&)> f);
+			, const boost::function<void(std::vector<tcp::endpoint> const&)>& f);
 
 		void get_item(sha1_hash const& target
 			, boost::function<void(item const&)> cb);
@@ -102,8 +102,8 @@ namespace libtorrent { namespace dht
 		// key is a 32-byte binary string, the public key to look up.
 		// the salt is optional
 		void get_item(char const* key
-			, boost::function<void(item const&, bool)> cb
-			, std::string salt = std::string());
+			, const boost::function<void(item const&, bool)>& cb
+			, const std::string& salt = std::string());
 
 		// for immutable_item.
 		// the callback function will be called when put operation is done.
@@ -115,11 +115,11 @@ namespace libtorrent { namespace dht
 		// the data_cb will be called when we get authoritative mutable_item,
 		// the cb is same as put immutable_item.
 		void put_item(char const* key
-			, boost::function<void(item const&, int)> cb
-			, boost::function<void(item&)> data_cb, std::string salt = std::string());
+			, const boost::function<void(item const&, int)>& cb
+			, boost::function<void(item&)> data_cb, const std::string& salt = std::string());
 
 		// send an arbitrary DHT request directly to a node
-		void direct_request(udp::endpoint ep, entry& e
+		void direct_request(const udp::endpoint& ep, entry& e
 			, boost::function<void(msg const&)> f);
 
 #ifndef TORRENT_NO_DEPRECATE

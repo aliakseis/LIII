@@ -139,9 +139,9 @@ namespace libtorrent
 #ifdef TORRENT_USE_OPENSSL
 	namespace {
 
-	void nop(boost::shared_ptr<void>) {}
+	void nop(const boost::shared_ptr<void>&) {}
 
-	void on_close_socket(socket_type* s, boost::shared_ptr<void>)
+	void on_close_socket(socket_type* s, const boost::shared_ptr<void>&)
 	{
 #if defined TORRENT_ASIO_DEBUGGING
 		complete_async("on_close_socket");
@@ -155,7 +155,7 @@ namespace libtorrent
 
 	// the second argument is a shared pointer to an object that
 	// will keep the socket (s) alive for the duration of the async operation
-	void async_shutdown(socket_type& s, boost::shared_ptr<void> holder)
+	void async_shutdown(socket_type& s, const boost::shared_ptr<void>& holder)
 	{
 		error_code e;
 

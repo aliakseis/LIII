@@ -377,7 +377,7 @@ namespace libtorrent
 			return m_files[index];
 		}
 		TORRENT_DEPRECATED
-		file_entry at(iterator i) const;
+		file_entry at(const iterator& i) const;
 
 		// returns a file_entry with information about the file
 		// at ``index``. Index must be in the range [0, ``num_files()`` ).

@@ -115,7 +115,7 @@ void traversal_algorithm::resort_results()
 	);
 }
 
-void traversal_algorithm::add_entry(node_id const& id, udp::endpoint addr, unsigned char flags)
+void traversal_algorithm::add_entry(node_id const& id, const udp::endpoint& addr, unsigned char flags)
 {
 	TORRENT_ASSERT(m_node.m_rpc.allocation_size() >= sizeof(find_data_observer));
 	void* ptr = m_node.m_rpc.allocate_observer();
@@ -263,7 +263,7 @@ char const* traversal_algorithm::name() const
 	return "traversal_algorithm";
 }
 
-void traversal_algorithm::traverse(node_id const& id, udp::endpoint addr)
+void traversal_algorithm::traverse(node_id const& id, const udp::endpoint& addr)
 {
 #ifndef TORRENT_DISABLE_LOGGING
 	if (id.is_all_zeros() && get_node().observer())
@@ -280,7 +280,7 @@ void traversal_algorithm::traverse(node_id const& id, udp::endpoint addr)
 	add_entry(id, addr, 0);
 }
 
-void traversal_algorithm::finished(observer_ptr o)
+void traversal_algorithm::finished(const observer_ptr& o)
 {
 #if TORRENT_USE_ASSERTS
 	std::vector<observer_ptr>::iterator i = std::find(
@@ -310,7 +310,7 @@ void traversal_algorithm::finished(observer_ptr o)
 // prevent request means that the total number of requests has
 // overflown. This query failed because it was the oldest one.
 // So, if this is true, don't make another request
-void traversal_algorithm::failed(observer_ptr o, int flags)
+void traversal_algorithm::failed(const observer_ptr& o, int flags)
 {
 	// don't tell the routing table about
 	// node ids that we just generated ourself

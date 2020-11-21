@@ -442,8 +442,8 @@ void rpc_manager::add_our_id(entry& e)
 	e["id"] = m_our_id.to_string();
 }
 
-bool rpc_manager::invoke(entry& e, udp::endpoint target_addr
-	, observer_ptr o)
+bool rpc_manager::invoke(entry& e, const udp::endpoint& target_addr
+	, const observer_ptr& o)
 {
 	INVARIANT_CHECK;
 

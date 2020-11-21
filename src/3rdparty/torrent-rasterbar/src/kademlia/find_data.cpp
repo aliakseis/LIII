@@ -36,6 +36,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #include <libtorrent/io.hpp>
 #include <libtorrent/socket.hpp>
 #include <libtorrent/socket_io.hpp>
+#include <utility>
 #include <vector>
 
 namespace libtorrent { namespace dht
@@ -84,9 +85,9 @@ void find_data_observer::reply(msg const& m)
 find_data::find_data(
 	node& dht_node
 	, node_id target
-	, nodes_callback const& ncallback)
+	, nodes_callback  ncallback)
 	: traversal_algorithm(dht_node, target)
-	, m_nodes_callback(ncallback)
+	, m_nodes_callback(std::move(ncallback))
 	, m_done(false)
 {
 }
@@ -165,7 +166,7 @@ void find_data::done()
 #endif
 			continue;
 		}
-		results.push_back(std::make_pair(node_entry(o->id(), o->target_ep()), j->second));
+		results.emplace_back(node_entry(o->id(), o->target_ep()), j->second);
 #ifndef TORRENT_DISABLE_LOGGING
 			get_node().observer()->log(dht_logger::traversal, "[%p] %s"
 				, static_cast<void*>(this), print_endpoint(o->target_ep()).c_str());

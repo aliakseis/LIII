@@ -43,7 +43,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #include <boost/bind.hpp>
 #include <boost/asio/ip/host_name.hpp>
 #include <boost/asio/ip/multicast.hpp>
-
+#include <utility> 
 #ifdef TORRENT_WINDOWS
 #include <iphlpapi.h> // for if_nametoindex
 #endif
@@ -219,8 +219,8 @@ namespace libtorrent
 	}
 
 	broadcast_socket::broadcast_socket(
-		udp::endpoint const& multicast_endpoint)
-		: m_multicast_endpoint(multicast_endpoint)
+		udp::endpoint  multicast_endpoint)
+		: m_multicast_endpoint(std::move(multicast_endpoint))
 		, m_outstanding_operations(0)
 		, m_abort(false)
 	{
@@ -296,7 +296,7 @@ namespace libtorrent
 		if (ec) return;
 		s->set_option(enable_loopback(loopback), ec);
 		if (ec) return;
-		m_sockets.push_back(socket_entry(s));
+		m_sockets.emplace_back(s);
 		socket_entry& se = m_sockets.back();
 #if defined TORRENT_ASIO_DEBUGGING
 		add_outstanding_async("broadcast_socket::on_receive");
@@ -317,7 +317,7 @@ namespace libtorrent
 		s->bind(udp::endpoint(addr, 0), ec);
 		if (ec) return;
 
-		m_unicast_sockets.push_back(socket_entry(s, mask));
+		m_unicast_sockets.emplace_back(s, mask);
 		socket_entry& se = m_unicast_sockets.back();
 
 		// allow sending broadcast messages

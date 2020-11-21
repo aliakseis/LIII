@@ -52,6 +52,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #include <string>
 #include <algorithm>
 #include <sstream>
+#include <utility>
 
 #ifdef TORRENT_USE_OPENSSL
 #include <boost/asio/ssl/context.hpp>
@@ -63,11 +64,11 @@ namespace libtorrent {
 
 http_connection::http_connection(io_service& ios
 	, resolver_interface& resolver
-	, http_handler const& handler
+	, http_handler  handler
 	, bool bottled
 	, int max_bottled_buffer_size
-	, http_connect_handler const& ch
-	, http_filter_handler const& fh
+	, http_connect_handler  ch
+	, http_filter_handler  fh
 #ifdef TORRENT_USE_OPENSSL
 	, ssl::context* ssl_ctx
 #endif
@@ -82,9 +83,9 @@ http_connection::http_connection(io_service& ios
 	, m_i2p_conn(0)
 #endif
 	, m_resolver(resolver)
-	, m_handler(handler)
-	, m_connect_handler(ch)
-	, m_filter_handler(fh)
+	, m_handler(std::move(handler))
+	, m_connect_handler(std::move(ch))
+	, m_filter_handler(std::move(fh))
 	, m_timer(ios)
 	, m_read_timeout(seconds(5))
 	, m_completion_timeout(seconds(5))
@@ -118,7 +119,7 @@ http_connection::~http_connection()
 
 void http_connection::get(std::string const& url, time_duration timeout, int prio
 	, aux::proxy_settings const* ps, int handle_redirects, std::string const& user_agent
-	, boost::optional<address> bind_addr, int resolve_flags, std::string const& auth_
+	, const boost::optional<address>& bind_addr, int resolve_flags, std::string const& auth_
 #if TORRENT_USE_I2P
 	, i2p_connection* i2p_conn
 #endif
@@ -227,7 +228,7 @@ void http_connection::get(std::string const& url, time_duration timeout, int pri
 void http_connection::start(std::string const& hostname, int port
 	, time_duration timeout, int prio, aux::proxy_settings const* ps, bool ssl
 	, int handle_redirects
-	, boost::optional<address> bind_addr
+	, const boost::optional<address>& bind_addr
 	, int resolve_flags
 #if TORRENT_USE_I2P
 	, i2p_connection* i2p_conn
@@ -397,7 +398,7 @@ void http_connection::start(std::string const& hostname, int port
 		{
 			m_hostname = hostname;
 			m_port = port;
-			m_endpoints.push_back(tcp::endpoint(address(), port));
+			m_endpoints.emplace_back(address(), port);
 			connect();
 		}
 		else
@@ -414,7 +415,7 @@ void http_connection::start(std::string const& hostname, int port
 	}
 }
 
-void http_connection::on_timeout(boost::weak_ptr<http_connection> p
+void http_connection::on_timeout(const boost::weak_ptr<http_connection>& p
 	, error_code const& e)
 {
 #if defined TORRENT_ASIO_DEBUGGING
@@ -531,7 +532,7 @@ void http_connection::on_resolve(error_code const& e
 
 	for (std::vector<address>::const_iterator i = addresses.begin()
 		, end(addresses.end()); i != end; ++i)
-		m_endpoints.push_back(tcp::endpoint(*i, m_port));
+		m_endpoints.emplace_back(*i, m_port);
 
 	if (m_filter_handler) m_filter_handler(*this, m_endpoints);
 	if (m_endpoints.empty())

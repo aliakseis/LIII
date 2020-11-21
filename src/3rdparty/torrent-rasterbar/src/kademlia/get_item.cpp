@@ -37,6 +37,8 @@ POSSIBILITY OF SUCH DAMAGE.
 #include <libtorrent/kademlia/node.hpp>
 #include <libtorrent/kademlia/dht_observer.hpp>
 
+#include <utility>
+
 #if TORRENT_USE_ASSERTS
 #include <libtorrent/bencode.hpp>
 #endif
@@ -104,10 +106,10 @@ void get_item::got_data(bdecode_node const& v,
 get_item::get_item(
 	node& dht_node
 	, node_id target
-	, data_callback const& dcallback
+	, data_callback  dcallback
 	, nodes_callback const& ncallback)
 	: find_data(dht_node, target, ncallback)
-	, m_data_callback(dcallback)
+	, m_data_callback(std::move(dcallback))
 	, m_immutable(true)
 {
 }
@@ -116,12 +118,12 @@ get_item::get_item(
 	node& dht_node
 	, char const* pk
 	, std::string const& salt
-	, data_callback const& dcallback
+	, data_callback  dcallback
 	, nodes_callback const& ncallback)
 	: find_data(dht_node, item_target_id(
 		std::make_pair(salt.c_str(), int(salt.size())), pk)
 		, ncallback)
-	, m_data_callback(dcallback)
+	, m_data_callback(std::move(dcallback))
 	, m_data(pk, salt)
 	, m_immutable(false)
 {

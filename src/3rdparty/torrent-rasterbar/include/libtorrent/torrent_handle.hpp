@@ -262,14 +262,14 @@ namespace libtorrent
 		// constructs a torrent handle that does not refer to a torrent.
 		// i.e. is_valid() will return false.
 		torrent_handle() {}
-
+/* allow move semantics
 		torrent_handle(torrent_handle const& t)
 		{ if (!t.m_torrent.expired()) m_torrent = t.m_torrent; }
 
 #if __cplusplus >= 201103L
 		torrent_handle& operator=(torrent_handle const&) = default;
 #endif
-
+*/
 		// flags for add_piece().
 		enum flags_t { overwrite_existing = 1 };
 
@@ -936,13 +936,13 @@ namespace libtorrent
 
 		// deprecated in 0.16, feature will be removed
 		TORRENT_DEPRECATED
-		int get_peer_upload_limit(tcp::endpoint ip) const;
+		int get_peer_upload_limit(const tcp::endpoint& ip) const;
 		TORRENT_DEPRECATED
-		int get_peer_download_limit(tcp::endpoint ip) const;
+		int get_peer_download_limit(const tcp::endpoint& ip) const;
 		TORRENT_DEPRECATED
-		void set_peer_upload_limit(tcp::endpoint ip, int limit) const;
+		void set_peer_upload_limit(const tcp::endpoint& ip, int limit) const;
 		TORRENT_DEPRECATED
-		void set_peer_download_limit(tcp::endpoint ip, int limit) const;
+		void set_peer_download_limit(const tcp::endpoint& ip, int limit) const;
 
 		// deprecated in 0.16, feature will be removed
 		TORRENT_DEPRECATED
@@ -1097,7 +1097,7 @@ namespace libtorrent
 		// announce will take place until the given time has
 		// timed out.
 		TORRENT_DEPRECATED
-		void force_reannounce(boost::posix_time::time_duration) const;
+		void force_reannounce(const boost::posix_time::time_duration&) const;
 #endif
 
 		// ``scrape_tracker()`` will send a scrape request to a tracker. By
@@ -1315,8 +1315,8 @@ namespace libtorrent
 
 	private:
 
-		torrent_handle(boost::weak_ptr<torrent> const& t)
-		{ if (!t.expired()) m_torrent = t; }
+        torrent_handle(boost::weak_ptr<torrent> t)
+        { m_torrent.swap(t); }
 
 		boost::weak_ptr<torrent> m_torrent;
 

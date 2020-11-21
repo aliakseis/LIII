@@ -151,7 +151,7 @@ namespace libtorrent {
 		int num_queued_resume() const;
 
 #ifndef TORRENT_DISABLE_EXTENSIONS
-		void add_extension(boost::shared_ptr<plugin> ext);
+		void add_extension(const boost::shared_ptr<plugin>& ext);
 #endif
 
 	private:

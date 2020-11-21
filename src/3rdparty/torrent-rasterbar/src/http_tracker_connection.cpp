@@ -36,6 +36,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #include "libtorrent/aux_/disable_warnings_push.hpp"
 
+#include <utility>
 #include <vector>
 #include <list>
 #include <cctype>
@@ -68,7 +69,7 @@ namespace libtorrent
 		, tracker_manager& man
 		, tracker_request const& req
 		, boost::weak_ptr<request_callback> c)
-		: tracker_connection(man, req, ios, c)
+		: tracker_connection(man, req, ios, std::move(c))
 		, m_man(man)
 	{}
 
@@ -175,7 +176,7 @@ namespace libtorrent
 #endif
 			if (!settings.get_bool(settings_pack::anonymous_mode))
 			{
-				std::string announce_ip = settings.get_str(settings_pack::announce_ip);
+				const std::string& announce_ip = settings.get_str(settings_pack::announce_ip);
 				if (!announce_ip.empty())
 				{
 					url += "&ip=" + escape_string(announce_ip.c_str(), announce_ip.size());

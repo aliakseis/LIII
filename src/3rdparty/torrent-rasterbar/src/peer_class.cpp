@@ -90,7 +90,7 @@ namespace libtorrent
 		{
 			TORRENT_ASSERT(m_peer_classes.size() < 0x100000000);
 			ret = m_peer_classes.size();
-			m_peer_classes.push_back(peer_class(label));
+			m_peer_classes.emplace_back(label);
 		}
 
 		return ret;
