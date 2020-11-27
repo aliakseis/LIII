@@ -99,6 +99,7 @@ set(HEADERS_TOMOC_GUI
 	gui/buttonlabel.h
 	gui/add_links.h
 	gui/add_links_widget.h
+	gui/elidedlabel.h
 	gui/LIIIstyle.h
 	gui/lineeditex.h
 	gui/logindialog.h
@@ -112,6 +113,7 @@ set(SOURCES_GUI
 	gui/buttonlabel.cpp
 	gui/add_links.cpp
 	gui/add_links_widget.cpp
+	gui/elidedlabel.cpp
 	gui/LIIIstyle.cpp
 	gui/lineeditex.cpp
 	gui/logindialog.cpp

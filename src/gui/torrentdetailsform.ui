@@ -77,14 +77,14 @@
            </widget>
           </item>
           <item row="0" column="2">
-           <widget class="QLabel" name="lblName">
+           <widget class="ElidedLabel" name="lblName">
             <property name="text">
              <string notr="true">name</string>
             </property>
            </widget>
           </item>
           <item row="2" column="2">
-           <widget class="QLabel" name="lblComment">
+           <widget class="ElidedLabel" name="lblComment">
             <property name="text">
              <string notr="true">comment</string>
             </property>
@@ -304,6 +304,11 @@
    <class>TorrentDetailsContentView</class>
    <extends>QTreeView</extends>
    <header>torrentdetailscontentview.h</header>
+  </customwidget>
+  <customwidget>
+   <class>ElidedLabel</class>
+   <extends>QFrame</extends>
+   <header>elidedlabel.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

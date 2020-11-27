@@ -86,6 +86,10 @@ void AddTorrentForm::initialize()
     ui->lblName->setText(QString::fromStdString(m_torrentInfo->name()));
     QString comment = QString::fromStdString(m_torrentInfo->comment());
     ui->lblComment->setText(comment.replace('\n', ' '));
+    if (auto dt = m_torrentInfo->creation_date())
+    {
+        ui->lblDate->setText(QDateTime::fromTime_t(*dt).toString("dd/MM/yyyy hh:mm"));
+    }
     updateDiskSpaceLabel();
     VERIFY(connect(m_contentModel->model(), SIGNAL(filteredFilesChanged()), SLOT(updateDiskSpaceLabel())));
     VERIFY(connect(m_contentModel->model(), SIGNAL(filteredFilesChanged()), SLOT(checkAcceptAvailable())));
