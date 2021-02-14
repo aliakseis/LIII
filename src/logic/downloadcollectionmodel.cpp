@@ -102,7 +102,7 @@ DownloadCollectionModel::DownloadCollectionModel()
 {
     loadFromFile();
 
-    rootItem->setStatus(ItemDC::eROOTSTATUS);
+    rootItem->setStatus(ItemDC::eUNKNOWN);
 
     VERIFY(qRegisterMetaType<ItemDC>("ItemDC"));
     VERIFY(connect(&TorrentsListener::instance(), SIGNAL(statusChange(ItemDC)), SLOT(on_statusChange(ItemDC))));
@@ -785,7 +785,7 @@ ItemDC::eSTATUSDC DownloadCollectionModel::getItemStatus(const QModelIndex& inde
 {
     if (!index.isValid())
     {
-        return ItemDC::eROOTSTATUS;
+        return ItemDC::eUNKNOWN;
     }
 
     TreeItem* itmSource = getItem(index);

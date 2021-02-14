@@ -52,10 +52,9 @@ public:
         eFINISHED,
         ePAUSED,
         eERROR,
-        eROOTSTATUS,
+        eSTARTING,
         eSEEDING,
         eSTALLED,
-        eSTARTING,
         eUNKNOWN
     };
 
