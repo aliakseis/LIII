@@ -57,11 +57,11 @@ Tr::Translation TORRENT_DETAILS_INFO                 = Tr::translate("MainWindow
 
 Tr::Translation PASTE_LINKS_CTRLV                    = Tr::translate("MainWindow", "Paste links here to start downloading them (Ctrl+V)");
 Tr::Translation TREEVIEW_UNKNOWN_SIZE                = Tr::translate("MainWindow", "Unknown");
+
 Tr::Translation TREEVIEW_DOWNLOADING_STATUS          = Tr::translate("MainWindow", "Downloading");
 Tr::Translation TREEVIEW_CONNECTING_STATUS           = Tr::translate("MainWindow", "Connecting...");
 Tr::Translation TREEVIEW_QUEUED_STATUS               = Tr::translate("MainWindow", "Queued");
 Tr::Translation TREEVIEW_PAUSED_STATUS               = Tr::translate("MainWindow", "Paused");
-Tr::Translation TREEVIEW_STOPPED_STATUS              = Tr::translate("MainWindow", "Stopped");
 Tr::Translation TREEVIEW_FAILED_STATUS               = Tr::translate("MainWindow", "Failed");
 Tr::Translation TREEVIEW_COMPLETE_STATUS             = Tr::translate("MainWindow", "Complete");
 

@@ -516,10 +516,6 @@ void DownloadCollectionModel::on_statusChange(const ItemDC& a_item)
     l_itm.setID(a_item.getID());
     if (DownloadType::isTorrentDownload(item->downloadType()))
     {
-        if (prevStatus == ItemDC::eSTOPPED && a_item.getStatus() != ItemDC::eQUEUED)
-        {
-            return;    // ignore such status change
-        }
         if (prevStatus == ItemDC::eQUEUED
                 && (a_item.getStatus() == ItemDC::ePAUSED 
                     || a_item.getStatus() == ItemDC::eDOWNLOADING || a_item.getStatus() == ItemDC::eSTALLED))
@@ -816,23 +812,6 @@ void DownloadCollectionModel::setPauseDownloadItem(TreeItem* itmSource)
     doSetPauseStopDownloadItem(itmSource, ItemDC::ePAUSED);
 }
 
-void DownloadCollectionModel::setStopDownloadItem(const QModelIndex& a_index)
-{
-    if (!a_index.isValid())
-    {
-        return;
-    }
-
-    if (TreeItem* itmSource = getItem(a_index))
-    {
-        setStopDownloadItem(itmSource);
-    }
-}
-
-void DownloadCollectionModel::setStopDownloadItem(TreeItem* itmSource)
-{
-    doSetPauseStopDownloadItem(itmSource, ItemDC::eSTOPPED);
-}
 
 void DownloadCollectionModel::deactivateDownloadItem(TreeItem* itmSource)
 {

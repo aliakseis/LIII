@@ -91,8 +91,6 @@ public:
     void setPauseDownloadItem(TreeItem* itmSource);
     void setContinueDownloadItem(const QModelIndex& a_index);
     void setContinueDownloadItem(TreeItem* itmSource);
-    void setStopDownloadItem(const QModelIndex& a_index);
-    void setStopDownloadItem(TreeItem* itmSource);
 
     void deactivateDownloadItem(TreeItem* itmSource);
 

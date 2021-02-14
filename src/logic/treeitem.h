@@ -56,7 +56,6 @@ public:
         eSEEDING,
         eSTALLED,
         eSTARTING,
-        eSTOPPED,
         eUNKNOWN
     };
 
@@ -184,13 +183,13 @@ public:
     bool canPause() const
     {
         const ItemDC::eSTATUSDC st(getStatus());
-        return !(st == ItemDC::ePAUSED || st == ItemDC::eSTOPPED || st == ItemDC::eERROR || st == ItemDC::eFINISHED);
+        return !(st == ItemDC::ePAUSED || st == ItemDC::eERROR || st == ItemDC::eFINISHED);
     }
 
     bool canResume() const
     {
         const ItemDC::eSTATUSDC st(getStatus());
-        return st == ItemDC::ePAUSED  || st == ItemDC::eSTOPPED || st == ItemDC::eERROR 
+        return st == ItemDC::ePAUSED  || st == ItemDC::eERROR
             || (st == ItemDC::eFINISHED && DownloadType::isTorrentDownload(downloadType()));
     }
 

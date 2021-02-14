@@ -32,7 +32,6 @@ QString itemDCStatusToString(const ItemDC::eSTATUSDC status)
         { ItemDC::eSEEDING,     TREEVIEW_SEEDING_STATUS },
         { ItemDC::eSTALLED,     TREEVIEW_STALLED_STATUS },
         { ItemDC::eSTARTING,    TREEVIEW_STARTING_STATUS },
-        { ItemDC::eSTOPPED,     TREEVIEW_STOPPED_STATUS },
     };
 
     auto it = statusToTr.find(status);
