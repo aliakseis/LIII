@@ -73,8 +73,8 @@ QModelIndexList moveItems_helper(
     QModelIndexList touchedRows;
     touchedRows.reserve(selectedInds.size() * 2);
     // merge old and new indices and exclude duplicated
-    std::merge(selectedInds.constBegin(), selectedInds.constEnd(), 
-        result.constBegin(), result.constEnd(), 
+    std::merge(selectedInds.constBegin(), selectedInds.constEnd(),
+        result.constBegin(), result.constEnd(),
         std::back_inserter(touchedRows), rowPred<isUp>());
     touchedRows.erase(
         std::unique(touchedRows.begin(), touchedRows.end(), isRowEqual),
@@ -122,9 +122,9 @@ TreeItem* DownloadCollectionModel::getItem(const QModelIndex& index) const
 {
     if (index.isValid())
     {
-        if (auto* item = static_cast<TreeItem*>(index.internalPointer())) 
-        { 
-            return item; 
+        if (auto* item = static_cast<TreeItem*>(index.internalPointer()))
+        {
+            return item;
         }
     }
     return rootItem;
@@ -276,6 +276,19 @@ QVariant DownloadCollectionModel::data(const QModelIndex& index, int role /* = Q
         return {};
     }
 
+    if (role == Qt::ForegroundRole && l_colunm == eDC_Status)
+    {
+        // https://personal.sron.nl/~pault/#sec:qualitative
+        static const QRgb palette[]
+                = { 0x332288, 0x88CCEE, 0x44AA99, 0x117733, 0x999933, 0xDDCC77, 0xCC6677, 0x882255, 0xAA4499 };
+        if (auto* item = static_cast<TreeItem*>(index.internalPointer()))
+        {
+            const int colorIdx = item->getStatus();
+            if (colorIdx >= 0 && colorIdx < sizeof(palette) / sizeof(palette[0]))
+                return QBrush(palette[colorIdx]);
+        }
+    }
+
     if (role != Qt::DisplayRole)
     {
         return {};
@@ -316,7 +329,7 @@ QVariant DownloadCollectionModel::data(const QModelIndex& index, int role /* = Q
                 : QString("%1 KB/s").arg(speed, 0, 'f', 1);
         }
     case eDC_Size:
-        return (item->size() > 0) 
+        return (item->size() > 0)
             ? QString("%1 / %2").arg(utilities::SizeToString(item->sizeCurrDownl()), utilities::SizeToString(item->size()))
             : ::Tr::Tr(TREEVIEW_UNKNOWN_SIZE);
     case eDC_Source:
@@ -392,8 +405,8 @@ void DownloadCollectionModel::addItemsToModel(const QStringList& urls, DownloadT
     for (const QString& l_strUrl : urls)
     {
         libtorrent::torrent_handle handle;
-        
-        DownloadType::Type type 
+
+        DownloadType::Type type
             = (DownloadType::Unknown == a_type)? DownloadType::determineType(l_strUrl) : a_type;
         if (DownloadType::isDirectDownload(type))
         {
@@ -517,7 +530,7 @@ void DownloadCollectionModel::on_statusChange(const ItemDC& a_item)
     if (DownloadType::isTorrentDownload(item->downloadType()))
     {
         if (prevStatus == ItemDC::eQUEUED
-                && (a_item.getStatus() == ItemDC::ePAUSED 
+                && (a_item.getStatus() == ItemDC::ePAUSED
                     || a_item.getStatus() == ItemDC::eDOWNLOADING || a_item.getStatus() == ItemDC::eSTALLED))
         {
             return;    // ignore such status change
@@ -1079,9 +1092,9 @@ void DownloadCollectionModel::init()
                     file_priorities.push_back(p.toInt());
             }
             libtorrent::torrent_handle handle = TorrentManager::Instance()->addTorrent(
-                torrOrMagnet, 
-                ti.getID(), 
-                false/*without choose files dialog*/, 
+                torrOrMagnet,
+                ti.getID(),
+                false/*without choose files dialog*/,
                 ti.torrentSavePath(),
                 file_priorities.empty()? nullptr : &file_priorities);
             if (handle.is_valid())

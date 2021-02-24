@@ -75,11 +75,6 @@ MainWindow QTreeView#listUrls
 	border: 1px solid #CFCFCF;
 }
 
-MainWindow QTreeView#listUrls::item 
-{
-	height: 25px;
-	color: #484848;
-}
 
 TorrentDetailsForm QTreeView#treeTorrentContent::indicator
 {
@@ -88,9 +83,9 @@ TorrentDetailsForm QTreeView#treeTorrentContent::indicator
     height: 0px;
 }
 
-TorrentDetailsForm QTreeView#treeTorrentContent::item
-{
-    border: 0px;
+TorrentDetailsForm QTreeView {
+    color:black;
+    selection-color:black;
 }
 
 
@@ -102,10 +97,6 @@ QTreeView::item {
     height: 25px;
 }
 
-QTreeView::item:selected {
-	background-color: rgb(210,244,255);
-	color:black;
-}
 
 QListWidget::item:selected {
 	background-color: rgb(210,244,255);
