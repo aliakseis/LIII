@@ -1,73 +1,62 @@
 /****************************************************************************
 **
-** Copyright (c) 2009 Nokia Corporation and/or its subsidiary(-ies).
-** All rights reserved.
-** Contact: Nokia Corporation (qt-info@nokia.com)
+** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
+** Contact: http://www.qt-project.org/legal
 **
-** This file is part of a Qt Solutions component.
+** This file is part of the Qt Solutions component.
 **
-** Commercial Usage
-** Licensees holding valid Qt Commercial licenses may use this file in
-** accordance with the Qt Solutions Commercial License Agreement provided
-** with the Software or, alternatively, in accordance with the terms
-** contained in a written agreement between you and Nokia.
+** $QT_BEGIN_LICENSE:BSD$
+** You may use this file under the terms of the BSD license as follows:
 **
-** GNU Lesser General Public License Usage
-** Alternatively, this file may be used under the terms of the GNU Lesser
-** General Public License version 2.1 as published by the Free Software
-** Foundation and appearing in the file LICENSE.LGPL included in the
-** packaging of this file.  Please review the following information to
-** ensure the GNU Lesser General Public License version 2.1 requirements
-** will be met: http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html.
+** "Redistribution and use in source and binary forms, with or without
+** modification, are permitted provided that the following conditions are
+** met:
+**   * Redistributions of source code must retain the above copyright
+**     notice, this list of conditions and the following disclaimer.
+**   * Redistributions in binary form must reproduce the above copyright
+**     notice, this list of conditions and the following disclaimer in
+**     the documentation and/or other materials provided with the
+**     distribution.
+**   * Neither the name of Digia Plc and its Subsidiary(-ies) nor the names
+**     of its contributors may be used to endorse or promote products derived
+**     from this software without specific prior written permission.
 **
-** In addition, as a special exception, Nokia gives you certain
-** additional rights. These rights are described in the Nokia Qt LGPL
-** Exception version 1.1, included in the file LGPL_EXCEPTION.txt in this
-** package.
 **
-** GNU General Public License Usage
-** Alternatively, this file may be used under the terms of the GNU
-** General Public License version 3.0 as published by the Free Software
-** Foundation and appearing in the file LICENSE.GPL included in the
-** packaging of this file.  Please review the following information to
-** ensure the GNU General Public License version 3.0 requirements will be
-** met: http://www.gnu.org/copyleft/gpl.html.
+** THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+** "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+** LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+** A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+** OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+** SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+** LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+** DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+** THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+** (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+** OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE."
 **
-** Please note Third Party Software included with Qt Solutions may impose
-** additional restrictions and it is the user's responsibility to ensure
-** that they have met the licensing requirements of the GPL, LGPL, or Qt
-** Solutions Commercial license and the relevant license of the Third
-** Party Software they are using.
-**
-** If you are unsure which license is appropriate for your use, please
-** contact Nokia at qt-info@nokia.com.
+** $QT_END_LICENSE$
 **
 ****************************************************************************/
 
 
 #include "qtlocalpeer.h"
-#include <QtCore/QCoreApplication>
-#include <QtCore/QTime>
-
+#include <QCoreApplication>
 #include <QDataStream>
-#include <utility>
+#include <QTime>
 
 #if defined(Q_OS_WIN)
-#include <QtCore/QLibrary>
-#include <QtCore/qt_windows.h>
-typedef BOOL(WINAPI* PProcessIdToSessionId)(DWORD, DWORD*);
-static PProcessIdToSessionId pProcessIdToSessionId = nullptr;
+#include <QLibrary>
+#include <qt_windows.h>
+typedef BOOL(WINAPI*PProcessIdToSessionId)(DWORD,DWORD*);
+static PProcessIdToSessionId pProcessIdToSessionId = 0;
 #endif
 #if defined(Q_OS_UNIX)
+#include <sys/types.h>
 #include <time.h>
 #include <unistd.h>
 #endif
-#ifdef Q_OS_DARWIN
-#include "unistd.h"
-#endif
 
-namespace QtLP_Private
-{
+namespace QtLP_Private {
 #include "qtlockedfile.cpp"
 #if defined(Q_OS_WIN)
 #include "qtlockedfile_win.cpp"
@@ -78,12 +67,11 @@ namespace QtLP_Private
 
 const char* QtLocalPeer::ack = "ack";
 
-QtLocalPeer::QtLocalPeer(QObject* parent, QString  appId)
-    : QObject(parent), id(std::move(appId))
+QtLocalPeer::QtLocalPeer(QObject* parent, const QString &appId)
+    : QObject(parent), id(appId)
 {
     QString prefix = id;
-    if (id.isEmpty())
-    {
+    if (id.isEmpty()) {
         id = QCoreApplication::applicationFilePath();
 #if defined(Q_OS_WIN)
         id = id.toLower();
@@ -99,13 +87,11 @@ QtLocalPeer::QtLocalPeer(QObject* parent, QString  appId)
                  + QLatin1Char('-') + QString::number(idNum, 16);
 
 #if defined(Q_OS_WIN)
-    if (!pProcessIdToSessionId)
-    {
+    if (!pProcessIdToSessionId) {
         QLibrary lib("kernel32");
         pProcessIdToSessionId = (PProcessIdToSessionId)lib.resolve("ProcessIdToSessionId");
     }
-    if (pProcessIdToSessionId)
-    {
+    if (pProcessIdToSessionId) {
         DWORD sessionId = 0;
         pProcessIdToSessionId(GetCurrentProcessId(), &sessionId);
         socketName += QLatin1Char('-') + QString::number(sessionId, 16);
@@ -135,9 +121,8 @@ bool QtLocalPeer::isClient()
     bool res = server->listen(socketName);
 #if defined(Q_OS_UNIX) && (QT_VERSION >= QT_VERSION_CHECK(4,5,0))
     // ### Workaround
-    if (!res && server->serverError() == QAbstractSocket::AddressInUseError)
-    {
-        QFile::remove(QDir::cleanPath(QDir::tempPath()) + QLatin1Char('/') + socketName);
+    if (!res && server->serverError() == QAbstractSocket::AddressInUseError) {
+        QFile::remove(QDir::cleanPath(QDir::tempPath())+QLatin1Char('/')+socketName);
         res = server->listen(socketName);
     }
 #endif
@@ -148,18 +133,17 @@ bool QtLocalPeer::isClient()
 }
 
 
-bool QtLocalPeer::sendMessage(const QString& message, int timeout)
+bool QtLocalPeer::sendMessage(const QString &message, int timeout)
 {
     if (!isClient())
         return false;
 
     QLocalSocket socket;
     bool connOk = false;
-    for (int i = 0; i < 2; i++)
-    {
+    for(int i = 0; i < 2; i++) {
         // Try twice, in case the other instance is just starting up
         socket.connectToServer(socketName);
-        connOk = socket.waitForConnected(timeout / 2);
+        connOk = socket.waitForConnected(timeout/2);
         if (connOk || i)
             break;
         int ms = 250;
@@ -177,8 +161,11 @@ bool QtLocalPeer::sendMessage(const QString& message, int timeout)
     QDataStream ds(&socket);
     ds.writeBytes(uMsg.constData(), uMsg.size());
     bool res = socket.waitForBytesWritten(timeout);
-    res &= socket.waitForReadyRead(timeout);   // wait for ack
-    res &= (socket.read(qstrlen(ack)) == ack);
+    if (res) {
+        res &= socket.waitForReadyRead(timeout);   // wait for ack
+        if (res)
+            res &= (socket.read(qstrlen(ack)) == ack);
+    }
     return res;
 }
 
@@ -189,8 +176,17 @@ void QtLocalPeer::receiveConnection()
     if (!socket)
         return;
 
-    while (socket->bytesAvailable() < (int)sizeof(quint32))
+    while (true) {
+        if (socket->state() == QLocalSocket::UnconnectedState) {
+            qWarning("QtLocalPeer: Peer disconnected");
+            delete socket;
+            return;
+        }
+        if (socket->bytesAvailable() >= qint64(sizeof(quint32)))
+            break;
         socket->waitForReadyRead();
+    }
+
     QDataStream ds(socket);
     QByteArray uMsg;
     quint32 remaining;
@@ -198,22 +194,20 @@ void QtLocalPeer::receiveConnection()
     uMsg.resize(remaining);
     int got = 0;
     char* uMsgBuf = uMsg.data();
-    do
-    {
+    do {
         got = ds.readRawData(uMsgBuf, remaining);
         remaining -= got;
         uMsgBuf += got;
-    }
-    while (remaining && got >= 0 && socket->waitForReadyRead(2000));
-    if (got < 0)
-    {
-        qWarning() << "QtLocalPeer: Message reception failed" << socket->errorString();
+    } while (remaining && got >= 0 && socket->waitForReadyRead(2000));
+    if (got < 0) {
+        qWarning("QtLocalPeer: Message reception failed %s", socket->errorString().toLatin1().constData());
         delete socket;
         return;
     }
     QString message(QString::fromUtf8(uMsg));
     socket->write(ack, qstrlen(ack));
     socket->waitForBytesWritten(1000);
+    socket->waitForDisconnected(1000); // make sure client reads ack
     delete socket;
     emit messageReceived(message); //### (might take a long time to return)
 }
