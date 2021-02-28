@@ -271,7 +271,7 @@ TorrentManager::TorrentManager()
 
     // enable dht by default for magnets
 #ifdef QT_DEBUG
-    QThread::yieldCurrentThread(); // try to avoid assert failure
+    QThread::msleep(200); // try to avoid assert failure
 #endif //QT_DEBUG
     Q_ASSERT(m_session->is_dht_running());
 
@@ -289,6 +289,10 @@ TorrentManager::TorrentManager()
     VERIFY(connect(&m_resumeDataTimer, SIGNAL(timeout()), SLOT(cacheResumeTorrentsData())));
     m_resumeDataTimer.setSingleShot(false);
     m_resumeDataTimer.start(200000); // 3.3min
+    connect(&m_statsTimer, &QTimer::timeout,
+            std::bind(&libtorrent::session::post_session_stats, m_session.get()));
+    m_statsTimer.setSingleShot(false);
+    m_statsTimer.start(1000);
 }
 
 TorrentManager::~TorrentManager()
@@ -304,6 +308,8 @@ void TorrentManager::close()
     }
 
     m_closed = true;
+
+    m_statsTimer.stop();
 
     DownloadCollectionModel* dlcModel = &DownloadCollectionModel::instance();
     libtorrent::entry session_state;

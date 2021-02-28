@@ -65,6 +65,7 @@ private:
 
     QMap<int, libtorrent::torrent_handle> m_idToHandle;
     QTimer m_resumeDataTimer;
+    QTimer m_statsTimer;
 
     bool m_closed;
 

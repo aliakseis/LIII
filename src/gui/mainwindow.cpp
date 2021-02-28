@@ -28,6 +28,7 @@
 #include "utilities/filesystem_utils.h"
 
 #include "torrentmanager.h"
+#include "torrentslistener.h"
 
 #include "add_links.h"
 #include "preferences.h"
@@ -38,6 +39,7 @@
 #include "branding.hxx"
 #include "version.hxx"
 
+#include <libtorrent/session_stats.hpp>
 
 #if defined (Q_OS_WIN)
 #include <windows.h>
@@ -159,6 +161,8 @@ MainWindow::MainWindow()
     VERIFY(connect(ui->lblClearText, SIGNAL(clicked()), SLOT(onlblClearTextClicked())));
 
     refreshButtons();
+
+    connect(&TorrentsListener::instance(), &TorrentsListener::sessionStats, this, &MainWindow::onSessionStats);
 }
 
 #if defined(Q_OS_WIN)
@@ -666,6 +670,17 @@ do shell script \\\"echo \\\" & item 1 in brandFiles\" | /usr/bin/osascript"
 void MainWindow::openTorrent(QStringList magnetUrls)
 {
     addLinks(std::move(magnetUrls));
+}
+
+void MainWindow::onSessionStats(const std::vector<boost::uint64_t>& stats)
+{
+    static int const dht_nodes_idx = libtorrent::find_metric_idx("dht.dht_nodes");
+    if (dht_nodes_idx >= 0 && dht_nodes_idx < stats.size())
+    {
+        const auto dht_nodes = stats[dht_nodes_idx];
+        ::Tr::SetTr(this, &QWidget::setWindowTitle, PROJECT_FULLNAME_TRANSLATION,
+                    QStringLiteral(" [DHT: "), dht_nodes, QStringLiteral(" nodes]"));
+    }
 }
 
 void MainWindow::onOverallProgress(int progress)

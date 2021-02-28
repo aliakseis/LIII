@@ -11,6 +11,8 @@
 #include "utilities/singleton.h"
 #include "treeitem.h"
 
+#include <vector>
+
 // status conversion
 inline ItemDC::eSTATUSDC torrentStatus2ItemDCStatus(libtorrent::torrent_status::state_t state)
 {
@@ -42,7 +44,8 @@ inline ItemDC::eSTATUSDC torrentStatus2ItemDCStatus(libtorrent::torrent_status::
     (torrent_resumed_alert)\
     (torrent_removed_alert)\
     (stats_alert)\
-    (state_changed_alert)
+    (state_changed_alert)\
+    (session_stats_alert)
 
 #if 0
 
@@ -108,6 +111,8 @@ signals:
     void torrentMoved(const ItemDC& item);
 
     void signalTryNewtask();
+
+    void sessionStats(const std::vector<boost::uint64_t>& stats);
 
 private:
     TorrentsListener(QObject* parent = 0);

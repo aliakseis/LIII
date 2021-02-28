@@ -255,6 +255,15 @@ QString multiArg(const QString& str, int numArgs, const QString* args)
         ++i;
     }
 
+    // concatenate if no placeholders
+    if (numbersUsed.empty())
+    {
+        result = str;
+        for (int i = 0; i < numArgs; ++i)
+            result += args[i];
+        return result;
+    }
+
     // assign an argument number to each of the %n's
     QMap<int, int>::iterator j = numbersUsed.begin();
     QMap<int, int>::iterator jend = numbersUsed.end();

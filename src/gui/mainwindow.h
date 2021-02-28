@@ -20,6 +20,9 @@
 #include "globals.h"
 #include "ui_utils/taskbar.h"
 
+#include <boost/cstdint.hpp>
+
+#include <vector>
 
 namespace Ui
 {
@@ -90,6 +93,7 @@ private Q_SLOTS:
     void onActiveDownloadsNumberChanged(int number);
     void showTrayNotifDwnldFinish(const QString& str);
     void openTorrent(QStringList magnetUrls);
+    void onSessionStats(const std::vector<boost::uint64_t>& stats);
 #ifdef Q_OS_MAC
     QString findApplicationPath(const QString& appBrand);
 #endif //Q_OS_MAC

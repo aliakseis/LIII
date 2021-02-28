@@ -14,14 +14,12 @@ set(HEADERS_TOMOC_
 )
 
 set(HEADERS_
-	qtlockedfile.h
 	QtLockedFile
 	QtSingleApplication
 )
 
 set(SOURCES_
 	qtlocalpeer.cpp
-	qtlockedfile.cpp
 	qtsingleapplication.cpp
 	qtsinglecoreapplication.cpp
 )

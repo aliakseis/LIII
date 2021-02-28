@@ -88,6 +88,7 @@ TorrentsListener::TorrentsListener(QObject* parent /* = 0 */)
     : QObject(parent)
     , m_askAboutFilesChoose(false)
 {
+    VERIFY(qRegisterMetaType<std::vector<boost::uint64_t>>("std::vector<boost::uint64_t>"));
 }
 
 TorrentsListener::~TorrentsListener()
@@ -314,6 +315,12 @@ void TorrentsListener::handler(libtorrent::state_changed_alert const& a)
     emit signalTryNewtask(); // TODO fine tune
 }
 
+void TorrentsListener::handler(libtorrent::session_stats_alert const& a)
+{
+    TRACE_ALERT
+
+    emit sessionStats({std::begin(a.values), std::end(a.values)});
+}
 
 void TorrentsListener::onTorrentAdded(libtorrent::torrent_handle handle, void* userData)
 {
