@@ -3,16 +3,14 @@
 if(WIN32)
 	if( CMAKE_SIZEOF_VOID_P EQUAL 8 )
 		message( STATUS "Seaching 64bit openssl library" )
-		set(OPENSSL_BINARY_DIR ${CMAKE_SOURCE_DIR}/imports/OpenSSL/x64/bin CACHE PATH "path to openSSL dlls" FORCE)
-		set(OPENSSL_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/imports/OpenSSL/x64/include CACHE PATH "path to openSSL sources" FORCE)
-		set(OPENSSL_LIBRARIES_DIR ${CMAKE_SOURCE_DIR}/imports/OpenSSL/x64/lib CACHE PATH "path to openSSL libraries" FORCE)
+		set(PLATFORM_SUBDIR x64)
 	else( CMAKE_SIZEOF_VOID_P EQUAL 8 )
 		message( STATUS "Seaching 32bit openssl library" )
 		set(PLATFORM_SUBDIR x86)
-		set(OPENSSL_BINARY_DIR ${CMAKE_SOURCE_DIR}/imports/OpenSSL/${PLATFORM_SUBDIR}/bin CACHE PATH "path to openSSL dlls" FORCE)
-		set(OPENSSL_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/imports/OpenSSL/${PLATFORM_SUBDIR}/include CACHE PATH "path to openSSL sources" FORCE)
-		set(OPENSSL_LIBRARIES_DIR ${CMAKE_SOURCE_DIR}/imports/OpenSSL/${PLATFORM_SUBDIR}/lib CACHE PATH "path to openSSL libraries" FORCE)
 	endif( CMAKE_SIZEOF_VOID_P EQUAL 8 )
+	set(OPENSSL_BINARY_DIR ${CMAKE_SOURCE_DIR}/imports/OpenSSL/${PLATFORM_SUBDIR}/bin CACHE PATH "path to openSSL dlls" FORCE)
+	set(OPENSSL_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/imports/OpenSSL/${PLATFORM_SUBDIR}/include CACHE PATH "path to openSSL sources" FORCE)
+	set(OPENSSL_LIBRARIES_DIR ${CMAKE_SOURCE_DIR}/imports/OpenSSL/${PLATFORM_SUBDIR}/lib CACHE PATH "path to openSSL libraries" FORCE)
 elseif(APPLE)
 	set(OPENSSL_BINARY_DIR ${CMAKE_SOURCE_DIR}/imports/OpenSSL-mac/bin CACHE PATH "path to openSSL dlls" FORCE)
 	set(OPENSSL_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/imports/OpenSSL-mac/include CACHE PATH "path to openSSL sources" FORCE)
@@ -21,8 +19,8 @@ endif(WIN32)
 
 if(WIN32)
 	set(OPENSSL_LIBRARIES
-		${OPENSSL_LIBRARIES_DIR}/libeay32.lib
-		${OPENSSL_LIBRARIES_DIR}/ssleay32.lib
+		${OPENSSL_LIBRARIES_DIR}/libcrypto.lib
+		${OPENSSL_LIBRARIES_DIR}/libssl.lib
 	)
 else(WIN32)
 
