@@ -319,7 +319,8 @@ void TorrentsListener::handler(libtorrent::session_stats_alert const& a)
 {
     TRACE_ALERT
 
-    emit sessionStats({std::begin(a.values), std::end(a.values)});
+    const auto unixTime = libtorrent::duration_cast<libtorrent::microseconds>(a.timestamp().time_since_epoch()).count();
+    emit sessionStats(unixTime, {std::begin(a.values), std::end(a.values)});
 }
 
 void TorrentsListener::onTorrentAdded(libtorrent::torrent_handle handle, void* userData)

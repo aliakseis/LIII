@@ -292,7 +292,7 @@ TorrentManager::TorrentManager()
     connect(&m_statsTimer, &QTimer::timeout,
             std::bind(&libtorrent::session::post_session_stats, m_session.get()));
     m_statsTimer.setSingleShot(false);
-    m_statsTimer.start(1000);
+    m_statsTimer.start(2000);
 }
 
 TorrentManager::~TorrentManager()

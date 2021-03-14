@@ -57,6 +57,14 @@ private:
     DownloadManager* m_dlManager;
     bool isAutorun;
 
+    long long m_prevSessionStatsUnixTime {};
+
+    unsigned long long m_prevSentPayloadBytes {};
+    unsigned long long m_prevRecvPayloadBytes {};
+
+    QLabel* m_statusDhtNodes;
+    QLabel* m_statusTotalSpeed;
+
 #ifdef Q_OS_WIN
     ui_utils::TaskBar m_taskBar;
     bool nativeEvent(const QByteArray& eventType, void* message, long* result) override;
@@ -93,7 +101,7 @@ private Q_SLOTS:
     void onActiveDownloadsNumberChanged(int number);
     void showTrayNotifDwnldFinish(const QString& str);
     void openTorrent(QStringList magnetUrls);
-    void onSessionStats(const std::vector<boost::uint64_t>& stats);
+    void onSessionStats(long long unixTime, const std::vector<boost::uint64_t>& stats);
 #ifdef Q_OS_MAC
     QString findApplicationPath(const QString& appBrand);
 #endif //Q_OS_MAC

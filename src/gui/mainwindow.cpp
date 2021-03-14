@@ -20,6 +20,7 @@
 #include <QDesktopWidget>
 #include <QCheckBox>
 #include <QScrollBar>
+#include <QStatusBar>
 
 #include "utilities/credential.h"
 #include "utilities/utils.h"
@@ -67,6 +68,13 @@ QString extractLinkFromFile(const QString& fn)
     return link;
 }
 
+void ensureNoShrink(QWidget* w)
+{
+    const auto width = w->width();
+    if (width > w->minimumWidth())
+        w->setMinimumWidth(width);
+}
+
 }
 
 MainWindow::MainWindow()
@@ -78,6 +86,15 @@ MainWindow::MainWindow()
     QApplication::setWindowIcon(QIcon(PROJECT_ICON));
 
     ui->setupUi(this);
+
+    auto makeStatusLabel = [this] {
+        auto label = new QLabel(this);
+        label->setFrameStyle(QFrame::Panel | QFrame::Sunken);
+        statusBar()->addPermanentWidget(label);
+        return label;
+    };
+    m_statusDhtNodes = makeStatusLabel();
+    m_statusTotalSpeed = makeStatusLabel();
 
     // remove "Stop" action temporary
     ui->stopButton->hide();
@@ -672,15 +689,37 @@ void MainWindow::openTorrent(QStringList magnetUrls)
     addLinks(std::move(magnetUrls));
 }
 
-void MainWindow::onSessionStats(const std::vector<boost::uint64_t>& stats)
+void MainWindow::onSessionStats(long long unixTime, const std::vector<boost::uint64_t>& stats)
 {
     static int const dht_nodes_idx = libtorrent::find_metric_idx("dht.dht_nodes");
+    static int const sent_payload_bytes_idx = libtorrent::find_metric_idx("net.sent_payload_bytes");
+    static int const recv_payload_bytes_idx = libtorrent::find_metric_idx("net.recv_payload_bytes");
+
     if (dht_nodes_idx >= 0 && dht_nodes_idx < stats.size())
     {
         const auto dht_nodes = stats[dht_nodes_idx];
-        ::Tr::SetTr(this, &QWidget::setWindowTitle, PROJECT_FULLNAME_TRANSLATION,
-                    QStringLiteral(" [DHT: "), dht_nodes, QStringLiteral(" nodes]"));
+        m_statusDhtNodes->setText(tr("DHT: %1 nodes").arg(dht_nodes));
+        ensureNoShrink(m_statusDhtNodes);
     }
+    if (sent_payload_bytes_idx >= 0 && sent_payload_bytes_idx < stats.size()
+            && recv_payload_bytes_idx >= 0 && recv_payload_bytes_idx < stats.size()
+            && m_prevSessionStatsUnixTime != unixTime)
+    {
+        const auto sent_payload_bytes = stats[sent_payload_bytes_idx];
+        const auto recv_payload_bytes = stats[recv_payload_bytes_idx];
+        const auto spanCoeff = 1000000. / 1024 / (unixTime - m_prevSessionStatsUnixTime);
+        auto speedFormatter = [](auto speed) { return QString("%1 KB/s").arg(speed, 0, 'f', 1); };
+
+        m_statusTotalSpeed->setText(tr("Total DL|UL: %1 | %2").arg(
+            speedFormatter((recv_payload_bytes - m_prevRecvPayloadBytes) * spanCoeff),
+            speedFormatter((sent_payload_bytes - m_prevSentPayloadBytes) * spanCoeff)));
+        ensureNoShrink(m_statusTotalSpeed);
+
+        m_prevSentPayloadBytes = sent_payload_bytes;
+        m_prevRecvPayloadBytes = recv_payload_bytes;
+    }
+
+    m_prevSessionStatsUnixTime = unixTime;
 }
 
 void MainWindow::onOverallProgress(int progress)

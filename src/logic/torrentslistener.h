@@ -112,7 +112,7 @@ signals:
 
     void signalTryNewtask();
 
-    void sessionStats(const std::vector<boost::uint64_t>& stats);
+    void sessionStats(long long unixTime, const std::vector<boost::uint64_t>& stats);
 
 private:
     TorrentsListener(QObject* parent = 0);

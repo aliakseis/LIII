@@ -115,7 +115,7 @@
      <number>0</number>
     </property>
     <property name="bottomMargin">
-     <number>7</number>
+     <number>0</number>
     </property>
     <item>
      <widget class="QWidget" name="wTop" native="true">
@@ -158,9 +158,6 @@
        </property>
        <item>
         <widget class="QToolButton" name="startButton">
-         <property name="cursor">
-          <cursorShape>ArrowCursor</cursorShape>
-         </property>
          <property name="minimumSize">
           <size>
            <width>28</width>
@@ -172,6 +169,9 @@
            <width>28</width>
            <height>28</height>
           </size>
+         </property>
+         <property name="cursor">
+          <cursorShape>ArrowCursor</cursorShape>
          </property>
          <property name="toolTip">
           <string>Start</string>
@@ -197,9 +197,6 @@
        </item>
        <item>
         <widget class="QToolButton" name="pauseButton">
-         <property name="cursor">
-          <cursorShape>ArrowCursor</cursorShape>
-         </property>
          <property name="enabled">
           <bool>true</bool>
          </property>
@@ -232,6 +229,9 @@
            <family>Segoe UI</family>
           </font>
          </property>
+         <property name="cursor">
+          <cursorShape>ArrowCursor</cursorShape>
+         </property>
          <property name="toolTip">
           <string>Pause</string>
          </property>
@@ -260,9 +260,6 @@
        </item>
        <item>
         <widget class="QToolButton" name="stopButton">
-         <property name="cursor">
-          <cursorShape>ArrowCursor</cursorShape>
-         </property>
          <property name="minimumSize">
           <size>
            <width>28</width>
@@ -274,6 +271,9 @@
            <width>28</width>
            <height>28</height>
           </size>
+         </property>
+         <property name="cursor">
+          <cursorShape>ArrowCursor</cursorShape>
          </property>
          <property name="toolTip">
           <string>Stop</string>
@@ -299,9 +299,6 @@
        </item>
        <item>
         <widget class="QToolButton" name="cancelButton">
-         <property name="cursor">
-          <cursorShape>ArrowCursor</cursorShape>
-         </property>
          <property name="sizePolicy">
           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -324,6 +321,9 @@
           <font>
            <family>Segoe UI</family>
           </font>
+         </property>
+         <property name="cursor">
+          <cursorShape>ArrowCursor</cursorShape>
          </property>
          <property name="toolTip">
           <string>Cancel</string>
@@ -781,7 +781,7 @@
                <number>0</number>
               </property>
               <property name="bottomMargin">
-               <number>8</number>
+               <number>0</number>
               </property>
               <item>
                <widget class="DownloadCollectionTreeView" name="listUrls">
