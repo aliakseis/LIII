@@ -64,6 +64,7 @@ private:
 
     QLabel* m_statusDhtNodes;
     QLabel* m_statusTotalSpeed;
+    QLabel* m_statusDiskFreeSpace;
 
 #ifdef Q_OS_WIN
     ui_utils::TaskBar m_taskBar;

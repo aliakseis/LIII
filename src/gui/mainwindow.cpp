@@ -21,6 +21,7 @@
 #include <QCheckBox>
 #include <QScrollBar>
 #include <QStatusBar>
+#include <QStorageInfo>
 
 #include "utilities/credential.h"
 #include "utilities/utils.h"
@@ -95,6 +96,7 @@ MainWindow::MainWindow()
     };
     m_statusDhtNodes = makeStatusLabel();
     m_statusTotalSpeed = makeStatusLabel();
+    m_statusDiskFreeSpace = makeStatusLabel();
 
     // remove "Stop" action temporary
     ui->stopButton->hide();
@@ -717,6 +719,13 @@ void MainWindow::onSessionStats(long long unixTime, const std::vector<boost::uin
 
         m_prevSentPayloadBytes = sent_payload_bytes;
         m_prevRecvPayloadBytes = recv_payload_bytes;
+    }
+
+    {
+        QStorageInfo storageInfo(global_functions::GetVideoFolder());
+        const auto gigsAvailable = storageInfo.bytesAvailable() / static_cast<double>(1 << 30);
+        m_statusDiskFreeSpace->setText(tr("Disk free space: %1 GB").arg(gigsAvailable, 0, 'f', 1));
+        ensureNoShrink(m_statusDiskFreeSpace);
     }
 
     m_prevSessionStatsUnixTime = unixTime;
