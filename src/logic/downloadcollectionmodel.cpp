@@ -7,6 +7,7 @@
 #include <QMimeData>
 #include <QMessageBox>
 #include <QDebug>
+#include <QStorageInfo>
 
 #include "utilities/utils.h"
 #include "utilities/translation.h"
@@ -939,21 +940,19 @@ bool DownloadCollectionModel::loadFromFile()
 void DownloadCollectionModel::saveToFile()
 {
     qDebug() << __FUNCTION__;
-    const QString filePath = utilities::PrepareCacheFolder() + MODEL_STATE_FILE_NAME;
 
-#ifdef Q_OS_WIN
-    QString folder = utilities::PrepareCacheFolder();
-    const wchar_t* ch = qUtf16Printable(folder);
-    ULARGE_INTEGER freeBytesAvailable;
-    BOOL b = GetDiskFreeSpaceExW(ch, &freeBytesAvailable, 0, 0);
-    if (b && freeBytesAvailable.QuadPart < 1024 * 1024 * 5)
     {
-        QMessageBox::critical(0, tr("Error"), tr("Not enough space on disk '%1:'\nCannot save data!").arg(folder.at(0)));
-        qWarning() << "Not enough space on system disk!";
-        return;
+        QStorageInfo storageInfo(utilities::PrepareCacheFolder());
+        if (storageInfo.isValid()
+                && (storageInfo.isReadOnly() || storageInfo.bytesAvailable() < 1024 * 1024 * 5))
+        {
+            QMessageBox::critical(0, tr("Error"), tr("Not enough space on disk '%1:'\nCannot save data!").arg(storageInfo.rootPath()));
+            qWarning() << "Not enough space on system disk!";
+            return;
+        }
     }
-#endif
 
+    const QString filePath = utilities::PrepareCacheFolder() + MODEL_STATE_FILE_NAME;
     utilities::FileSaveGuard fileSafer(filePath);
 
     QFile output(filePath);
