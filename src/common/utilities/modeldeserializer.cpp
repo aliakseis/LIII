@@ -228,7 +228,7 @@ bool ModelDeserializer::deserializeObjectInternal(QObject* object)
         if (className.isEmpty() && strObjectId.isEmpty())
         {
             QString text = m_stream.readElementText();
-            object->setProperty(name.toLatin1().data(), text);
+            object->setProperty(name.toLatin1().constData(), text);
             continue;
         }
         QString keyValue = m_stream.attributes().value(keyValueAttribute).toString();

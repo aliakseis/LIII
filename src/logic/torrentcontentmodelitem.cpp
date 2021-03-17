@@ -173,7 +173,7 @@ void TorrentContentModelItem::updateStatus()
     {
         status = ItemDC::ePAUSED;
     }
-    else
+    else if (m_parentItem != nullptr)
     {
         status = m_parentItem->getStatus();
     }
