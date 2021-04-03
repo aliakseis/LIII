@@ -166,7 +166,7 @@
         <location filename="../src/logic/downloadcollectionmodel.cpp" line="959"/>
         <source>Not enough space on disk &apos;%1:&apos;
 Cannot save data!</source>
-        <translation type="unfinished">>磁盘空间不足&apos；%1:&apos；
+        <translation type="unfinished">>磁盘空间不足&apos;%1:&apos;
 无法保存数据！</translation>
     </message>
 </context>
@@ -424,12 +424,12 @@ Please, enter login and password.</source>
     <message>
         <location filename="../src/main/globals.h" line="35"/>
         <source>Are you sure you wish to delete this download?&lt;br/&gt;Deleting will stop the download and remove the&lt;br style=&quot;font-size:20px&quot;/&gt;item from the disk.</source>
-        <translation type="unfinished">确实要删除此下载吗？&lt；br/&gt；删除将停止下载并删除&lt；br style=&quot；字体-尺寸：20px&quot/&gt；磁盘中的项目。</translation>
+        <translation type="unfinished">确实要删除此下载吗？&lt;br/&gt;删除将停止下载并删除&lt;br style=&quot;字体-尺寸：20px&quot;/&gt;磁盘中的项目。</translation>
     </message>
     <message>
         <location filename="../src/main/globals.h" line="36"/>
         <source>Are you sure you wish to cancel this download?&lt;br/&gt;Canceling will stop the download and remove the&lt;br style=&quot;font-size:20px&quot;/&gt;item from the list.</source>
-        <translation type="unfinished">确定要取消此下载吗？&lt；br/&gt；取消将停止下载并删除&lt；br style=&quot；字体-尺寸：20px&quot/&gt；列表中的项目。</translation>
+        <translation type="unfinished">确定要取消此下载吗？&lt;br/&gt;取消将停止下载并删除&lt;br style=&quot;字体-尺寸：20px&quot;/&gt;列表中的项目。</translation>
     </message>
     <message>
         <location filename="../src/main/globals.h" line="41"/>
@@ -643,7 +643,7 @@ To completely exit %1, righ-click the tray icon then click Exit.</source>
     <message>
         <location filename="../src/logic/peersinfomodel.cpp" line="83"/>
         <source>Speed up</source>
-        <translation type="unfinished"上传速度</translation>
+      <translation type="unfinished">上传速度</translation>
     </message>
     <message>
         <location filename="../src/logic/peersinfomodel.cpp" line="85"/>
@@ -843,7 +843,7 @@ Are you sure you wish to continue?</source>
     <message>
         <location filename="../src/gui/preferences.cpp" line="240"/>
         <source>The folder &quot;%1&quot; cannot be created. Please change.</source>
-        <translation type="unfinished">无法创建文件夹&quot;%1&quot。请修改</translation>
+        <translation type="unfinished">无法创建文件夹&quot;%1&quot;。请修改</translation>
     </message>
     <message>
         <location filename="../src/gui/preferences.cpp" line="252"/>
