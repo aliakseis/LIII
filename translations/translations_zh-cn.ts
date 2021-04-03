@@ -584,7 +584,7 @@ To completely exit %1, righ-click the tray icon then click Exit.</source>
     <message>
         <location filename="../src/main/globals.h" line="87"/>
         <source>About %1</source>
-        <translation type="unfinished">关于 1%</translation>
+        <translation type="unfinished">关于 %1</translation>
     </message>
     <message>
         <location filename="../src/main/globals.h" line="85"/>
@@ -610,7 +610,7 @@ To completely exit %1, righ-click the tray icon then click Exit.</source>
     <message>
         <location filename="../src/common/ui_utils/mainwindowwithtray.cpp" line="18"/>
         <source>Show %1</source>
-        <translation type="unfinished">显示 1%</translation>
+        <translation type="unfinished">显示 %1</translation>
     </message>
 </context>
 <context>
