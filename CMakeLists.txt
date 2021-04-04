@@ -21,11 +21,11 @@ set(PROJECT_FULLNAME
 )
 
 set(PROJECT_DOMAIN
-	"${PROJECT_NAME}.com" CACHE STRING "Internet domain name for ${PROJECT_NAME}"
+	"github.com" CACHE STRING "Internet domain name for ${PROJECT_NAME}"
 )
 
 set(PROJECT_COMPANYNAME
-	"Company name" CACHE STRING "Company name"
+	"aliakseis" CACHE STRING "Company name"
 )
 
 set(CMAKE_MODULE_PATH 
@@ -33,7 +33,7 @@ set(CMAKE_MODULE_PATH
 	"${CMAKE_CURRENT_SOURCE_DIR}/cmake"
 )
 
-project(${PROJECT_NAME} VERSION 0.1.1.5)
+project(${PROJECT_NAME} VERSION 0.1.1.6)
 message("Building ${PROJECT_NAME} version ${PROJECT_VERSION}")
 
 ###################################################

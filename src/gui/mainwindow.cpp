@@ -294,7 +294,8 @@ void MainWindow::onAboutClicked()
     QMessageBox::about(
         this,
         QString(::Tr::Tr(ABOUT_TITLE)).arg(PROJECT_NAME),
-        '\n' + ::Tr::Tr(PROJECT_FULLNAME_TRANSLATION) + " " PROJECT_VERSION + '\n');
+        '\n' + ::Tr::Tr(PROJECT_FULLNAME_TRANSLATION) + " " PROJECT_VERSION
+        "\n" PROJECT_DOMAIN "/" PROJECT_COMPANYNAME "/" PROJECT_NAME);
 }
 
 void MainWindow::onActionCloseLinkClicked()
