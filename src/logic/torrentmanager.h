@@ -39,7 +39,8 @@ public:
         int id, 
         bool interactive = false, 
         const QString& savePath = "",
-        const std::vector<boost::uint8_t>* file_priorities = nullptr);
+        const std::vector<boost::uint8_t>* file_priorities = nullptr,
+        bool initialLoad = false);
     bool resumeTorrent(int id);
     bool restartTorrent(int id);
 

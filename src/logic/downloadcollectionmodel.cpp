@@ -1095,7 +1095,8 @@ void DownloadCollectionModel::init()
                 ti.getID(),
                 false/*without choose files dialog*/,
                 ti.torrentSavePath(),
-                file_priorities.empty()? nullptr : &file_priorities);
+                file_priorities.empty()? nullptr : &file_priorities,
+                true);
             if (handle.is_valid())
             {
                 if (ItemDC::eSEEDING == ti.getStatus())

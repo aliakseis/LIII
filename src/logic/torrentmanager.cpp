@@ -407,7 +407,8 @@ libtorrent::torrent_handle TorrentManager::addTorrent(
     int id, 
     bool interactive /*= false*/, 
     const QString& savePath,
-    const std::vector<boost::uint8_t>* file_priorities)
+    const std::vector<boost::uint8_t>* file_priorities,
+    bool initialLoad /*= false*/)
 {
     qDebug() << __FUNCTION__ << " adding file: " << torrOrMagnet;
 
@@ -465,24 +466,27 @@ libtorrent::torrent_handle TorrentManager::addTorrent(
         }
     }
 
-    libtorrent::torrent_handle duplicate_tor = m_session->find_torrent(hashFromQString(targetInfoHash));
-    if (duplicate_tor.is_valid()) // errors::duplicate_torrent?
+    if (!initialLoad)
     {
-        // Merge trackers list
-        if (interactive && mergeTrackers())
+        libtorrent::torrent_handle duplicate_tor = m_session->find_torrent(hashFromQString(targetInfoHash));
+        if (duplicate_tor.is_valid()) // errors::duplicate_torrent?
         {
-            std::vector<libtorrent::announce_entry> trackers_new
-                = is_adding_from_file? torrentParams.ti->trackers() : parseTrackersList(torrOrMagnet);
-            std::vector<libtorrent::announce_entry> trackers_current = duplicate_tor.trackers();
+            // Merge trackers list
+            if (interactive && mergeTrackers())
+            {
+                std::vector<libtorrent::announce_entry> trackers_new
+                    = is_adding_from_file? torrentParams.ti->trackers() : parseTrackersList(torrOrMagnet);
+                std::vector<libtorrent::announce_entry> trackers_current = duplicate_tor.trackers();
 
-            auto trackerPr = [](libtorrent::announce_entry const & l, libtorrent::announce_entry const & r) {return l.url < r.url;};
-            std::sort(trackers_current.begin(), trackers_current.end(), trackerPr);
-            std::sort(trackers_new.begin(), trackers_new.end(), trackerPr);
-            std::set_difference(trackers_new.begin(), trackers_new.end(), 
-                trackers_current.begin(), trackers_current.end(),
-                makeAddTrackerIterator(duplicate_tor), trackerPr);
+                auto trackerPr = [](libtorrent::announce_entry const & l, libtorrent::announce_entry const & r) {return l.url < r.url;};
+                std::sort(trackers_current.begin(), trackers_current.end(), trackerPr);
+                std::sort(trackers_new.begin(), trackers_new.end(), trackerPr);
+                std::set_difference(trackers_new.begin(), trackers_new.end(),
+                    trackers_current.begin(), trackers_current.end(),
+                    makeAddTrackerIterator(duplicate_tor), trackerPr);
+            }
+            return {};
         }
-        return {};
     }
 
     // Add torrent dialog
