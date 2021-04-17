@@ -70,12 +70,10 @@ bool loadFastResumeData(const QString& hash, std::vector<char>& buf)
 {
     const QString fastresume_path = utilities::PrepareCacheFolder(TORRENTS_SUB_FOLDER) + hash + ".fastresume";
 
-    qDebug() << "Trying to load fastresume data: " << fastresume_path;
-
     QFile fastresume_file(fastresume_path);
     if (fastresume_file.size() <= 0 || !fastresume_file.open(QIODevice::ReadOnly))
     {
-        qDebug() << "Cannot open a file " << fastresume_path;
+        qDebug() << "Cannot open a fastresume data file " << fastresume_path;
         return false;
     }
 
@@ -454,7 +452,7 @@ libtorrent::torrent_handle TorrentManager::addTorrent(
     QString targetInfoHash = is_adding_from_file ? toQString(torrentParams.ti->info_hash()) : btihFromMaget(torrOrMagnet);
     if (loadFastResumeData(targetInfoHash, torrentParams.resume_data))
     {
-        qDebug("Successfully loaded fast resume data");
+        qDebug() << "Successfully loaded fast resume data for " << targetInfoHash;
     }
 
     // Check firewall state
