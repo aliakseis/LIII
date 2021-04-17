@@ -14,8 +14,100 @@
 #include "utilities/translation.h"
 #include "globals.h"
 
+
+#include <type_traits>
 #include <unordered_map>
 #include <utility>
+
+
+namespace {
+
+template <int radix, typename T>
+inline void append(QString& s, T value)
+{
+    QChar buf[24];
+
+    QChar* const end = std::end(buf);
+    QChar* cur = end;
+
+    const bool minus = radix == 10 && std::is_signed<T>::value && value < 0;
+    if (minus)
+    {
+        value = T(-(typename std::make_signed<T>::type)value);
+    }
+
+    do
+    {
+        const auto digval = unsigned(value % radix);
+        *(--cur) = (radix <= 10 || digval < 10) ? digval + '0' : (digval - 10 + 'a');
+        value /= radix;
+    }
+    while (value > 0);
+
+    if (minus)
+    {
+        *(--cur) = '-';
+    }
+
+    const int len = end - cur;
+
+    s.append(cur, len);
+}
+
+
+template<typename T>
+inline bool atot(T& result, const QChar*& begin, const QChar* end)
+{
+    bool ok = false;
+    result = 0;
+    const bool isNegative(std::is_signed<T>::value && begin != end && '-' == *begin);
+    if (isNegative)
+    {
+        ++begin;
+    }
+    for (; begin != end; ++begin)
+    {
+        enum { radix = 10 };
+        const auto ch = *begin;
+        const int elem = ch.unicode() - '0';
+        if (elem < 0 || elem >= radix)
+        {
+            break;
+        }
+        result = result * radix + elem;
+        ok = true;
+    }
+    if (isNegative)
+    {
+        result = T(-(typename std::make_signed<T>::type)result);
+    }
+
+    return ok;
+}
+
+std::vector<int> splitInts(const QString& s)
+{
+    auto cur = s.constData();
+    const auto end = cur + s.length();
+    std::vector<int> result;
+    bool start = true;
+    while (cur != end)
+    {
+        if (!start)
+        {
+            if ('|' != *cur++)
+                return {};
+        }
+        start = false;
+        int v = 0;
+        if (!atot(v, cur, end))
+            return {};
+        result.push_back(v);
+    }
+    return result;
+}
+
+} // namespace
 
 REGISTER_QOBJECT_METATYPE(TreeItem)
 
@@ -195,4 +287,23 @@ void TreeItem::setChildItems(const QObjectList& items)
         treeItem->parentItem = this;
         childItems.push_back(treeItem);
     }
+}
+
+QString TreeItem::torrentFilesPrioritiesAsString() const
+{
+    QString result;
+    bool start = true;
+    for (auto v : m_torrentFilesPriorities)
+    {
+        if (!start)
+            result.append(QChar('|'));
+        start = false;
+        append<10>(result, v);
+    }
+    return result;
+}
+
+void TreeItem::setTorrentFilesPrioritiesAsString(const QString& priorities)
+{
+    m_torrentFilesPriorities = splitInts(priorities);
 }

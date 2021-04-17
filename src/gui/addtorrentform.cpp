@@ -144,14 +144,11 @@ void AddTorrentForm::updateDiskSpaceLabel()
     ui->lblSize->setText(size_string);
 }
 
-QStringList AddTorrentForm::filesPriorities() const
+std::vector<int> AddTorrentForm::filesPriorities() const
 {
     std::vector<int> priorities;
     m_contentModel->model()->getFilesPriorities(priorities);
-    QStringList res;
-    for (int p : priorities)
-        res << QString::number(p);
-    return res;
+    return priorities;
 }
 
 void AddTorrentForm::accept()

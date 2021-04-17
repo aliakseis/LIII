@@ -5,6 +5,8 @@
 #include <QUrl>
 #include <QByteArray>
 
+#include <vector>
+
 #include "treeitem.h"
 #include "downloadtype.h"
 
@@ -105,7 +107,7 @@ public:
 
     void queueSaveToFile();
 
-    void setTorrentFilesPriorities(ItemID a_ID, QStringList priorities);
+    void setTorrentFilesPriorities(ItemID a_ID, std::vector<int> priorities);
 
 public slots:
     void saveToFile();

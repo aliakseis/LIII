@@ -9,6 +9,7 @@
 #include <QDateTime>
 
 #include <utility>
+#include <vector>
 
 typedef int ItemID;
 const ItemID nullItemID = -1;
@@ -158,7 +159,6 @@ public:
     TreeItem* findItemByID(ItemID);
     TreeItem* findItemByURL(const QString&);
 
-    Q_PROPERTY(QStringList torrentFilesPriorities READ torrentFilesPriorities WRITE setTorrentFilesPriorities)
     Q_PROPERTY(QString hash READ hash WRITE setHash)
 
 #undef Q_PROPERTY
@@ -167,6 +167,12 @@ public:
 #undef WRITE
 
 public:
+    Q_PROPERTY(QString torrentFilesPriorities READ torrentFilesPrioritiesAsString WRITE setTorrentFilesPrioritiesAsString)
+    QString torrentFilesPrioritiesAsString() const;
+    void setTorrentFilesPrioritiesAsString(const QString& priorities);
+    std::vector<int> torrentFilesPriorities() const { return m_torrentFilesPriorities; }
+    void setTorrentFilesPriorities(std::vector<int> priorities) { m_torrentFilesPriorities = std::move(priorities); }
+
     Q_PROPERTY(QObjectList childItems READ getChildItems WRITE setChildItems)
     QObjectList getChildItems() const;
     void setChildItems(const QObjectList& items);
@@ -205,6 +211,8 @@ private:
 
     QList<TreeItem*> childItems;
     TreeItem* parentItem;
+
+    std::vector<int> m_torrentFilesPriorities;
 }; // class TreeItem
 
 

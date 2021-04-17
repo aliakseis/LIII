@@ -986,7 +986,7 @@ void DownloadCollectionModel::queueSaveToFile()
     VERIFY(QMetaObject::invokeMethod(this, "saveToFile", Qt::QueuedConnection));
 }
 
-void DownloadCollectionModel::setTorrentFilesPriorities(ItemID a_ID, QStringList priorities)
+void DownloadCollectionModel::setTorrentFilesPriorities(ItemID a_ID, std::vector<int> priorities)
 {
     if (TreeItem* item = getRootItem()->findItemByID(a_ID))
     {
@@ -1083,13 +1083,8 @@ void DownloadCollectionModel::init()
                 torrOrMagnet = ti.initialURL();
             }
 
-            std::vector<boost::uint8_t> file_priorities;
             const auto list = ti.torrentFilesPriorities();
-            if (!list.isEmpty() && !(list.size() == 1 && list.at(0).isEmpty()))
-            {
-                for (const auto& p : list)
-                    file_priorities.push_back(p.toInt());
-            }
+            std::vector<boost::uint8_t> file_priorities(list.begin(), list.end());
             libtorrent::torrent_handle handle = TorrentManager::Instance()->addTorrent(
                 torrOrMagnet,
                 ti.getID(),

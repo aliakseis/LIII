@@ -6,6 +6,8 @@
 #include <libtorrent/add_torrent_params.hpp>
 #include <libtorrent/torrent_handle.hpp>
 
+#include <vector>
+
 class TorrentContentFilterModel;
 
 namespace Ui
@@ -22,7 +24,7 @@ public:
     AddTorrentForm(libtorrent::add_torrent_params* params, QWidget* parent = 0);
     ~AddTorrentForm();
 
-    QStringList filesPriorities() const;
+    std::vector<int> filesPriorities() const;
 
     void accept() override;
 

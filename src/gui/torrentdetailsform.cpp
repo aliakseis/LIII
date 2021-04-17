@@ -210,15 +210,11 @@ void TorrentDetailsForm::updateDiskSpaceLabel()
     ui->lblSize->setText(size_string);
 }
 
-QStringList TorrentDetailsForm::filesPriorities() const
+std::vector<int> TorrentDetailsForm::filesPriorities() const
 {
     std::vector<int> priorities;
     m_contentModel->model()->getFilesPriorities(priorities);
-    QStringList res;
-    res.reserve(priorities.size());
-    for (int p : priorities)
-        res << QString::number(p);
-    return res;
+    return priorities;
 }
 
 template<class Val_t> bool isNotAllSkipped(std::vector<Val_t> const& priorities)
