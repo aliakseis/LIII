@@ -292,6 +292,7 @@ set(TS_FILES
 	${CMAKE_SOURCE_DIR}/translations/translations_pt-br.ts
 	${CMAKE_SOURCE_DIR}/translations/translations_zh-cn.ts
 	${CMAKE_SOURCE_DIR}/translations/translations_ko-kr.ts
+	${CMAKE_SOURCE_DIR}/translations/translations_zh-tw.ts
 )
 
 set(FILES_TO_TRANSLATE
