@@ -166,7 +166,7 @@
         <location filename="../src/logic/downloadcollectionmodel.cpp" line="959"/>
         <source>Not enough space on disk &apos;%1:&apos;
 Cannot save data!</source>
-        <translation type="unfinished">> 磁碟空間不足 & apos;%1:&apos; 無法儲存資料！</translation>
+        <translation type="unfinished">> 磁碟空間不足 &apos;%1:&apos; 無法儲存資料！</translation>
     </message>
 </context>
 <context>
@@ -422,12 +422,12 @@ Please, enter login and password.</source>
     <message>
         <location filename="../src/main/globals.h" line="35"/>
         <source>Are you sure you wish to delete this download?&lt;br/&gt;Deleting will stop the download and remove the&lt;br style=&quot;font-size:20px&quot;/&gt;item from the disk.</source>
-        <translation type="unfinished">確實要刪除此下載嗎？&lt;br/&gt; 刪除將停止下載並刪除 & lt;br style=&quot; 字型 - 尺寸：20px&quot;/&gt; 磁碟中的專案。</translation>
+        <translation type="unfinished">確實要刪除此下載嗎？&lt;br/&gt; 刪除將停止下載並刪除 &lt;br style=&quot; 字型 - 尺寸：20px&quot;/&gt; 磁碟中的專案。</translation>
     </message>
     <message>
         <location filename="../src/main/globals.h" line="36"/>
         <source>Are you sure you wish to cancel this download?&lt;br/&gt;Canceling will stop the download and remove the&lt;br style=&quot;font-size:20px&quot;/&gt;item from the list.</source>
-        <translation type="unfinished">確定要取消此下載嗎？&lt;br/&gt; 取消將停止下載並刪除 & lt;br style=&quot; 字型 - 尺寸：20px&quot;/&gt; 列表中的專案。</translation>
+        <translation type="unfinished">確定要取消此下載嗎？&lt;br/&gt; 取消將停止下載並刪除 &lt;br style=&quot; 字型 - 尺寸：20px&quot;/&gt; 列表中的專案。</translation>
     </message>
     <message>
         <location filename="../src/main/globals.h" line="41"/>
@@ -561,7 +561,7 @@ To completely exit %1, righ-click the tray icon then click Exit.</source>
     <message>
         <location filename="../src/main/globals.h" line="39"/>
         <source>&lt;span style=&quot;margin-bottom:14px;&quot;&gt;Are you sure you wish to exit %1?&lt;/span&gt;&lt;br/&gt;Download and seeding will be stopped when &lt;br style=&quot;font-size:20px&quot;/&gt;closing this window.</source>
-        <translation type="unfinished">&lt;span style=&quot;margin-bottom:14px;&quot;&gt; 確定要退出 %1 嗎？&lt;/span&gt;&lt;br/&gt; 下載和做種將在 & lt;br style=&quot;font-size:20px&quot;/&gt; 關閉此視窗後停止。</translation>
+        <translation type="unfinished">&lt;span style=&quot;margin-bottom:14px;&quot;&gt; 確定要退出 %1 嗎？&lt;/span&gt;&lt;br/&gt; 下載和做種將在 &lt;br style=&quot;font-size:20px&quot;/&gt; 關閉此視窗後停止。</translation>
     </message>
     <message>
         <location filename="../src/main/globals.h" line="77"/>
@@ -592,7 +592,7 @@ To completely exit %1, righ-click the tray icon then click Exit.</source>
         <location filename="../src/gui/mainwindow.cpp" line="582"/>
         <location filename="../src/gui/mainwindow.cpp" line="584"/>
         <source>File &quot;%1&quot; was downloaded</source>
-        <translation type="unfinished">已下載 & quot;%1&quot;</translation>
+        <translation type="unfinished">已下載 &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="584"/>
@@ -839,7 +839,7 @@ Are you sure you wish to continue?</source>
     <message>
         <location filename="../src/gui/preferences.cpp" line="240"/>
         <source>The folder &quot;%1&quot; cannot be created. Please change.</source>
-        <translation type="unfinished">無法建立資料夾 & quot;%1&quot;。請修改</translation>
+        <translation type="unfinished">無法建立資料夾 &quot;%1&quot;。請修改</translation>
     </message>
     <message>
         <location filename="../src/gui/preferences.cpp" line="252"/>

@@ -54,7 +54,10 @@ QString languageString(const utilities::Tr::Translation& translation, const QStr
     QString langStr = translator.translate(translation.context, translation.key, translation.disambiguation);
     if (langStr.isEmpty())
     {
-        langStr = QString("%1 (%2)").arg(loc.nativeLanguageName(), QLocale::languageToString(loc.language()));
+        auto langName = QLocale::languageToString(loc.language());
+        if (loc.language() == QLocale::Chinese)
+            langName = langName + " " + QLocale::scriptToString(loc.script());
+        langStr = QString("%1 (%2)").arg(loc.nativeLanguageName(), langName);
     }
 
     if (!langStr.isEmpty())
