@@ -186,6 +186,8 @@ namespace libtorrent
 
 	struct TORRENT_EXTRA_EXPORT socket_type
 	{
+        struct executor_type;
+
 		typedef tcp::socket::endpoint_type endpoint_type;
 		typedef tcp::socket::protocol_type protocol_type;
 

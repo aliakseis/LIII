@@ -369,7 +369,7 @@ int TorrentManager::cacheResumeTorrentsData(bool fully_data_save /* = false */)
                 continue;
             }
 
-            qDebug() << "Saving fastresume data for " << QString::fromStdString(torrent.name());
+            qDebug() << "Scheduling fastresume data save for " << QString::fromStdString(torrent.name());
             torrent.save_resume_data();
 
             cached++;

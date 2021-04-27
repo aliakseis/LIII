@@ -257,6 +257,7 @@ void TorrentsListener::handler(libtorrent::save_resume_data_alert const& a)
 
     try
     {
+        qDebug() << "Saving fastresume data for " << a.torrent_name();
         std::vector<char> out;
         out.reserve(32 * 1024);
         libtorrent::bencode(std::back_inserter(out), *a.resume_data);

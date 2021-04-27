@@ -14,7 +14,7 @@
 
 namespace
 {
-utilities::Tr::Translation appExitTr = utilities::Tr::translate("MainWindow", "Exit");
+utilities::Tr::Translation appExitTr = utilities::Tr::translate("MainWindow", "Exit %1");
 utilities::Tr::Translation appShowTr = utilities::Tr::translate("MainWindow", "Show %1");
 }
 
