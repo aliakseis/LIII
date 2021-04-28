@@ -183,6 +183,24 @@ namespace boost {
 }
 #endif
 
+template<> class boost::asio::basic_socket_acceptor<int, bool>
+{
+public:
+    template<typename T>
+    static auto& get_impl(T* sa) { return sa->impl_; }
+};
+
+namespace {
+
+template<typename T>
+auto& get_impl(T* sa)
+{
+    return boost::asio::basic_socket_acceptor<int, bool>::get_impl(sa);
+}
+
+}
+
+
 namespace libtorrent {
 
 #if defined TORRENT_ASIO_DEBUGGING
@@ -1092,8 +1110,10 @@ namespace aux {
 		for (std::list<listen_socket_t>::iterator i = m_listen_sockets.begin()
 			, end(m_listen_sockets.end()); i != end; ++i)
 		{
-			i->sock->close(ec);
-			TORRENT_ASSERT(!ec);
+            //i->sock->close(ec);
+            //TORRENT_ASSERT(!ec);
+            auto& impl = get_impl(i->sock.get());
+            impl.get_service().destroy(impl.get_implementation());
 		}
 		m_listen_sockets.clear();
 
