@@ -14,3 +14,6 @@ multi-platform bittorrent client
 BOOST_ROOT environment variable set accordingly.
 
 Both Qt Creator and Visual Studio can be used.
+
+### Portable mode
+**portable flag** - specific file or folder in the program folder (named `portable` without extension) triggers portable mode, when **LIII BitTorrent Client** starts it checks the program folder for such file or folder and if it is there data and settings are saved in the program folder. See also https://github.com/aliakseis/LIII/issues/1
