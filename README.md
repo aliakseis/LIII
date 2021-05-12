@@ -11,7 +11,7 @@ multi-platform bittorrent client
 	- https://deac-fra.dl.sourceforge.net/project/boost/boost-binaries/1.76.0/boost_1_76_0-msvc-14.1-64.exe
 	- https://deac-ams.dl.sourceforge.net/project/boost/boost-binaries/1.76.0/boost_1_76_0-msvc-14.1-32.exe
 	
-BOOST_ROOT environment variable set accordingly.
+BOOST_ROOT environment variable set accordingly.<br/>Please note that the repository provides its own build of libtorrent, some info <a href="https://github.com/aliakseis/LIII/issues/9#issuecomment-791950065">here.</a>
 
 Both Qt Creator and Visual Studio can be used.
 
