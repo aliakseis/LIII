@@ -207,6 +207,12 @@ QCheckBox::indicator:checked:!enabled
    image: url(:/checkbox_disabled_check.png);
 }
 
+AddLinksWidget::indicator
+{
+     width: 13px;
+     height: 13px;
+}
+
 AddLinksWidget::indicator:unchecked 
 {
      image: url(:/checkbox_unchecked.png);
