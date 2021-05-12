@@ -179,3 +179,44 @@ QComboBox QAbstractItemView
      selection-background-color: #d1f3fc;
      selection-color: black;
 }
+
+QCheckBox::indicator 
+{
+     width: 13px;
+     height: 13px;
+}
+ 
+QCheckBox::indicator:unchecked 
+{
+     image: url(:/checkbox_unchecked.png);
+}
+ 
+QCheckBox::indicator:checked 
+{
+     image: url(:/checkbox_checked.png);
+}
+ 
+QCheckBox::indicator:!enabled 
+{
+   image: url(:/checkbox_disabled_uncheck.png);
+}
+
+QCheckBox::indicator:checked:!enabled 
+{
+   image: url(:/checkbox_disabled_check.png);
+}
+
+AddLinksWidget::indicator:unchecked 
+{
+     image: url(:/checkbox_unchecked.png);
+}
+ 
+AddLinksWidget::indicator:checked 
+{
+     image: url(:/checkbox_checked.png);
+}
+ 
+AddLinksWidget::indicator:!enabled 
+{
+   image: url(:/checkbox_disabled_uncheck.png);
+}
