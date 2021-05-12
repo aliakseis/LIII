@@ -109,7 +109,7 @@ MainWindow #wTop
 }
 
 
-/* QComboBox*/
+/* QComboBox */
 QComboBox
 {
     border: 1px solid #cfcfcf;
@@ -180,6 +180,7 @@ QComboBox QAbstractItemView
      selection-color: black;
 }
 
+/* QCheckBox */
 QCheckBox::indicator 
 {
      width: 13px;
@@ -219,4 +220,21 @@ AddLinksWidget::indicator:checked
 AddLinksWidget::indicator:!enabled 
 {
    image: url(:/checkbox_disabled_uncheck.png);
+}
+
+/* QRadioButton */
+QRadioButton::indicator 
+{
+     width: 13px;
+     height: 13px;
+}
+
+QRadioButton:indicator:unchecked 
+{
+     image: url(:/radio_normal.png);
+}
+ 
+QRadioButton::indicator:checked 
+{
+     image: url(:/radio_checked.png);
 }

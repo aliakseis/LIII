@@ -17,6 +17,8 @@
 		<file alias="checkbox_disabled_uncheck.png">images/checkbox_disabled_uncheck.png</file>
 		<file alias="checkbox_disabled_check.png">images/checkbox_disabled_check.png</file>
 		<file alias="checkbox_unchecked.png">images/checkbox_unchecked.png</file>
+		<file alias="radio_checked.png">images/radio_checked.png</file>
+		<file alias="radio_normal.png">images/radio_normal.png</file>
     <file alias="cleanup_hover.png">images/cleanup_hover.png</file>
 		<file alias="cleanup.png">images/cleanup.png</file>
 		<file alias="cleanup_disabled.png">images/cleanup_disabled.png</file>
