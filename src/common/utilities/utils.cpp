@@ -139,11 +139,17 @@ QStringList ParseUrls(const QString& data)
 
         if (url.isValid())
         {
-            res << url.toString();
+            t = url.toString();
         }
-        else if (QRegExp("^[a-z]:[\\\\/]|^/|^~/", Qt::CaseInsensitive).indexIn(t) != -1)
+        else if (QRegExp("^[a-z]:[\\\\/]|^/|^~/", Qt::CaseInsensitive).indexIn(t) == -1)
         {
-            res << t;
+            continue;
+        }
+
+        auto it = std::lower_bound(res.begin(), res.end(), t);
+        if (it == res.end() || *it != t)
+        {
+            res.insert(it, t);
         }
     }
     return res;
