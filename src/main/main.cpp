@@ -51,6 +51,8 @@ int main(int argc, char* argv[])
 
     QNetworkProxyFactory::setApplicationProxyFactory(new ConfigurableProxyFactory());
 
+    QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+
     // single app
     Application app(QString(PROJECT_NAME), argc, argv);
 

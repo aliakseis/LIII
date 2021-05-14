@@ -5,9 +5,9 @@
 #include <QAbstractItemView>
 
 #ifdef Q_OS_WIN
-enum { ROUND_RADIUS = 3, FONT_SIZE = 8 };
+enum { ROUND_RADIUS = 3 };
 #else
-enum { ROUND_RADIUS = 7, FONT_SIZE = 10 };
+enum { ROUND_RADIUS = 7 };
 #endif //Q_OS_WIN
 
 namespace {
@@ -97,9 +97,6 @@ void LIIIStyle::drawControl(ControlElement element, const QStyleOption* option, 
         const auto* progressOptions = qstyleoption_cast<const QStyleOptionProgressBar*>(option);
 
         painter->save();
-        QFont font = painter->font();
-        font.setPointSize(FONT_SIZE);
-        painter->setFont(font);
         QPen pen(Qt::black);
         painter->setPen(pen);
         painter->drawText(progressOptions->rect, Qt::AlignCenter, progressOptions->text);

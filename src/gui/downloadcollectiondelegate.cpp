@@ -49,9 +49,6 @@ void DownloadCollectionDelegate::paint(QPainter* painter, const QStyleOptionView
         progressBarOption.text = utilities::ProgressString(progress);
 
         // Draw the progress bar onto the view.
-        for (auto s : { QStyle::CE_ProgressBarGroove, QStyle::CE_ProgressBarContents, QStyle::CE_ProgressBarLabel })
-        {
-            QApplication::style()->drawControl(s, &progressBarOption, painter);
-        }
+        QApplication::style()->drawControl(QStyle::CE_ProgressBar, &progressBarOption, painter);
     }
 }
