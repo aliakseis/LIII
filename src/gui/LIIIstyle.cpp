@@ -169,3 +169,12 @@ int LIIIStyle::styleHint(StyleHint hint, const QStyleOption *option, const QWidg
 
     return QProxyStyle::styleHint(hint, option, widget, returnData);
 }
+
+QSize LIIIStyle::sizeFromContents(ContentsType ct, const QStyleOption* opt, const QSize & csz, const QWidget* widget) const
+{
+    QSize sz = QProxyStyle::sizeFromContents(ct, opt, csz, widget);
+    if (ct == CT_PushButton)
+        sz.rwidth() += 2;
+
+    return sz;
+}

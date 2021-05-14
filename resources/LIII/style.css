@@ -228,6 +228,27 @@ AddLinksWidget::indicator:!enabled
    image: url(:/checkbox_disabled_uncheck.png);
 }
 
+AddTorrentForm QTreeView::indicator
+{
+     width: 13px;
+     height: 13px;
+}
+
+AddTorrentForm QTreeView::indicator:unchecked 
+{
+     image: url(:/checkbox_unchecked.png);
+}
+ 
+AddTorrentForm QTreeView::indicator:checked 
+{
+     image: url(:/checkbox_checked.png);
+}
+ 
+AddTorrentForm QTreeView::indicator:!enabled 
+{
+   image: url(:/checkbox_disabled_uncheck.png);
+}
+
 /* QRadioButton */
 QRadioButton::indicator 
 {
