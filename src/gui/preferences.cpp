@@ -29,6 +29,9 @@
 
 #include "globals.h"
 
+#include <chrono>
+#include <random>
+
 namespace Tr = utilities::Tr;
 
 using namespace app_settings;
@@ -79,7 +82,7 @@ Preferences::Preferences(QWidget* parent, TAB tab)
 
     const auto Octet = QStringLiteral("(?:[0-1]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])");
     ui->leProxyAddress->setValidator(new QRegExpValidator(QRegExp("^" + Octet + "\\." + Octet + "\\." + Octet + "\\." + Octet + "$"), this));
-    ui->leProxyPort->setValidator(new QIntValidator(1, 65535, this));
+    ui->leProxyPort->setValidator(new QIntValidator(1, maxPort, this));
 
     ui->tabWidget->setCurrentIndex(tab);
 
@@ -415,7 +418,11 @@ void Preferences::initMainSettings()
 void Preferences::on_torrentRandomPortButton_clicked()
 {
     // Update of data will be called from on_torrentPortSettingEdit_textChanged()
-    ui->torrentPortSettingEdit->setText(QString::number(rand() % 0xFFFF));
+    // obtain a seed from the system clock:
+    const auto seed = std::chrono::system_clock::now().time_since_epoch().count();
+    std::default_random_engine dre(seed);
+    std::uniform_int_distribution<int> di(1024, maxPort);
+    ui->torrentPortSettingEdit->setText(QString::number(di(dre)));
 }
 
 void Preferences::on_radioTorrentPortAuto_toggled(bool is_set)
