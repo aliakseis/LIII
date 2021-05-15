@@ -1,6 +1,5 @@
 #include "proplistdelegate.h"
 
-#include <QStyleOptionProgressBarV2>
 #include <QStyleOptionComboBox>
 #include <QComboBox>
 #include <QModelIndex>
@@ -9,6 +8,7 @@
 #include <QApplication>
 #include "utilities/utils.h"
 #include "torrentcontentfiltermodel.h"
+#include "ui_utils/getstyleoptionprogressbar.h"
 
 #include <algorithm>
 
@@ -40,15 +40,9 @@ void PropListDelegate::paint(QPainter* painter, const QStyleOptionViewItem& opti
             initStyleOption(&opt, index);
             QApplication::style()->drawPrimitive(QStyle::PE_PanelItemViewItem, &opt, painter, opt.widget);
 
-            QStyleOptionProgressBar progressBarOption;
-            progressBarOption.state = QStyle::State_Enabled;
-            progressBarOption.direction = QApplication::layoutDirection();
+            auto progressBarOption = getStyleOptionProgressBar();
+
             progressBarOption.rect = option.rect.adjusted(2, 6, -2, -7);
-            progressBarOption.fontMetrics = QApplication::fontMetrics();
-            progressBarOption.minimum = 0;
-            progressBarOption.maximum = 100;
-            progressBarOption.textAlignment = Qt::AlignCenter;
-            progressBarOption.textVisible = true;
 
             const qreal progress = index.data().toDouble() * 100.;
 

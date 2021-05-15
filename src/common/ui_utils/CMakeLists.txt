@@ -9,12 +9,14 @@ include_directories(
 
 
 set(SRCS
+	getstyleoptionprogressbar.cpp
 	mainwindowwithtray.cpp
 	tabbeddialogcombo.cpp
 	taskbar.cpp
 )
 
 set(HDRS
+	getstyleoptionprogressbar.h
 	taskbar.h
 )
 
