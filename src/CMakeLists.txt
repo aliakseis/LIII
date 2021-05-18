@@ -392,7 +392,7 @@ add_library(${FUNCTIONAL_MODULE} STATIC
 	${HEADERS}
 	${SOURCES}
 
-	# Genered resources
+	# Generated resources
 	${UI_FILES} 
 	${MOC_FILES} 
 	${QRC_RESOURCES}
@@ -418,7 +418,7 @@ add_executable(${PROJECT_NAME}
 	${DESKTOP_TARGET}
 	main/main.cpp
 
-	# Genered resources
+	# Generated resources
 	${QRC_RESOURCES}
 	${RESOURCE_OS}
 	${RESOURCE_OS_ALL}

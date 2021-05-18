@@ -2,10 +2,10 @@
 
 if(WIN32)
 	if( CMAKE_SIZEOF_VOID_P EQUAL 8 )
-		message( STATUS "Seaching 64bit openssl library" )
+		message( STATUS "Searching 64bit openssl library" )
 		set(PLATFORM_SUBDIR x64)
 	else( CMAKE_SIZEOF_VOID_P EQUAL 8 )
-		message( STATUS "Seaching 32bit openssl library" )
+		message( STATUS "Searching 32bit openssl library" )
 		set(PLATFORM_SUBDIR x86)
 	endif( CMAKE_SIZEOF_VOID_P EQUAL 8 )
 	set(OPENSSL_BINARY_DIR ${CMAKE_SOURCE_DIR}/imports/OpenSSL/${PLATFORM_SUBDIR}/bin CACHE PATH "path to openSSL dlls" FORCE)

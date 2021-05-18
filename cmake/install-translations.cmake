@@ -36,7 +36,7 @@ macro(INSTALL_TRANSLATIONS PROJECT_NAME)
 			string(REGEX MATCH "[.]*(_[a-z]+).qm$" lang ${FILENAME})
 			set(targetFilename "translations${lang}")
 			add_custom_command(TARGET ${PROJECT_NAME} COMMAND ${CMAKE_COMMAND} -E copy \"${FILENAME}\" ${maxosxTranslatinosLocation}/${targetFilename})
-			# Instalation not needed... it will be done by bundle
+			# Installation not needed... it will be done by bundle
 		endforeach(FILENAME)
 	elseif(UNIX)
 		install(
