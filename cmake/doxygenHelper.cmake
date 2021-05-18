@@ -1,4 +1,4 @@
-# Macro thats setups Doxygen subproject
+# Macro that sets up Doxygen subproject
 macro(SETUP_DOXYGEN)
 
 # check if Doxygen is installed
