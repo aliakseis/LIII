@@ -504,7 +504,8 @@ libtorrent::torrent_handle TorrentManager::addTorrent(
     {
         qDebug() << err.message().c_str();
     }
-    else
+
+    if (handle.is_valid())
     {
         m_idToHandle[id] = handle;
 

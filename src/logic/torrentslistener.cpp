@@ -145,7 +145,7 @@ void TorrentsListener::alertDispatch(std::auto_ptr<libtorrent::alert> p)
 void TorrentsListener::handler(libtorrent::stats_alert const& a)
 {
     //TRACE_ALERT
-    libtorrent::torrent_status status = a.handle.status(libtorrent::torrent_handle::query_accurate_download_counters);
+    auto status = a.handle.status(libtorrent::torrent_handle::query_accurate_download_counters);
 
     if (status.state == libtorrent::torrent_status::downloading)
     {
@@ -296,10 +296,11 @@ void TorrentsListener::handler(libtorrent::state_changed_alert const& a)
         break;
     case libtorrent::torrent_status::finished:
         {
-            item.setStatus(a.handle.status(0x0).paused
+            auto status = a.handle.status(
+                        libtorrent::torrent_handle::query_accurate_download_counters);
+            item.setStatus(status.paused
                 ? ItemDC::eFINISHED : ItemDC::eSEEDING);
             item.setSpeed(0);
-            libtorrent::torrent_status status = a.handle.status(libtorrent::torrent_handle::query_accurate_download_counters);
             item.setSize(status.total_wanted);
             item.setSizeCurrDownl(status.total_wanted_done);
             item.setDownloadType(DownloadType::TorrentFile);
@@ -387,15 +388,16 @@ void TorrentsListener::handleItemMetadata(const libtorrent::torrent_handle& hand
 {
     try
     {
-        libtorrent::torrent_status status = handle.status(0x0);
+        auto status = handle.status(
+                    libtorrent::torrent_handle::query_name | libtorrent::torrent_handle::query_save_path);
         ItemDC item;
         item.setID(getItemID(handle));
         item.setSize(status.total_wanted);
-        item.setDownloadedFileName(QString::fromStdString(handle.get_torrent_info().name()));
+        item.setDownloadedFileName(QString::fromStdString(status.name));
         item.setSource("Torrent");
 
         // Save Path
-        item.setTorrentSavePath(QString::fromStdString(handle.save_path()));
+        item.setTorrentSavePath(QString::fromStdString(status.save_path));
 
         emit itemMetadataReceived(item);
 

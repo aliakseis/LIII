@@ -448,15 +448,16 @@ void DownloadCollectionModel::addItemsToModel(const QStringList& urls, DownloadT
             ti->setSource("Torrent");
             std::string hash(handle.info_hash().to_string());
             ti->setHash(QByteArray(hash.data(), hash.size()).toBase64());
-            ti->setTorrentSavePath(QString::fromStdString(handle.save_path()));
             try
             {
-                libtorrent::torrent_status status = handle.status(0x0);
+                auto status = handle.status(
+                            libtorrent::torrent_handle::query_name | libtorrent::torrent_handle::query_save_path);
+                ti->setTorrentSavePath(QString::fromStdString(status.save_path));
                 if (status.has_metadata)
                 {
-                    ti->setSize(handle.status(0).total_wanted);
+                    ti->setSize(status.total_wanted);
                     ti->setDownloadType(DownloadType::TorrentFile);
-                    ti->setDownloadedFileName(QString::fromStdString(handle.get_torrent_info().name()));
+                    ti->setDownloadedFileName(QString::fromStdString(status.name));
                 }
             }
             catch (libtorrent::libtorrent_exception const& e)
