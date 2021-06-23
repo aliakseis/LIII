@@ -182,6 +182,8 @@ MainWindow::MainWindow()
     refreshButtons();
 
     connect(&TorrentsListener::instance(), &TorrentsListener::sessionStats, this, &MainWindow::onSessionStats);
+
+    onSessionStats({}, {});
 }
 
 #if defined(Q_OS_WIN)
@@ -698,12 +700,12 @@ void MainWindow::onSessionStats(long long unixTime, const std::vector<boost::uin
     static int const sent_payload_bytes_idx = libtorrent::find_metric_idx("net.sent_payload_bytes");
     static int const recv_payload_bytes_idx = libtorrent::find_metric_idx("net.recv_payload_bytes");
 
-    if (dht_nodes_idx >= 0 && dht_nodes_idx < stats.size())
-    {
-        const auto dht_nodes = stats[dht_nodes_idx];
-        m_statusDhtNodes->setText(tr("DHT: %1 nodes").arg(dht_nodes));
-        ensureNoShrink(m_statusDhtNodes);
-    }
+    const auto dht_nodes = (dht_nodes_idx >= 0 && dht_nodes_idx < stats.size())? stats[dht_nodes_idx] : 0;
+    m_statusDhtNodes->setText(tr("DHT: %1 nodes").arg(dht_nodes));
+    ensureNoShrink(m_statusDhtNodes);
+
+    double dlSpeed = 0;
+    double ulSpeed = 0;
     if (sent_payload_bytes_idx >= 0 && sent_payload_bytes_idx < stats.size()
             && recv_payload_bytes_idx >= 0 && recv_payload_bytes_idx < stats.size()
             && m_prevSessionStatsUnixTime != unixTime)
@@ -711,16 +713,20 @@ void MainWindow::onSessionStats(long long unixTime, const std::vector<boost::uin
         const auto sent_payload_bytes = stats[sent_payload_bytes_idx];
         const auto recv_payload_bytes = stats[recv_payload_bytes_idx];
         const auto spanCoeff = 1000000. / 1024 / (unixTime - m_prevSessionStatsUnixTime);
-        auto speedFormatter = [](auto speed) { return QString("%1 KB/s").arg(speed, 0, 'f', 1); };
 
-        m_statusTotalSpeed->setText(tr("Total DL|UL: %1 | %2").arg(
-            speedFormatter((recv_payload_bytes - m_prevRecvPayloadBytes) * spanCoeff),
-            speedFormatter((sent_payload_bytes - m_prevSentPayloadBytes) * spanCoeff)));
-        ensureNoShrink(m_statusTotalSpeed);
+        dlSpeed = (recv_payload_bytes - m_prevRecvPayloadBytes) * spanCoeff;
+        ulSpeed = (sent_payload_bytes - m_prevSentPayloadBytes) * spanCoeff;
 
         m_prevSentPayloadBytes = sent_payload_bytes;
         m_prevRecvPayloadBytes = recv_payload_bytes;
     }
+
+    auto speedFormatter = [](auto speed) { return QString("%1 KB/s").arg(speed, 0, 'f', 1); };
+
+    m_statusTotalSpeed->setText(tr("Total DL|UL: %1 | %2").arg(
+        speedFormatter(dlSpeed),
+        speedFormatter(ulSpeed)));
+    ensureNoShrink(m_statusTotalSpeed);
 
     {
         QStorageInfo storageInfo(global_functions::GetVideoFolder());

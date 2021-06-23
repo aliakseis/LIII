@@ -33,7 +33,7 @@ set(CMAKE_MODULE_PATH
 	"${CMAKE_CURRENT_SOURCE_DIR}/cmake"
 )
 
-project(${PROJECT_NAME} VERSION 0.1.1.10)
+project(${PROJECT_NAME} VERSION 0.1.1.11)
 message("Building ${PROJECT_NAME} version ${PROJECT_VERSION}")
 
 ###################################################
