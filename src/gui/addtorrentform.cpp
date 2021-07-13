@@ -197,7 +197,10 @@ QString AddTorrentForm::savePath() const
 void AddTorrentForm::setSavePath(const QString& savePath)
 {
     m_savePath = savePath;
-    ui->savePathLineEdit->setText(m_savePath);
+    if (ui->savePathLineEdit->text() != m_savePath)
+    {
+        ui->savePathLineEdit->setText(m_savePath);
+    }
 
     if (m_contentModel)
     {

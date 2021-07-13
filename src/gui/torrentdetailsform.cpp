@@ -298,7 +298,10 @@ QString TorrentDetailsForm::savePath() const
 void TorrentDetailsForm::setSavePath(const QString& savePath)
 {
     m_savePath = savePath;
-    ui->savePathEdit->setText(m_savePath);
+    if (ui->savePathEdit->text() != m_savePath)
+    {
+        ui->savePathEdit->setText(m_savePath);
+    }
 
     if (m_contentModel)
     {
