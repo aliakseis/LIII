@@ -19,9 +19,9 @@ class DownloadTask : public QObject, public download::DownloaderObserverInterfac
 
 public:
 #ifdef ALLOW_TRAFFIC_CONTROL
-    typedef download::Downloader<download::speed_limitable_tag> DownloaderType;
+    typedef download::Downloader<download::speed_limitable_tag, false> DownloaderType;
 #else
-    typedef download::Downloader<download::speed_readable_tag> DownloaderType;
+    typedef download::Downloader<download::speed_readable_tag, false> DownloaderType;
 #endif // ALLOW_TRAFFIC_CONTROL
 
     DownloadTask(
