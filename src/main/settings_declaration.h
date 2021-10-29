@@ -64,4 +64,12 @@ const bool UseProxy_Default = false;
 const char ProxyAddress[] = "ProxyAddress";
 
 const char ProxyPort[] = "ProxyPort";
+
+const char UseProxyAuthorization[] = "UseProxyAuthorization";
+const bool UseProxyAuthorization_Default = false;
+
+const char ProxyAuthorizationLogin[] = "ProxyAuthorizationLogin";
+
+const char ProxyAuthorizationPassword[] = "ProxyAuthorizationPassword";
+
 } // namespace app_settings

@@ -60,6 +60,7 @@ private Q_SLOTS:
     bool checkPortOk(int targetPort, const char** reason = 0);
 
     void onProxyStateChanged(int state);
+    void onProxyAuthorizationStateChanged(int state);
 
 protected:
     void keyPressEvent(QKeyEvent* event) override;

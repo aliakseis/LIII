@@ -44,6 +44,7 @@ set(HEADERS
 	windowsfirewall.h
 	filesaveguard.h
 	filesystem_utils.h
+	simplecrypt.h
 )
 
 set(SOURCES
@@ -59,6 +60,7 @@ set(SOURCES
 	customutf8codec.cpp
 	windowsfirewall.cpp
 	filesystem_utils.cpp
+	simplecrypt.cpp
 )
 
 if(WIN32)

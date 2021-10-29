@@ -59,9 +59,15 @@ void setProxySettings(libtorrent::session* sess)
     QSettings settings;
     if (settings.value(UseProxy, UseProxy_Default).toBool())
     {
-        s.type = libtorrent::proxy_settings::socks5;
+        const auto proxyUserAuthorization = settings.value(UseProxyAuthorization, UseProxyAuthorization_Default).toBool();
+        s.type = proxyUserAuthorization? libtorrent::proxy_settings::socks5_pw : libtorrent::proxy_settings::socks5;
         s.hostname = settings.value(ProxyAddress).toString().toStdString();
         s.port = settings.value(ProxyPort).toUInt();
+        if (proxyUserAuthorization)
+        {
+            s.username = settings.value(ProxyAuthorizationLogin).toString().toStdString();
+            s.password = global_functions::SimpleDecryptString(settings.value(ProxyAuthorizationPassword).toString()).toStdString();
+        }
     }
     sess->set_proxy(s);
 }

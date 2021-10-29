@@ -20,7 +20,9 @@
 #include "utilities/utils.h"
 #include "utilities/filesystem_utils.h"
 #include "downloadtype.h"
-
+#include "utilities/credential.h"
+#include "settings_declaration.h"
+#include "utilities/simplecrypt.h"
 
 namespace global_functions
 {
@@ -76,6 +78,18 @@ int GetTrafficLimitActual()
     QSettings settings;
     return settings.value(IsTrafficLimited, IsTrafficLimited_Default).toBool()
         ? settings.value(TrafficLimitKbs, TrafficLimitKbs_Default).toInt() : 0;
+}
+
+const auto cryptKey = Q_UINT64_C(0xE05CE1B3AC501B30);
+
+QString SimpleEncryptString(const QString& str)
+{
+    return SimpleCrypt(cryptKey).encryptToString(str);
+}
+
+QString SimpleDecryptString(const QString& str)
+{
+    return SimpleCrypt(cryptKey).decryptToString(str);
 }
 
 } // namespace global_functions

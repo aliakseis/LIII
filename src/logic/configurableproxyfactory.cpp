@@ -1,6 +1,7 @@
 #include "configurableproxyfactory.h"
 
 #include "settings_declaration.h"
+#include "global_functions.h"
 
 #include <QSettings>
 
@@ -15,10 +16,22 @@ QList<QNetworkProxy> ConfigurableProxyFactory::queryProxy(const QNetworkProxyQue
     const bool useProxy = settings.value(UseProxy, UseProxy_Default).toBool();
     if (useProxy)
     {
+        QString user;
+        QString password;
+
+        if (settings.value(UseProxyAuthorization, UseProxyAuthorization_Default).toBool())
+        {
+            user = settings.value(ProxyAuthorizationLogin).toString();
+            password = global_functions::SimpleDecryptString(settings.value(ProxyAuthorizationPassword).toString());
+        }
+
         proxies.append(QNetworkProxy(
             QNetworkProxy::Socks5Proxy, 
             settings.value(ProxyAddress).toString(),
-            settings.value(ProxyPort).toUInt()));
+            settings.value(ProxyPort).toUInt(),
+            user,
+            password
+        ));
     }
     //else
     //{

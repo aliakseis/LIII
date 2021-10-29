@@ -80,6 +80,10 @@ Preferences::Preferences(QWidget* parent, TAB tab)
     VERIFY(connect(ui->leProxyAddress, SIGNAL(textChanged(QString)), SIGNAL(anyDataChanged())));
     VERIFY(connect(ui->leProxyPort, SIGNAL(textChanged(QString)), SIGNAL(anyDataChanged())));
 
+    VERIFY(connect(ui->chbProxyUserAuthorization, SIGNAL(stateChanged(int)), this, SLOT(onProxyAuthorizationStateChanged(int))));
+    VERIFY(connect(ui->editProxyLogin, SIGNAL(textChanged(QString)), SIGNAL(anyDataChanged())));
+    VERIFY(connect(ui->editProxyPassword, SIGNAL(textChanged(QString)), SIGNAL(anyDataChanged())));
+
     const auto Octet = QStringLiteral("(?:[0-1]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])");
     ui->leProxyAddress->setValidator(new QRegExpValidator(QRegExp("^" + Octet + "\\." + Octet + "\\." + Octet + "\\." + Octet + "$"), this));
     ui->leProxyPort->setValidator(new QIntValidator(1, maxPort, this));
@@ -203,9 +207,16 @@ void Preferences::apply()
         const auto proxyAddress = ui->leProxyAddress->text();
         const auto proxyPort = ui->leProxyPort->text().toUShort();
 
+        const auto isProxyUserAuthorization = ui->chbProxyUserAuthorization->isChecked();
+        const auto proxyLogin = ui->editProxyLogin->text();
+        const auto proxyPassword = ui->editProxyPassword->text();
+
         if (isUseProxy != settings.value(UseProxy, UseProxy_Default).toBool()
-            || isUseProxy && (proxyAddress != settings.value(ProxyAddress).toString() 
-                || proxyPort != settings.value(ProxyPort).toUInt()))
+            || isUseProxy && (proxyAddress != settings.value(ProxyAddress).toString()
+                || proxyPort != settings.value(ProxyPort).toUInt()
+                    || isProxyUserAuthorization != settings.value(UseProxyAuthorization, UseProxyAuthorization_Default).toBool()
+                        || isProxyUserAuthorization && (proxyLogin != settings.value(ProxyAuthorizationLogin).toString()
+                            || proxyPassword != global_functions::SimpleDecryptString(settings.value(ProxyAuthorizationPassword).toString()))))
         {
             proxySettingsChanged = true;
         }
@@ -213,6 +224,10 @@ void Preferences::apply()
         settings.setValue(UseProxy, isUseProxy);
         settings.setValue(ProxyAddress, proxyAddress);
         settings.setValue(ProxyPort, proxyPort);
+
+        settings.setValue(UseProxyAuthorization, isProxyUserAuthorization);
+        settings.setValue(ProxyAuthorizationLogin, proxyLogin);
+        settings.setValue(ProxyAuthorizationPassword, global_functions::SimpleEncryptString(proxyPassword));
     } // settings scope
 
     initMainSettings(); // to re-init fixed parameters
@@ -408,10 +423,20 @@ void Preferences::initMainSettings()
     ui->leProxyAddress->setText(settings.value(ProxyAddress).toString());
     ui->leProxyPort->setText(QString::number(settings.value(ProxyPort).toUInt()));
 
+    ui->chbProxyUserAuthorization->setChecked(settings.value(UseProxyAuthorization, UseProxyAuthorization_Default).toBool());
+    ui->editProxyLogin->setText(settings.value(ProxyAuthorizationLogin).toString());
+    ui->editProxyPassword->setText(global_functions::SimpleDecryptString(settings.value(ProxyAuthorizationPassword).toString()));
+
     if (!ui->chbUseProxy->isChecked())
     {
         ui->leProxyAddress->setEnabled(false);
         ui->leProxyPort->setEnabled(false);
+        ui->chbProxyUserAuthorization->setEnabled(false);
+    }
+    if (!ui->chbUseProxy->isChecked() || !ui->chbProxyUserAuthorization->isChecked())
+    {
+        ui->editProxyLogin->setEnabled(false);
+        ui->editProxyPassword->setEnabled(false);
     }
 }
 
@@ -491,9 +516,23 @@ void Preferences::keyPressEvent(QKeyEvent* event)
 
 void Preferences::onProxyStateChanged(int state)
 {
-    bool is_enable = state != Qt::Unchecked;
+    const bool is_enable = state != Qt::Unchecked;
     ui->leProxyAddress->setEnabled(is_enable);
     ui->leProxyPort->setEnabled(is_enable);
+    ui->chbProxyUserAuthorization->setEnabled(is_enable);
+
+    const bool enable_authorization = is_enable && ui->chbProxyUserAuthorization->isChecked();
+    ui->editProxyLogin->setEnabled(enable_authorization);
+    ui->editProxyPassword->setEnabled(enable_authorization);
+
+    dataChanged();
+}
+
+void Preferences::onProxyAuthorizationStateChanged(int state)
+{
+    const bool is_enable = state != Qt::Unchecked;
+    ui->editProxyLogin->setEnabled(is_enable);
+    ui->editProxyPassword->setEnabled(is_enable);
 
     dataChanged();
 }
