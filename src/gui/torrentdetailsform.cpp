@@ -16,6 +16,7 @@
 #include <QFileDialog>
 #include <QDebug>
 #include <QSettings>
+#include <QApplication>
 
 #include <QKeyEvent>
 #include "branding.hxx"
@@ -49,6 +50,8 @@ TorrentDetailsForm::~TorrentDetailsForm()
 
 void TorrentDetailsForm::initialize()
 {
+    QApplication::setOverrideCursor(Qt::WaitCursor);
+
     // setup common torrent info
     ui->savePathEdit->setText("");
 
@@ -86,6 +89,8 @@ void TorrentDetailsForm::initialize()
     updateDiskSpaceLabel();
 
     initPeersInfoTab();
+
+    QApplication::restoreOverrideCursor();
 }
 
 

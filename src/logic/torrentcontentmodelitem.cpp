@@ -128,14 +128,20 @@ void TorrentContentModelItem::updateSize()
 void TorrentContentModelItem::setProgress(qulonglong done)
 {
     Q_ASSERT(m_type != ROOT);
-    if (getPriority() == 0) { return; }
+    if (getPriority() == 0) {
+        return;
+    }
+    if (m_totalDone == done) {
+        return;
+    }
+    const auto diff = done - m_totalDone;
     m_totalDone = done;
     const qulonglong size = getSize();
     Q_ASSERT(m_totalDone <= size);
     const qreal progress = (size > 0) ? m_totalDone / (qreal)size : 1.;
     Q_ASSERT(progress >= 0. && progress <= 1.);
     m_itemData.replace(COL_PROGRESS, progress);
-    m_parentItem->updateProgress();
+    m_parentItem->setProgress(m_parentItem->getTotalDone() + diff);
 
     // STATUS COLUMN
     if ((done == size || progress == 1.) && m_type == TFILE)
@@ -199,13 +205,13 @@ void TorrentContentModelItem::updateProgress()
 {
     if (m_type == ROOT) { return; }
     Q_ASSERT(m_type == FOLDER);
-    m_totalDone = std::accumulate(m_childItems.constBegin(), m_childItems.constEnd(), 0ull,
+    const auto totalDone = std::accumulate(m_childItems.constBegin(), m_childItems.constEnd(), 0ull,
         [](qulonglong sum, TorrentContentModelItem* child)
         {
             return (child->getPriority() != prio::IGNORED) ? sum + child->getTotalDone() : sum;
         });
-    Q_ASSERT(m_totalDone <= getSize());
-    setProgress(m_totalDone);
+    Q_ASSERT(totalDone <= getSize());
+    setProgress(totalDone);
 }
 
 int TorrentContentModelItem::getPriority() const
