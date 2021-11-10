@@ -94,7 +94,7 @@ void TaskBar::setProgress(int progress)
             }
             m_taskBar->SetProgressValue((HWND)m_main, progress, m_maximum);
         }
-        if (progress >= m_maximum)
+        else
         {
             unsetProgress();
         }

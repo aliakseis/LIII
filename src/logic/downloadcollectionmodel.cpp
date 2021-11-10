@@ -647,7 +647,7 @@ void DownloadCollectionModel::calculateAllProgress()
             downloaded += item.sizeCurrDownl();
         }
     });
-    emit overallProgress(total ? (downloaded * 100) / total : 100);
+    emit overallProgress(downloaded, total);
 }
 
 void DownloadCollectionModel::activeDownloadsChanged()

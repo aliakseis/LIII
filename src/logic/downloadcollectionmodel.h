@@ -145,7 +145,7 @@ signals:
     void downloadingFinished(const ItemDC& item);
 
     void existingItemAdded(const QModelIndex& index);
-    void overallProgress(int progress);
+    void overallProgress(quint64 downloaded, quint64 total);
     void activeDownloadsNumberChanged(int number);
 
 private:

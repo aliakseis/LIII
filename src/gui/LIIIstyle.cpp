@@ -3,6 +3,7 @@
 #include <QPainter>
 #include <QComboBox>
 #include <QAbstractItemView>
+#include <QProgressBar>
 
 #ifdef Q_OS_WIN
 enum { ROUND_RADIUS = 3 };
@@ -20,6 +21,12 @@ QRect windowsClassicBug;
 
 void LIIIStyle::drawControl(ControlElement element, const QStyleOption* option, QPainter* painter, const QWidget* widget) const
 {
+    if (qobject_cast<const QProgressBar*>(widget) != nullptr)
+    {
+        QProxyStyle::drawControl(element, option, painter, widget);
+        return;
+    }
+
     switch (element)
     {
     case QStyle::CE_ProgressBarContents:

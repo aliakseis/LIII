@@ -9,7 +9,7 @@
 #include <QNetworkReply>
 #include <QTime>
 #include <QToolButton>
-
+#include <QProgressBar>
 
 #include "utilities/singleton.h"
 #include "ui_utils/mainwindowwithtray.h"
@@ -62,6 +62,10 @@ private:
     unsigned long long m_prevSentPayloadBytes {};
     unsigned long long m_prevRecvPayloadBytes {};
 
+    quint64 m_downloadedProgress {};
+    quint64 m_totalProgress {};
+
+    QProgressBar* m_statusProgressBar;
     QLabel* m_statusDhtNodes;
     QLabel* m_statusTotalSpeed;
     QLabel* m_statusDiskFreeSpace;
@@ -98,7 +102,7 @@ private Q_SLOTS:
     void onSelectCompleted();
     void onInvertSelection();
     void openTorrentDownloadFolder(const QString& filename, const QString& downloadDirectory);
-    void onOverallProgress(int progress);
+    void onOverallProgress(quint64 downloaded, quint64 total);
     void onActiveDownloadsNumberChanged(int number);
     void showTrayNotifDwnldFinish(const QString& str);
     void openTorrent(QStringList magnetUrls);

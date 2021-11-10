@@ -5,6 +5,7 @@
 #include <QPair>
 #include <QMimeData>
 
+#include <algorithm>
 #include <functional>
 #include <iostream>
 #include <utility>
@@ -78,6 +79,8 @@ void ensureNoShrink(QWidget* w)
 
 }
 
+enum { DOWNLOADED_PROGRESSBAR_MAX = 1000 };
+
 MainWindow::MainWindow()
     : ui_utils::MainWindowWithTray(nullptr, QIcon(PROJECT_ICON), PROJECT_FULLNAME_TRANSLATION),
       ui(new Ui::MainWindow),
@@ -87,6 +90,12 @@ MainWindow::MainWindow()
     QApplication::setWindowIcon(QIcon(PROJECT_ICON));
 
     ui->setupUi(this);
+
+    m_statusProgressBar = new QProgressBar(this);
+    m_statusProgressBar->setTextVisible(false);
+    m_statusProgressBar->setRange(0, DOWNLOADED_PROGRESSBAR_MAX);
+    m_statusProgressBar->setValue(0);
+    statusBar()->addWidget(m_statusProgressBar, 1);
 
     auto makeStatusLabel = [this] {
         auto label = new QLabel(this);
@@ -123,8 +132,8 @@ MainWindow::MainWindow()
     DownloadCollectionModel* pModel = &DownloadCollectionModel::instance();
 
     VERIFY(connect(pModel, SIGNAL(signalDeleteURLFromModel(int,DownloadType::Type,int)), SLOT(refreshButtons())));
-    VERIFY(connect(pModel, SIGNAL(overallProgress(int)), SLOT(onOverallProgress(int))));
     VERIFY(connect(pModel, SIGNAL(activeDownloadsNumberChanged(int)), SLOT(onActiveDownloadsNumberChanged(int))));
+    connect(pModel, &DownloadCollectionModel::overallProgress, this, &MainWindow::onOverallProgress);
 
     m_dlManager = new DownloadManager(this);
     VERIFY(connect(m_dlManager, SIGNAL(updateButtons()), SLOT(refreshButtons())));
@@ -746,13 +755,31 @@ void MainWindow::onSessionStats(long long unixTime, const std::vector<boost::uin
     m_prevSessionStatsUnixTime = unixTime;
 }
 
-void MainWindow::onOverallProgress(int progress)
+static int GetNormalizedCount(quint64 downloaded, quint64 total, int coeff)
 {
+    return (total == 0)? 0: ((total == downloaded)? 0: std::min(coeff, static_cast<int>(downloaded * coeff / total)));
+}
+
+void MainWindow::onOverallProgress(quint64 downloaded, quint64 total)
+{
+    const auto statusbarProgress = GetNormalizedCount(downloaded, total, DOWNLOADED_PROGRESSBAR_MAX);
+    if (statusbarProgress != GetNormalizedCount(m_downloadedProgress, m_totalProgress, DOWNLOADED_PROGRESSBAR_MAX))
+    {
+        m_statusProgressBar->setValue(statusbarProgress);
+    }
+
+    const auto progress = GetNormalizedCount(downloaded, total, 100);
+    if (progress != GetNormalizedCount(m_downloadedProgress, m_totalProgress, 100))
+    {
 #ifdef Q_OS_WIN
-    m_taskBar.setProgress(progress);
+        m_taskBar.setProgress(progress);
 #elif defined(Q_OS_MAC)
-    Darwin::setOverallProgress(progress);
+        Darwin::setOverallProgress(progress);
 #endif
+    }
+
+    m_downloadedProgress = downloaded;
+    m_totalProgress = total;
 }
 
 void MainWindow::onActiveDownloadsNumberChanged(int number)
