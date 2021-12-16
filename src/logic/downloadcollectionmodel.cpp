@@ -559,6 +559,7 @@ void DownloadCollectionModel::on_statusChange(const ItemDC& a_item)
     if (prevStatus == ItemDC::eDOWNLOADING && a_item.isCompleted())
     {
         emit downloadingFinished(*item);
+        queueSaveToFile();
     }
     calculateAllProgress();
     activeDownloadsChanged();
