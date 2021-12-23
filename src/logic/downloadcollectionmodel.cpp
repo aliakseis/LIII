@@ -527,8 +527,6 @@ void DownloadCollectionModel::on_statusChange(const ItemDC& a_item)
         return;
     }
 
-    ItemDC l_itm;
-    l_itm.setID(a_item.getID());
     if (DownloadType::isTorrentDownload(item->downloadType()))
     {
         if (prevStatus == ItemDC::eQUEUED
@@ -943,6 +941,8 @@ void DownloadCollectionModel::saveToFile()
 {
     qDebug() << __FUNCTION__;
 
+    m_saveToFileNeeded = false;
+
     {
         QStorageInfo storageInfo(utilities::PrepareCacheFolder());
         if (storageInfo.isValid()
@@ -985,7 +985,11 @@ void DownloadCollectionModel::saveToFile()
 
 void DownloadCollectionModel::queueSaveToFile()
 {
-    VERIFY(QMetaObject::invokeMethod(this, "saveToFile", Qt::QueuedConnection));
+    if (!m_saveToFileNeeded)
+    {
+        m_saveToFileNeeded = true;
+        VERIFY(QMetaObject::invokeMethod(this, "saveToFile", Qt::QueuedConnection));
+    }
 }
 
 void DownloadCollectionModel::setTorrentFilesPriorities(ItemID a_ID, std::vector<int> priorities)

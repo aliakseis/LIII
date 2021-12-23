@@ -163,4 +163,5 @@ private:
     TreeItem* rootItem;
     bool isDropAction;
     QString m_torrentSessionState;
+    bool m_saveToFileNeeded = false;
 };
