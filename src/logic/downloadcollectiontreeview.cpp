@@ -467,7 +467,7 @@ void DownloadCollectionTreeView::findItems()
 {
     QInputDialog dialog(utilities::getMainWindow());
     dialog.setWindowTitle(tr("Find Items"));
-    dialog.setLabelText(tr("Substring to select:") + QString(40, QChar(' ')));
+    dialog.setLabelText(tr("Substring to select:") + QString(50, QChar(' ')));
     auto onTextValueChanged = [this, &dialog](const QString &text) {
         int count = 0;
         model()->forAll([&count, text](TreeItem & ti)
