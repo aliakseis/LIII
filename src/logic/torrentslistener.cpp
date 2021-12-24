@@ -26,6 +26,12 @@
 
 namespace {
 
+float getShareRatio(const libtorrent::torrent_status& status)
+{
+    return (status.all_time_download > 0)
+            ? float(status.all_time_upload) / status.all_time_download : 0;
+}
+
 class AddTorrentFormHelper : public NotifyHelper
 {
 public:
@@ -153,10 +159,11 @@ void TorrentsListener::handler(libtorrent::stats_alert const& a)
         item.setID(getItemID(a.handle));
         item.setSize(status.total_wanted);
         item.setSizeCurrDownl(status.total_wanted_done);
+        item.setShareRatio(getShareRatio(status));
 
-        float downloadSpeed = status.download_payload_rate / 1024.0;
+        const float downloadSpeed = status.download_payload_rate / 1024.0;
         item.setSpeed(downloadSpeed);
-        float uploadSpeed = status.upload_payload_rate / 1024.0;
+        const float uploadSpeed = status.upload_payload_rate / 1024.0;
         item.setSpeedUpload(uploadSpeed);
         item.setStatus(downloadSpeed > 0 ? ItemDC::eDOWNLOADING : ItemDC::eSTALLED);
         emit statusChange(item);
@@ -168,9 +175,10 @@ void TorrentsListener::handler(libtorrent::stats_alert const& a)
     else if (status.state == libtorrent::torrent_status::seeding
         || status.state == libtorrent::torrent_status::finished)
     {
-        float uploadSpeed = status.upload_payload_rate / 1024.0;
+        const float uploadSpeed = status.upload_payload_rate / 1024.0;
         ItemDC item;
         item.setID(getItemID(a.handle));
+        item.setShareRatio(getShareRatio(status));
         item.setSpeedUpload(uploadSpeed);
         emit speedChange(item);
     }
@@ -191,6 +199,8 @@ void TorrentsListener::handler(libtorrent::torrent_paused_alert const& a)
     const auto newStatus 
         = (a.handle.is_seed() || a.handle.is_finished()) ? ItemDC::eFINISHED : ItemDC::ePAUSED;
     item.setStatus(newStatus);
+    auto status = a.handle.status(libtorrent::torrent_handle::query_accurate_download_counters);
+    item.setShareRatio(getShareRatio(status));
     emit speedChange(item);
     emit uploadSpeedChange(item);
     emit statusChange(item);
@@ -305,6 +315,7 @@ void TorrentsListener::handler(libtorrent::state_changed_alert const& a)
             item.setSizeCurrDownl(status.total_wanted_done);
             item.setDownloadType(DownloadType::TorrentFile);
             emit sizeCurrDownlChange(item);
+            item.setShareRatio(getShareRatio(status));
             emit speedChange(item);
         }
         break;

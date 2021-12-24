@@ -23,6 +23,7 @@ enum eDCMODEL
     eDC_Speed_Uploading,
     eDC_percentDownl,
     eDC_Size,
+    eDC_ShareRatio,
     eDC_Source,
 
     // must be in the end of the enum

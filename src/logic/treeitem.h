@@ -132,6 +132,8 @@ private:
     Q_PROPERTY(QString errorDescription READ errorDescription WRITE setErrorDescription)
 
     Q_PROPERTY(DownloadType::Type downloadType READ downloadType WRITE setDownloadType)
+
+    Q_PROPERTY(float shareRatio READ shareRatio WRITE setShareRatio)
 }; // class ItemDC
 
 class TreeItem : public ItemDC

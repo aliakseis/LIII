@@ -170,6 +170,7 @@ void DownloadCollectionTreeView::HeaderResize(/*const int width*/)
         header()->resizeSection(eDC_Speed_Uploading, 70);
         header()->resizeSection(eDC_percentDownl, 100);
         header()->resizeSection(eDC_Size, 100);
+        header()->resizeSection(eDC_ShareRatio, 70);
         header()->resizeSection(eDC_Source, 80);
     }
 }

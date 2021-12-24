@@ -76,6 +76,7 @@ Tr::Translation TREEVIEW_SPEED_HEADER                = Tr::translate("MainWindow
 Tr::Translation TREEVIEW_SPEED_UPLOAD_HEADER         = Tr::translate("MainWindow", "Speed up");
 Tr::Translation TREEVIEW_PROGR_HEADER                = Tr::translate("MainWindow", "Progress");
 Tr::Translation TREEVIEW_SIZE_HEADER                 = Tr::translate("MainWindow", "Size");
+Tr::Translation TREEVIEW_SHARE_RATIO_HEADER          = Tr::translate("MainWindow", "Share Ratio");
 Tr::Translation TREEVIEW_SOURCE_HEADER               = Tr::translate("MainWindow", "Source");
 
 Tr::Translation TREEVIEW_MENU_MOVEUP                 = Tr::translate("AddLinks",   "High Priority");

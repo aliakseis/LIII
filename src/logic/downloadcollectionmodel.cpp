@@ -333,6 +333,8 @@ QVariant DownloadCollectionModel::data(const QModelIndex& index, int role /* = Q
         return (item->size() > 0)
             ? QString("%1 / %2").arg(utilities::SizeToString(item->sizeCurrDownl()), utilities::SizeToString(item->size()))
             : ::Tr::Tr(TREEVIEW_UNKNOWN_SIZE);
+    case eDC_ShareRatio:
+        return QString::number(item->shareRatio(), 'f', 4);
     case eDC_Source:
         return item->source();
     case eDC_percentDownl:
@@ -394,6 +396,8 @@ QVariant DownloadCollectionModel::headerData(int section, Qt::Orientation orient
             return ::Tr::Tr(TREEVIEW_PROGR_HEADER);
         case eDC_Size:
             return ::Tr::Tr(TREEVIEW_SIZE_HEADER);
+        case eDC_ShareRatio:
+            return ::Tr::Tr(TREEVIEW_SHARE_RATIO_HEADER);
         case eDC_Source:
             return ::Tr::Tr(TREEVIEW_SOURCE_HEADER);
         }
@@ -571,6 +575,8 @@ void DownloadCollectionModel::on_speedChange(const ItemDC& a_item)
         emit dataChanged(index(item, eDC_Speed), index(item, eDC_Speed));
         item->setSpeedUpload(a_item.getSpeedUpload());
         emit dataChanged(index(item, eDC_Speed_Uploading), index(item, eDC_Speed_Uploading));
+        item->setShareRatio(a_item.shareRatio());
+        emit dataChanged(index(item, eDC_ShareRatio), index(item, eDC_ShareRatio));
     }
 }
 
