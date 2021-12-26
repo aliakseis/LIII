@@ -102,7 +102,7 @@ TorrentsListener::~TorrentsListener()
 }
 
 
-#define ALERT_MASK_DEF(r, data, elem) | libtorrent::elem::static_category
+#define ALERT_MASK_DEF(elem) | libtorrent::elem::static_category
 
 void TorrentsListener::setAlertDispatch(libtorrent::session* s)
 {
@@ -110,7 +110,7 @@ void TorrentsListener::setAlertDispatch(libtorrent::session* s)
 
     const boost::uint32_t alertMask
         = 0
-          BOOST_PP_SEQ_FOR_EACH(ALERT_MASK_DEF, _, ALERTS_OF_INTEREST)
+          ALERTS_OF_INTEREST(ALERT_MASK_DEF)
           ;
 
     static_assert(alertMask != 0, "alertMask should not be equal to zero");
@@ -125,7 +125,7 @@ void TorrentsListener::setAlertDispatch(libtorrent::session* s)
 #undef ALERT_MASK_DEF
 
 
-#define CASE_DEF(r, data, elem) \
+#define CASE_DEF(elem) \
     if (typeid_ == typeid(libtorrent::elem)) \
         handler(*static_cast<libtorrent::elem*>(p.get())); \
     else
@@ -134,7 +134,7 @@ void TorrentsListener::setAlertDispatch(libtorrent::session* s)
 void TorrentsListener::alertDispatch(std::auto_ptr<libtorrent::alert> p)
 {
     const std::type_info& typeid_ = typeid(*p);
-    BOOST_PP_SEQ_FOR_EACH(CASE_DEF, _, ALERTS_OF_INTEREST)
+    ALERTS_OF_INTEREST(CASE_DEF)
     ;
 }
 

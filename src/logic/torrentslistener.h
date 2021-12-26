@@ -6,7 +6,6 @@
 
 #include <libtorrent/torrent_handle.hpp>
 #include <libtorrent/torrent_status.hpp>
-#include <boost/preprocessor/seq/for_each.hpp>
 
 #include "utilities/singleton.h"
 #include "treeitem.h"
@@ -35,44 +34,20 @@ inline ItemDC::eSTATUSDC torrentStatus2ItemDCStatus(libtorrent::torrent_status::
 }
 
 
-#define ALERTS_OF_INTEREST \
-    (save_resume_data_alert)\
-    (storage_moved_alert)\
-    (metadata_received_alert)\
-    (file_error_alert)\
-    (torrent_paused_alert)\
-    (torrent_resumed_alert)\
-    (torrent_removed_alert)\
-    (stats_alert)\
-    (state_changed_alert)\
-    (session_stats_alert)
+#define ALERTS_OF_INTEREST(macro) \
+    macro(save_resume_data_alert)\
+    macro(storage_moved_alert)\
+    macro(metadata_received_alert)\
+    macro(file_error_alert)\
+    macro(torrent_paused_alert)\
+    macro(torrent_resumed_alert)\
+    macro(torrent_removed_alert)\
+    macro(stats_alert)\
+    macro(state_changed_alert)\
+    macro(session_stats_alert)
 
-#if 0
 
-(torrent_finished_alert)\
-(save_resume_data_failed_alert)\
-(file_renamed_alert)\
-(torrent_deleted_alert)\
-(storage_moved_failed_alert)\
-(file_completed_alert)\
-(tracker_error_alert)\
-(tracker_reply_alert)\
-(tracker_warning_alert)\
-(portmap_error_alert)\
-(portmap_alert)\
-(peer_blocked_alert)\
-(peer_ban_alert)\
-(fastresume_rejected_alert)\
-(url_seed_alert)\
-(listen_succeeded_alert)\
-(torrent_checked_alert)\
-(add_torrent_alert)\
-(block_downloading_alert)\
-(block_timeout_alert)\
-
-#endif
-
-#define ALERT_TYPE_DEF(r, data, elem) struct elem;
+#define ALERT_TYPE_DEF(elem) struct elem;
 
 namespace libtorrent
 {
@@ -80,7 +55,7 @@ namespace libtorrent
 class alert;
 class session;
 
-BOOST_PP_SEQ_FOR_EACH(ALERT_TYPE_DEF, _, ALERTS_OF_INTEREST)
+ALERTS_OF_INTEREST(ALERT_TYPE_DEF)
 }
 
 #undef ALERT_TYPE_DEF
@@ -124,9 +99,9 @@ private:
     void saveTorrentFile(const libtorrent::torrent_handle& handle);
     void askOpentorrentUser(const libtorrent::torrent_handle& handle);
 
-#define HANDLER_DEF(r, data, elem) void handler(const libtorrent::elem&);
+#define HANDLER_DEF(elem) void handler(const libtorrent::elem&);
 
-    BOOST_PP_SEQ_FOR_EACH(HANDLER_DEF, _, ALERTS_OF_INTEREST)
+    ALERTS_OF_INTEREST(HANDLER_DEF)
 
 #undef HANDLER_DEF
 
