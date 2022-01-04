@@ -14,7 +14,7 @@ INLINE_SIMPLE_STRUCTS  = YES
 EXCLUDE_PATTERNS       = */imports/* \
                          */3rdparty/*
 
-
+SHOW_FILES             = YES
 SHOW_NAMESPACES        = YES
 CLASS_GRAPH            = YES
 INCLUDE_GRAPH          = NO
