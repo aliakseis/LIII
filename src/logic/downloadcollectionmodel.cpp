@@ -426,12 +426,13 @@ void DownloadCollectionModel::addItemsToModel(const QStringList& urls, DownloadT
         }
         else if (DownloadType::isTorrentDownload(type))
         {
-            handle = TorrentManager::Instance()->addTorrent(l_strUrl, TreeItem::currentCounter() + 1, true);
+            auto id = TreeItem::currentCounter() + 1;
+            handle = TorrentManager::Instance()->addTorrent(l_strUrl, id, true);
             if (!handle.is_valid())
             {
-                if (1 == urls.size())
+                if (1 == urls.size() && id != nullItemID)
                 {
-                    if (TreeItem* item = findItemByURL(l_strUrl))
+                    if (TreeItem* item = getRootItem()->findItemByID(id))
                     {
                         emit existingItemAdded(index(item, 0));
                     }
@@ -1097,9 +1098,10 @@ void DownloadCollectionModel::init()
 
             const auto list = ti.torrentFilesPriorities();
             std::vector<boost::uint8_t> file_priorities(list.begin(), list.end());
+            auto id = ti.getID();
             libtorrent::torrent_handle handle = TorrentManager::Instance()->addTorrent(
                 torrOrMagnet,
-                ti.getID(),
+                id,
                 false/*without choose files dialog*/,
                 ti.torrentSavePath(),
                 file_priorities.empty()? nullptr : &file_priorities,

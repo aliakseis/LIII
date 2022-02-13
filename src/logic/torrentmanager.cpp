@@ -8,7 +8,7 @@
 #include <algorithm>
 #include <functional>
 #include <stdio.h>
-#include <boost/function_output_iterator.hpp>
+#include <boost/iterator/function_output_iterator.hpp>
 #include <libtorrent/version.hpp>
 #include <libtorrent/magnet_uri.hpp>
 #include <libtorrent/bencode.hpp>
@@ -408,7 +408,7 @@ void TorrentManager::setListeningPort(int firstPort, int lastPort)
 
 libtorrent::torrent_handle TorrentManager::addTorrent(
     const QString& torrOrMagnet, 
-    int id, 
+    ItemID& id,
     bool interactive /*= false*/, 
     const QString& savePath,
     const std::vector<boost::uint8_t>* file_priorities,
@@ -443,6 +443,7 @@ libtorrent::torrent_handle TorrentManager::addTorrent(
         {
             qDebug() << QString("Unable to decode torrent file: '%1', ERROR:%2").arg(torrOrMagnet, err.message().c_str());
             // TODO: handle error according to http://www.rasterbar.com/products/libtorrent/manual.html#error-code
+            id = nullItemID;
             return {};
         }
 
@@ -475,6 +476,7 @@ libtorrent::torrent_handle TorrentManager::addTorrent(
         libtorrent::torrent_handle duplicate_tor = m_session->find_torrent(hashFromQString(targetInfoHash));
         if (duplicate_tor.is_valid()) // errors::duplicate_torrent?
         {
+            id = TorrentsListener::instance().getItemID(duplicate_tor);
             // Merge trackers list
             if (interactive && mergeTrackers())
             {
@@ -499,6 +501,7 @@ libtorrent::torrent_handle TorrentManager::addTorrent(
         AddTorrentForm controlForm(&torrentParams, utilities::getMainWindow());
         if (controlForm.exec() == QDialog::Rejected)
         {
+            id = nullItemID;
             return {};
         }
     }

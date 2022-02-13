@@ -36,7 +36,7 @@ public:
     libtorrent::torrent_handle torrentByModelId(int id);
     libtorrent::torrent_handle addTorrent(
         const QString& torrOrMagnet, 
-        int id, 
+        ItemID& id,
         bool interactive = false, 
         const QString& savePath = "",
         const std::vector<boost::uint8_t>* file_priorities = nullptr,
