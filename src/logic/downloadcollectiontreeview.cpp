@@ -485,13 +485,14 @@ void DownloadCollectionTreeView::findItems()
         QString text = dialog.textValue();
         selectionModel()->select(QItemSelection(), QItemSelectionModel::Clear);
         bool first = true;
-        model()->forAll([this, text, &first](TreeItem & ti)
+        QItemSelection sel;
+        model()->forAll([this, text, &first, &sel](TreeItem & ti)
         {
             QString title = ti.getTitle();
             if (title.indexOf(text, 0, Qt::CaseInsensitive) != -1)
             {
                 const auto idx = model()->index(&ti, 0);
-                selectionModel()->select(idx, QItemSelectionModel::Select | QItemSelectionModel::Rows);
+                sel.append(QItemSelectionRange(idx));
                 if (first)
                 {
                     first = false;
@@ -499,6 +500,7 @@ void DownloadCollectionTreeView::findItems()
                 }
             }
         });
+        selectionModel()->select(sel, QItemSelectionModel::Select | QItemSelectionModel::Rows);
     }
 }
 

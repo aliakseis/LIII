@@ -47,13 +47,13 @@ DownloadManager::~DownloadManager()
 }
 
 
-void DownloadManager::startLoad()
+bool DownloadManager::startLoad()
 {
-    pushQueuedDownloads();
+    const bool modified = pushQueuedDownloads();
 
     if (!isPossibleStartDownload())
     {
-        return;
+        return modified;
     }
 
     if (!m_prepareTasks.isEmpty())
@@ -62,7 +62,7 @@ void DownloadManager::startLoad()
         if (taskIt != m_prepareTasks.end())
         {
             startTaskDownload((*taskIt)->task_id());
-            return;
+            return true;
         }
     }
 
@@ -75,9 +75,17 @@ void DownloadManager::startLoad()
         }))
     {
         auto l_item = it->copyItemDC();
-        if (!l_item.isValid() || createNewTask(l_item))
-            break;
+        if (!l_item.isValid())
+        {
+            return modified;
+        }
+        if (createNewTask(l_item))
+        {
+            return true;
+        }
     }
+
+    return modified;
 }
 
 void DownloadManager::onDownloadFinished(int a_id)
@@ -113,9 +121,8 @@ void DownloadManager::onDownloadFinished(int a_id)
 
 void DownloadManager::tryNewTask()
 {
-    if (!m_bStopDLManager)
+    if (!m_bStopDLManager && startLoad())
     {
-        startLoad();
         emit updateButtons();
     }
 }
@@ -378,12 +385,13 @@ void DownloadManager::siftDownloads()
     tryNewTask();
 }
 
-void DownloadManager::pushQueuedDownloads()
+bool DownloadManager::pushQueuedDownloads()
 {
     const int maxDl = GetMaximumNumberLoadsActual();
 
+    bool result = false;
     int firstClassTasks(0);
-    DownloadCollectionModel::instance().findItem([this, &firstClassTasks, maxDl](const TreeItem * ti)
+    DownloadCollectionModel::instance().findItem([this, &firstClassTasks, maxDl, &result](const TreeItem * ti)
     {
         if (firstClassTasks >= maxDl)
         {
@@ -394,6 +402,7 @@ void DownloadManager::pushQueuedDownloads()
         {
             auto tempItemDC = ti->copyItemDC();
             createNewTask(tempItemDC);
+            result = true;
             ++firstClassTasks;
         }
         else if (isActiveTask(*ti))
@@ -403,6 +412,8 @@ void DownloadManager::pushQueuedDownloads()
 
         return false;
     });
+
+    return result;
 }
 
 void DownloadManager::onItemsReordered()

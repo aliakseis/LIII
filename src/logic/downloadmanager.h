@@ -30,7 +30,7 @@ public:
 #endif // ALLOW_TRAFFIC_CONTROL
 
 public Q_SLOTS:
-    void startLoad();
+    bool startLoad();
     void on_deleteTaskWithID(int a_id, DownloadType::Type type, int deletWithFiles = 0);
     void on_pauseTaskWithID(int a_id, DownloadType::Type type);
     void siftDownloads();
@@ -62,5 +62,5 @@ private:
     void stopDLManager();
 
     bool isActiveTask(const TreeItem& ti) const;
-    void pushQueuedDownloads();
+    bool pushQueuedDownloads();
 };

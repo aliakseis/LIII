@@ -86,7 +86,7 @@ int main(int argc, char* argv[])
     processCommandLine(&w);
 
 #ifdef Q_OS_DARWIN
-    Darwin::SetApplicationHandler(w);
+    Darwin::SetApplicationHandler(&w);
     Darwin::OpenEventFilter* eventFiler = new Darwin::OpenEventFilter();
 
     app.installEventFilter(eventFiler);
