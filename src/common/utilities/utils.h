@@ -63,6 +63,7 @@ QStringList ParseUrls(const QString& data);
 bool DeserializeObject(QXmlStreamReader* stream, QObject* object, const QString& name = QString());
 void SerializeObject(QXmlStreamWriter* stream, QObject* object, const QString& name);
 QString SizeToString(quint64 size, int precision = 2, int fieldWidth = 0);
+QString EstimatedTimeToString(double time);
 QString ProgressString(double progress);
 
 // correct QString args handling

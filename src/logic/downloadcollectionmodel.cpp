@@ -250,28 +250,53 @@ QVariant DownloadCollectionModel::data(const QModelIndex& index, int role /* = Q
         return int(Qt::AlignLeft | Qt::AlignVCenter);
     }
 
+    auto* item = static_cast<TreeItem*>(index.internalPointer());
+    if (!item)
+    {
+        return {};
+    }
+
     const int l_colunm = index.column();
 
     if (role == Qt::ToolTipRole)
     {
-        if (l_colunm == eDC_Status)
+        switch (l_colunm)
         {
-            auto* l_item = static_cast<TreeItem*>(index.internalPointer());
-            if (l_item && l_item->getStatus() == ItemDC::eERROR)
+        case eDC_Status:
+            if (item->getStatus() == ItemDC::eERROR)
             {
-                QString errorDescr = l_item->errorDescription();
-                if (!DownloadType::isTorrentDownload(l_item->downloadType()))
+                QString errorDescr = item->errorDescription();
+                if (!DownloadType::isTorrentDownload(item->downloadType()))
                 {
                     QString tooltipText = ::Tr::Tr(
-                        utilities::ErrorCode::instance().getDescription(l_item->getErrorCode()));
+                        utilities::ErrorCode::instance().getDescription(item->getErrorCode()));
                     if (!errorDescr.isEmpty())
                     {
                         tooltipText += '\n' + errorDescr;
                     }
                     return tooltipText;
                 }
-                return (!errorDescr.isEmpty() ? tr("Error: ") + errorDescr : QString());
+                if (!errorDescr.isEmpty())
+                {
+                    return tr("Error: ") + errorDescr;
+                }
             }
+            break;
+        case eDC_percentDownl:
+            if (item->getStatus() == ItemDC::eDOWNLOADING)
+            {
+                const float speed = item->getSpeed();
+                if (speed > std::numeric_limits<float>::epsilon())
+                {
+                    const auto remaining = (item->size() - item->sizeCurrDownl()) / speed / 1024.;
+                    if (remaining > 0)
+                    {
+                        return tr("Estimated remaining time: %1").arg(utilities::EstimatedTimeToString(remaining));
+                    }
+                }
+            }
+            break;
+        default:
             return {};
         }
         return {};
@@ -282,21 +307,12 @@ QVariant DownloadCollectionModel::data(const QModelIndex& index, int role /* = Q
         // https://personal.sron.nl/~pault/#sec:qualitative
         static const QRgb palette[]
                 = { 0x332288, 0x88CCEE, 0x44AA99, 0x117733, 0x999933, 0xDDCC77, 0xCC6677, 0x882255, 0xAA4499 };
-        if (auto* item = static_cast<TreeItem*>(index.internalPointer()))
-        {
-            const int colorIdx = item->getStatus();
-            if (colorIdx >= 0 && colorIdx < sizeof(palette) / sizeof(palette[0]))
-                return QBrush(palette[colorIdx]);
-        }
+        const int colorIdx = item->getStatus();
+        if (colorIdx >= 0 && colorIdx < sizeof(palette) / sizeof(palette[0]))
+            return QBrush(palette[colorIdx]);
     }
 
     if (role != Qt::DisplayRole)
-    {
-        return {};
-    }
-
-    auto* item = static_cast<TreeItem*>(index.internalPointer());
-    if (!item)
     {
         return {};
     }

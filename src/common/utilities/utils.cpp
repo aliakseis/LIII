@@ -223,6 +223,23 @@ QString SizeToString(quint64 size, int precision, int fieldWidth)
     return QStringLiteral("%1 GB").arg(sizef, fieldWidth, 'f', precision);
 }
 
+QString EstimatedTimeToString(double time)
+{
+    if (time >= 99.5 * 3600)
+    {
+        return QObject::tr("%1 days").arg(time / (3600 * 24), 0, 'f', 0);
+    }
+    if (time >= 99.5 * 60)
+    {
+        return QObject::tr("%1 hours").arg(time / 3600, 0, 'f', 0);
+    }
+    if (time >= 99.5)
+    {
+        return QObject::tr("%1 minutes").arg(time / 60, 0, 'f', 0);
+    }
+    return QObject::tr("%1 seconds").arg(time, 0, 'f', 0);
+}
+
 QString ProgressString(double progress)
 {
     // We don't want to display 100% unless the torrent is really complete
