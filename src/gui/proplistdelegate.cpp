@@ -40,7 +40,7 @@ void PropListDelegate::paint(QPainter* painter, const QStyleOptionViewItem& opti
             initStyleOption(&opt, index);
             QApplication::style()->drawPrimitive(QStyle::PE_PanelItemViewItem, &opt, painter, opt.widget);
 
-            auto progressBarOption = getStyleOptionProgressBar();
+            auto progressBarOption = ui_utils::getStyleOptionProgressBar();
 
             progressBarOption.rect = option.rect.adjusted(2, 6, -2, -7);
 

@@ -72,7 +72,7 @@ int main(int argc, char* argv[])
     Application::setStyle(new LIIIStyle);
     if (QSettings().value(app_settings::EnableDarkMode, app_settings::EnableDarkMode_Default).toBool())
     {
-        setDarkTheme(true);
+        ui_utils::setDarkTheme(true);
     }
     app.retranslateApp(QSettings().value(app_settings::ln, app_settings::ln_Default).toString());
 

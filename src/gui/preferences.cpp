@@ -139,7 +139,7 @@ void Preferences::apply()
         if (enableDarkMode != settings.value(EnableDarkMode, EnableDarkMode_Default).toBool())
         {
             settings.setValue(EnableDarkMode, enableDarkMode);
-            setDarkTheme(enableDarkMode);
+            ui_utils::setDarkTheme(enableDarkMode);
         }
 
         int torrent_port = ui->torrentPortSettingEdit->text().toInt();

@@ -2,7 +2,7 @@
 
 #include <QApplication>
 
-QStyleOptionProgressBar getStyleOptionProgressBar()
+QStyleOptionProgressBar ui_utils::getStyleOptionProgressBar()
 {
     QStyleOptionProgressBar progressBarOption;
     progressBarOption.state = QStyle::State_Enabled;

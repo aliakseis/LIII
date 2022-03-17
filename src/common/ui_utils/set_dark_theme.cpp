@@ -4,7 +4,7 @@
 #include <QPalette>
 #include <QStyle>
 
-void setDarkTheme(bool enable)
+void ui_utils::setDarkTheme(bool enable)
 {
     if (enable)
     {

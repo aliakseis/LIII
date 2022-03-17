@@ -28,7 +28,7 @@ void DownloadCollectionDelegate::paint(QPainter* painter, const QStyleOptionView
     {
         // Set up a QStyleOptionProgressBar to precisely mimic the
         // environment of a progress bar.
-        auto progressBarOption = getStyleOptionProgressBar();
+        auto progressBarOption = ui_utils::getStyleOptionProgressBar();
         progressBarOption.state = option.state;
 #ifdef Q_OS_WIN
         progressBarOption.rect = option.rect.adjusted(2, 6, -2, -7);
