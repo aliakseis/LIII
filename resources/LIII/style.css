@@ -8,10 +8,10 @@ QWidget
 
 MainWindow DownloadCollectionTreeView
 {	
-    color: black;
+    /*color: black;
     selection-color:black;
     selection-background-color : qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-		stop: 0 #ecf5ff, stop: 0.5 #ddecff, stop: 1.0 #daebff);
+		stop: 0 #ecf5ff, stop: 0.5 #ddecff, stop: 1.0 #daebff);*/
     padding: 3px 6px 3px 6px;	
 }
 
@@ -26,8 +26,8 @@ MainWindow LineEditEx#linkEdit
 
 MainWindow LineEditEx#linkEdit[state="normal"]
 {
-    color: black;
-    border: 1px solid #949294;
+    /*color: black;*/
+    border: 1px solid /*#949294*/;
     border-right: 0px;
 }
 
@@ -40,22 +40,22 @@ MainWindow LineEditEx#linkEdit[state="error"]
 
 MainWindow ButtonLabel#lblClearText
 {
-    background: white;
+/*    background: white;*/
     background-image: url(:/stop_disabled.png);
     background-position: center;
     background-repeat: no-repeat;
     min-width: 25px;
     max-width: 25px;
-    border-top:1px solid #949294;
-    border-bottom:1px solid #949294;
+    border-top:1px solid /*#949294*/;
+    border-bottom:1px solid /*#949294*/;
     margin-bottom: 8px; 
     margin-top: 8px;
 }
 
 QHeaderView::section:horizontal
 {
-    background-color: #f4f4f4;
-    color: #595959;
+/*    background-color: #f4f4f4;
+    color: #595959;*/
     padding-left: 5px;
     border-left:none;
     border-right:1px solid #CFCFCF;
@@ -82,12 +82,12 @@ TorrentDetailsForm QTreeView#treeTorrentContent::indicator
     width: 0px;
     height: 0px;
 }
-
+/*
 TorrentDetailsForm QTreeView {
     color:black;
     selection-color:black;
 }
-
+*/
 
 QListWidget::item {
 	height: 25px;
@@ -97,12 +97,12 @@ QTreeView::item {
     height: 25px;
 }
 
-
+/*
 QListWidget::item:selected {
 	background-color: rgb(210,244,255);
 	color:black;
 }
-
+*/
 MainWindow #wTop
 {
     background-color: #595959;
@@ -114,7 +114,7 @@ QComboBox
 {
     border: 1px solid #cfcfcf;
     border-radius: 4px;
-    background-color: white;
+/*    background-color: white;*/
     margin-right: 0px;
     margin-top: 3px;
     margin-bottom: 3px;
@@ -131,11 +131,11 @@ QComboBox::drop-down
     subcontrol-origin: padding;
     subcontrol-position: center right;
     max-width: 15px;
-    background-color: white;
+/*    background-color: white;*/
     border-top-right-radius: 4px;
     border-bottom-right-radius: 4px;
 }
-
+/*
 QComboBox::drop-down:hover
 {
     background-color: #cfcfcf;
@@ -150,7 +150,7 @@ QComboBox::drop-down:on
 {
     background-color: #cfcfcf;
 }
-
+*/
 
 QComboBox::down-arrow
 {
@@ -176,8 +176,9 @@ QComboBox QAbstractItemView
 {
      border: 1px solid #cfcfcf;
      border-top: none;
+/*
      selection-background-color: #d1f3fc;
-     selection-color: black;
+     selection-color: black;*/
 }
 
 /* QCheckBox */

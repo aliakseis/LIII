@@ -72,4 +72,7 @@ const char ProxyAuthorizationLogin[] = "ProxyAuthorizationLogin";
 
 const char ProxyAuthorizationPassword[] = "ProxyAuthorizationPassword";
 
+const char EnableDarkMode[] = "EnableDarkMode";
+const bool EnableDarkMode_Default = false;
+
 } // namespace app_settings

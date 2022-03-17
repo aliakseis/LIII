@@ -17,5 +17,4 @@ AddLinksWidget::AddLinksWidget(QWidget* parent)
 
     setColumnWidth(0, 30);
     setColumnWidth(1, 380);
-    header()->setStyleSheet("QHeaderView::section:horizontal{background-color: #f4f4f4;} QHeaderView::section:horizontal:first{border-right-color: #f4f4f4;}");
 }

@@ -1,9 +1,7 @@
-#include <QDebug>
-#include <QApplication>
-#include <QProcess>
-
 #include "utilities/logger.h"
 #include "utilities/utils.h"
+
+#include "ui_utils/set_dark_theme.h"
 
 #include "configurableproxyfactory.h"
 
@@ -21,13 +19,17 @@
 #include "darwin/AppHandler.h"
 #endif //Q_OS_MAC
 
+#include <QDebug>
+#include <QApplication>
+#include <QProcess>
+#include <QStyleFactory>
+
 
 #if defined (QT_STATICPLUGINS) && !defined (Q_OS_DARWIN)
 #include <QtPlugin>
 Q_IMPORT_PLUGIN(qgif)
 Q_IMPORT_PLUGIN(qico)
 #endif//QT_STATICPLUGINS
-
 
 // Called once QCoreApplication exists
 static void ApplicationDependentInitialization()
@@ -68,6 +70,10 @@ int main(int argc, char* argv[])
     Application::setQuitOnLastWindowClosed(false);
 
     Application::setStyle(new LIIIStyle);
+    if (QSettings().value(app_settings::EnableDarkMode, app_settings::EnableDarkMode_Default).toBool())
+    {
+        setDarkTheme(true);
+    }
     app.retranslateApp(QSettings().value(app_settings::ln, app_settings::ln_Default).toString());
 
     DownloadCollectionModel::instance().init();

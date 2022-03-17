@@ -262,7 +262,7 @@
                  </font>
                 </property>
                 <property name="styleSheet">
-                 <string notr="true">background-color: rgb(255, 255, 255);</string>
+                 <string notr="true"/>
                 </property>
                </widget>
               </item>
@@ -298,6 +298,13 @@
                  <widget class="QCheckBox" name="startLIIIOnStartingWindows">
                   <property name="text">
                    <string>Start LIII when Windows starts up</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QCheckBox" name="cbEnableDarkMode">
+                  <property name="text">
+                   <string>Enable dark mode</string>
                   </property>
                  </widget>
                 </item>

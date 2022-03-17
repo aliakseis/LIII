@@ -11,12 +11,14 @@ include_directories(
 set(SRCS
 	getstyleoptionprogressbar.cpp
 	mainwindowwithtray.cpp
+	set_dark_theme.cpp
 	tabbeddialogcombo.cpp
 	taskbar.cpp
 )
 
 set(HDRS
 	getstyleoptionprogressbar.h
+	set_dark_theme.h
 	taskbar.h
 )
 

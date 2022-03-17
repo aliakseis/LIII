@@ -27,6 +27,8 @@
 #include "torrentmanager.h"
 #include "utilities/associate_app.h"
 
+#include "ui_utils/set_dark_theme.h"
+
 #include "globals.h"
 
 #include <chrono>
@@ -64,6 +66,8 @@ Preferences::Preferences(QWidget* parent, TAB tab)
     VERIFY(connect(ui->leFolder, SIGNAL(textEdited(const QString&)), SIGNAL(anyDataChanged())));
     VERIFY(connect(ui->maximumNumberLoads, SIGNAL(stateChanged(int)), SIGNAL(anyDataChanged())));
     VERIFY(connect(ui->cbHideAllTrayNotification, SIGNAL(stateChanged(int)), SIGNAL(anyDataChanged())));
+
+    VERIFY(connect(ui->cbEnableDarkMode, SIGNAL(stateChanged(int)), SIGNAL(anyDataChanged())));
 
     VERIFY(connect(this, SIGNAL(anyDataChanged()), SLOT(dataChanged())));
 
@@ -130,6 +134,13 @@ void Preferences::apply()
         settings.setValue(UnlimitedLabel, !ui->maximumNumberLoads->isChecked());
         settings.setValue(MaximumNumberLoads, ui->sbMaxNum->value());
         settings.setValue(ShowSysTrayNotifications, !ui->cbHideAllTrayNotification->isChecked());
+
+        const bool enableDarkMode = ui->cbEnableDarkMode->isChecked();
+        if (enableDarkMode != settings.value(EnableDarkMode, EnableDarkMode_Default).toBool())
+        {
+            settings.setValue(EnableDarkMode, enableDarkMode);
+            setDarkTheme(enableDarkMode);
+        }
 
         int torrent_port = ui->torrentPortSettingEdit->text().toInt();
         if (torrent_port < 1 || torrent_port > maxPort)
@@ -418,6 +429,8 @@ void Preferences::initMainSettings()
     ui->sbTrafficLimit->setValue(settings.value(TrafficLimitKbs, TrafficLimitKbs_Default).toInt());
 
     ui->cbHideAllTrayNotification->setChecked(!settings.value(ShowSysTrayNotifications, true).toBool());
+
+    ui->cbEnableDarkMode->setChecked(settings.value(EnableDarkMode, EnableDarkMode_Default).toBool());
 
     ui->chbUseProxy->setChecked(settings.value(UseProxy, UseProxy_Default).toBool());
     ui->leProxyAddress->setText(settings.value(ProxyAddress).toString());

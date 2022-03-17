@@ -19,6 +19,10 @@ QRect windowsClassicBug;
 
 } // namespace
 
+LIIIStyle::LIIIStyle() : QProxyStyle("Fusion")
+{
+}
+
 void LIIIStyle::drawControl(ControlElement element, const QStyleOption* option, QPainter* painter, const QWidget* widget) const
 {
     if (qobject_cast<const QProgressBar*>(widget) != nullptr)

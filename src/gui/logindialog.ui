@@ -24,8 +24,7 @@
     <normaloff>:/icon.ico</normaloff>:/icon.ico</iconset>
   </property>
   <property name="styleSheet">
-   <string notr="true">QDialog{background-color:white     }
-</string>
+   <string notr="true"/>
   </property>
   <widget class="QWidget" name="">
    <property name="geometry">
