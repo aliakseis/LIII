@@ -24,12 +24,12 @@ set(SOURCES_
 	qtsinglecoreapplication.cpp
 )
 
-if(UNIX)
-	set(SOURCES_
-		${SOURCES_}
-		qtlockedfile_unix.cpp
-	)
-endif(UNIX)
+#if(UNIX)
+#	set(SOURCES_
+#		${SOURCES_}
+#		qtlockedfile_unix.cpp
+#	)
+#endif(UNIX)
 
 source_group("sources" FILES
 	${HEADERS_TOMOC_}
