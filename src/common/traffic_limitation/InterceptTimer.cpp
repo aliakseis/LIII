@@ -10,7 +10,7 @@
 #else
 #include <sys/ioctl.h>
 QT_BEGIN_INCLUDE_NAMESPACE
-#include <../mkspecs/common/posix/qplatformdefs.h>
+//#include <../mkspecs/common/posix/qplatformdefs.h>
 #include <private/qnet_unix_p.h>
 QT_END_INCLUDE_NAMESPACE
 #endif
