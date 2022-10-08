@@ -1,9 +1,6 @@
 # LIII
 multi-platform bittorrent client
 
-# Please raise your voice against the war!
-![x1080](x1080.jpg)
-
 ## Windows development/build environment:
 * CMake
 * Microsoft Visual Studio Community 2017 / Microsoft Visual C++ 2017
