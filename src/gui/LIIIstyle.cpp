@@ -4,6 +4,7 @@
 #include <QComboBox>
 #include <QAbstractItemView>
 #include <QProgressBar>
+#include <QPainterPath>
 
 #ifdef Q_OS_WIN
 enum { ROUND_RADIUS = 3 };
