@@ -172,8 +172,7 @@ void DownloadTask::notifyIfFinished()
 
 void DownloadTask::onProgress(qint64 downloadedSize)
 {
-    ItemDC it;
-    it.setID(task_id_);
+    ItemDC it(task_id());
 
     if (downloader_->totalFileSize())
     {
@@ -187,8 +186,7 @@ void DownloadTask::onProgress(qint64 downloadedSize)
 
 void DownloadTask::onSpeed(qint64 bytesPerSecond)
 {
-    ItemDC it;
-    it.setID(task_id_);
+    ItemDC it(task_id());
     it.setSpeed(bytesPerSecond / 1000.);
     DownloadCollectionModel::instance().on_speedChange(it);
 }
@@ -215,8 +213,7 @@ void DownloadTask::onFileCreated(const QString& filename)
 {
     filename_ = filename;
 
-    ItemDC it;
-    it.setID(task_id());
+    ItemDC it(task_id());
     it.setDownloadedFileName(filename);
     DownloadCollectionModel::instance().on_downloadedFileNameChange(it);
 }
@@ -224,8 +221,7 @@ void DownloadTask::onFileCreated(const QString& filename)
 
 void DownloadTask::setStatusInModel(ItemDC::eSTATUSDC a_status, int arg /* = 0*/)
 {
-    ItemDC it;
-    it.setID(task_id_);
+    ItemDC it(task_id());
     it.setStatus(a_status);
     DownloadCollectionModel::instance().on_statusChange(it);
 }
@@ -248,8 +244,7 @@ void DownloadTask::setSpeedLimit(int kbps)
     if (downloader_.data())
     {
         downloader_->setSpeedLimit(kbps);
-        ItemDC it;
-        it.setID(task_id_);
+        ItemDC it(task_id());
         it.setSpeed(std::min(static_cast<float>(kbps), getSpeed()));
         DownloadCollectionModel::instance().on_speedChange(it);
     }

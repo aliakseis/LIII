@@ -37,8 +37,8 @@ class ItemDC
     Q_OBJECT
     Q_ENUMS(eSTATUSDC)
 public:
-    ItemDC()
-        : m_ID(nullItemID)
+    ItemDC(ItemID id = nullItemID)
+        : m_ID(id)
         , m_eStatus(eQUEUED)
         , m_speed(0)
         , m_speedUpload(0)

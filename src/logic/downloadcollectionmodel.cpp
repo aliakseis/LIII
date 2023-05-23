@@ -858,9 +858,8 @@ void DownloadCollectionModel::deactivateDownloadItem(TreeItem* itmSource)
 
 void DownloadCollectionModel::doSetPauseStopDownloadItem(TreeItem* itmSource, ItemDC::eSTATUSDC itemStatus)
 {
-    int id = itmSource->getID();
-    ItemDC l_oItm;
-    l_oItm.setID(id);
+    const auto id = itmSource->getID();
+    ItemDC l_oItm(id);
     if (DownloadType::isTorrentDownload(itmSource->downloadType()))
     {
         libtorrent::torrent_handle handle = TorrentManager::Instance()->torrentByModelId(id);
@@ -894,7 +893,7 @@ void DownloadCollectionModel::setContinueDownloadItem(const QModelIndex& a_index
 
 void DownloadCollectionModel::setContinueDownloadItem(TreeItem* itmSource)
 {
-    int id = itmSource->getID();
+    const auto id = itmSource->getID();
     ItemDC::eSTATUSDC status = itmSource->getStatus();
     if (DownloadType::isTorrentDownload(itmSource->downloadType()))
     {
@@ -916,8 +915,7 @@ void DownloadCollectionModel::setContinueDownloadItem(TreeItem* itmSource)
             return;
         }
     }
-    ItemDC l_oItm;
-    l_oItm.setID(id);
+    ItemDC l_oItm(id);
     l_oItm.setStatus(ItemDC::eQUEUED);
     on_statusChange(l_oItm);
 

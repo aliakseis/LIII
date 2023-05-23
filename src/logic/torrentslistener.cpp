@@ -155,8 +155,7 @@ void TorrentsListener::handler(libtorrent::stats_alert const& a)
 
     if (status.state == libtorrent::torrent_status::downloading)
     {
-        ItemDC item;
-        item.setID(getItemID(a.handle));
+        ItemDC item(getItemID(a.handle));
         item.setSize(status.total_wanted);
         item.setSizeCurrDownl(status.total_wanted_done);
         item.setShareRatio(getShareRatio(status));
@@ -176,8 +175,7 @@ void TorrentsListener::handler(libtorrent::stats_alert const& a)
         || status.state == libtorrent::torrent_status::finished)
     {
         const float uploadSpeed = status.upload_payload_rate / 1024.0;
-        ItemDC item;
-        item.setID(getItemID(a.handle));
+        ItemDC item(getItemID(a.handle));
         item.setShareRatio(getShareRatio(status));
         item.setSpeedUpload(uploadSpeed);
         emit speedChange(item);
@@ -194,8 +192,7 @@ void TorrentsListener::handler(libtorrent::torrent_removed_alert const& a)
 void TorrentsListener::handler(libtorrent::torrent_paused_alert const& a)
 {
     TRACE_ALERT
-    ItemDC item;
-    item.setID(getItemID(a.handle));
+    ItemDC item(getItemID(a.handle));
     const auto newStatus 
         = (a.handle.is_seed() || a.handle.is_finished()) ? ItemDC::eFINISHED : ItemDC::ePAUSED;
     item.setStatus(newStatus);
@@ -211,9 +208,8 @@ void TorrentsListener::handler(libtorrent::torrent_resumed_alert const& a)
     TRACE_ALERT
     if (a.handle.is_seed() || a.handle.is_finished())
     {
-        ItemDC item;
+        ItemDC item(getItemID(a.handle));
         item.setStatus(ItemDC::eSEEDING);
-        item.setID(getItemID(a.handle));
         emit statusChange(item);
     }
 }
@@ -221,8 +217,7 @@ void TorrentsListener::handler(libtorrent::torrent_resumed_alert const& a)
 void TorrentsListener::handler(libtorrent::file_error_alert const& a)
 {
     TRACE_ALERT
-    ItemDC item;
-    item.setID(getItemID(a.handle));
+    ItemDC item(getItemID(a.handle));
     item.setStatus(ItemDC::eERROR);
     item.setErrorDescription(QString::fromLocal8Bit(a.error.message().c_str()));
     emit statusChange(item);
@@ -246,8 +241,7 @@ void TorrentsListener::handler(libtorrent::metadata_received_alert const& a)
 void TorrentsListener::handler(libtorrent::storage_moved_alert const& a)
 {
     TRACE_ALERT
-    ItemDC item;
-    item.setID(getItemID(a.handle));
+    ItemDC item(getItemID(a.handle));
     item.setTorrentSavePath(a.storage_path());
     emit torrentMoved(item);
 }
@@ -292,8 +286,7 @@ void TorrentsListener::handler(libtorrent::save_resume_data_alert const& a)
 void TorrentsListener::handler(libtorrent::state_changed_alert const& a)
 {
     TRACE_ALERT
-    ItemDC item;
-    item.setID(getItemID(a.handle));
+    ItemDC item(getItemID(a.handle));
 
     switch (a.state)
     {
@@ -401,8 +394,7 @@ void TorrentsListener::handleItemMetadata(const libtorrent::torrent_handle& hand
     {
         auto status = handle.status(
                     libtorrent::torrent_handle::query_name | libtorrent::torrent_handle::query_save_path);
-        ItemDC item;
-        item.setID(getItemID(handle));
+        ItemDC item(getItemID(handle));
         item.setSize(status.total_wanted);
         item.setDownloadedFileName(QString::fromStdString(status.name));
         item.setSource("Torrent");
