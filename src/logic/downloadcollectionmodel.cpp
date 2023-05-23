@@ -1150,4 +1150,5 @@ void DownloadCollectionModel::on_torrentMoved(const ItemDC& a_item)
     TreeItem* item = getRootItem()->findItemByID(a_item.getID());
     item->setTorrentSavePath(a_item.torrentSavePath());
     // No data update in view? Ok.
+    queueSaveToFile();
 }

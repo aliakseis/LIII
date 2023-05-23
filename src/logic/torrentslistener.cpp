@@ -248,7 +248,7 @@ void TorrentsListener::handler(libtorrent::storage_moved_alert const& a)
     TRACE_ALERT
     ItemDC item;
     item.setID(getItemID(a.handle));
-    item.setTorrentSavePath(QString::fromStdString(a.handle.save_path()));
+    item.setTorrentSavePath(a.storage_path());
     emit torrentMoved(item);
 }
 
