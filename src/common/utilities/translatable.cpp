@@ -73,7 +73,7 @@ QString locationString(const QString& fileName)
     QString locName;
 
     // parse location from filenames like LIII_en(-us)?.qm ONLY
-    QRegExp rx("^.+_(\\S{2}(?:-\\S{2})?)\\.qm$", Qt::CaseInsensitive);
+    QRegExp rx(R"(^.+_(\S{2}(?:-\S{2})?)\.qm$)", Qt::CaseInsensitive);
     if (rx.exactMatch(fileName))
     {
         locName = rx.cap(1).toLower();

@@ -48,7 +48,7 @@ void Retranslate(QObject* obj)
     QVariant variant = obj->property(kProperty);
     if (variant.canConvert<TranslationRules>())
     {
-        TranslationRules rules = variant.value<TranslationRules>();
+        auto rules = variant.value<TranslationRules>();
         for (auto it = rules.begin(); it != rules.end(); ++it)
         {
             it.key()->execute(it.value()->GetText());

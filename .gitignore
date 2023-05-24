@@ -216,5 +216,5 @@ pip-log.txt
 .mr.developer.cfg
 
 ipch/
-build/
+build64/
 Output/

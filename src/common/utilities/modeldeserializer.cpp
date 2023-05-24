@@ -167,11 +167,6 @@ public:
 namespace utilities
 {
 
-
-const QString classNameAttribute(kClassNameAttribute);
-const QString objectIdAttribute(kObjectIdAttribute);
-const QString keyValueAttribute(kKeyValueAttribute);
-
 const int qObjectListId = qMetaTypeId<QObjectList>();
 const int qStringListId = qMetaTypeId<QStringList>();
 const int qObjectMapId = qMetaTypeId<QObjectMap>();

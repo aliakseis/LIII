@@ -17,10 +17,9 @@ Q_DECLARE_METATYPE(QObjectMap)
 namespace utilities
 {
 
-const char kClassNameAttribute[] = "className";
-const char kKeyValueAttribute[] = "keyValue";
-const char kObjectIdAttribute[] = "objectId";
-const char kObjectNameProperty[] = "objectName";
+extern const QString classNameAttribute;
+extern const QString objectIdAttribute;
+extern const QString keyValueAttribute;
+extern const char kObjectNameProperty[];
 
 } // namespace utilities
-

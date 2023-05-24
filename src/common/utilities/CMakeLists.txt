@@ -57,6 +57,7 @@ set(SOURCES
 	utils.cpp
 	modelserializer.cpp
 	modeldeserializer.cpp
+	modelserializecommon.cpp
 	customutf8codec.cpp
 	windowsfirewall.cpp
 	filesystem_utils.cpp

@@ -103,7 +103,7 @@ QString primitiveTypeToString<QCborSimpleType>(QVariant&, StringCache&)
 template<>
 QString primitiveTypeToString<bool>(QVariant& v, StringCache&)
 {
-    static const QString values[2] = { "0", "1" };
+    static const QString values[2] = { QStringLiteral("0"), QStringLiteral("1") };
     return values[v.toBool()];
 }
 
@@ -118,11 +118,6 @@ QString primitiveTypeToString<double>(QVariant& v, StringCache&)
 {
     return v.toString();
 }
-
-
-const QString classNameAttribute(kClassNameAttribute);
-const QString objectIdAttribute(kObjectIdAttribute);
-const QString keyValueAttribute(kKeyValueAttribute);
 
 
 void ModelSerializer::serializeObjectInternal(
@@ -172,7 +167,7 @@ void ModelSerializer::serializeObjectInternal(
             if (QVariant::StringList == value.type())
             {
                 QStringList qStringList = value.toStringList();
-                QString separatedList = qStringList.join("|");
+                QString separatedList = qStringList.join(QStringLiteral("|"));
                 m_stream.writeAttribute(propName, separatedList);
             }
             else

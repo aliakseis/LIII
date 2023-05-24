@@ -24,7 +24,7 @@ Q_SIGNALS:
     void authNeedLogin(utilities::ICredentialsRetriever* icr);
 
 protected:
-    inline void getAuthentication(int& counter, QAuthenticator* authenticator);
+	void getAuthentication(int& counter, QAuthenticator* authenticator);
 
 private:
     int m_proxyCounter;

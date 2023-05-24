@@ -256,7 +256,7 @@ QString GetFileName(QNetworkReply* reply)
         if (!filename.isEmpty())
         {
             QString disposition = QString::fromUtf8(filename.constData());
-            QRegExp rx("filename\\s?=\\s?\\\"?([^\\\"]+)");
+            QRegExp rx(R"(filename\s?=\s?\"?([^\"]+))");
             if (rx.indexIn(disposition) != -1)
             {
                 result = rx.cap(1);
