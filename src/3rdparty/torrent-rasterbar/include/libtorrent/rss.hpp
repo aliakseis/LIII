@@ -38,6 +38,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #include <boost/enable_shared_from_this.hpp>
 #include <string>
+#include <map>
 
 #ifndef TORRENT_NO_DEPRECATE
 namespace libtorrent

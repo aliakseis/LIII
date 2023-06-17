@@ -218,3 +218,4 @@ pip-log.txt
 ipch/
 build64/
 Output/
+.vs/
