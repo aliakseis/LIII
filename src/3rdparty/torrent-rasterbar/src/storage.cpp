@@ -248,6 +248,9 @@ namespace libtorrent
 			{
 				TORRENT_ASSERT(m_storage.m_part_file);
 
+				if (!m_storage.m_part_file)
+					return -1;
+
 				error_code e;
 				peer_request map = m_storage.files().map_file(file_index
 					, file_offset, 0);
@@ -1484,7 +1487,7 @@ namespace libtorrent
 
 			int bytes_transferred = op.file_op(file_index, file_offset,
 				file_bytes_left, tmp_buf, ec);
-			if (ec) return -1;
+			if (ec || bytes_transferred == -1) return -1;
 
 			// advance our position in the iovec array and the file offset.
 			advance_bufs(current_buf, bytes_transferred);
