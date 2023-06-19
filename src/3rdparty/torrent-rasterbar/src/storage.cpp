@@ -342,6 +342,9 @@ namespace libtorrent
 			{
 				TORRENT_ASSERT(m_storage.m_part_file);
 
+				if (!m_storage.m_part_file)
+					return -1;
+
 				error_code e;
 				peer_request map = m_storage.files().map_file(file_index
 					, file_offset, 0);
