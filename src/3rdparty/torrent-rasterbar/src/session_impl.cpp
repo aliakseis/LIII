@@ -183,6 +183,32 @@ namespace boost {
 }
 #endif
 
+/*
+The `close_for_destruction` function in Boost.Asio is designed to provide a faster way 
+to close sockets than the ordinary `close` function.
+When a socket is closed using the `close` function, the operating system typically waits for all pending data 
+to be sent or received before closing the socket. This can add latency to the close operation, 
+especially if there is a significant amount of data pending.
+On the other hand, the `close_for_destruction` function in Boost.Asio is a non-blocking call 
+that immediately marks the socket for destruction, even if there is pending data. 
+The function returns immediately without waiting for the pending data to be sent or received. 
+The actual socket closure and destruction happen later, typically when the Boost.Asio io_context is run.
+Using `close_for_destruction` can be beneficial in certain scenarios 
+where you want to minimize latency and prioritize quick cleanup 
+at the expense of potentially losing some pending data. 
+However, it's important to note that `close_for_destruction` should be used with caution. 
+If there is important pending data that needs to be sent/received reliably, 
+it's generally safer to use the regular `close` function to ensure 
+that the data is properly handled before the socket is closed.
+In summary, `close_for_destruction` in Boost.Asio can offer faster socket closure, 
+but it may come at the cost of losing pending data. 
+Whether or not to use it depends on your specific application requirements and trade-offs.
+*/
+
+#define SPEED_UP_SHUTDOWN 1
+
+#if SPEED_UP_SHUTDOWN
+
 template<> class boost::asio::basic_socket_acceptor<int, bool>
 {
 public:
@@ -200,6 +226,7 @@ auto& get_impl(T* sa)
 
 }
 
+#endif
 
 namespace libtorrent {
 
@@ -1110,10 +1137,13 @@ namespace aux {
 		for (std::list<listen_socket_t>::iterator i = m_listen_sockets.begin()
 			, end(m_listen_sockets.end()); i != end; ++i)
 		{
-            //i->sock->close(ec);
-            //TORRENT_ASSERT(!ec);
+#if SPEED_UP_SHUTDOWN
             auto& impl = get_impl(i->sock.get());
             impl.get_service().destroy(impl.get_implementation());
+#else
+			i->sock->close(ec);
+			TORRENT_ASSERT(!ec);
+#endif
 		}
 		m_listen_sockets.clear();
 
