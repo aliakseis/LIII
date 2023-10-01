@@ -37,7 +37,7 @@ unset(Boost_INCLUDE_DIR CACHE)
 
 set(CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH FALSE)
 
-project(${PROJECT_NAME} VERSION 0.1.1.19)
+project(${PROJECT_NAME} VERSION 0.1.1.20)
 message("Building ${PROJECT_NAME} version ${PROJECT_VERSION}")
 
 ###################################################
