@@ -322,11 +322,14 @@ void TorrentManager::close()
     bencode(std::back_inserter(out), session_state);
     dlcModel->setTorrentSessionState(out.toBase64());
 
-    //
     m_resumeDataTimer.stop();
 
     // Avoid setting model items' states to paused
     TorrentsListener::instance().disconnect(dlcModel);
+
+    // Save the configuration prior to lengthy operation on exit 
+    dlcModel->saveToFile();
+
     // Pause session
     m_session->pause();
 
