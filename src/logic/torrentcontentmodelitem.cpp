@@ -195,10 +195,10 @@ float TorrentContentModelItem::getProgress() const
     {
         return -1;
     }
-    qulonglong size = getSize();
+    const qulonglong size = getSize();
     if (size > 0)
     {
-        return m_totalDone / (float) getSize();
+        return m_totalDone / static_cast<float>(size);
     }
     return 1.;
 }
@@ -244,7 +244,7 @@ void TorrentContentModelItem::setPriority(int new_prio, bool update_parent)
     // Update children
     if (new_prio != prio::PARTIAL && !m_childItems.empty())
     {
-        qDebug("Updating children items");
+        qDebug("Updating child items");
         for (TorrentContentModelItem* child : qAsConst(m_childItems))
         {
             // Do not update the parent since
