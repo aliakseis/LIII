@@ -426,7 +426,7 @@ add_executable(${PROJECT_NAME}
 
 	set(QTX_QTMAIN_LIBRARY ${Qt5Core_QTMAIN_LIBRARIES})
 
-target_link_libraries(${PROJECT_NAME}
+target_link_libraries(${PROJECT_NAME} PRIVATE
 	${QTX_QTMAIN_LIBRARY}
 	${FUNCTIONAL_MODULE}
 )
@@ -533,6 +533,23 @@ INSTALL_QT(${PROJECT_NAME} ${QT_COMPONENTS_TO_USE})
 INSTALL_QT_PLUGINS(${PROJECT_NAME})
 INSTALL_OPENSSL(${PROJECT_NAME})
 INSTALL_RUNTIME_LIBRARIES()
+
+# vcpkg stuff
+if(MSVC)
+        set(OUT_BINARY_FILE "${CMAKE_INSTALL_PREFIX}/${PROJECT_NAME}.exe")
+        get_filename_component(CMAKE_TOOLCHAIN_DIRECTORY ${CMAKE_TOOLCHAIN_FILE} DIRECTORY)
+
+        if (CMAKE_SIZEOF_VOID_P EQUAL 8)
+            set( CMAKE_INSTALL_PLATFORM "x64-windows" )
+        else ()
+            set( CMAKE_INSTALL_PLATFORM "x86-windows" )
+        endif ()
+
+        install(CODE "execute_process(COMMAND \"powershell\" \"-noprofile\" \"-executionpolicy\" \"Bypass\"
+            \"-file\" \"${CMAKE_TOOLCHAIN_DIRECTORY}/msbuild/applocal.ps1\" \"-targetBinary\" \"${OUT_BINARY_FILE}\"
+            \"-installedDir\" \"${CMAKE_TOOLCHAIN_DIRECTORY}/../../installed/${CMAKE_INSTALL_PLATFORM}/bin\" \"-OutVariable\" \"out\")"
+        )
+endif()
 
 
 if(DEVELOPER_FEATURES)
