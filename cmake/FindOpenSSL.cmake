@@ -1,12 +1,22 @@
 # Find OpenSSL script
 
 if(WIN32)
+
+  unset(OPENSSL_ROOT_DIR CACHE)
+  unset(OPENSSL_INCLUDE_DIR CACHE)
+
   set(CMAKE_MODULE_PATH_TEMP ${CMAKE_MODULE_PATH})
   unset(CMAKE_MODULE_PATH)
   find_package(OpenSSL)
   set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH_TEMP})
   if (OPENSSL_FOUND)
-	set(OPENSSL_BINARY_DIR ${OPENSSL_ROOT_DIR}/bin CACHE PATH "path to openSSL dlls" FORCE)
+	if (OPENSSL_ROOT_DIR)
+		set(OPENSSL_BINARY_DIR ${OPENSSL_ROOT_DIR}/bin CACHE PATH "path to openSSL dlls" FORCE)
+	else()
+		set(OPENSSL_BINARY_DIR ${OPENSSL_INCLUDE_DIR}/../bin CACHE PATH "path to openSSL dlls" FORCE)
+	endif()
+	message( STATUS "Found openssl binary directory: ${OPENSSL_BINARY_DIR}" )
+	message( STATUS "Found openssl include directory: ${OPENSSL_INCLUDE_DIR}" )
   else ()
 	if( CMAKE_SIZEOF_VOID_P EQUAL 8 )
 		message( STATUS "Searching 64bit openssl library" )
@@ -82,9 +92,8 @@ if(NOT WIN32)
 endif(NOT WIN32)
 
 macro(INSTALL_OPENSSL)
-  if(WIN32)
-	if (NOT OPENSSL_FOUND)
-		FILE(GLOB OPENSSL_DLLS "${OPENSSL_BINARY_DIR}/*.dll")
+	if(WIN32)
+		FILE(GLOB OPENSSL_DLLS "${OPENSSL_BINARY_DIR}/libcrypto*.dll" "${OPENSSL_BINARY_DIR}/libssl*.dll")
 		install(
 			FILES ${OPENSSL_DLLS}
 			DESTINATION .
@@ -95,6 +104,5 @@ macro(INSTALL_OPENSSL)
 					${CMAKE_COMMAND} -E copy \"${dllFile}\" $<TARGET_FILE_DIR:${PROJECT_NAME}>
 		)
 		endforeach(dllFile ${OPENSSL_LIBRARIES})
-	endif ()
-  endif(WIN32)
+	endif(WIN32)
 endmacro(INSTALL_OPENSSL)
