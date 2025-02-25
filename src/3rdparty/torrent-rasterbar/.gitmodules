@@ -1,3 +1,0 @@
-[submodule "simulation/libsimulator"]
-	path = simulation/libsimulator
-	url = https://github.com/arvidn/libsimulator.git
