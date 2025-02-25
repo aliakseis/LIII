@@ -70,6 +70,7 @@ jobs:
             -DCMAKE_BUILD_TYPE=RelWithDebInfo `
             -DCMAKE_EXPORT_COMPILE_COMMANDS=ON `
             -DBOOST_ROOT="${{ env.boost_path }}" `
+            -DCMAKE_MODULE_PATH="${{ env.boost_path }}/lib/cmake" `
             -DMSVC_RUNTIME_DYNAMIC=ON `
             -DVERBOSE_CONFIGURE=ON
           cmake --build build
