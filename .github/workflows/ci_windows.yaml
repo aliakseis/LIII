@@ -68,8 +68,8 @@ jobs:
         uses: jurplel/install-qt-action@v4
         with:
           version: "5.15.2"
-          arch: "${{ matrix.qt_arch }}"
-          modules: qtbase qttools
+          arch: ${{ matrix.qt_arch }}
+          archives: qtbase qttools
           cache: true
 
       - name: Build LIII
