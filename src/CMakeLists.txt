@@ -28,7 +28,6 @@ include_directories(
 ###  END OF SECTION Paths
 ###################################################
 
-VersionConf(${PROJECT_NAME} ${RESOURCE_OS_IN} ${RESOURCE_OS})
 
 ###################################################
 ###  SECTION Modules 
@@ -330,6 +329,8 @@ source_group("qm-files" FILES ${QM_FILES})
 ###################################################
 ###  END OF SECTION Translations
 ###################################################
+
+VersionConf(${PROJECT_NAME} ${RESOURCE_OS_IN} ${RESOURCE_OS})
 
 
 ###################################################
