@@ -52,7 +52,7 @@ jobs:
           move "${{ github.workspace }}/../boost_*" "${{ env.boost_path }}"
           cd "${{ env.boost_path }}"
           .\bootstrap.bat
-          .\b2.exe stage --stagedir=.\ --with-headers
+          .\b2.exe stage --stagedir=.\ --with-headers --with-system --with-chrono --with-random --with-atomic --with-date_time
 
       - name: Install Qt
         uses: jurplel/install-qt-action@v4

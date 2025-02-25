@@ -3,9 +3,9 @@ project(libtorrent)
 set (SOVERSION "8")
 set (VERSION "1.1.6")
 
-if(POLICY CMP0167)
-  cmake_policy(SET CMP0167 NEW)
-endif()
+#if(POLICY CMP0167)
+#  cmake_policy(SET CMP0167 NEW)
+#endif()
 
 
 
