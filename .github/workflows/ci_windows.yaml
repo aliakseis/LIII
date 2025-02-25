@@ -22,8 +22,10 @@ jobs:
         include:
           - platform: x86
             arch: Win32
+            qt_arch: win64_msvc2019
           - platform: x64
             arch: x64
+            qt_arch: win64_msvc2019_64
 
     env:
       boost_path: "${{ github.workspace }}/../boost"
@@ -68,7 +70,7 @@ jobs:
         uses: jurplel/install-qt-action@v4
         with:
           version: "5.15.2"
-          arch: win64_msvc2019_64
+          arch: ${{ matrix.qt_arch }}
           modules: qtbase qttools
           cache: true
 
