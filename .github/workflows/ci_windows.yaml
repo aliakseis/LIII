@@ -33,7 +33,6 @@ jobs:
         uses: actions/checkout@v4
         with:
           persist-credentials: false
-          submodules: true  # Ensure submodules are checked out
 
       - name: Setup devcmd
         uses: ilammy/msvc-dev-cmd@v1
