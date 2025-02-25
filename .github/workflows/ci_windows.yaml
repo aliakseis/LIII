@@ -69,7 +69,7 @@ jobs:
             -G "Ninja" `
             -DCMAKE_BUILD_TYPE=RelWithDebInfo `
             -DCMAKE_EXPORT_COMPILE_COMMANDS=ON `
-            -DBOOST_ROOT="${{ env.boost_path }}/lib/cmake" `
+            -DBOOST_ROOT="${{ env.boost_path }}" `
             -DMSVC_RUNTIME_DYNAMIC=ON `
             -DVERBOSE_CONFIGURE=ON
           cmake --build build
