@@ -39,8 +39,7 @@ jobs:
 
       - name: Install build tools
         run: |
-          if ((Get-Command "ninja.exe" -ErrorAction SilentlyContinue) -eq $null)
-          {
+          if ((Get-Command "ninja.exe" -ErrorAction SilentlyContinue) -eq $null) {
              choco install ninja
           }
           where.exe ninja
@@ -56,8 +55,7 @@ jobs:
           $boost_url2="https://sourceforge.net/projects/boost/files/boost/${{ env.BOOST_MAJOR_VERSION }}.${{ env.BOOST_MINOR_VERSION }}.${{ env.BOOST_PATCH_VERSION }}/boost_${{ env.BOOST_MAJOR_VERSION }}_${{ env.BOOST_MINOR_VERSION }}_${{ env.BOOST_PATCH_VERSION }}.tar.gz"
           curl -L -o "${{ runner.temp }}/boost.tar.gz" "$boost_url"
           tar -xf "${{ runner.temp }}/boost.tar.gz" -C "${{ github.workspace }}/.."
-          if ($LastExitCode -ne 0)
-          {
+          if ($LastExitCode -ne 0) {
             curl -L -o "${{ runner.temp }}/boost.tar.gz" "$boost_url2"
             tar -xf "${{ runner.temp }}/boost.tar.gz" -C "${{ github.workspace }}/.."
           }
@@ -70,7 +68,7 @@ jobs:
         uses: jurplel/install-qt-action@v4
         with:
           version: "5.15.2"
-          arch: ${{ matrix.qt_arch }}
+          arch: "${{ matrix.qt_arch }}"
           modules: qtbase qttools
           cache: true
 
