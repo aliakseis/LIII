@@ -51,11 +51,12 @@ jobs:
           BOOST_MINOR_VERSION: "86"
           BOOST_PATCH_VERSION: "0"
         run: |
-          $boost_url="https://boostorg.jfrog.io/artifactory/main/release/${{ env.BOOST_MAJOR_VERSION }}.${{ env.BOOST_MINOR_VERSION }}.${{ env.BOOST_PATCH_VERSION }}/source/boost_${{ env.BOOST_MAJOR_VERSION }}_${{ env.BOOST_MINOR_VERSION }}_${{ env.BOOST_PATCH_VERSION }}.tar.gz"
+          $boost_url="https://archives.boost.io/release/${{ env.BOOST_MAJOR_VERSION }}.${{ env.BOOST_MINOR_VERSION }}.${{ env.BOOST_PATCH_VERSION }}/source/boost_${{ env.BOOST_MAJOR_VERSION }}_${{ env.BOOST_MINOR_VERSION }}_${{ env.BOOST_PATCH_VERSION }}.tar.gz"
           $boost_url2="https://sourceforge.net/projects/boost/files/boost/${{ env.BOOST_MAJOR_VERSION }}.${{ env.BOOST_MINOR_VERSION }}.${{ env.BOOST_PATCH_VERSION }}/boost_${{ env.BOOST_MAJOR_VERSION }}_${{ env.BOOST_MINOR_VERSION }}_${{ env.BOOST_PATCH_VERSION }}.tar.gz"
           curl -L -o "${{ runner.temp }}/boost.tar.gz" "$boost_url"
           tar -xf "${{ runner.temp }}/boost.tar.gz" -C "${{ github.workspace }}/.."
-          if ($LastExitCode -ne 0) {
+          if ($LastExitCode -ne 0)
+          {
             curl -L -o "${{ runner.temp }}/boost.tar.gz" "$boost_url2"
             tar -xf "${{ runner.temp }}/boost.tar.gz" -C "${{ github.workspace }}/.."
           }
@@ -68,7 +69,7 @@ jobs:
         uses: jurplel/install-qt-action@v4
         with:
           version: "5.15.2"
-          arch: ${{ matrix.qt_arch }}
+          arch: "${{ matrix.qt_arch }}"
           archives: qtbase qttools
           cache: true
 
