@@ -49,7 +49,7 @@ Q_COREAPP_STARTUP_FUNCTION(ApplicationDependentInitialization)
 
 int main(int argc, char* argv[])
 {
-    utilities::InitializeProjectDescription();
+    utilities::InitializeProjectDescription(PROJECT_VERSION);
 
     QNetworkProxyFactory::setApplicationProxyFactory(new ConfigurableProxyFactory());
 
