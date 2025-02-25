@@ -3,6 +3,12 @@ project(libtorrent)
 set (SOVERSION "8")
 set (VERSION "1.1.6")
 
+if(POLICY CMP0167)
+  cmake_policy(SET CMP0167 NEW)
+endif()
+
+
+
 set(sources
 	web_connection_base
 	alert
@@ -255,7 +261,7 @@ target_compile_definitions(torrent-rasterbar PRIVATE TORRENT_BUILDING_LIBRARY)
 
 # Boost
 if(NOT DEFINED Boost_INCLUDE_DIR OR NOT DEFINED Boost_LIBRARIES)
-	FIND_PACKAGE(Boost REQUIRED COMPONENTS chrono random atomic date_time)
+	FIND_PACKAGE(Boost REQUIRED COMPONENTS system chrono random atomic date_time)
 endif()
 include_directories(${Boost_INCLUDE_DIRS})
 target_link_libraries(torrent-rasterbar ${Boost_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
