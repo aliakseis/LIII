@@ -28,6 +28,7 @@ include_directories(
 ###  END OF SECTION Paths
 ###################################################
 
+VersionConf(${PROJECT_NAME} ${RESOURCE_OS_IN} ${RESOURCE_OS})
 
 ###################################################
 ###  SECTION Modules 
@@ -449,7 +450,7 @@ add_dependencies(${PROJECT_NAME}
 ###  Set product version
 ###################################################
 
-VersionConf(${PROJECT_NAME} ${RESOURCE_OS_IN} ${RESOURCE_OS})
+#VersionConf(${PROJECT_NAME} ${RESOURCE_OS_IN} ${RESOURCE_OS})
 
 if(WIN32)
 	string(REPLACE "." ";" versionList ${PROJECT_VERSION})
