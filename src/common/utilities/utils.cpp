@@ -39,7 +39,6 @@
 #include <set>
 #include <map>
 
-#include "version.hxx"
 
 namespace {
 
@@ -155,9 +154,9 @@ QStringList ParseUrls(const QString& data)
     return res;
 }
 
-void InitializeProjectDescription()
+void InitializeProjectDescription(const char* projectVersion)
 {
-    QCoreApplication::setApplicationVersion(PROJECT_VERSION);
+    QCoreApplication::setApplicationVersion(projectVersion);
     QCoreApplication::setApplicationName(PROJECT_NAME);
     QCoreApplication::setOrganizationName(PROJECT_NAME);
     QCoreApplication::setOrganizationDomain(PROJECT_DOMAIN);

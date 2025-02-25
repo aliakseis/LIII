@@ -57,7 +57,7 @@ typedef QMap<QString, QObject*> QObjectMap;
 namespace utilities
 {
 
-void InitializeProjectDescription();
+void InitializeProjectDescription(const char* projectVersion);
 QFont GetAdaptedFont(int size, int additional_amount = 2);
 QStringList ParseUrls(const QString& data);
 bool DeserializeObject(QXmlStreamReader* stream, QObject* object, const QString& name = QString());

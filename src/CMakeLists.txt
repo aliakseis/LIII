@@ -330,7 +330,6 @@ source_group("qm-files" FILES ${QM_FILES})
 ###  END OF SECTION Translations
 ###################################################
 
-VersionConf(${PROJECT_NAME} ${RESOURCE_OS_IN} ${RESOURCE_OS})
 
 
 ###################################################
@@ -451,7 +450,7 @@ add_dependencies(${PROJECT_NAME}
 ###  Set product version
 ###################################################
 
-#VersionConf(${PROJECT_NAME} ${RESOURCE_OS_IN} ${RESOURCE_OS})
+VersionConf(${PROJECT_NAME} ${RESOURCE_OS_IN} ${RESOURCE_OS})
 
 if(WIN32)
 	string(REPLACE "." ";" versionList ${PROJECT_VERSION})
