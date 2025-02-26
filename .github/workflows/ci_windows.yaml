@@ -79,16 +79,16 @@ jobs:
           $BOOST_PATH_UNIX = $Env:boost_path -replace '\\', '/'
           cmake `
             -B build `
-            -G "Ninja" `
+            -G "Visual Studio 17 2022" `
+            -A ${{ matrix.arch }} `
             -DCMAKE_BUILD_TYPE=RelWithDebInfo `
             -DCMAKE_EXPORT_COMPILE_COMMANDS=ON `
-            -DCMAKE_GENERATOR_PLATFORM=${{ matrix.arch }} `
             -DBOOST_ROOT="$BOOST_PATH_UNIX" `
             -DCMAKE_PREFIX_PATH="$BOOST_PATH_UNIX" `
             -DMSVC_RUNTIME_DYNAMIC=ON `
             -DVERBOSE_CONFIGURE=ON
-          cmake --build build
-          cmake --install build
+          cmake --build build --config RelWithDebInfo
+          cmake --install build --config RelWithDebInfo
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
