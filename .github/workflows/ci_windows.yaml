@@ -95,6 +95,9 @@ jobs:
           cmake --build build --config RelWithDebInfo
           cmake --install build --config RelWithDebInfo
 
+      - name: Copy OpenSSL dlls
+        run: Copy-Item -Path "${{ github.workspace }}/imports/OpenSSL/${{ matrix.platform }}/bin/*.dll" -Destination "./build/bin/" -Force -ErrorAction SilentlyContinue
+
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
