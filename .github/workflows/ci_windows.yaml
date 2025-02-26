@@ -77,7 +77,7 @@ jobs:
           cache: true
 
       - name: Set OPENSSL_ROOT_DIR environment variable
-        run: echo "OPENSSL_ROOT_DIR=${{ matrix.openssl_root_dir }}" >> $env:GITHUB_ENV
+        run: echo "OPENSSL_ROOT_DIR=${{ github.workspace }}/imports/OpenSSL/${{ matrix.platform }}" | Out-File -FilePath $env:GITHUB_ENV -Append
 
       - name: Build LIII
         run: |
@@ -90,7 +90,6 @@ jobs:
             -DCMAKE_EXPORT_COMPILE_COMMANDS=ON `
             -DBOOST_ROOT="$BOOST_PATH_UNIX" `
             -DCMAKE_PREFIX_PATH="$BOOST_PATH_UNIX" `
-            -DOPENSSL_ROOT_DIR=${{ matrix.openssl_root_dir }} `
             -DMSVC_RUNTIME_DYNAMIC=ON `
             -DVERBOSE_CONFIGURE=ON
           cmake --build build --config RelWithDebInfo
