@@ -76,6 +76,9 @@ jobs:
           archives: qtbase qttools
           cache: true
 
+      - name: Set OPENSSL_ROOT_DIR environment variable
+        run: echo "OPENSSL_ROOT_DIR=${{ matrix.openssl_root_dir }}" >> $env:GITHUB_ENV
+
       - name: Build LIII
         run: |
           $BOOST_PATH_UNIX = $Env:boost_path -replace '\\', '/'
