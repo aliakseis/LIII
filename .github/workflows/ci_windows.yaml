@@ -10,11 +10,23 @@ concurrency:
   cancel-in-progress: ${{ github.head_ref != '' }}
 
 jobs:
-  ci:
-    name: Build
+  build:
     runs-on: windows-latest
     permissions:
       actions: write
+
+    strategy:
+      matrix:
+        platform: [x86, x64]
+        include:
+          - platform: x86
+            arch: Win32
+            qt_arch: win32_msvc2019
+            boost_arch: x86
+          - platform: x64
+            arch: x64
+            qt_arch: win64_msvc2019_64
+            boost_arch: x64
 
     env:
       boost_path: "${{ github.workspace }}/../boost"
@@ -52,13 +64,13 @@ jobs:
           move "${{ github.workspace }}/../boost_*" "${{ env.boost_path }}"
           cd "${{ env.boost_path }}"
           .\bootstrap.bat
-          .\b2.exe stage --stagedir=.\ --with-headers --with-system --with-chrono --with-random --with-atomic --with-date_time
+          .\b2.exe address-model=${{ matrix.boost_arch }} stage --stagedir=.\ --with-headers --with-system --with-chrono --with-random --with-atomic --with-date_time
 
       - name: Install Qt
         uses: jurplel/install-qt-action@v4
         with:
           version: "5.15.2"
-          arch: win64_msvc2019_64
+          arch: ${{ matrix.qt_arch }}
           archives: qtbase qttools
           cache: true
 
@@ -70,6 +82,7 @@ jobs:
             -G "Ninja" `
             -DCMAKE_BUILD_TYPE=RelWithDebInfo `
             -DCMAKE_EXPORT_COMPILE_COMMANDS=ON `
+            -DCMAKE_GENERATOR_PLATFORM=${{ matrix.arch }} `
             -DBOOST_ROOT="$BOOST_PATH_UNIX" `
             -DCMAKE_PREFIX_PATH="$BOOST_PATH_UNIX" `
             -DMSVC_RUNTIME_DYNAMIC=ON `
