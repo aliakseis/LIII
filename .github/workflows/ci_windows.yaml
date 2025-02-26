@@ -22,11 +22,11 @@ jobs:
           - platform: x86
             arch: Win32
             qt_arch: win32_msvc2019
-            boost_arch: x86
+            boost_arch: 32
           - platform: x64
             arch: x64
             qt_arch: win64_msvc2019_64
-            boost_arch: x64
+            boost_arch: 64
 
     env:
       boost_path: "${{ github.workspace }}/../boost"
